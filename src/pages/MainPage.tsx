@@ -183,6 +183,7 @@ const MainPage: React.FC = () => {
 
       <Suspense fallback={null}>
         <SearchModal
+          styles={styles}
           isOpen={isSearchOpen}
           onClose={() => setIsSearchOpen(false)}
           searchTerm={searchTerm}

@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import { X, ArrowUp, ArrowDown, CornerDownLeft } from "lucide-react";
 import type { DocItem } from "../types/entities/DocItem";
+import type { StyleTheme } from "../config/siteConfig";
 
 interface SearchModalProps {
+  styles: StyleTheme;
   isOpen: boolean;
   onClose: () => void;
   searchTerm: string;
@@ -18,6 +19,7 @@ const highlight = (text: string, term: string) =>
   );
 
 const SearchModal: React.FC<SearchModalProps> = ({
+  styles,
   isOpen,
   onClose,
   searchTerm,
@@ -82,11 +84,13 @@ const SearchModal: React.FC<SearchModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="bg-white w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border"
+        className={`w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border ${styles.componentsStyles.searchModalBorders}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* search input */}
-        <div className="flex items-center border-b px-4 py-2">
+        <div
+          className={`flex items-center border-b px-4 py-2 ${styles.componentsStyles.searchModalHeader} ${styles.componentsStyles.searchModalBorders}`}
+        >
           <input
             ref={inputRef}
             type="text"
@@ -98,13 +102,12 @@ const SearchModal: React.FC<SearchModalProps> = ({
             placeholder="Search documentation..."
             className="flex-1 px-3 py-2 text-sm focus:outline-none"
           />
-          <button onClick={onClose} className="text-gray-400 hover:text-black">
-            <X className="w-5 h-5" />
-          </button>
         </div>
 
         {/* results */}
-        <div className="max-h-96 overflow-y-auto">
+        <div
+          className={`max-h-96 overflow-y-auto ${styles.componentsStyles.searchModalResultBackground}`}
+        >
           {searchTerm ? (
             results.length === 0 ? (
               <p className="text-gray-500 text-sm text-center py-6">
@@ -143,11 +146,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
                         onSelect(item);
                         onClose();
                       }}
-                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? "bg-blue-50" : ""}`}
+                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? styles.componentsStyles.searchModalSelectedItem : styles.componentsStyles.searchModalItem}`}
                     >
                       {/* title */}
                       <div
-                        className="text-sm font-medium text-gray-800"
+                        className={`${styles.textStyles.searchModalItemHeaderText}`}
                         dangerouslySetInnerHTML={{
                           __html: highlight(item.title, searchTerm),
                         }}
@@ -155,7 +158,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
                       {/* snippet */}
                       {snippet && (
                         <p
-                          className="text-xs text-gray-500 mt-1 line-clamp-2"
+                          className={`${styles.textStyles.searchModalItemFoundSectionText}`}
                           dangerouslySetInnerHTML={{
                             __html: highlight(snippet, searchTerm),
                           }}
@@ -163,7 +166,9 @@ const SearchModal: React.FC<SearchModalProps> = ({
                       )}
                       {/* tags */}
                       {item.tags?.length && (
-                        <div className="text-[11px] text-gray-400 mt-0.5 italic truncate">
+                        <div
+                          className={`${styles.textStyles.searchModalItemTags}`}
+                        >
                           {item.tags.join(", ")}
                         </div>
                       )}
@@ -180,19 +185,24 @@ const SearchModal: React.FC<SearchModalProps> = ({
         </div>
 
         {/* footer */}
-        <div className="border-t px-4 py-2 text-xs text-gray-400 flex justify-between items-center">
+        <div
+          className={`border-t px-4 py-2 flex justify-between items-center ${styles.componentsStyles.searchModalFooter} ${styles.componentsStyles.searchModalBorders}`}
+        >
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
-              <ArrowUp className="w-4 h-4" />
-              <ArrowDown className="w-4 h-4" />
-              to navigate
-            </span>
-            <span className="flex items-center gap-1">
-              <CornerDownLeft className="w-4 h-4" />
-              to select
-            </span>
+            <div className="flex items-center gap-1">
+              <kbd className={`${styles.componentsStyles.keyHints}`}>↑</kbd>
+              <kbd className={`${styles.componentsStyles.keyHints}`}>↓</kbd>
+              <span className={`${styles.textStyles.hints}`}>to navigate</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <kbd className={`${styles.componentsStyles.keyHints}`}>Enter</kbd>
+              <span className={`${styles.textStyles.hints}`}>to select</span>
+            </div>
           </div>
-          <span>esc to close</span>
+          <div className="flex items-center gap-1">
+            <kbd className={`${styles.componentsStyles.keyHints}`}>Esc</kbd>
+            <span className={`${styles.textStyles.hints}`}>to close</span>
+          </div>
         </div>
       </div>
     </div>
