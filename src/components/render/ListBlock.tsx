@@ -1,14 +1,16 @@
 import React from "react";
+import { type StyleTheme } from "../../config/siteConfig";
 
-const ListBlock: React.FC<{ index: number; items?: string[] }> = ({
+const ListBlock: React.FC<{ index: number; styles: StyleTheme, listItems?: string[] }> = ({
   index,
-  items,
+  styles,
+  listItems,
 }) => (
   <ul
     key={index}
-    className="list-disc list-inside text-gray-600 mb-4 space-y-1"
+    className={`${styles.textStyles.list}`}
   >
-    {items?.map((item, i) => (
+    {listItems?.map((item, i) => (
       <li key={i}>{item}</li>
     ))}
   </ul>

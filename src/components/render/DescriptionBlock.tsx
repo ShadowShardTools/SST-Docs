@@ -1,12 +1,17 @@
 import React from "react";
+import { type StyleTheme } from "../../config/siteConfig";
 
-const DescriptionBlock: React.FC<{ index: number; content: string }> = ({
+const DescriptionBlock: React.FC<{ index: number; styles: StyleTheme, content: string }> = ({
   index,
+  styles,
   content,
-}) => (
-  <p key={index} className="text-gray-600 mb-4 leading-relaxed">
-    {content}
-  </p>
-);
+}) => {
+
+  return (
+    <p key={index} className={`${styles.textStyles.general}`}>
+      {content}
+    </p>
+  );
+}
 
 export default DescriptionBlock;

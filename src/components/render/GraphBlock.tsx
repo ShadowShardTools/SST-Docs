@@ -1,5 +1,6 @@
 import Desmos from "desmos";
 import { useEffect, useRef } from "react";
+import { useTheme } from "../../hooks/useTheme";
 
 declare global {
   interface Window {
@@ -13,14 +14,16 @@ const GraphBlock: React.FC<{ index: number; graphExpressions: string[] }> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const calculatorRef = useRef<Desmos.Calculator | null>(null);
+  const theme = useTheme();
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const calculator = Desmos.GraphingCalculator(container, {
-      graphExpressions: true,
+      expressions: true,
       keypad: true,
+      invertedColors: theme === "dark",
     });
 
     calculatorRef.current = calculator;
@@ -36,7 +39,7 @@ const GraphBlock: React.FC<{ index: number; graphExpressions: string[] }> = ({
       calculatorRef.current?.destroy?.();
       calculatorRef.current = null;
     };
-  }, [graphExpressions]);
+  }, [graphExpressions, theme]);
 
   return (
     <div key={index} className="mb-6">
@@ -44,7 +47,7 @@ const GraphBlock: React.FC<{ index: number; graphExpressions: string[] }> = ({
         ref={containerRef}
         role="img"
         aria-label="Interactive graph"
-        className="w-full h-96 rounded border bg-white shadow-sm"
+        className="w-full h-96 rounded border bg-white dark:bg-zinc-900 shadow-sm"
       />
     </div>
   );

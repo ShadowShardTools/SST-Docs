@@ -1,29 +1,31 @@
-const SidebarNavigationHints: React.FC<{ className?: string }> = ({
-  className = "",
+import type { StyleTheme } from "../../config/siteConfig";
+
+const SidebarNavigationHints: React.FC<{ styles:StyleTheme, className?: string }> = ({
+  styles, className = "",
 }) => (
   <div
-    className={`text-xs text-gray-500 mt-2 flex flex-wrap gap-3 ${className}`}
+    className={`text-xs text-gray-500 mt-2 flex flex-wrap gap-3 select-none ${className}`}
   >
     <div className="flex items-center gap-1">
-      <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-500 border border-gray-300 rounded bg-white pointer-events-none">
+      <kbd className={`${styles.componentsStyles.keyHints}`}>
         Esc
       </kbd>
-      <span>Unfocus filter</span>
+      <span className={`${styles.textStyles.hints}`}>Unfocus filter</span>
     </div>
     <div className="flex items-center gap-1">
-      <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-500 border border-gray-300 rounded bg-white pointer-events-none">
+      <kbd className={`${styles.componentsStyles.keyHints}`}>
         Ctrl
       </kbd>
-      <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-500 border border-gray-300 rounded bg-white pointer-events-none">
+      <kbd className={`${styles.componentsStyles.keyHints}`}>
         ↑ or ↓
       </kbd>
-      <span>Navigate items</span>
+      <span className={`${styles.textStyles.hints}`}>Navigate items</span>
     </div>
     <div className="flex items-center gap-1">
-      <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-500 border border-gray-300 rounded bg-white pointer-events-none">
+      <kbd className={`${styles.componentsStyles.keyHints}`}>
         Enter
       </kbd>
-      <span>Select or toggle</span>
+      <span className={`${styles.textStyles.hints}`}>Select or toggle</span>
     </div>
   </div>
 );

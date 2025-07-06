@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import type { StyleTheme } from "../../config/siteConfig";
 
-const MathBlock: React.FC<{ index: number; content: string }> = ({
+const MathBlock: React.FC<{ index: number; styles: StyleTheme, content: string }> = ({
   index,
+  styles,
   content,
 }) => {
   const [html, setHtml] = useState<string>("");
@@ -30,7 +32,7 @@ const MathBlock: React.FC<{ index: number; content: string }> = ({
   return (
     <div key={index} className="mb-6 text-center">
       <div
-        className="text-gray-800 text-lg"
+        className={`${styles.textStyles.math}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

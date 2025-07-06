@@ -61,6 +61,8 @@ export interface ContentBlock {
       borderColor?: string;
     }[];
   };
+  chartType?: string;
+  chartScale?: string;
 
   // Desmos
   graphExpressions?: string[];

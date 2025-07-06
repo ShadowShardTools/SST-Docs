@@ -6,8 +6,11 @@ import GithubButtonLink from "../../components/GithubLink";
 import VersionSelector from "../../components/VersionSelector";
 import SearchBar from "../../components/SearchBar";
 import type { Version } from "../../types/entities/Version";
+import { type StyleTheme } from "../../config/siteConfig";
+import ThemeButton from "../../components/ThemeButton";
 
 interface HeaderProps {
+  styles: StyleTheme;
   versions: Version[];
   currentVersion: string;
   onVersionChange: (version: string) => void;
@@ -18,6 +21,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
+  styles,
   versions,
   currentVersion,
   onVersionChange,
@@ -29,7 +33,9 @@ const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b-2 border-gray-200 transition-colors">
+    <header
+      className={`sticky top-0 z-50 w-full transition-colors ${styles.sectionStyles.headerBackground}`}
+    >
       <div className="flex items-center justify-between h-16 px-4">
         {/* Left side: mobile navigation toggle */}
         <button
@@ -50,6 +56,7 @@ const Header: React.FC<HeaderProps> = ({
           <Logo />
         </div>
 
+        {/* Mobile menu toggle */}
         <div className="md:hidden">
           <button
             type="button"
@@ -57,32 +64,30 @@ const Header: React.FC<HeaderProps> = ({
             aria-label="Toggle menu"
             className="p-2 text-gray-500 hover:text-gray-700"
           >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
-        {/* Right side: sidebar toggle + desktop tools */}
+        {/* Right side: desktop tools */}
         <div className="flex items-center space-x-4">
-          {/* Desktop tools */}
           <div className="hidden md:flex items-center space-x-4">
-            <SearchBar onClick={onSearchOpen} />
+            <SearchBar styles={styles} onClick={onSearchOpen} />
             <VersionSelector
+              styles={styles}
               versions={versions}
               currentVersion={currentVersion}
               onVersionChange={onVersionChange}
               loading={loading}
             />
-            <GithubButtonLink />
+            <ThemeButton />
+            <GithubButtonLink styles={styles} />
           </div>
         </div>
       </div>
 
       {isMenuOpen && (
         <MobileMenu
+          styles={styles}
           versions={versions}
           currentVersion={currentVersion}
           onVersionChange={onVersionChange}

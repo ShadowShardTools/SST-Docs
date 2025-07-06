@@ -1,14 +1,16 @@
 import React from "react";
+import type { StyleTheme } from "../../config/siteConfig";
 
-const QuoteBlock: React.FC<{ index: number; content: string }> = ({
+const QuoteBlock: React.FC<{ index: number; styles: StyleTheme, content: string }> = ({
   index,
+  styles,
   content,
 }) => (
   <blockquote
     key={index}
-    className="border-l-4 border-blue-500 pl-4 py-2 mb-4 bg-blue-50 rounded-r-lg"
+    className={`${styles.componentsStyles.quote}`}
   >
-    <p className="text-gray-700 italic">{content}</p>
+    <p className={`${styles.textStyles.quote}`}>{content}</p>
   </blockquote>
 );
 

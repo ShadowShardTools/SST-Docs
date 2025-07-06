@@ -1,8 +1,10 @@
 import { memo, useMemo, useState, useRef, useEffect } from "react";
 import { ChevronDown, Loader } from "lucide-react";
 import type { Version } from "../types/entities/Version";
+import type { StyleTheme } from "../config/siteConfig";
 
 interface VersionSelectorProps {
+  styles: StyleTheme;
   versions: Version[];
   currentVersion: string;
   onVersionChange: (version: string) => void;
@@ -10,7 +12,7 @@ interface VersionSelectorProps {
 }
 
 const VersionSelector = memo<VersionSelectorProps>(
-  ({ versions, currentVersion, onVersionChange, loading }) => {
+  ({ styles, versions, currentVersion, onVersionChange, loading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -19,28 +21,22 @@ const VersionSelector = memo<VersionSelectorProps>(
       [versions, currentVersion],
     );
 
-    // Close dropdown on outside click
     useEffect(() => {
       if (!isOpen) return;
-
       const handleClick = (e: MouseEvent) => {
         if (!dropdownRef.current?.contains(e.target as Node)) {
           setIsOpen(false);
         }
       };
-
       document.addEventListener("click", handleClick);
       return () => document.removeEventListener("click", handleClick);
     }, [isOpen]);
 
-    // Close dropdown on Escape key
     useEffect(() => {
       if (!isOpen) return;
-
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") setIsOpen(false);
       };
-
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }, [isOpen]);
@@ -65,12 +61,12 @@ const VersionSelector = memo<VersionSelectorProps>(
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full justify-between items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className={styles.componentsStyles.button}
           disabled={!versions.length}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
-          <span className="font-medium truncate">
+          <span className="truncate">
             {current?.label || "Select Version"}
           </span>
           <ChevronDown
@@ -80,15 +76,15 @@ const VersionSelector = memo<VersionSelectorProps>(
 
         {isOpen && (
           <ul
-            className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-full max-h-60 overflow-y-auto"
+            className={`absolute top-full left-0 mt-1 ${styles.componentsStyles.dropdown}`}
             role="listbox"
           >
             {versions.map(({ version, label }) => (
               <li key={version}>
                 <button
                   onClick={() => handleSelect(version)}
-                  className={`w-full text-left px-3 py-2 hover:bg-gray-50 first:rounded-t-md last:rounded-b-md transition-colors ${
-                    version === currentVersion ? "bg-blue-50 text-blue-700" : ""
+                  className={`${styles.componentsStyles.dropdownItem} ${
+                    version === currentVersion ? styles.componentsStyles.dropdownItemActive : ""
                   }`}
                   role="option"
                   aria-selected={version === currentVersion}

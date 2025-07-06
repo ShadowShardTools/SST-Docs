@@ -11,3 +11,16 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
+<script>
+  (function () {
+    try {
+      const theme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const isDark = theme === "dark" || (!theme && prefersDark);
+      if (isDark) document.documentElement.classList.add("dark");
+    } catch (e) {
+      console.error("Theme preload failed", e);
+    }
+  })();
+</script>

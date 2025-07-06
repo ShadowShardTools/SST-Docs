@@ -1,9 +1,11 @@
-const GithubButtonLink: React.FC = () => (
+import type { StyleTheme } from "../config/siteConfig";
+
+const GithubButtonLink: React.FC<{styles: StyleTheme}> = ({styles}) => (
   <a
     href="https://github.com/ShadowShardTools/SST-Docs"
     target="_blank"
     rel="noopener noreferrer"
-    className="hidden sm:block text-gray-600 hover:text-gray-900 transition-colors"
+    className={`${styles.componentsStyles.button}`}
     aria-label="View project on GitHub"
     title="View on GitHub"
   >

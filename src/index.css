@@ -5,3 +5,7 @@
 html {
   scroll-behavior: smooth;
 }
+
+.bg-zinc-850 {
+  background-color: #1c1c1f;
+}

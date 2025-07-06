@@ -12,6 +12,7 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { UseDocumentationData } from "../services/UseDocumentationData";
 import type { DocItem } from "../types/entities/DocItem";
 import ErrorMessage from "../components/dialog/ErrorMessage";
+import { useThemeStyles } from "../hooks/useThemeStyles";
 
 const Header = lazy(() => import("../layouts/Header/Header"));
 const Sidebar = lazy(() => import("../layouts/Sidebar"));
@@ -38,6 +39,8 @@ const MainPage: React.FC = () => {
     loading,
     error,
   } = UseDocumentationData();
+
+  const styles = useThemeStyles();
 
   // Handle first-load navigation or URL param change
   useEffect(() => {
@@ -113,6 +116,7 @@ const MainPage: React.FC = () => {
     if (isMobile && isMobileNavOpen) {
       return (
         <Navigation
+          styles={styles}
           tree={tree}
           standaloneDocs={standaloneDocs}
           onSelect={navigateToItem}
@@ -134,6 +138,7 @@ const MainPage: React.FC = () => {
     return (
       <Suspense fallback={<p className="text-gray-400">Loading content…</p>}>
         <ContentRenderer
+          styles={styles}
           title={selectedItem.title}
           content={selectedItem.content}
         />
@@ -142,9 +147,10 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen border-x-2 border-gray-200">
+    <div className="flex flex-col min-h-screen">
       <Suspense fallback={<div className="h-16 bg-gray-100" />}>
         <Header
+          styles={styles}
           versions={versions}
           currentVersion={currentVersion}
           onVersionChange={setCurrentVersion}
@@ -159,6 +165,7 @@ const MainPage: React.FC = () => {
         {!isMobile && (
           <Suspense fallback={<div className="w-64 bg-gray-50 border-r" />}>
             <Sidebar
+              styles={styles}
               tree={tree}
               standaloneDocs={standaloneDocs}
               onSelect={navigateToItem}
@@ -167,7 +174,7 @@ const MainPage: React.FC = () => {
             />
           </Suspense>
         )}
-        <div className="flex-1 p-2 md:p-6">{renderContent()}</div>
+        <div className={`flex-1 p-2 md:p-6 ${styles.sectionStyles.contentBackground} transition-colors`}>{renderContent()}</div>
       </main>
 
       <Suspense fallback={null}>

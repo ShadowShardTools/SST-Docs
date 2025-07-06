@@ -26,7 +26,7 @@ async function collectLangs() {
         const { content = [] } = JSON.parse(
           await fs.readFile(path.join(itemsDir, f), 'utf8')
         );
-        content.forEach(b => b?.type === 'code' && b.language && all.add(b.language));
+        content.forEach(b => b?.type === 'code' && b.scriptLanguage && all.add(b.scriptLanguage));
       }
     } catch { /* skip */ }
   }

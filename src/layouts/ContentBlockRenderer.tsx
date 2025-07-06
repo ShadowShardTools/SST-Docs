@@ -4,8 +4,10 @@ import {
   type BlockType,
 } from "../generated/blockImports.generated";
 import type { ContentBlock } from "../types/entities/ContentBlock";
+import type { StyleTheme } from "../config/siteConfig";
 
 interface ContentBlockRendererProps {
+  styles: StyleTheme;
   /** Array of blocks that make up the document */
   content: ContentBlock[];
   /** Part of the URL before the #anchor – helps heading blocks build permalinks */
@@ -23,7 +25,7 @@ const LoadingSkeleton: React.FC = () => (
  * if the type is not recognised.
  */
 const ContentBlockRenderer: React.FC<ContentBlockRendererProps> = memo(
-  ({ content, currentPath }) => {
+  ({ styles, content, currentPath }) => {
     return (
       <>
         {content.map((block, index) => {
@@ -40,6 +42,7 @@ const ContentBlockRenderer: React.FC<ContentBlockRendererProps> = memo(
               */}
               <LazyBlock
                 index={index}
+                styles={styles}
                 block={block}
                 currentPath={currentPath}
                 {...block}

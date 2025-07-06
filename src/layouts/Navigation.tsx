@@ -16,20 +16,24 @@ import {
 import SidebarNavigationHints from "../components/dialog/SidebarNavigationHints";
 import type { Category } from "../types/entities/Category";
 import type { DocItem } from "../types/entities/DocItem";
+import { type StyleTheme } from "../config/siteConfig";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Helpers                                   */
 /* -------------------------------------------------------------------------- */
 
-const classes = (active: boolean, focused: boolean, lvl: number) =>
+const classes = (
+  active: boolean,
+  focused: boolean,
+  lvl: number,
+  styles: StyleTheme,
+) =>
   [
-    "flex items-center gap-2 cursor-pointer px-2 py-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400",
-    lvl ? "text-gray-600" : "text-gray-700",
-    active
-      ? "bg-blue-100 border-l-2 border-blue-500 text-blue-700 font-semibold"
-      : "",
-    focused && !active ? "ring-2 ring-blue-300" : "",
-    !active && !focused ? "hover:text-blue-600" : "",
+    styles.componentsStyles.navigationRowBase,
+    lvl ? "text-sm" : "text-base",
+    active ? styles.componentsStyles.navigationRowActive : "",
+    focused && !active ? styles.componentsStyles.navigationRowFocused : "",
+    !active ? styles.componentsStyles.navigationRowHover : "",
   ].join(" ");
 
 const testString = (s: string | undefined, q: string) =>
@@ -118,17 +122,18 @@ interface DocRowProps {
   active: boolean;
   focused: boolean;
   select: (d: DocItem) => void;
+  styles: StyleTheme;
 }
 
 const DocRow = React.forwardRef<HTMLLIElement, DocRowProps>(
-  ({ doc, depth, active, focused, select }, ref) => (
+  ({ doc, depth, active, focused, select, styles }, ref) => (
     <li
       ref={ref}
       data-key={`doc-${doc.id}`}
       role="treeitem"
       aria-selected={focused}
       onClick={() => select(doc)}
-      className={classes(active, focused, depth)}
+      className={classes(active, focused, depth, styles)}
     >
       <FileText className="w-4 h-4 shrink-0" />
       {doc.title}
@@ -143,10 +148,11 @@ interface CategoryRowProps {
   expanded: boolean;
   focused: boolean;
   toggle: (id: string) => void;
+  styles: StyleTheme;
 }
 
 const CategoryRow = React.forwardRef<HTMLButtonElement, CategoryRowProps>(
-  ({ node, depth, expanded, focused, toggle }, ref) => (
+  ({ node, depth, expanded, focused, toggle, styles }, ref) => (
     <button
       ref={ref}
       data-key={`cat-${node.id}`}
@@ -154,7 +160,7 @@ const CategoryRow = React.forwardRef<HTMLButtonElement, CategoryRowProps>(
       aria-expanded={expanded}
       aria-selected={focused}
       onClick={() => toggle(node.id)}
-      className={classes(false, focused, depth)}
+      className={classes(false, focused, depth, styles)}
       style={{ justifyContent: "space-between", width: "100%" }}
     >
       <span className="flex items-center gap-2">
@@ -184,6 +190,7 @@ interface BranchProps {
   current: DocItem | null | undefined;
   focusedKey: string | null;
   select: (d: DocItem) => void;
+  styles: StyleTheme;
 }
 
 const Branch: React.FC<BranchProps> = ({
@@ -195,6 +202,8 @@ const Branch: React.FC<BranchProps> = ({
   current,
   focusedKey,
   select,
+  styles
+
 }) => {
   if (!branchMatches(node, filter)) return null;
 
@@ -211,6 +220,7 @@ const Branch: React.FC<BranchProps> = ({
         expanded={expanded}
         focused={catFocused}
         toggle={toggle}
+        styles={styles}
       />
 
       {expanded && !!node.docs?.length && (
@@ -224,6 +234,7 @@ const Branch: React.FC<BranchProps> = ({
               active={current?.id === d.id}
               focused={focusedKey === `doc-${d.id}`}
               select={select}
+              styles={styles}
             />
           ))}
         </ul>
@@ -241,6 +252,7 @@ const Branch: React.FC<BranchProps> = ({
             current={current}
             focusedKey={focusedKey}
             select={select}
+            styles={styles}
           />
         ))}
     </div>
@@ -252,6 +264,7 @@ const Branch: React.FC<BranchProps> = ({
 /* -------------------------------------------------------------------------- */
 
 export interface NavigationProps {
+  styles: StyleTheme;
   tree: Category[];
   standaloneDocs?: DocItem[];
   onSelect: (doc: DocItem) => void;
@@ -260,12 +273,14 @@ export interface NavigationProps {
 }
 
 const Navigation: React.FC<NavigationProps> = ({
+  styles,
   tree,
   standaloneDocs = [],
   onSelect,
   selectedItem,
   isSearchOpen = false,
 }) => {
+
   // expanded state
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const toggle = useCallback(
@@ -383,15 +398,15 @@ const Navigation: React.FC<NavigationProps> = ({
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Enter here to filter…"
-          className="w-full pl-8 pr-2 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`${styles.componentsStyles.input} w-full pl-8 pr-2 py-1.5 border`}
         />
-        <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-xs font-semibold text-gray-500 border border-gray-300 rounded bg-white pointer-events-none">
+        <kbd className={`${styles.componentsStyles.keyHints} absolute right-2.5 top-1/2 -translate-y-1/2`}>
           F
         </kbd>
       </div>
 
       {/* Hints */}
-      <SidebarNavigationHints className="mb-4" />
+      <SidebarNavigationHints styles={styles} className="mb-4" />
 
       {/* Navigation tree */}
       <nav
@@ -417,6 +432,7 @@ const Navigation: React.FC<NavigationProps> = ({
                     active={selectedItem?.id === d.id}
                     focused={currentKey === `doc-${d.id}`}
                     select={onSelect}
+                    styles={styles}
                   />
                 ))}
             </ul>
@@ -435,6 +451,7 @@ const Navigation: React.FC<NavigationProps> = ({
             current={selectedItem}
             focusedKey={currentKey}
             select={onSelect}
+            styles={styles}
           />
         ))}
       </nav>

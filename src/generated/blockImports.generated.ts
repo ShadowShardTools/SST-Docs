@@ -6,6 +6,7 @@ export const blockImports = {
   'code': lazy(() => import('../components/render/CodeBlock')),
   'description': lazy(() => import('../components/render/DescriptionBlock')),
   'graph': lazy(() => import('../components/render/GraphBlock')),
+  'list': lazy(() => import('../components/render/ListBlock')),
   'math': lazy(() => import('../components/render/MathBlock')),
   'quote': lazy(() => import('../components/render/QuoteBlock')),
   'table': lazy(() => import('../components/render/TableBlock')),

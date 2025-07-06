@@ -1,14 +1,23 @@
 // src/App.tsx
 import { Routes, Route, HashRouter } from "react-router-dom";
 import MainPage from "./pages/MainPage";
+import { siteConfig } from "./config/siteConfig";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
+  const theme = useTheme();
+  const styles = siteConfig.themes[theme];
+
   return (
     <HashRouter>
-      <div className="flex flex-col min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
-        <Routes>
-          <Route path="/:docId?" element={<MainPage />} />
-        </Routes>
+      <div className={`${styles.sectionStyles.siteBackground} transition-colors`}>
+        <div className="flex flex-col min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
+          <div className={`${styles.sectionStyles.siteBorders}`}>
+            <Routes>
+              <Route path="/:docId?" element={<MainPage />} />
+            </Routes>
+          </div>
+        </div>
       </div>
     </HashRouter>
   );
