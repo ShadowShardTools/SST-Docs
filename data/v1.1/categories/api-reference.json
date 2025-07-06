@@ -2,5 +2,5 @@
   "id": "api-reference",
   "title": "API Reference",
   "description": "Details of all available methods and classes",
-  "subcategories": ["customization"]
+  "docs": ["quick-reference"]
 }

@@ -1,8 +1,6 @@
 {
     "id": "themes",
     "title": "Using Themes",
-    "category": "api-reference",
-    "subcategory": "customization",
     "content": [
         {
             "type": "title-h2",
@@ -11,6 +9,32 @@
         {
             "type": "description",
             "content": "Learn how to apply custom themes."
+        },
+        {
+            "type": "chart",
+            "content": "",
+            "chartData": {
+                "title": "Monthly Revenue",
+                "labels": [
+                    "January",
+                    "February",
+                    "March"
+                ],
+                "datasets": [
+                    {
+                        "label": "2025",
+                        "data": [
+                            12000,
+                            19000,
+                            3000
+                        ],
+                        "backgroundColor": "rgba(54, 162, 235, 0.6)",
+                        "borderColor": "rgba(54, 162, 235, 1)"
+                    }
+                ]
+            },
+            "chartType": "PolarArea",
+            "chartScale": "1"
         }
     ],
     "tags": [

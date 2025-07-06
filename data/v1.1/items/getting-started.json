@@ -17,7 +17,7 @@
     {
       "type": "code",
       "content": "npm install our-package\n# or\nyarn add our-package",
-      "language": "bash"
+      "scriptLanguage": "bash"
     },
     {
       "type": "description",
@@ -26,7 +26,7 @@
     {
       "type": "code",
       "content": "import { Component } from \"our-package\";\n\nconst app = new Component();",
-      "language": "javascript"
+      "scriptLanguage": "javascript"
     },
     {
       "type": "title-h3",
@@ -40,7 +40,7 @@
       "type": "code",
       "scriptName": "Program.cs",
       "content": "using OurPackage;\n\nclass Program\n{\n    static void Main()\n    {\n        var component = new Component();\n        component.Run();\n    }\n}",
-      "language": "csharp"
+      "scriptLanguage": "csharp"
     },
     {
       "type": "title-h2",

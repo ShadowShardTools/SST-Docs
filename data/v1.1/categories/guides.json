@@ -2,5 +2,6 @@
   "id": "guides",
   "title": "Guides",
   "description": "Step-by-step tutorials and guides",
-  "subcategories": []
+  "docs": ["advanced-usage"],
+  "children": ["customization"]
 }

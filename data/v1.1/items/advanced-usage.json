@@ -1,7 +1,6 @@
 {
     "id": "advanced-usage",
     "title": "Advanced Usage",
-    "category": "guides",
     "content": [
         {
             "type": "title-h2",
@@ -10,6 +9,16 @@
         {
             "type": "description",
             "content": "Learn advanced techniques to enhance your project."
+        },
+        {
+            "type": "list",
+            "content": "Learn advanced techniques to enhance your project.",
+            "listItems": [
+                "1",
+                "2",
+                "2",
+                "2"
+            ]
         }
     ],
     "tags": [
