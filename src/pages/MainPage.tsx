@@ -174,7 +174,11 @@ const MainPage: React.FC = () => {
             />
           </Suspense>
         )}
-        <div className={`flex-1 p-2 md:p-6 ${styles.sectionStyles.contentBackground} transition-colors`}>{renderContent()}</div>
+        <div
+          className={`flex-1 p-2 md:p-6 ${styles.sectionStyles.contentBackground} transition-colors`}
+        >
+          {renderContent()}
+        </div>
       </main>
 
       <Suspense fallback={null}>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import type { StyleTheme } from "../../config/siteConfig";
 
-const MathBlock: React.FC<{ index: number; styles: StyleTheme, content: string }> = ({
-  index,
-  styles,
-  content,
-}) => {
+const MathBlock: React.FC<{
+  index: number;
+  styles: StyleTheme;
+  content: string;
+}> = ({ index, styles, content }) => {
   const [html, setHtml] = useState<string>("");
 
   useEffect(() => {

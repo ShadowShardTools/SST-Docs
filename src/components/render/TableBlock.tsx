@@ -7,10 +7,11 @@ const TableBlock: React.FC<{
   tableHeaders?: string[];
   tableRows?: string[][];
 }> = ({ index, styles, tableHeaders, tableRows }) => {
-
   return (
     <div key={index} className="mb-6 overflow-x-auto">
-      <table className={`${styles.componentsStyles.tableBorder} min-w-full border rounded-lg`}>
+      <table
+        className={`${styles.componentsStyles.tableBorder} min-w-full border rounded-lg`}
+      >
         {tableHeaders && (
           <thead className={styles.sectionStyles.tableHeadersBackground}>
             <tr>

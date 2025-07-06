@@ -22,8 +22,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   isSearchOpen = false,
 }) => {
   return (
-    <aside className={`hidden md:block fixed md:sticky top-16 bottom-0 md:top-16 md:h-[calc(100vh-4rem)] w-64 shrink-0 p-4 overflow-y-auto custom-scrollbar z-40 ${styles.sectionStyles.navigationBackground} transition-colors`}>
-
+    <aside
+      className={`hidden md:block fixed md:sticky top-16 bottom-0 md:top-16 md:h-[calc(100vh-4rem)] w-64 shrink-0 p-4 overflow-y-auto custom-scrollbar z-40 ${styles.sectionStyles.navigationBackground} transition-colors`}
+    >
       <Navigation
         styles={styles}
         tree={tree}
@@ -34,6 +35,6 @@ const Sidebar: React.FC<SidebarProps> = ({
       />
     </aside>
   );
-}
+};
 
 export default Sidebar;

@@ -64,7 +64,11 @@ const Header: React.FC<HeaderProps> = ({
             aria-label="Toggle menu"
             className="p-2 text-gray-500 hover:text-gray-700"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
 

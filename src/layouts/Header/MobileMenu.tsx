@@ -22,7 +22,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   loading,
   onSearchOpen,
 }) => (
-  <div className={`absolute top-16 left-0 w-full ${styles.sectionStyles.headerMobileBackground}`}>
+  <div
+    className={`absolute top-16 left-0 w-full ${styles.sectionStyles.headerMobileBackground}`}
+  >
     <SearchBar styles={styles} onClick={onSearchOpen} />
     <VersionSelector
       styles={styles}

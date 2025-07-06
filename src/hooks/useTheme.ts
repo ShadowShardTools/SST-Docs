@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
  */
 export function useTheme(): "light" | "dark" {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
-    return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
   });
 
   useEffect(() => {

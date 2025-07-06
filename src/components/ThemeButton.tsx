@@ -21,7 +21,9 @@ const ThemeButton: React.FC = () => {
     if (saved === "light" || saved === "dark") {
       applyTheme(saved);
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       applyTheme(prefersDark ? "dark" : "light");
     }
   }, []);

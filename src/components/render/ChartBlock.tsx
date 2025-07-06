@@ -66,7 +66,9 @@ const ChartBlock: React.FC<Props> = ({ styles, block }) => {
   if (!ChartComponent) {
     return (
       <div className="my-8">
-        <p className="text-red-500">Unsupported chart type: {block.chartType}</p>
+        <p className="text-red-500">
+          Unsupported chart type: {block.chartType}
+        </p>
       </div>
     );
   }
@@ -104,11 +106,14 @@ const ChartBlock: React.FC<Props> = ({ styles, block }) => {
             },
             r: {
               grid: { color: styles.chartsStyles.gridLineColor, lineWidth: 1 },
-              angleLines: { color: styles.chartsStyles.gridLineColor, lineWidth: 1 },
+              angleLines: {
+                color: styles.chartsStyles.gridLineColor,
+                lineWidth: 1,
+              },
               pointLabels: { color: styles.chartsStyles.axisTickColor },
               ticks: {
                 color: styles.chartsStyles.axisTickColor,
-                backdropColor: "transparent",   // no boxes behind numbers
+                backdropColor: "transparent", // no boxes behind numbers
               },
             },
           },

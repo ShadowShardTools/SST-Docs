@@ -202,8 +202,7 @@ const Branch: React.FC<BranchProps> = ({
   current,
   focusedKey,
   select,
-  styles
-
+  styles,
 }) => {
   if (!branchMatches(node, filter)) return null;
 
@@ -280,7 +279,6 @@ const Navigation: React.FC<NavigationProps> = ({
   selectedItem,
   isSearchOpen = false,
 }) => {
-
   // expanded state
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const toggle = useCallback(
@@ -400,7 +398,9 @@ const Navigation: React.FC<NavigationProps> = ({
           placeholder="Enter here to filter…"
           className={`${styles.componentsStyles.input} w-full pl-8 pr-2 py-1.5 border`}
         />
-        <kbd className={`${styles.componentsStyles.keyHints} absolute right-2.5 top-1/2 -translate-y-1/2`}>
+        <kbd
+          className={`${styles.componentsStyles.keyHints} absolute right-2.5 top-1/2 -translate-y-1/2`}
+        >
           F
         </kbd>
       </div>

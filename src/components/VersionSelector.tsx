@@ -66,9 +66,7 @@ const VersionSelector = memo<VersionSelectorProps>(
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
-          <span className="truncate">
-            {current?.label || "Select Version"}
-          </span>
+          <span className="truncate">{current?.label || "Select Version"}</span>
           <ChevronDown
             className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
           />
@@ -84,7 +82,9 @@ const VersionSelector = memo<VersionSelectorProps>(
                 <button
                   onClick={() => handleSelect(version)}
                   className={`${styles.componentsStyles.dropdownItem} ${
-                    version === currentVersion ? styles.componentsStyles.dropdownItemActive : ""
+                    version === currentVersion
+                      ? styles.componentsStyles.dropdownItemActive
+                      : ""
                   }`}
                   role="option"
                   aria-selected={version === currentVersion}

@@ -10,7 +10,9 @@ function App() {
 
   return (
     <HashRouter>
-      <div className={`${styles.sectionStyles.siteBackground} transition-colors`}>
+      <div
+        className={`${styles.sectionStyles.siteBackground} transition-colors`}
+      >
         <div className="flex flex-col min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
           <div className={`${styles.sectionStyles.siteBorders}`}>
             <Routes>

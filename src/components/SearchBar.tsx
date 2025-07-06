@@ -28,12 +28,8 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({ styles, onClick }) => (
     <span className="flex-1 text-gray-500">Search…</span>
     <div className="flex justify-between gap-4">
       <div className="flex gap-1">
-        <kbd className={`${styles.componentsStyles.keyHints}`}>
-          Ctrl
-        </kbd>
-        <kbd className={`${styles.componentsStyles.keyHints}`}>
-          K
-        </kbd>
+        <kbd className={`${styles.componentsStyles.keyHints}`}>Ctrl</kbd>
+        <kbd className={`${styles.componentsStyles.keyHints}`}>K</kbd>
       </div>
     </div>
   </button>

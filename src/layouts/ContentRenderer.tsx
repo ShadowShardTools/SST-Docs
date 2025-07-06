@@ -18,7 +18,6 @@ const ContentRenderer: React.FC<Props> = ({
   category,
   subcategory,
 }) => {
-  
   /* scroll to hash on mount / content change */
   useEffect(() => {
     const hash = decodeURIComponent(location.hash.split("#")[2] || "");
@@ -46,7 +45,11 @@ const ContentRenderer: React.FC<Props> = ({
         </div>
       )}
 
-      <ContentBlockRenderer styles={styles} content={content} currentPath={currentPath} />
+      <ContentBlockRenderer
+        styles={styles}
+        content={content}
+        currentPath={currentPath}
+      />
     </div>
   );
 };
