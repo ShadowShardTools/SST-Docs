@@ -1,1 +1,0 @@
-import{j as o}from"./index-BHjTVa7Y.js";const j=({index:r,styles:x,listItems:a})=>o.jsx("ul",{className:`${x.textStyles.list}`,children:a==null?void 0:a.map((c,l)=>o.jsx("li",{children:c},l))},r);export{j as default};

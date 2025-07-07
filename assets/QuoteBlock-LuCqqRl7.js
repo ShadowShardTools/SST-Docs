@@ -1,1 +1,0 @@
-import{j as t}from"./index-BHjTVa7Y.js";const l=({index:o,styles:e,content:s})=>t.jsx("blockquote",{className:`${e.componentsStyles.quote}`,children:t.jsx("p",{className:`${e.textStyles.quote}`,children:s})},o);export{l as default};
