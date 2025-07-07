@@ -1,54 +1,43 @@
-# React + TypeScript + Vite
+# SST Docs - React JSON Documentation Template
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[SST Docs](https://shadowshardtools.github.io/SST-Docs/) is a modern, searchable, versioned documentation site built with React, TypeScript, Tailwind CSS, and Lucide icons. It is designed to display structured JSON content and supports categories, dynamic blocks, keyboard navigation, and a mobile layout.
 
-Currently, two official plugins are available:
+## 🚀 Features
+- User-friendly version selector
+- Sidebar and mobile navigation with filter and keyboard support (`F`, `↑↓`, `Enter`, `Esc`)
+- Search modal with highlighted results (trigger with `/` or `Ctrl + K`)
+- Dynamic content rendering using lazy-loaded blocks
+- Responsive design and optimized for mobile
+- Content format supports titles, lists, quotes, tables, images, carousels, audio, code, charts, and more
+- Generative imports to reduce the size of the site
+- Deep linking
+- Themes(Light/Dark)
+- Config customization
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚒️ Installation / Contribution
+All information is available on the website - [SST Docs](https://shadowshardtools.github.io/SST-Docs/)
 
-## Expanding the ESLint configuration
+## 📦 Dependencies
+- React
+- React Router
+- Tailwind CSS
+- Lucide React
+- TypeScript
+- Desmos API
+- ChartJS
+- Katex
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📄 License
+MIT
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🖋️ Created By
+ShadowShardTools - Founded by Valerii Deineka
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔗 Links
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- [Website](https://shadowshardtools.github.io)
+- [GitHub](https://github.com/ShadowShardTools)
+- [Unity Asset Store](https://assetstore.unity.com/publishers/46006)
+- [YouTube](https://www.youtube.com/@shadowshardtools)
+- [LinkedIn](https://www.linkedin.com/company/shadowshardtools)
+- [Discord](https://discord.gg/QyQACA5YvA)
