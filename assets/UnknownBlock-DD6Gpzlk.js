@@ -1,1 +1,0 @@
-import{j as e}from"./index-xCLyj1-e.js";const l=({index:o,type:n})=>e.jsx("div",{className:"mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md",children:e.jsxs("p",{className:"text-yellow-800",children:["Unknown content type: ",n]})},o);export{l as default};
