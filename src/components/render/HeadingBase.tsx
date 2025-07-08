@@ -1,6 +1,6 @@
 import { LinkIcon } from "lucide-react";
 import React from "react";
-import { siteConfig } from "../../config/siteConfig";
+import { siteConfig } from "../../siteConfig";
 import { useTheme } from "../../hooks/useTheme";
 
 type Level = "h1" | "h2" | "h3";

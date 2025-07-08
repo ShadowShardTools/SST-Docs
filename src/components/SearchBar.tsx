@@ -1,6 +1,6 @@
 import { Search } from "lucide-react";
 import { memo } from "react";
-import type { StyleTheme } from "../config/siteConfig";
+import type { StyleTheme } from "../siteConfig";
 
 interface SearchBarProps {
   styles: StyleTheme;
@@ -14,23 +14,15 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({ styles, onClick }) => (
     onClick={onClick}
     aria-label="Open search"
     title="Open search (Ctrl + K)"
-    className="
-      group relative flex items-center gap-2
-      w-full px-3 py-2
-      border border-gray-300 rounded-md
-      text-left text-sm text-gray-500
-      hover:border-gray-400
-      focus:outline-none focus:ring-2 focus:ring-blue-500
-      transition-all duration-200 
-    "
+    className={`group relative flex items-center gap-6 justify-between w-full px-3 py-2 cursor-pointer ${styles.componentsStyles.button}`}
   >
-    <Search className="w-4 h-4 mr-2 text-gray-400 group-hover:text-gray-600" />
-    <span className="flex-1 text-gray-500">Search…</span>
-    <div className="flex justify-between gap-4">
-      <div className="flex gap-1">
-        <kbd className={`${styles.componentsStyles.keyHints}`}>Ctrl</kbd>
-        <kbd className={`${styles.componentsStyles.keyHints}`}>K</kbd>
-      </div>
+    <div className="flex gap-1 items-center">
+      <Search className="w-5 h-5 mr-2" />
+      <span>Search</span>
+    </div>
+    <div className="flex gap-1 items-center">
+      <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}>Ctrl</kbd>
+      <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}>K</kbd>
     </div>
   </button>
 );

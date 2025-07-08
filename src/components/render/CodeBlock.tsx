@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Copy } from "lucide-react";
-import type { StyleTheme } from "../../config/siteConfig";
+import type { StyleTheme } from "../../siteConfig";
 
 const CodeBlock: React.FC<{
   index: number;
@@ -39,7 +39,7 @@ const CodeBlock: React.FC<{
 
   return (
     <div key={index} className="relative mb-6 overflow-hidden rounded-md">
-      <div className={`${styles.componentsStyles.codeHeader}`}>
+      <div className={`flex items-center justify-between px-3 py-1.5 ${styles.componentsStyles.codeHeader}`}>
         <span>{scriptName}</span>
         <button
           onClick={() => {
@@ -47,18 +47,18 @@ const CodeBlock: React.FC<{
             setCopied(true);
             setTimeout(() => setCopied(false), 1500);
           }}
-          className={`${styles.componentsStyles.buttonSmall}`}
+          className={`flex justify-center items-center gap-2 py-1 px-2 cursor-pointer ${styles.componentsStyles.buttonSmall}`}
         >
           <Copy className="w-3.5 h-3.5" />
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
       <pre
-        className={`language-${scriptLanguage} !m-0 !rounded-none !p-4 overflow-x-auto w-full`}
+        className={`language-${scriptLanguage} !m-0 !p-4 overflow-x-auto w-full`}
       >
         <code
           ref={codeRef}
-          className={`language-${scriptLanguage} break-words whitespace-pre`}
+          className={`!language-${scriptLanguage} break-words !whitespace-pre`}
         />
       </pre>
       {scriptLanguage && (

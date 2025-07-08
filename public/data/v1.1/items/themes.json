@@ -34,7 +34,7 @@
                 ]
             },
             "chartType": "PolarArea",
-            "chartScale": "1"
+            "chartScale": "1.0"
         }
     ],
     "tags": [

@@ -13,10 +13,10 @@ import { UseDocumentationData } from "../services/UseDocumentationData";
 import type { DocItem } from "../types/entities/DocItem";
 import ErrorMessage from "../components/dialog/ErrorMessage";
 import { useThemeStyles } from "../hooks/useThemeStyles";
+import Header from "../layouts/Header/Header";
+import Sidebar from "../layouts/Sidebar";
+import Navigation from "../layouts/Navigation/Navigation";
 
-const Header = lazy(() => import("../layouts/Header/Header"));
-const Sidebar = lazy(() => import("../layouts/Sidebar"));
-const Navigation = lazy(() => import("../layouts/Navigation"));
 const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
 const SearchModal = lazy(() => import("../layouts/SearchModal"));
 
@@ -84,23 +84,23 @@ const MainPage: React.FC = () => {
     return !query
       ? []
       : items.filter((item) => {
-          const titleMatch = item.title.toLowerCase().includes(query);
-          const blockMatch = item.content?.some((block) => {
-            const content = block.content?.toLowerCase?.();
-            if (
-              ["description", "quote"].includes(block.type) ||
-              block.type.startsWith("title")
-            )
-              return content?.includes(query);
-            if (block.type === "list")
-              return block.listItems?.some((i) =>
-                i.toLowerCase().includes(query),
-              );
-            if (block.type === "code") return content?.includes(query);
-            return false;
-          });
-          return titleMatch || blockMatch;
+        const titleMatch = item.title.toLowerCase().includes(query);
+        const blockMatch = item.content?.some((block) => {
+          const content = block.content?.toLowerCase?.();
+          if (
+            ["description", "quote"].includes(block.type) ||
+            block.type.startsWith("title")
+          )
+            return content?.includes(query);
+          if (block.type === "list")
+            return block.listItems?.some((i) =>
+              i.toLowerCase().includes(query),
+            );
+          if (block.type === "code") return content?.includes(query);
+          return false;
         });
+        return titleMatch || blockMatch;
+      });
   }, [items, searchTerm]);
 
   if (error.versions) {
@@ -141,6 +141,8 @@ const MainPage: React.FC = () => {
           styles={styles}
           title={selectedItem.title}
           content={selectedItem.content}
+          docId={selectedItem.id}
+          tree={tree}
         />
       </Suspense>
     );

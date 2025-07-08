@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { StyleTheme } from "../../config/siteConfig";
+import type { StyleTheme } from "../../siteConfig";
 
 const MathBlock: React.FC<{
   index: number;

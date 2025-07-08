@@ -6,7 +6,7 @@ import GithubButtonLink from "../../components/GithubLink";
 import VersionSelector from "../../components/VersionSelector";
 import SearchBar from "../../components/SearchBar";
 import type { Version } from "../../types/entities/Version";
-import { type StyleTheme } from "../../config/siteConfig";
+import { type StyleTheme } from "../../siteConfig";
 import ThemeButton from "../../components/ThemeButton";
 
 interface HeaderProps {

@@ -24,7 +24,7 @@ import {
   Scatter,
 } from "react-chartjs-2";
 import type { ContentBlock } from "../../types/entities/ContentBlock";
-import { type StyleTheme } from "../../config/siteConfig";
+import { type StyleTheme } from "../../siteConfig";
 
 ChartJS.register(
   BarElement,
@@ -44,9 +44,11 @@ interface Props {
   index: number;
   styles: StyleTheme;
   block: ContentBlock;
+  chartScale?: number; // Add chartScale to the props
 }
 
-const ChartBlock: React.FC<Props> = ({ styles, block }) => {
+const ChartBlock: React.FC<Props> = ({ styles, block, chartScale = 1 }) => {
+  // Default chartScale to 1 if not provided
   if (!block.chartData) return null;
 
   const { title, labels, datasets } = block.chartData;
@@ -73,6 +75,8 @@ const ChartBlock: React.FC<Props> = ({ styles, block }) => {
     );
   }
 
+  const effectiveAspectRatio = 2 / chartScale;
+
   return (
     <div className="my-8 text-center">
       {title && <h3 className={styles.textStyles.chartTitle}>{title}</h3>}
@@ -80,6 +84,8 @@ const ChartBlock: React.FC<Props> = ({ styles, block }) => {
         data={{ labels, datasets }}
         options={{
           responsive: true,
+          maintainAspectRatio: true, // Keep this true for aspect ratio to work with responsive
+          aspectRatio: effectiveAspectRatio, // Apply the scaling here
           plugins: {
             legend: {
               labels: {

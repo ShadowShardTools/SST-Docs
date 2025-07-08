@@ -2,7 +2,7 @@ import GithubButtonLink from "../../components/GithubLink";
 import SearchBar from "../../components/SearchBar";
 import ThemeButton from "../../components/ThemeButton";
 import VersionSelector from "../../components/VersionSelector";
-import type { StyleTheme } from "../../config/siteConfig";
+import type { StyleTheme } from "../../siteConfig";
 import type { Version } from "../../types/entities/Version";
 
 interface MobileMenuProps {
@@ -23,7 +23,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   onSearchOpen,
 }) => (
   <div
-    className={`absolute top-16 left-0 w-full ${styles.sectionStyles.headerMobileBackground}`}
+    className={`absolute top-16 left-0 w-full z-40 p-4 md:hidden space-y-4 ${styles.sectionStyles.headerMobileBackground}`}
   >
     <SearchBar styles={styles} onClick={onSearchOpen} />
     <VersionSelector

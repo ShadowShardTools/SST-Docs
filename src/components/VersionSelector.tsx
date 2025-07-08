@@ -1,7 +1,7 @@
 import { memo, useMemo, useState, useRef, useEffect } from "react";
 import { ChevronDown, Loader } from "lucide-react";
 import type { Version } from "../types/entities/Version";
-import type { StyleTheme } from "../config/siteConfig";
+import type { StyleTheme } from "../siteConfig";
 
 interface VersionSelectorProps {
   styles: StyleTheme;
@@ -61,7 +61,7 @@ const VersionSelector = memo<VersionSelectorProps>(
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={styles.componentsStyles.button}
+          className={`flex justify-between items-center w-full gap-2 p-2 cursor-pointer ${styles.componentsStyles.button}`}
           disabled={!versions.length}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
@@ -74,14 +74,14 @@ const VersionSelector = memo<VersionSelectorProps>(
 
         {isOpen && (
           <ul
-            className={`absolute top-full left-0 mt-1 ${styles.componentsStyles.dropdown}`}
+            className={`absolute top-full left-0 mt-1 z-50 min-w-full max-h-60 overflow-y-auto ${styles.componentsStyles.dropdown}`}
             role="listbox"
           >
             {versions.map(({ version, label }) => (
               <li key={version}>
                 <button
                   onClick={() => handleSelect(version)}
-                  className={`${styles.componentsStyles.dropdownItem} ${
+                  className={`w-full px-3 py-2 cursor-pointer ${styles.componentsStyles.dropdownItem} ${
                     version === currentVersion
                       ? styles.componentsStyles.dropdownItemActive
                       : ""

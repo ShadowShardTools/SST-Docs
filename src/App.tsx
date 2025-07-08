@@ -1,7 +1,7 @@
 // src/App.tsx
 import { Routes, Route, HashRouter } from "react-router-dom";
 import MainPage from "./pages/MainPage";
-import { siteConfig } from "./config/siteConfig";
+import { siteConfig } from "./siteConfig";
 import { useTheme } from "./hooks/useTheme";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <div
         className={`${styles.sectionStyles.siteBackground} transition-colors`}
       >
-        <div className="flex flex-col min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
+        <div className="min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
           <div className={`${styles.sectionStyles.siteBorders}`}>
             <Routes>
               <Route path="/:docId?" element={<MainPage />} />

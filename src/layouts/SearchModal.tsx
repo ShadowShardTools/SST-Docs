@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import type { DocItem } from "../types/entities/DocItem";
-import type { StyleTheme } from "../config/siteConfig";
+import type { StyleTheme } from "../siteConfig";
 
 interface SearchModalProps {
   styles: StyleTheme;
@@ -190,17 +190,17 @@ const SearchModal: React.FC<SearchModalProps> = ({
         >
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <kbd className={`${styles.componentsStyles.keyHints}`}>↑</kbd>
-              <kbd className={`${styles.componentsStyles.keyHints}`}>↓</kbd>
+              <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}>↑</kbd>
+              <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}>↓</kbd>
               <span className={`${styles.textStyles.hints}`}>to navigate</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className={`${styles.componentsStyles.keyHints}`}>Enter</kbd>
+              <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}>Enter</kbd>
               <span className={`${styles.textStyles.hints}`}>to select</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <kbd className={`${styles.componentsStyles.keyHints}`}>Esc</kbd>
+            <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}>Esc</kbd>
             <span className={`${styles.textStyles.hints}`}>to close</span>
           </div>
         </div>

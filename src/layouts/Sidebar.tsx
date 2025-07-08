@@ -1,8 +1,8 @@
 import React from "react";
 import type { Category } from "../types/entities/Category";
 import type { DocItem } from "../types/entities/DocItem";
-import Navigation from "./Navigation";
-import { type StyleTheme } from "../config/siteConfig";
+import Navigation from "./Navigation/Navigation";
+import { type StyleTheme } from "../siteConfig";
 
 export interface SidebarProps {
   styles: StyleTheme;

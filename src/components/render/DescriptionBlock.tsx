@@ -1,5 +1,5 @@
 import React from "react";
-import { type StyleTheme } from "../../config/siteConfig";
+import { type StyleTheme } from "../../siteConfig";
 
 const DescriptionBlock: React.FC<{
   index: number;

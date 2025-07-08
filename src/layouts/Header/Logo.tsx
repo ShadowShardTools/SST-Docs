@@ -1,4 +1,4 @@
-import { siteConfig } from "../../config/siteConfig";
+import { siteConfig } from "../../siteConfig";
 import { useTheme } from "../../hooks/useTheme";
 
 const Logo = () => {
