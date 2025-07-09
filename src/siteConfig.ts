@@ -83,7 +83,7 @@ export const siteConfig: SiteConfig = {
         searchModalSelectedItem: "bg-stone-300 hover:bg-stone-300/70",
 
         imageBorder: "border border-stone-500",
-        imageCompareSlider: "oklch(55.6% 0 0)",
+        imageCompareSlider: "oklch(92.2% 0 0)",
 
         audioContainer: "bg-gray-300",
         audioPlayButton: "bg-stone-700 hover:bg-stone-600 text-white",
@@ -173,7 +173,7 @@ export const siteConfig: SiteConfig = {
         searchModalSelectedItem: "bg-indigo-900/60 hover:bg-indigo-900/80",
 
         imageBorder: "border border-gray-700",
-        imageCompareSlider: "oklch(58.5% 0.233 277.117)",
+        imageCompareSlider: "oklch(89.4% 0.057 293.283)",
 
         audioContainer: "bg-indigo-900/50",
         audioPlayButton:

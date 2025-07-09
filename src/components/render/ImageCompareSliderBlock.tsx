@@ -31,7 +31,7 @@ const ImageCompareSliderBlock: React.FC<ImageCompareSliderBlockProps> = ({
           <CompareImage
             leftImage={imageBeforeSrc}
             rightImage={imageAfterSrc}
-            sliderLineColor="oklch(35.9% 0.144 278.697)"
+            sliderLineColor={styles.componentsStyles.imageCompareSlider}
             onSliderPositionChange={(pos: number) =>
               setPercentage(Math.round(pos * 100))
             }
