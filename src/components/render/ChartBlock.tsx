@@ -40,91 +40,91 @@ ChartJS.register(
   Legend,
 );
 
+/* ------------------------------------------------------------------ */
+/*  Chart map + helper type                                            */
+/* ------------------------------------------------------------------ */
+
+const chartMap = {
+  bar: Bar,
+  line: Line,
+  radar: Radar,
+  doughnut: Doughnut,
+  polarArea: PolarArea,
+  bubble: Bubble,
+  pie: Pie,
+  scatter: Scatter,
+} as const;
+
+type ChartType = keyof typeof chartMap;
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
 interface Props {
   index: number;
   styles: StyleTheme;
   block: ContentBlock;
-  chartScale?: number; // Add chartScale to the props
+  scale?: number;
 }
 
-const ChartBlock: React.FC<Props> = ({ styles, block, chartScale = 1 }) => {
-  // Default chartScale to 1 if not provided
-  if (!block.chartData) return null;
+const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
+  if (!block.chartData || !block.chartType) return null;
 
-  const { title, labels, datasets } = block.chartData;
-  const chartType = block.chartType?.toLowerCase() || "bar";
+  /* --- ensure chartType is a valid key --- */
+  if (!(block.chartType in chartMap)) return null;
+  const chartType = block.chartType as ChartType;
 
-  const ChartComponent = {
-    bar: Bar,
-    line: Line,
-    radar: Radar,
-    doughnut: Doughnut,
-    polararea: PolarArea,
-    bubble: Bubble,
-    pie: Pie,
-    scatter: Scatter,
-  }[chartType];
+  const widthPercent = `${(isNaN(scale) || scale <= 0 ? 1 : scale) * 100}%`;
 
-  if (!ChartComponent) {
-    return (
-      <div className="my-8">
-        <p className="text-red-500">
-          Unsupported chart type: {block.chartType}
-        </p>
-      </div>
-    );
-  }
+  /* ---------- shared plugin & color options ---------- */
+  const baseOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: { color: styles.chartsStyles.legendLabelColor },
+      },
+      tooltip: {
+        backgroundColor: styles.chartsStyles.tooltipBg,
+        titleColor: styles.chartsStyles.tooltipTitleColor,
+        bodyColor: styles.chartsStyles.tooltipBodyColor,
+        borderColor: styles.chartsStyles.tooltipBorderColor,
+        borderWidth: 1,
+      },
+    },
+  } as const;
 
-  const effectiveAspectRatio = 2 / chartScale;
+  /* ---------- axis helpers ---------- */
+  const makeCartesianAxis = () => ({
+    grid: { color: styles.chartsStyles.gridLineColor, borderDash: [] },
+    ticks: { color: styles.chartsStyles.axisTickColor },
+  });
 
+  const makeRadialAxis = () => ({
+    grid: { color: styles.chartsStyles.gridLineColor, borderDash: [] },
+    angleLines: { color: styles.chartsStyles.gridLineColor, borderDash: [] },
+    pointLabels: { color: styles.chartsStyles.axisTickColor },
+  });
+
+  /* ---------- per-chart options ---------- */
+  const options =
+    chartType === "radar" || chartType === "polarArea"
+      ? { ...baseOptions, scales: { r: makeRadialAxis() } }
+      : chartType === "bubble" || chartType === "scatter"
+        ? {
+            ...baseOptions,
+            scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
+          }
+        : {
+            ...baseOptions,
+            scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
+          };
+
+  /* ---------- render ---------- */
+  const ChartComponent = chartMap[chartType];
   return (
-    <div className="my-8 text-center">
-      {title && <h3 className={styles.textStyles.chartTitle}>{title}</h3>}
-      <ChartComponent
-        data={{ labels, datasets }}
-        options={{
-          responsive: true,
-          maintainAspectRatio: true, // Keep this true for aspect ratio to work with responsive
-          aspectRatio: effectiveAspectRatio, // Apply the scaling here
-          plugins: {
-            legend: {
-              labels: {
-                color: styles.chartsStyles.legendLabelColor,
-              },
-              position: "bottom",
-            },
-            tooltip: {
-              backgroundColor: styles.chartsStyles.tooltipBg,
-              titleColor: styles.chartsStyles.tooltipTitleColor,
-              bodyColor: styles.chartsStyles.tooltipBodyColor,
-              borderColor: styles.chartsStyles.tooltipBorderColor,
-              borderWidth: 1,
-            },
-          },
-          scales: {
-            x: {
-              ticks: { color: styles.chartsStyles.axisTickColor },
-              grid: { color: styles.chartsStyles.gridLineColor },
-            },
-            y: {
-              ticks: { color: styles.chartsStyles.axisTickColor },
-              grid: { color: styles.chartsStyles.gridLineColor },
-            },
-            r: {
-              grid: { color: styles.chartsStyles.gridLineColor, lineWidth: 1 },
-              angleLines: {
-                color: styles.chartsStyles.gridLineColor,
-                lineWidth: 1,
-              },
-              pointLabels: { color: styles.chartsStyles.axisTickColor },
-              ticks: {
-                color: styles.chartsStyles.axisTickColor,
-                backdropColor: "transparent", // no boxes behind numbers
-              },
-            },
-          },
-        }}
-      />
+    <div className="mb-6 text-center mx-auto" style={{ width: widthPercent }}>
+      <ChartComponent data={block.chartData} options={options} />
     </div>
   );
 };

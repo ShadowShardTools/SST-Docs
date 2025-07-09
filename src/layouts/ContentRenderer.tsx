@@ -59,8 +59,7 @@ const ContentRendererBase: React.FC<Props> = ({
     );
   }, [content]);
 
-  const currentPath =
-    location.hash.split("#")[1] || location.pathname.slice(1);
+  const currentPath = location.hash.split("#")[1] || location.pathname.slice(1);
 
   /* -------- breadcrumb (memoised) -------- */
   const breadcrumb = useMemo(() => {

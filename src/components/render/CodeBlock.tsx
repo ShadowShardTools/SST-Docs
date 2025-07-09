@@ -39,7 +39,9 @@ const CodeBlock: React.FC<{
 
   return (
     <div key={index} className="relative mb-6 overflow-hidden rounded-md">
-      <div className={`flex items-center justify-between px-3 py-1.5 ${styles.componentsStyles.codeHeader}`}>
+      <div
+        className={`flex items-center justify-between px-3 py-1.5 ${styles.componentsStyles.codeHeader}`}
+      >
         <span>{scriptName}</span>
         <button
           onClick={() => {

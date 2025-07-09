@@ -1,0 +1,25 @@
+{
+  "id": "media-examples-item",
+  "title": "Media",
+  "content": [
+    {
+        "type": "title-h2",
+        "content": "Audio Example"
+    },
+    {
+      "type": "audio",
+      "audioSrc": "/SST-Docs/data/v1.1/audio/AudioSample.mp3",
+      "audioMimeType": "audio/mpeg",
+      "audioCaption": "Ambient sample"
+    },
+    {
+        "type": "title-h2",
+        "content": "Youtube Video Example"
+    },
+    {
+      "type": "youtube",
+      "youtubeVideoId": "1bSEHTbrisQ",
+      "scale": "0.8"
+    }
+  ]
+}

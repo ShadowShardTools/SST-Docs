@@ -1,23 +1,35 @@
 import React from "react";
+import type { StyleTheme } from "../../siteConfig";
 
 interface ImageBlockProps {
+  styles: StyleTheme;
   imageSrc: string;
   imageAlt?: string;
+  scale?: number;
 }
 
-const ImageBlock: React.FC<ImageBlockProps> = ({ imageSrc, imageAlt }) => (
-  <div className="mb-6">
-    <img
-      src={imageSrc}
-      alt={imageAlt || "Image"}
-      className="max-w-full h-auto rounded-lg border border-gray-200"
-    />
-    {imageAlt && (
-      <p className="text-sm text-gray-500 mt-2 text-center italic">
-        {imageAlt}
-      </p>
-    )}
-  </div>
-);
+const ImageBlock: React.FC<ImageBlockProps> = ({
+  styles,
+  imageSrc,
+  imageAlt,
+  scale = 1.0,
+}) => {
+  const isValidScale = !isNaN(scale) && scale > 0;
+  const widthPercent = `${(isValidScale ? scale : 1) * 100}%`;
+
+  return (
+    <div className="mb-6 text-center">
+      <img
+        src={imageSrc}
+        alt={imageAlt || "Image"}
+        style={{ width: widthPercent }}
+        className={`inline-block h-auto ${styles.componentsStyles.imageBorder}`}
+      />
+      {imageAlt && (
+        <p className={styles.textStyles.alternativeText}>{imageAlt}</p>
+      )}
+    </div>
+  );
+};
 
 export default ImageBlock;

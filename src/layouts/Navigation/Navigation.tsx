@@ -63,7 +63,9 @@ const Navigation: React.FC<NavigationProps> = ({
   // scroll focused row into view
   useEffect(() => {
     if (!currentKey) return;
-    const el = document.querySelector<HTMLElement>(`[data-key="${currentKey}"]`);
+    const el = document.querySelector<HTMLElement>(
+      `[data-key="${currentKey}"]`,
+    );
     el?.scrollIntoView({ block: "nearest" });
   }, [currentKey]);
 
@@ -171,7 +173,11 @@ const Navigation: React.FC<NavigationProps> = ({
       <SidebarNavigationHints styles={styles} className="mb-4" />
 
       {/* Navigation tree */}
-      <nav role="tree" aria-label="Documentation navigation" className="space-y-4">
+      <nav
+        role="tree"
+        aria-label="Documentation navigation"
+        className="space-y-4"
+      >
         {/* Stand-alone docs */}
         {standaloneDocs.length > 0 && (
           <section>

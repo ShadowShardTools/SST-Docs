@@ -19,6 +19,7 @@ export interface ContentBlock {
     | "graph";
 
   content: string;
+  scale?: string;
 
   listItems?: string[];
 
@@ -36,7 +37,7 @@ export interface ContentBlock {
   imageAfterAlt?: string;
 
   // Carousel
-  carouselImages?: { src: string; alt?: string }[];
+  carouselImages?: { imageSrc: string; imageAlt?: string }[];
 
   // Audio
   audioSrc?: string;
@@ -62,7 +63,6 @@ export interface ContentBlock {
     }[];
   };
   chartType?: string;
-  chartScale?: string;
 
   // Desmos
   graphExpressions?: string[];

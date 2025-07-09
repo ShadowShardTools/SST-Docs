@@ -6,8 +6,11 @@ const QuoteBlock: React.FC<{
   styles: StyleTheme;
   content: string;
 }> = ({ index, styles, content }) => (
-  <blockquote key={index} className={`pl-4 py-2 ${styles.componentsStyles.quote}`}>
-    <p className={`${styles.textStyles.quote}`}>{content}</p>
+  <blockquote
+    key={index}
+    className={`pl-4 py-2 ${styles.componentsStyles.quote}`}
+  >
+    <p className={styles.textStyles.quote}>{content}</p>
   </blockquote>
 );
 

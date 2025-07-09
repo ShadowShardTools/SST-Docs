@@ -1,0 +1,65 @@
+{
+  "id": "common-examples-item",
+  "title": "Common",
+  "content": [
+        {
+            "type": "title-h1",
+            "content": "Title-H1 Example"
+        },
+        {
+            "type": "title-h2",
+            "content": "Title-H2 Example"
+        },
+        {
+            "type": "title-h3",
+            "content": "Title-H3 Example"
+        },
+        {
+            "type": "description",
+            "content": "Description Example"
+        },
+        {
+            "type": "list",
+            "listItems": [
+                "1 List Example",
+                "2 List Example",
+                "3 List Example",
+                "4 List Example"
+            ]
+        },
+        {
+            "type": "quote",
+            "content": "Quote Example"
+        },
+        {
+            "type": "table",
+            "tableHeaders": [
+                "Table Header Example 1",
+                "Table Header Example 2",
+                "Table Header Example 3"
+            ],
+            "tableRows": [
+                [
+                    "Table Row Example",
+                    "Table Row Example",
+                    "Table Row Example"
+                ],
+                [
+                    "Table Row Example",
+                    "Table Row Example",
+                    "Table Row Example"
+                ],
+                [
+                    "Table Row Example",
+                    "Table Row Example",
+                    "Table Row Example"
+                ]
+            ]
+        }
+  ],
+  "tags": [
+      "examples",
+      "common",
+      "text"
+  ]
+}

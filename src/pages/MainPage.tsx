@@ -84,23 +84,23 @@ const MainPage: React.FC = () => {
     return !query
       ? []
       : items.filter((item) => {
-        const titleMatch = item.title.toLowerCase().includes(query);
-        const blockMatch = item.content?.some((block) => {
-          const content = block.content?.toLowerCase?.();
-          if (
-            ["description", "quote"].includes(block.type) ||
-            block.type.startsWith("title")
-          )
-            return content?.includes(query);
-          if (block.type === "list")
-            return block.listItems?.some((i) =>
-              i.toLowerCase().includes(query),
-            );
-          if (block.type === "code") return content?.includes(query);
-          return false;
+          const titleMatch = item.title.toLowerCase().includes(query);
+          const blockMatch = item.content?.some((block) => {
+            const content = block.content?.toLowerCase?.();
+            if (
+              ["description", "quote"].includes(block.type) ||
+              block.type.startsWith("title")
+            )
+              return content?.includes(query);
+            if (block.type === "list")
+              return block.listItems?.some((i) =>
+                i.toLowerCase().includes(query),
+              );
+            if (block.type === "code") return content?.includes(query);
+            return false;
+          });
+          return titleMatch || blockMatch;
         });
-        return titleMatch || blockMatch;
-      });
   }, [items, searchTerm]);
 
   if (error.versions) {

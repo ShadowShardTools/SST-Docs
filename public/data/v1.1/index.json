@@ -1,13 +1,16 @@
 {
   "categories": [
-    "api-reference",
-    "customization",
-    "guides"
+    "examples-category",
+    "getting-started-category"
   ],
   "items": [
-    "advanced-usage",
-    "getting-started",
-    "quick-reference",
-    "themes"
+    "charts-examples-item",
+    "common-examples-item",
+    "configuration-item",
+    "images-examples-item",
+    "installation-item",
+    "introduction-item",
+    "math-examples-item",
+    "media-examples-item"
   ]
 }

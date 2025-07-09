@@ -37,12 +37,17 @@ async function generateIndex(versionDir) {
   const itemIds = await listJsonIds(itemsDir);
 
   const validItemIds = [];
-  for (const id of itemIds) {
+  for (const name of itemIds) {
     try {
-      await readFile(path.join(itemsDir, `${id}.json`), 'utf8');
-      validItemIds.push(id);
+      const json = await readFile(path.join(itemsDir, `${name}.json`), 'utf8');
+      const { id } = JSON.parse(json);
+      if (typeof id === 'string') {
+        validItemIds.push(id);
+      } else {
+        warn(`Missing "id" in ${name}.json`);
+      }
     } catch {
-      warn(`Bad JSON: ${id}.json in ${path.basename(versionDir)}`);
+      warn(`Bad JSON: ${name}.json in ${path.basename(versionDir)}`);
     }
   }
 
