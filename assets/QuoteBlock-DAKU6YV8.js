@@ -1,1 +1,0 @@
-import{j as t}from"./index-YtAVS9Or.js";const c=({index:o,styles:e,content:s})=>t.jsx("blockquote",{className:`pl-4 py-2 ${e.componentsStyles.quote}`,children:t.jsx("p",{className:`${e.textStyles.quote}`,children:s})},o);export{c as default};

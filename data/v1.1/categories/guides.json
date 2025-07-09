@@ -1,7 +1,0 @@
-{
-  "id": "guides",
-  "title": "Guides",
-  "description": "Step-by-step tutorials and guides",
-  "docs": ["advanced-usage"],
-  "children": ["customization"]
-}

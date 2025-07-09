@@ -1,0 +1,26 @@
+{
+  "id": "math-examples-item",
+  "title": "Math",
+  "content": [
+    {
+        "type": "title-h2",
+        "content": "Katex Math Example"
+    },
+    {
+      "type": "math",
+      "content": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}"
+    },
+    {
+        "type": "title-h2",
+        "content": "Desmos Graphs Example"
+    },
+    {
+      "type": "graph",
+      "graphExpressions": [
+        "y=\\sin(x)",
+        "y=\\cos(x)",
+        "y=\\sin(x)+\\cos(x)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "id": "charts-examples-item",
+  "title": "Charts",
+  "content": [
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "chartData": {
+        "title": "Bar Chart Example",
+        "labels": [
+          "Red",
+          "Blue",
+          "Yellow",
+          "Green"
+        ],
+        "datasets": [
+          {
+            "label": "Votes",
+            "data": [
+              12,
+              19,
+              3,
+              5
+            ],
+            "backgroundColor": "#3b82f6",
+            "borderColor": "#1d4ed8"
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "line",
+      "chartData": {
+        "title": "Line Chart Example",
+        "labels": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "datasets": [
+          {
+            "label": "Revenue ($k)",
+            "data": [
+              15,
+              25,
+              20,
+              30
+            ],
+            "borderColor": "#3b82f6",
+            "fill": false
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "radar",
+      "chartData": {
+        "title": "Radar Chart Example",
+        "labels": [
+          "Speed",
+          "Reliability",
+          "Comfort",
+          "Safety",
+          "Efficiency"
+        ],
+        "datasets": [
+          {
+            "label": "Car A",
+            "data": [
+              65,
+              59,
+              90,
+              81,
+              56
+            ],
+            "backgroundColor": "rgba(59, 130, 246, 0.2)",
+            "borderColor": "#3b82f6"
+          },
+          {
+            "label": "Car B",
+            "data": [
+              28,
+              48,
+              40,
+              19,
+              96
+            ],
+            "backgroundColor": "rgba(239, 68, 68, 0.2)",
+            "borderColor": "#ef4444"
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "doughnut",
+      "chartData": {
+        "title": "Doughnut Chart Example",
+        "labels": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ],
+        "datasets": [
+          {
+            "label": "Browser Share",
+            "data": [
+              55,
+              25,
+              20
+            ],
+            "backgroundColor": [
+              "#3b82f6",
+              "#ef4444",
+              "#facc15"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "polarArea",
+      "chartData": {
+        "title": "Polar Area Chart Example",
+        "labels": [
+          "North",
+          "East",
+          "South",
+          "West"
+        ],
+        "datasets": [
+          {
+            "data": [
+              11,
+              16,
+              7,
+              12
+            ],
+            "backgroundColor": [
+              "#3b82f6",
+              "#22c55e",
+              "#f97316",
+              "#a855f7"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "bubble",
+      "chartData": {
+        "title": "Bubble Chart Example",
+        "labels": [
+          "Data"
+        ],
+        "datasets": [
+          {
+            "label": "Bubbles",
+            "data": [
+              {
+                "x": 5,
+                "y": 7,
+                "r": 10
+              },
+              {
+                "x": 3,
+                "y": 14,
+                "r": 15
+              },
+              {
+                "x": 8,
+                "y": 4,
+                "r": 8
+              }
+            ],
+            "backgroundColor": "#3b82f6"
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "pie",
+      "chartData": {
+        "title": "Pie Chart Example",
+        "labels": [
+          "Apple",
+          "Samsung",
+          "Huawei"
+        ],
+        "datasets": [
+          {
+            "data": [
+              40,
+              30,
+              30
+            ],
+            "backgroundColor": [
+              "#ef4444",
+              "#22c55e",
+              "#3b82f6"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "scatter",
+      "chartData": {
+        "title": "Scatter Chart Example",
+        "labels": [
+          "Data"
+        ],
+        "datasets": [
+          {
+            "label": "Measurements",
+            "data": [
+              {
+                "x": 4,
+                "y": 5
+              },
+              {
+                "x": 8,
+                "y": 3
+              },
+              {
+                "x": 2,
+                "y": 7
+              },
+              {
+                "x": 6,
+                "y": 9
+              }
+            ],
+            "borderColor": "#ef4444",
+            "backgroundColor": "rgba(239, 68, 68, 0.4)"
+          }
+        ]
+      }
+    }
+  ]
+}
