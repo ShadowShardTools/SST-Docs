@@ -5,17 +5,13 @@ import {
 } from "../generated/blockImports.generated";
 import type { ContentBlock } from "../types/entities/ContentBlock";
 import type { StyleTheme } from "../siteConfig";
+import LoadingSpinner from "../components/dialog/LoadingSpinner";
 
 interface ContentBlockRendererProps {
   styles: StyleTheme;
   content: ContentBlock[];
   currentPath: string;
 }
-
-/** Simple skeleton shown while a lazily‑loaded block is still downloading. */
-const LoadingSkeleton: React.FC = () => (
-  <div className="my-4 h-6 w-full animate-pulse rounded bg-gray-200" />
-);
 
 const ContentBlockRenderer: React.FC<ContentBlockRendererProps> = memo(
   ({ styles, content, currentPath }) => {
@@ -27,7 +23,7 @@ const ContentBlockRenderer: React.FC<ContentBlockRendererProps> = memo(
             blockImports["unknown"]) as React.ComponentType<any>;
 
           return (
-            <Suspense key={index} fallback={<LoadingSkeleton />}>
+            <Suspense key={index} fallback={<LoadingSpinner />}>
               <LazyBlock
                 index={index}
                 styles={styles}

@@ -99,12 +99,12 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
 
       {/* Custom controls */}
       <div
-        className={`flex items-center gap-3 rounded-md px-4 py-3 ${styles.componentsStyles.audioContainer}`}
+        className={`flex items-center gap-3 rounded-md px-4 py-3 ${styles.components.audioContainer}`}
       >
         {/* Play / Pause */}
         <button
           onClick={togglePlay}
-          className={`p-2 rounded-full cursor-pointer ${styles.componentsStyles.audioPlayButton}`}
+          className={`p-2 rounded-full cursor-pointer ${styles.components.audioPlayButton}`}
         >
           {isPlaying ? (
             <Pause className="w-5 h-5" />
@@ -114,9 +114,7 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
         </button>
 
         {/* Time – current */}
-        <span
-          className={`w-12 select-none ${styles.componentsStyles.audioTime}`}
-        >
+        <span className={`w-12 select-none ${styles.components.audioTime}`}>
           {formatTime(current)}
         </span>
 
@@ -128,25 +126,23 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
           step={0.1}
           value={current}
           onChange={handleSeek}
-          className={`flex-1 h-1 rounded-lg appearance-none cursor-pointer ${styles.componentsStyles.audioSlider}
+          className={`flex-1 h-1 rounded-lg appearance-none cursor-pointer ${styles.components.audioSlider}
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3
             [&::-webkit-slider-thumb]:rounded-full
             [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3
             [&::-moz-range-thumb]:rounded-full 
-            ${styles.componentsStyles.audioSliderThumb}`}
+            ${styles.components.audioSliderThumb}`}
         />
 
         {/* Time – duration */}
-        <span
-          className={`w-12 select-none ${styles.componentsStyles.audioTime}`}
-        >
+        <span className={`w-12 select-none ${styles.components.audioTime}`}>
           {formatTime(duration)}
         </span>
       </div>
 
       {audioCaption && (
-        <p className={styles.textStyles.alternativeText}>{audioCaption}</p>
+        <p className={styles.text.alternativeText}>{audioCaption}</p>
       )}
     </div>
   );

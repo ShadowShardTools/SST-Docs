@@ -4,7 +4,9 @@ import { lazy } from 'react';
 export const blockImports = {
   'audio': lazy(() => import('../components/render/AudioBlock')),
   'chart': lazy(() => import('../components/render/ChartBlock')),
+  'code': lazy(() => import('../components/render/CodeBlock')),
   'description': lazy(() => import('../components/render/DescriptionBlock')),
+  'divider': lazy(() => import('../components/render/DividerBlock')),
   'graph': lazy(() => import('../components/render/GraphBlock')),
   'image': lazy(() => import('../components/render/ImageBlock')),
   'image-carousel': lazy(() => import('../components/render/ImageCarouselBlock')),
@@ -12,11 +14,9 @@ export const blockImports = {
   'image-compare-slider': lazy(() => import('../components/render/ImageCompareSliderBlock')),
   'list': lazy(() => import('../components/render/ListBlock')),
   'math': lazy(() => import('../components/render/MathBlock')),
-  'quote': lazy(() => import('../components/render/QuoteBlock')),
+  'message-box': lazy(() => import('../components/render/MessageBoxBlock')),
   'table': lazy(() => import('../components/render/TableBlock')),
-  'title-h1': lazy(() => import('../components/render/TitleH1Block')),
-  'title-h2': lazy(() => import('../components/render/TitleH2Block')),
-  'title-h3': lazy(() => import('../components/render/TitleH3Block')),
+  'title': lazy(() => import('../components/render/TitleBlock')),
   'youtube': lazy(() => import('../components/render/YoutubeBlock')),
   'unknown': lazy(() => import('../components/render/UnknownBlock')),
 } as const;

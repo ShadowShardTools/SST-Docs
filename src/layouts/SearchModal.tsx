@@ -84,12 +84,12 @@ const SearchModal: React.FC<SearchModalProps> = ({
       onClick={onClose}
     >
       <div
-        className={`w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border ${styles.componentsStyles.searchModalBorders}`}
+        className={`w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border ${styles.components.searchModalBorders}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* search input */}
         <div
-          className={`flex items-center border-b px-4 py-2 ${styles.componentsStyles.searchModalHeader} ${styles.componentsStyles.searchModalBorders}`}
+          className={`flex items-center border-b px-4 py-2 ${styles.components.searchModalHeader} ${styles.components.searchModalBorders}`}
         >
           <input
             ref={inputRef}
@@ -106,7 +106,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
 
         {/* results */}
         <div
-          className={`max-h-96 overflow-y-auto ${styles.componentsStyles.searchModalResultBackground}`}
+          className={`max-h-96 overflow-y-auto ${styles.components.searchModalResultBackground}`}
         >
           {searchTerm ? (
             results.length === 0 ? (
@@ -146,11 +146,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
                         onSelect(item);
                         onClose();
                       }}
-                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? styles.componentsStyles.searchModalSelectedItem : styles.componentsStyles.searchModalItem}`}
+                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? styles.components.searchModalSelectedItem : styles.components.searchModalItem}`}
                     >
                       {/* title */}
                       <div
-                        className={`${styles.textStyles.searchModalItemHeaderText}`}
+                        className={`${styles.text.searchModalItemHeaderText}`}
                         dangerouslySetInnerHTML={{
                           __html: highlight(item.title, searchTerm),
                         }}
@@ -158,7 +158,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
                       {/* snippet */}
                       {snippet && (
                         <p
-                          className={`${styles.textStyles.searchModalItemFoundSectionText}`}
+                          className={`${styles.text.searchModalItemFoundSectionText}`}
                           dangerouslySetInnerHTML={{
                             __html: highlight(snippet, searchTerm),
                           }}
@@ -166,9 +166,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
                       )}
                       {/* tags */}
                       {item.tags?.length && (
-                        <div
-                          className={`${styles.textStyles.searchModalItemTags}`}
-                        >
+                        <div className={`${styles.text.searchModalItemTags}`}>
                           {item.tags.join(", ")}
                         </div>
                       )}
@@ -186,38 +184,38 @@ const SearchModal: React.FC<SearchModalProps> = ({
 
         {/* footer */}
         <div
-          className={`border-t px-4 py-2 flex justify-between items-center ${styles.componentsStyles.searchModalFooter} ${styles.componentsStyles.searchModalBorders}`}
+          className={`border-t px-4 py-2 flex justify-between items-center ${styles.components.searchModalFooter} ${styles.components.searchModalBorders}`}
         >
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+                className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
               >
                 ↑
               </kbd>
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+                className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
               >
                 ↓
               </kbd>
-              <span className={`${styles.textStyles.hints}`}>to navigate</span>
+              <span className={`${styles.text.hints}`}>to navigate</span>
             </div>
             <div className="flex items-center gap-1">
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+                className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
               >
                 Enter
               </kbd>
-              <span className={`${styles.textStyles.hints}`}>to select</span>
+              <span className={`${styles.text.hints}`}>to select</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <kbd
-              className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+              className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
             >
               Esc
             </kbd>
-            <span className={`${styles.textStyles.hints}`}>to close</span>
+            <span className={`${styles.text.hints}`}>to close</span>
           </div>
         </div>
       </div>

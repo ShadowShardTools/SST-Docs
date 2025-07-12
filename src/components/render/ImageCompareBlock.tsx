@@ -30,10 +30,10 @@ const ImageCompareBlock: React.FC<ImageCompareBlockProps> = ({
         <img
           src={imageBeforeSrc}
           alt={imageBeforeAlt || "Before"}
-          className={`max-w-full h-auto ${styles.componentsStyles.imageBorder}`}
+          className={`max-w-full h-auto ${styles.components.imageBorder}`}
         />
         {imageBeforeAlt && (
-          <p className={styles.textStyles.alternativeText}>{imageBeforeAlt}</p>
+          <p className={styles.text.alternativeText}>{imageBeforeAlt}</p>
         )}
       </div>
 
@@ -41,10 +41,10 @@ const ImageCompareBlock: React.FC<ImageCompareBlockProps> = ({
         <img
           src={imageAfterSrc}
           alt={imageAfterAlt || "After"}
-          className={`max-w-full h-auto ${styles.componentsStyles.imageBorder}`}
+          className={`max-w-full h-auto ${styles.components.imageBorder}`}
         />
         {imageAfterAlt && (
-          <p className={styles.textStyles.alternativeText}>{imageAfterAlt}</p>
+          <p className={styles.text.alternativeText}>{imageAfterAlt}</p>
         )}
       </div>
     </div>

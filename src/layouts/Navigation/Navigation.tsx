@@ -160,10 +160,10 @@ const Navigation: React.FC<NavigationProps> = ({
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Enter here to filter…"
-          className={`${styles.componentsStyles.input} w-full pl-8 pr-2 py-1.5 border`}
+          className={`${styles.components.input} w-full pl-8 pr-2 py-1.5 border`}
         />
         <kbd
-          className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints} absolute right-2.5 top-1/2 -translate-y-1/2`}
+          className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints} absolute right-2.5 top-1/2 -translate-y-1/2`}
         >
           F
         </kbd>

@@ -23,11 +23,9 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
         src={imageSrc}
         alt={imageAlt || "Image"}
         style={{ width: widthPercent }}
-        className={`inline-block h-auto ${styles.componentsStyles.imageBorder}`}
+        className={`inline-block h-auto ${styles.components.imageBorder}`}
       />
-      {imageAlt && (
-        <p className={styles.textStyles.alternativeText}>{imageAlt}</p>
-      )}
+      {imageAlt && <p className={styles.text.alternativeText}>{imageAlt}</p>}
     </div>
   );
 };

@@ -9,11 +9,11 @@ export const rowClasses = (
   styles: StyleTheme,
 ): string =>
   [
-    `flex items-center gap-2 px-2 py-1 cursor-pointer ${styles.componentsStyles.navigationRowBase}`,
+    `flex items-center gap-2 px-2 py-1 cursor-pointer ${styles.components.navigationRowBase}`,
     depth ? "text-sm" : "text-base",
-    active ? styles.componentsStyles.navigationRowActive : "",
-    focused && !active ? styles.componentsStyles.navigationRowFocused : "",
-    !active ? styles.componentsStyles.navigationRowHover : "",
+    active ? styles.components.navigationRowActive : "",
+    focused && !active ? styles.components.navigationRowFocused : "",
+    !active ? styles.components.navigationRowHover : "",
   ].join(" ");
 
 export const testString = (s: string | undefined, q: string) =>

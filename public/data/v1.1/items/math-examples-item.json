@@ -3,16 +3,20 @@
   "title": "Math",
   "content": [
     {
-        "type": "title-h2",
-        "content": "Katex Math Example"
+      "type": "title",
+      "content": "Katex Math Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
     },
     {
       "type": "math",
       "content": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}"
     },
     {
-        "type": "title-h2",
-        "content": "Desmos Graphs Example"
+      "type": "title",
+      "content": "Desmos Graphs Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
     },
     {
       "type": "graph",

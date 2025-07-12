@@ -1,8 +1,8 @@
 export type StyleTheme = {
-  textStyles: Record<string, string>;
-  componentsStyles: Record<string, string>;
-  sectionStyles: Record<string, string>;
-  chartsStyles: Record<string, string>;
+  text: Record<string, string>;
+  components: Record<string, string>;
+  sections: Record<string, string>;
+  charts: Record<string, string>;
 };
 
 export type SiteConfig = {
@@ -23,17 +23,15 @@ export const siteConfig: SiteConfig = {
   },
   themes: {
     light: {
-      textStyles: {
+      text: {
         logoText: "text-xl font-semibold text-gray-900",
-        h1: "text-4xl font-bold text-stone-600 mb-3 mt-8 first:mt-0",
-        h2: "text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0",
-        h3: "text-xl font-medium text-gray-700 mb-3 mt-6 first:mt-0",
+        titleLevel1: "text-4xl font-bold text-stone-600 mb-3 mt-8 first:mt-0",
+        titleLevel2:
+          "text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0",
+        titleLevel3: "text-xl font-medium text-gray-700 mb-3 mt-6 first:mt-0",
         general: "text-base text-gray-700 mb-4 leading-relaxed",
         alternativeText: "text-sm text-gray-400 mt-2 text-center italic",
-        list: "list-disc list-inside text-gray-700 mb-4 space-y-1",
-        quote: "text-gray-700 italic",
-        tableHeadersText: "font-semibold text-white text-lg",
-        tableRowsText: "text-gray-700",
+        list: "list-inside text-gray-700 mb-4 space-y-1",
         code: "text-sm",
         math: "text-gray-800 text-lg",
         chartTitle: "text-lg text-gray-900",
@@ -49,7 +47,7 @@ export const siteConfig: SiteConfig = {
           "text-xs text-gray-500 mt-1 line-clamp-2",
         searchModalItemTags: "text-[11px] text-gray-400 mt-0.5 italic truncate",
       },
-      componentsStyles: {
+      components: {
         input:
           "text-sm text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
 
@@ -57,6 +55,10 @@ export const siteConfig: SiteConfig = {
           "font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
         buttonSmall:
           "text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+        buttonTabSmall:
+          "text-xs font-semibold text-gray-300 bg-stone-700 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+        buttonTabSmallActive:
+          "text-xs font-semibold text-gray-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
 
         dropdown: "bg-white border border-gray-300 rounded-md shadow-lg",
         dropdownItem:
@@ -72,8 +74,11 @@ export const siteConfig: SiteConfig = {
         keyHints:
           "text-xs text-gray-500 border border-gray-300 rounded bg-white",
         codeHeader: "bg-stone-700/80 text-white border-b",
+
+        tableCorner: "bg-stone-900/80 font-bold text-white text-lg",
+        tableHeaders: "bg-stone-700/80 font-semibold text-white text-lg",
+        tableRows: "bg-stone-50 text-gray-700",
         tableBorder: "border-stone-400",
-        quote: "border-l-4 border-stone-500 mb-4 bg-stone-300",
 
         searchModalHeader: "bg-white",
         searchModalResultBackground: "bg-stone-100",
@@ -86,13 +91,22 @@ export const siteConfig: SiteConfig = {
         imageCompareSlider: "oklch(92.2% 0 0)",
 
         audioContainer: "bg-gray-300",
-        audioPlayButton: "bg-stone-700 hover:bg-stone-600 text-white",
+        audioPlayButton:
+          "bg-stone-700 hover:bg-stone-600 text-white transition-colors",
         audioTime: "text-gray-700 text-xs tabular-nums text-right",
         audioSlider: "bg-gray-700",
         audioSliderThumb:
           "[&::-webkit-slider-thumb]:bg-stone-600 [&::-moz-range-thumb]:bg-stone-600",
+
+        messageInfo: "bg-blue-100 text-blue-800 border-blue-300",
+        messageWarning: "bg-yellow-100 text-yellow-800 border-yellow-300",
+        messageError: "bg-red-100 text-red-800 border-red-300",
+        messageSuccess: "bg-green-100 text-green-800 border-green-300",
+        messageNeutral: "bg-stone-100 text-gray-700 border-gray-300",
+        messageQuote:
+          "bg-stone-300 border-l-4 border-stone-500 text-gray-700 italic",
       },
-      sectionStyles: {
+      sections: {
         siteBackground: "bg-stone-400",
         siteBorders: "border-x border-stone-600",
         headerBackground: "bg-stone-50 shadow-sm border-b border-stone-400",
@@ -100,10 +114,10 @@ export const siteConfig: SiteConfig = {
           "bg-stone-50 border-b border-stone-400 shadow-md",
         navigationBackground: "bg-stone-50 border-r border-stone-400",
         contentBackground: "bg-gray-100",
-        tableHeadersBackground: "bg-stone-700/80",
-        tableRowsBackground: "bg-stone-50",
+
+        crossTableCornerCellBackground: "bg-stone-700",
       },
-      chartsStyles: {
+      charts: {
         legendLabelColor: "#1f2937", // text-gray-800
         tooltipBg: "#f9fafb", // gray-50
         tooltipTitleColor: "#111827", // gray-900
@@ -114,17 +128,15 @@ export const siteConfig: SiteConfig = {
       },
     },
     dark: {
-      textStyles: {
+      text: {
         logoText: "text-xl font-semibold text-gray-50",
-        h1: "text-4xl font-bold text-indigo-400 mb-3 mt-8 first:mt-0",
-        h2: "text-2xl font-semibold text-gray-100 mb-4 mt-8 first:mt-0",
-        h3: "text-xl font-medium text-gray-200 mb-3 mt-6 first:mt-0",
+        titleLevel1: "text-4xl font-bold text-indigo-400 mb-3 mt-8 first:mt-0",
+        titleLevel2:
+          "text-2xl font-semibold text-gray-100 mb-4 mt-8 first:mt-0",
+        titleLevel3: "text-xl font-medium text-gray-200 mb-3 mt-6 first:mt-0",
         general: "text-base text-gray-300 mb-4 leading-relaxed",
         alternativeText: "text-sm text-gray-400 mt-2 text-center italic",
-        list: "list-disc list-inside text-gray-300 mb-4 space-y-1",
-        quote: "text-white italic",
-        tableHeadersText: "font-semibold text-gray-200 text-lg",
-        tableRowsText: "text-gray-200",
+        list: "list-inside text-gray-300 mb-4 space-y-1",
         code: "text-sm",
         math: "text-gray-200 text-lg",
         chartTitle: "text-lg text-white",
@@ -140,14 +152,18 @@ export const siteConfig: SiteConfig = {
           "text-xs text-gray-300 mt-1 line-clamp-2",
         searchModalItemTags: "text-[11px] text-gray-500 mt-0.5 italic truncate",
       },
-      componentsStyles: {
+      components: {
         input:
           "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
 
         button:
           "font-bold text-gray-100 bg-indigo-900/50 border border-indigo-800 rounded-md transition-colors hover:bg-indigo-700/70",
         buttonSmall:
-          "text-xs font-semibold text-gray-100 bg-indigo-800 border border-indigo-600 rounded-md transition-colors hover:bg-indigo-700/70",
+          "text-xs font-semibold text-gray-100 bg-indigo-900 border border-indigo-600 rounded-md transition-colors hover:bg-indigo-700/70",
+        buttonTabSmall:
+          "text-xs font-semibold text-indigo-300 bg-indigo-950 border border-indigo-600 rounded-md transition-colors hover:bg-indigo-700/70",
+        buttonTabSmallActive:
+          "text-xs font-semibold text-gray-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
 
         dropdown: "bg-slate-800 border border-indigo-600 rounded-md shadow-lg",
         dropdownItem:
@@ -162,8 +178,11 @@ export const siteConfig: SiteConfig = {
 
         keyHints: "text-xs text-gray-400 border border-gray-600 rounded",
         codeHeader: "bg-indigo-900/80 text-white border-b",
+
+        tableCorner: "bg-indigo-900/50 font-bold text-gray-200 text-lg",
+        tableHeaders: "bg-indigo-900/80 font-semibold text-gray-200 text-lg",
+        tableRows: "bg-indigo-950/5 text-gray-200",
         tableBorder: "border-indigo-700",
-        quote: "border-l-4 border-white mb-4 bg-indigo-900/50",
 
         searchModalHeader: "bg-zinc-850 text-gray-400",
         searchModalResultBackground: "bg-zinc-900",
@@ -182,8 +201,16 @@ export const siteConfig: SiteConfig = {
         audioSlider: "bg-gray-300",
         audioSliderThumb:
           "[&::-webkit-slider-thumb]:bg-indigo-600 [&::-moz-range-thumb]:bg-indigo-600",
+
+        messageInfo: "bg-blue-900/40 text-blue-200 border-blue-400/60",
+        messageWarning: "bg-yellow-900/40 text-yellow-200 border-yellow-400/60",
+        messageError: "bg-red-900/40 text-red-200 border-red-400/60",
+        messageSuccess: "bg-green-900/40 text-green-200 border-green-400/60",
+        messageNeutral: "bg-indigo-300/20 text-gray-200 border-gray-500",
+        messageQuote:
+          "bg-indigo-900/50 border-l-4 border-white text-white italic",
       },
-      sectionStyles: {
+      sections: {
         siteBackground: "bg-slate-950",
         siteBorders: "border-x border-gray-700",
         headerBackground: "bg-zinc-900 shadow-sm border-b border-gray-700",
@@ -191,10 +218,10 @@ export const siteConfig: SiteConfig = {
           "bg-zinc-900 border-b border-gray-200 shadow-md",
         navigationBackground: "bg-zinc-900 border-r border-gray-700",
         contentBackground: "bg-zinc-850",
-        tableHeadersBackground: "bg-indigo-900/80",
-        tableRowsBackground: "bg-indigo-950/5",
+
+        crossTableCornerCellBackground: "bg-indigo-950",
       },
-      chartsStyles: {
+      charts: {
         legendLabelColor: "#e5e7eb", // text-gray-200
         tooltipBg: "#1f2937", // gray-800
         tooltipTitleColor: "#facc15", // indigo-400

@@ -7,7 +7,7 @@ const DescriptionBlock: React.FC<{
   content: string;
 }> = ({ index, styles, content }) => {
   return (
-    <p key={index} className={`${styles.textStyles.general}`}>
+    <p key={index} className={`${styles.text.general}`}>
       {content}
     </p>
   );

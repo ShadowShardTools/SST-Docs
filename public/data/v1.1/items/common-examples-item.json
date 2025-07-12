@@ -1,18 +1,27 @@
 {
-  "id": "common-examples-item",
-  "title": "Common",
-  "content": [
+    "id": "common-examples-item",
+    "title": "Common",
+    "content": [
         {
-            "type": "title-h1",
-            "content": "Title-H1 Example"
+            "type": "title",
+            "content": "Title-H1 Example",
+            "titleLevel": "1",
+            "enableAnchorLink": true
         },
         {
-            "type": "title-h2",
-            "content": "Title-H2 Example"
+            "type": "title",
+            "content": "Title-H2 Example centered",
+            "titleLevel": "2",
+            "titleAlignment": "center",
+            "enableAnchorLink": true
         },
         {
-            "type": "title-h3",
-            "content": "Title-H3 Example"
+            "type": "title",
+            "content": "Title-H3 Example underlined with large spacing",
+            "titleLevel": "3",
+            "titleUnderline": true,
+            "titleSpacing": "large",
+            "enableAnchorLink": true
         },
         {
             "type": "description",
@@ -20,6 +29,17 @@
         },
         {
             "type": "list",
+            "listType": "ol",
+            "listItems": [
+                "List Example",
+                "List Example",
+                "List Example",
+                "List Example"
+            ]
+        },
+        {
+            "type": "list",
+            "listType": "ul",
             "listItems": [
                 "1 List Example",
                 "2 List Example",
@@ -28,38 +48,198 @@
             ]
         },
         {
-            "type": "quote",
-            "content": "Quote Example"
+            "type": "message-box",
+            "content": "Quote Example",
+            "messageType": "quote",
+            "messageSize": "medium"
+        },
+        {
+            "type": "message-box",
+            "content": "This is an info message with basic content",
+            "messageType": "info",
+            "messageSize": "medium",
+            "showIcon": true
+        },
+        {
+            "type": "message-box",
+            "content": "This is a warning message with important information",
+            "messageType": "warning",
+            "messageSize": "medium",
+            "showIcon": true
+        },
+        {
+            "type": "message-box",
+            "content": "This is an error message indicating something went wrong",
+            "messageType": "error",
+            "messageSize": "medium",
+            "showIcon": true
+        },
+        {
+            "type": "message-box",
+            "content": "This is a success message celebrating completion",
+            "messageType": "success",
+            "messageSize": "medium",
+            "showIcon": true
+        },
+        {
+            "type": "message-box",
+            "content": "This is a neutral message with general information",
+            "messageType": "neutral",
+            "messageSize": "medium",
+            "showIcon": true
+        },
+        {
+            "type": "message-box",
+            "content": "This is an large info message with basic content",
+            "messageType": "info",
+            "messageSize": "large",
+            "showIcon": true
+        },
+        {
+            "type": "message-box",
+            "content": "This is a success message celebrating completion without icon",
+            "messageType": "success",
+            "messageSize": "medium",
+            "showIcon": false
+        },
+        {
+            "type": "message-box",
+            "content": "Small message without icon",
+            "messageType": "neutral",
+            "messageSize": "small",
+            "showIcon": false
+        },
+        {
+            "type": "divider",
+            "content": "Line Divider",
+            "dividerType": "line",
+            "dividerSpacing": "large"
+        },
+        {
+            "type": "divider",
+            "content": "Dashed Divider",
+            "dividerType": "dashed",
+            "dividerSpacing": "large"
+        },
+        {
+            "type": "divider",
+            "content": "Dotted Divider",
+            "dividerType": "dotted",
+            "dividerSpacing": "large"
+        },
+        {
+            "type": "divider",
+            "content": "Double Divider",
+            "dividerType": "double",
+            "dividerSpacing": "large"
+        },
+        {
+            "type": "divider",
+            "content": "Thick Divider",
+            "dividerType": "thick",
+            "dividerSpacing": "large"
+        },
+        {
+            "type": "divider",
+            "content": "Gradient Divider",
+            "dividerType": "gradient",
+            "dividerSpacing": "large"
         },
         {
             "type": "table",
-            "tableHeaders": [
-                "Table Header Example 1",
-                "Table Header Example 2",
-                "Table Header Example 3"
-            ],
-            "tableRows": [
+            "tableType": "vertical",
+            "tableData": [
                 [
-                    "Table Row Example",
-                    "Table Row Example",
-                    "Table Row Example"
+                    { "content": "Table Header Example 1", "isHeader": true, "scope": "col" },
+                    { "content": "Table Header Example 2", "isHeader": true, "scope": "col" },
+                    { "content": "Table Header Example 3", "isHeader": true, "scope": "col" }
                 ],
                 [
-                    "Table Row Example",
-                    "Table Row Example",
-                    "Table Row Example"
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" }
                 ],
                 [
-                    "Table Row Example",
-                    "Table Row Example",
-                    "Table Row Example"
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" }
+                ],
+                [
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" }
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "tableType": "horizontal",
+            "tableData": [
+                [
+                    { "content": "Table Header Example 1", "isHeader": true, "scope": "row" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" }
+                ],
+                [
+                    { "content": "Table Header Example 2", "isHeader": true, "scope": "row" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" }
+                ],
+                [
+                    { "content": "Table Header Example 3", "isHeader": true, "scope": "row" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" },
+                    { "content": "Table Row Example" }
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "tableType": "matrix",
+            "tableData": [
+                [
+                    { "content": "Corner Cell Example", "isHeader": true, "scope": "col" },
+                    { "content": "1", "isHeader": true, "scope": "col" },
+                    { "content": "2", "isHeader": true, "scope": "col" },
+                    { "content": "3", "isHeader": true, "scope": "col" },
+                    { "content": "4", "isHeader": true, "scope": "col" }
+                ],
+                [
+                    { "content": "1", "isHeader": true, "scope": "row" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" }
+                ],
+                [
+                    { "content": "2", "isHeader": true, "scope": "row" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" }
+                ],
+                [
+                    { "content": "3", "isHeader": true, "scope": "row" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" }
+                ],
+                [
+                    { "content": "4", "isHeader": true, "scope": "row" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" },
+                    { "content": "Cross Table Example" }
                 ]
             ]
         }
-  ],
-  "tags": [
-      "examples",
-      "common",
-      "text"
-  ]
+    ],
+    "tags": [
+        "examples",
+        "common",
+        "text"
+    ]
 }

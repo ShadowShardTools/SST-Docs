@@ -82,13 +82,13 @@ const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
     responsive: true,
     plugins: {
       legend: {
-        labels: { color: styles.chartsStyles.legendLabelColor },
+        labels: { color: styles.charts.legendLabelColor },
       },
       tooltip: {
-        backgroundColor: styles.chartsStyles.tooltipBg,
-        titleColor: styles.chartsStyles.tooltipTitleColor,
-        bodyColor: styles.chartsStyles.tooltipBodyColor,
-        borderColor: styles.chartsStyles.tooltipBorderColor,
+        backgroundColor: styles.charts.tooltipBg,
+        titleColor: styles.charts.tooltipTitleColor,
+        bodyColor: styles.charts.tooltipBodyColor,
+        borderColor: styles.charts.tooltipBorderColor,
         borderWidth: 1,
       },
     },
@@ -96,14 +96,14 @@ const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
 
   /* ---------- axis helpers ---------- */
   const makeCartesianAxis = () => ({
-    grid: { color: styles.chartsStyles.gridLineColor, borderDash: [] },
-    ticks: { color: styles.chartsStyles.axisTickColor },
+    grid: { color: styles.charts.gridLineColor, borderDash: [] },
+    ticks: { color: styles.charts.axisTickColor },
   });
 
   const makeRadialAxis = () => ({
-    grid: { color: styles.chartsStyles.gridLineColor, borderDash: [] },
-    angleLines: { color: styles.chartsStyles.gridLineColor, borderDash: [] },
-    pointLabels: { color: styles.chartsStyles.axisTickColor },
+    grid: { color: styles.charts.gridLineColor, borderDash: [] },
+    angleLines: { color: styles.charts.gridLineColor, borderDash: [] },
+    pointLabels: { color: styles.charts.axisTickColor },
   });
 
   /* ---------- per-chart options ---------- */

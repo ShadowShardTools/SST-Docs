@@ -1,7 +1,7 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { useState } from "react";
 import type { StyleTheme } from "../../siteConfig";
 
-const CompareImage = lazy(() => import("react-compare-image"));
+import CompareImage from "react-compare-image";
 
 interface ImageCompareSliderBlockProps {
   styles: StyleTheme;
@@ -26,23 +26,21 @@ const ImageCompareSliderBlock: React.FC<ImageCompareSliderBlockProps> = ({
 
   return (
     <div className="mb-6 mx-auto" style={{ width: widthPercent }}>
-      <div className={`${styles.componentsStyles.imageBorder}`}>
-        <Suspense fallback={<div>Loading…</div>}>
-          <CompareImage
-            leftImage={imageBeforeSrc}
-            rightImage={imageAfterSrc}
-            sliderLineColor={styles.componentsStyles.imageCompareSlider}
-            onSliderPositionChange={(pos: number) =>
-              setPercentage(Math.round(pos * 100))
-            }
-            leftImageCss={{ maxWidth: "100%", height: "auto" }}
-            rightImageCss={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Suspense>
+      <div className={`${styles.components.imageBorder}`}>
+        <CompareImage
+          leftImage={imageBeforeSrc}
+          rightImage={imageAfterSrc}
+          sliderLineColor={styles.components.imageCompareSlider}
+          onSliderPositionChange={(pos: number) =>
+            setPercentage(Math.round(pos * 100))
+          }
+          leftImageCss={{ maxWidth: "100%", height: "auto" }}
+          rightImageCss={{ maxWidth: "100%", height: "auto" }}
+        />
       </div>
 
       {(imageBeforeAlt || imageAfterAlt) && (
-        <p className={styles.textStyles.alternativeText}>
+        <p className={styles.text.alternativeText}>
           {imageBeforeAlt && `${percentage}% ${imageBeforeAlt}`}
           {imageBeforeAlt && imageAfterAlt && " / "}
           {imageAfterAlt && `${100 - percentage}% ${imageAfterAlt}`}

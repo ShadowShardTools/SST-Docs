@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-colors ${styles.sectionStyles.headerBackground}`}
+      className={`sticky top-0 z-50 w-full transition-colors ${styles.sections.headerBackground}`}
     >
       <div className="flex items-center justify-between h-16 px-4">
         {/* Left side: mobile navigation toggle */}

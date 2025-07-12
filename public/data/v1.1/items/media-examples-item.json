@@ -3,8 +3,63 @@
   "title": "Media",
   "content": [
     {
-        "type": "title-h2",
-        "content": "Audio Example"
+      "type": "title",
+      "content": "Image Block Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
+    },
+    {
+      "type": "image",
+      "imageSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+      "imageAlt": "Image Example 1",
+      "scale": "0.5"
+    },
+    {
+      "type": "title",
+      "content": "Image Compare Examples",
+      "titleLevel": "2",
+      "enableAnchorLink": true
+    },
+    {
+      "type": "image-compare",
+      "imageBeforeSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+      "imageBeforeAlt": "Image Example 1",
+      "imageAfterSrc": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+      "imageAfterAlt": "Image Example 2"
+    },
+    {
+      "type": "image-compare-slider",
+      "imageBeforeSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+      "imageBeforeAlt": "Image Example 1",
+      "imageAfterSrc": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+      "imageAfterAlt": "Image Example 2",
+      "scale": "0.5"
+    },
+    {
+      "type": "title",
+      "content": "Image Carousel Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
+    },
+    {
+      "type": "image-carousel",
+      "carouselImages": [
+        {
+          "imageSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "imageAlt": "Image Example 1"
+        },
+        {
+          "imageSrc": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+          "imageAlt": "Image Example 2"
+        }
+      ],
+      "scale": "0.5"
+    },
+    {
+      "type": "title",
+      "content": "Audio Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
     },
     {
       "type": "audio",
@@ -13,8 +68,10 @@
       "audioCaption": "Ambient sample"
     },
     {
-        "type": "title-h2",
-        "content": "Youtube Video Example"
+      "type": "title",
+      "content": "Youtube Video Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
     },
     {
       "type": "youtube",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { StyleTheme } from "../../siteConfig";
 
 const MathBlock: React.FC<{
@@ -8,14 +8,19 @@ const MathBlock: React.FC<{
 }> = ({ index, styles, content }) => {
   const [html, setHtml] = useState<string>("");
 
+  const trimmedContent = useMemo(() => content.trim(), [content]);
+
   useEffect(() => {
     let isMounted = true;
 
     import("katex").then((katex) => {
       if (isMounted) {
         try {
-          const rendered = katex.renderToString(content, {
+          const rendered = katex.renderToString(trimmedContent, {
             throwOnError: false,
+            output: "html",
+            trust: false,
+            strict: "warn",
           });
           setHtml(rendered);
         } catch (e) {
@@ -29,10 +34,14 @@ const MathBlock: React.FC<{
     };
   }, [content]);
 
+  if (!trimmedContent) {
+    return null;
+  }
+
   return (
     <div key={index} className="mb-6 text-center">
       <div
-        className={`${styles.textStyles.math}`}
+        className={`${styles.text.math}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

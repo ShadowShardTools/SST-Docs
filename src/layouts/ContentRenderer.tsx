@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from "react";
+import React, { lazy, useEffect, useMemo } from "react";
 import type { ContentBlock } from "../types/entities/ContentBlock";
 import type { Category } from "../types/entities/Category";
 import ContentBlockRenderer from "./ContentBlockRenderer";
 import { type StyleTheme } from "../siteConfig";
+const TitleBlock = lazy(() => import("../components/render/TitleBlock"));
 
 interface Props {
   styles: StyleTheme;
@@ -69,8 +70,7 @@ const ContentRendererBase: React.FC<Props> = ({
 
   return (
     <>
-      <h1 className={styles.textStyles.h1}>{title}</h1>
-
+      <TitleBlock index={0} styles={styles} content={title} />
       {breadcrumb && (
         <div className="text-sm text-gray-400 mb-4">{breadcrumb}</div>
       )}

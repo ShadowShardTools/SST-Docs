@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import type { StyleTheme } from "../../siteConfig";
 
 const Splide = lazy(() =>
@@ -29,34 +29,30 @@ const ImageCarouselBlock: React.FC<ImageCarouselBlockProps> = ({
 
   return (
     <div className="mb-6 mx-auto" style={{ width: widthPercent }}>
-      <Suspense fallback={<div>Loading…</div>}>
-        <Splide
-          options={{
-            type: "loop",
-            gap: "1rem",
-            arrows: true,
-            pagination: false,
-          }}
-        >
-          {carouselImages.map((img, i) => (
-            <SplideSlide key={i}>
-              <div className="flex flex-col items-center">
-                <img
-                  src={img.imageSrc}
-                  alt={img.imageAlt || `Image ${i + 1}`}
-                  style={{ width: "100%" }}
-                  className={`h-auto ${styles.componentsStyles.imageBorder}`}
-                />
-                {img.imageAlt && (
-                  <p className={styles.textStyles.alternativeText}>
-                    {img.imageAlt}
-                  </p>
-                )}
-              </div>
-            </SplideSlide>
-          ))}
-        </Splide>
-      </Suspense>
+      <Splide
+        options={{
+          type: "loop",
+          gap: "1rem",
+          arrows: true,
+          pagination: false,
+        }}
+      >
+        {carouselImages.map((img, i) => (
+          <SplideSlide key={i}>
+            <div className="flex flex-col items-center">
+              <img
+                src={img.imageSrc}
+                alt={img.imageAlt || `Image ${i + 1}`}
+                style={{ width: "100%" }}
+                className={`h-auto ${styles.components.imageBorder}`}
+              />
+              {img.imageAlt && (
+                <p className={styles.text.alternativeText}>{img.imageAlt}</p>
+              )}
+            </div>
+          </SplideSlide>
+        ))}
+      </Splide>
     </div>
   );
 };

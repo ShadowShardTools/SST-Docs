@@ -15,7 +15,7 @@ const Logo = () => {
         />
       )}
       <span
-        className={`pointer-events-none select-none ${styles.textStyles.logoText}`}
+        className={`pointer-events-none select-none ${styles.text.logoText}`}
       >
         {siteConfig.logo.text}
       </span>

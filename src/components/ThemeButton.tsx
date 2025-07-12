@@ -37,7 +37,7 @@ const ThemeButton: React.FC = () => {
       onClick={toggleTheme}
       aria-label="Toggle theme"
       title="Toggle light/dark mode"
-      className={`flex justify-center w-full items-center gap-2 p-2 cursor-pointer ${styles.componentsStyles.button}`}
+      className={`flex justify-center w-full items-center gap-2 p-2 cursor-pointer ${styles.components.button}`}
     >
       {theme === "dark" ? (
         <Sun className="w-6 h-6 text-yellow-400" />

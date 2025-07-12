@@ -9,32 +9,32 @@ const SidebarNavigationHints: React.FC<{
   >
     <div className="flex items-center gap-1">
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
       >
         Esc
       </kbd>
-      <span className={`${styles.textStyles.hints}`}>Unfocus filter</span>
+      <span className={`${styles.text.hints}`}>Unfocus filter</span>
     </div>
     <div className="flex items-center gap-1">
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
       >
         Ctrl
       </kbd>
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
       >
         ↑ or ↓
       </kbd>
-      <span className={`${styles.textStyles.hints}`}>Navigate items</span>
+      <span className={`${styles.text.hints}`}>Navigate items</span>
     </div>
     <div className="flex items-center gap-1">
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.componentsStyles.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
       >
         Enter
       </kbd>
-      <span className={`${styles.textStyles.hints}`}>Select or toggle</span>
+      <span className={`${styles.text.hints}`}>Select or toggle</span>
     </div>
   </div>
 );

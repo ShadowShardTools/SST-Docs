@@ -1,0 +1,51 @@
+{
+  "id": "code-examples-item",
+  "title": "Code",
+  "content": [
+    {
+      "type": "title",
+      "content": "Single Language Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
+    },
+    {
+      "type": "code",
+      "content": "console.log('Hello, World!');",
+      "codeLanguage": "javascript",
+      "codeName": "hello.js",
+      "codeShowLineNumbers": true
+    },
+    {
+      "type": "title",
+      "content": "Multi-language Example",
+      "titleLevel": "2",
+      "enableAnchorLink": true
+    },
+    {
+      "type": "code",
+      "codeSections": [
+        {
+          "language": "html",
+          "content": "<h1>Hello</h1>",
+          "filename": "index.html"
+        },
+        {
+          "language": "css",
+          "content": "h1 { color: blue; }",
+          "filename": "styles.css"
+        },
+        {
+          "language": "javascript",
+          "content": "document.querySelector('h1').textContent = 'Hi!';",
+          "filename": "script.js"
+        }
+      ],
+      "codeShowLineNumbers": true,
+      "codeAllowDownload": true,
+      "codeWrapLines": true,
+      "codeCollapsible": true,
+      "codeDefaultCollapsed": false,
+      "codeTitle": "Simple Web Example"
+    }
+  ]
+}
