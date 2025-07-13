@@ -19,10 +19,18 @@ const ListBlock: React.FC<ListBlockProps> = ({ index, styles, listData }) => {
 
   const ListComponent = listData.type === "ol" ? "ol" : "ul";
 
+  const alignmentClass =
+    listData.alignment === "center"
+      ? "text-center"
+      : listData.alignment === "right"
+      ? "text-right"
+      : "text-left";
+
   const listClass = [
     styles.text.list,
     listData.type === "ol" ? "list-decimal" : "list-disc",
     listData.inside ? "ml-4" : "",
+    alignmentClass,
   ].join(" ");
 
   return (
