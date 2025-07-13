@@ -3,10 +3,19 @@
   "title": "Charts",
   "content": [
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Bar Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "bar",
       "chartData": {
+        "type": "bar",
         "title": "Bar Chart Example",
+        "scale": 0.6,
         "labels": [
           "Red",
           "Blue",
@@ -29,10 +38,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Line Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "line",
       "chartData": {
+        "type": "line",
         "title": "Line Chart Example",
+        "scale": 0.6,
         "labels": [
           "Q1",
           "Q2",
@@ -55,10 +73,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Radar Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "radar",
       "chartData": {
+        "type": "radar",
         "title": "Radar Chart Example",
+        "scale": 0.6,
         "labels": [
           "Speed",
           "Reliability",
@@ -95,10 +122,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Doughnut Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "doughnut",
       "chartData": {
+        "type": "doughnut",
         "title": "Doughnut Chart Example",
+        "scale": 0.6,
         "labels": [
           "Chrome",
           "Firefox",
@@ -122,10 +158,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Polar Area Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "polarArea",
       "chartData": {
+        "type": "polarArea",
         "title": "Polar Area Chart Example",
+        "scale": 0.6,
         "labels": [
           "North",
           "East",
@@ -151,10 +196,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Bubble Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "bubble",
       "chartData": {
+        "type": "bubble",
         "title": "Bubble Chart Example",
+        "scale": 0.6,
         "labels": [
           "Data"
         ],
@@ -184,10 +238,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Pie Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "pie",
       "chartData": {
+        "type": "pie",
         "title": "Pie Chart Example",
+        "scale": 0.6,
         "labels": [
           "Apple",
           "Samsung",
@@ -210,10 +273,19 @@
       }
     },
     {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Scatter Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
       "type": "chart",
-      "chartType": "scatter",
       "chartData": {
+        "type": "scatter",
         "title": "Scatter Chart Example",
+        "scale": 0.6,
         "labels": [
           "Data"
         ],

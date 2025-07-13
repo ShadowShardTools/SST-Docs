@@ -2,5 +2,5 @@
   "id": "examples-category",
   "title": "Examples",
   "description": "Examples of all blocks",
-  "docs": ["common-examples-item", "images-examples-item", "media-examples-item", "math-examples-item", "charts-examples-item"]
+  "docs": ["common-examples-item", "media-examples-item", "math-examples-item", "code-examples-item", "charts-examples-item"]
 }

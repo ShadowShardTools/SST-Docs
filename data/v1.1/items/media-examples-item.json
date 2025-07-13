@@ -3,8 +3,144 @@
   "title": "Media",
   "content": [
     {
-        "type": "title-h2",
-        "content": "Audio Example"
+      "type": "title",
+      "titleData": {
+        "text": "Image Block Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "single",
+        "image": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "alt": "Image Example 1"
+        },
+        "scale": "0.5",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Image Compare Examples",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "compare",
+        "beforeImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "alt": "Image Example 1"
+        },
+        "afterImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+          "alt": "Image Example 2"
+        },
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "slider",
+        "beforeImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "alt": "Image Example 1"
+        },
+        "afterImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+          "alt": "Image Example 2"
+        },
+        "scale": 0.5,
+        "alignment": "center",
+        "showPercentage": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Image Carousel Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "carousel",
+        "images": [
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+            "alt": "Image Example 1",
+            "caption": "First example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+            "alt": "Image Example 2",
+            "caption": "Second example image"
+          }
+        ],
+        "scale": 0.5,
+        "alignment": "center",
+        "carouselOptions": {
+          "loop": true,
+          "gap": "1rem",
+          "arrows": true,
+          "pagination": false,
+          "autoplay": false
+        }
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Image Grid Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "grid",
+        "images": [
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+            "alt": "Image Example 1",
+            "caption": "First example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+            "alt": "Image Example 2",
+            "caption": "Second example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+            "alt": "Image Example 1",
+            "caption": "First example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+            "alt": "Image Example 2",
+            "caption": "Second example image"
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Audio Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "audio",
@@ -13,8 +149,12 @@
       "audioCaption": "Ambient sample"
     },
     {
-        "type": "title-h2",
-        "content": "Youtube Video Example"
+      "type": "title",
+      "titleData": {
+        "text": "Youtube Video Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "youtube",
