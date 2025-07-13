@@ -1,11 +1,11 @@
-import type { StyleTheme } from "../siteConfig";
+import type { StyleTheme } from "../types/entities/StyleTheme";
 
 const GithubButtonLink: React.FC<{ styles: StyleTheme }> = ({ styles }) => (
   <a
     href="https://github.com/ShadowShardTools/SST-Docs"
     target="_blank"
     rel="noopener noreferrer"
-    className={`flex justify-center items-center gap-2 p-2 cursor-pointer ${styles.components.button}`}
+    className={`flex justify-center items-center gap-2 p-2 cursor-pointer ${styles.buttons.common}`}
     aria-label="View project on GitHub"
     title="View on GitHub"
   >

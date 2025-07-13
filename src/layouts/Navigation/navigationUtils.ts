@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
 import type { Category } from "../../types/entities/Category";
 import type { DocItem } from "../../types/entities/DocItem";
 
@@ -9,11 +9,11 @@ export const rowClasses = (
   styles: StyleTheme,
 ): string =>
   [
-    `flex items-center gap-2 px-2 py-1 cursor-pointer ${styles.components.navigationRowBase}`,
+    `flex items-center gap-2 px-2 py-1 cursor-pointer ${styles.navigation.row}`,
     depth ? "text-sm" : "text-base",
-    active ? styles.components.navigationRowActive : "",
-    focused && !active ? styles.components.navigationRowFocused : "",
-    !active ? styles.components.navigationRowHover : "",
+    active ? styles.navigation.rowActive : "",
+    focused && !active ? styles.navigation.rowFocused : "",
+    !active ? styles.navigation.rowHover : "",
   ].join(" ");
 
 export const testString = (s: string | undefined, q: string) =>

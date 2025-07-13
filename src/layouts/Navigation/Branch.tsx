@@ -2,9 +2,9 @@ import React from "react";
 import { branchMatches } from "./navigationUtils";
 import DocRow from "./DocRow";
 import CategoryRow from "./CategoryRow";
-import type { StyleTheme } from "../../siteConfig";
 import type { Category } from "../../types/entities/Category";
 import type { DocItem } from "../../types/entities/DocItem";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
 
 export interface BranchProps {
   node: Category;

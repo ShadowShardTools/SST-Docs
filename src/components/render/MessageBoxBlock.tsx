@@ -6,25 +6,16 @@ import {
   CheckCircle,
   HelpCircle,
 } from "lucide-react";
-import type { StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { MessageBoxData } from "../../types/data/MessageBoxData";
 
 const MessageBoxBlock: React.FC<{
   index: number;
   styles: StyleTheme;
-  content?: string;
-  messageType?: "info" | "warning" | "error" | "success" | "neutral" | "quote";
-  messageSize?: "small" | "medium" | "large";
-  showIcon?: boolean;
-}> = ({
-  index,
-  styles,
-  content,
-  messageType = "info",
-  messageSize = "medium",
-  showIcon = true,
-}) => {
+  messageBoxData: MessageBoxData;
+}> = ({ index, styles, messageBoxData }) => {
   const getSizeClasses = () => {
-    switch (messageSize) {
+    switch (messageBoxData.size) {
       case "small":
         return "p-3 text-sm";
       case "medium":
@@ -38,25 +29,28 @@ const MessageBoxBlock: React.FC<{
 
   const getMessageClasses = () => {
     const baseClasses = `rounded-lg border ${getSizeClasses()}`;
+    const type = messageBoxData.type ?? "neutral";
+
     const typeStyles = {
-      info: styles.components.messageInfo,
-      warning: styles.components.messageWarning,
-      error: styles.components.messageError,
-      success: styles.components.messageSuccess,
-      neutral: styles.components.messageNeutral,
-      quote: styles.components.messageQuote,
+      info: styles.messageBox.info,
+      warning: styles.messageBox.warning,
+      error: styles.messageBox.error,
+      success: styles.messageBox.success,
+      neutral: styles.messageBox.neutral,
+      quote: styles.messageBox.quote,
     };
-    return `${baseClasses} ${typeStyles[messageType] ?? ""}`;
+
+    return `${baseClasses} ${typeStyles[type] ?? ""}`;
   };
 
   const getIcon = () => {
-    if (!showIcon) return null;
+    if (!messageBoxData.showIcon) return null;
 
     const iconProps = {
       className: "w-5 h-5 mr-3 flex-shrink-0",
     };
 
-    switch (messageType) {
+    switch (messageBoxData.type) {
       case "info":
         return <Info {...iconProps} />;
       case "warning":
@@ -72,13 +66,13 @@ const MessageBoxBlock: React.FC<{
     }
   };
 
-  if (messageType === "quote") {
+  if (messageBoxData.type === "quote") {
     return (
       <blockquote
         key={index}
-        className={`pl-4 py-2 mb-4 ${styles.components.messageQuote}`}
+        className={`pl-4 py-2 mb-4 ${styles.messageBox.quote}`}
       >
-        {content && <p>{content}</p>}
+        {messageBoxData.text && <p>{messageBoxData.text}</p>}
       </blockquote>
     );
   }
@@ -89,7 +83,9 @@ const MessageBoxBlock: React.FC<{
         <div className="flex items-center">
           {getIcon()}
           <div className="flex-1">
-            {content && <div className="mb-2 last:mb-0">{content}</div>}
+            {messageBoxData.text && (
+              <div className="mb-2 last:mb-0">{messageBoxData.text}</div>
+            )}
           </div>
         </div>
       </div>

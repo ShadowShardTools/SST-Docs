@@ -4,62 +4,106 @@
   "content": [
     {
       "type": "title",
-      "content": "Image Block Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Image Block Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "image",
-      "imageSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
-      "imageAlt": "Image Example 1",
-      "scale": "0.5"
-    },
-    {
-      "type": "title",
-      "content": "Image Compare Examples",
-      "titleLevel": "2",
-      "enableAnchorLink": true
-    },
-    {
-      "type": "image-compare",
-      "imageBeforeSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
-      "imageBeforeAlt": "Image Example 1",
-      "imageAfterSrc": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
-      "imageAfterAlt": "Image Example 2"
-    },
-    {
-      "type": "image-compare-slider",
-      "imageBeforeSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
-      "imageBeforeAlt": "Image Example 1",
-      "imageAfterSrc": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
-      "imageAfterAlt": "Image Example 2",
-      "scale": "0.5"
-    },
-    {
-      "type": "title",
-      "content": "Image Carousel Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
-    },
-    {
-      "type": "image-carousel",
-      "carouselImages": [
-        {
-          "imageSrc": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
-          "imageAlt": "Image Example 1"
+      "imageData": {
+        "type": "single",
+        "image": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "alt": "Image Example 1"
         },
-        {
-          "imageSrc": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
-          "imageAlt": "Image Example 2"
-        }
-      ],
-      "scale": "0.5"
+        "scale": "0.5",
+        "alignment": "center"
+      }
     },
     {
       "type": "title",
-      "content": "Audio Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Image Compare Examples",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "compare",
+        "beforeImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "alt": "Image Example 1"
+        },
+        "afterImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+          "alt": "Image Example 2"
+        },
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "slider",
+        "beforeImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+          "alt": "Image Example 1"
+        },
+        "afterImage": {
+          "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+          "alt": "Image Example 2"
+        },
+        "scale": 0.5,
+        "alignment": "center",
+        "showPercentage": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Image Carousel Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "carousel",
+        "images": [
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+            "alt": "Image Example 1",
+            "caption": "First example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+            "alt": "Image Example 2",
+            "caption": "Second example image"
+          }
+        ],
+        "scale": 0.5,
+        "alignment": "center",
+        "carouselOptions": {
+          "loop": true,
+          "gap": "1rem",
+          "arrows": true,
+          "pagination": false,
+          "autoplay": false
+        }
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Audio Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "audio",
@@ -69,9 +113,11 @@
     },
     {
       "type": "title",
-      "content": "Youtube Video Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Youtube Video Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "youtube",

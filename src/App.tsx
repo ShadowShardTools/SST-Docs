@@ -1,12 +1,10 @@
 // src/App.tsx
 import { Routes, Route, HashRouter } from "react-router-dom";
 import MainPage from "./pages/MainPage";
-import { siteConfig } from "./siteConfig";
-import { useTheme } from "./hooks/useTheme";
+import { useThemeStyles } from "./hooks/useThemeStyles";
 
 function App() {
-  const theme = useTheme();
-  const styles = siteConfig.themes[theme];
+  const styles = useThemeStyles();
 
   return (
     <HashRouter>
@@ -14,7 +12,7 @@ function App() {
         <div className="min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
           <div className={`${styles.sections.siteBorders}`}>
             <Routes>
-              <Route path="/:docId?" element={<MainPage />} />
+              <Route path="/:docId?" element={<MainPage styles={styles} />} />
             </Routes>
           </div>
         </div>

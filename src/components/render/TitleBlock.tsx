@@ -1,36 +1,23 @@
 import React from "react";
 import { LinkIcon } from "lucide-react";
-import type { StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { TitleData } from "../../types/data/TitleData";
 
 const TitleBlock: React.FC<{
   index: number;
   styles: StyleTheme;
-  content?: string;
-  titleLevel?: 1 | 2 | 3;
-  titleAlignment?: "left" | "center" | "right";
-  titleSpacing?: string;
-  titleUnderline?: boolean;
-  enableAnchorLink?: boolean;
+  titleData: TitleData;
   currentPath?: string;
-}> = ({
-  index,
-  styles,
-  content = "",
-  titleLevel = 1,
-  titleAlignment = "left",
-  titleSpacing,
-  titleUnderline = false,
-  enableAnchorLink = false,
-  currentPath = "",
-}) => {
+}> = ({ index, styles, titleData, currentPath = "" }) => {
   const slugify = (text: string) =>
     text
       .toLowerCase()
       .trim()
       .replace(/\s+/g, "-")
       .replace(/[^\w-]/g, "");
+      
   const getSpacingClasses = () => {
-    switch (titleSpacing) {
+    switch (titleData.spacing) {
       case "small":
         return "mb-4";
       case "medium":
@@ -43,7 +30,7 @@ const TitleBlock: React.FC<{
   };
 
   const getAlignmentClasses = () => {
-    switch (titleAlignment) {
+    switch (titleData.alignment) {
       case "left":
         return "text-left";
       case "center":
@@ -63,20 +50,24 @@ const TitleBlock: React.FC<{
       3: styles.text.titleLevel3 || "text-2xl",
     };
 
-    const underlineClass = titleUnderline
-      ? `border-b-2 pb-2 ${styles.components.titleUnderline || "border-gray-300"}`
+    const level = titleData.level ?? 1; // ensure level is defined
+    const underlineClass = titleData.underline
+      ? `border-b-2 pb-2 ${styles.text.titleUnderline || "border-gray-300"}`
       : "";
 
-    return `${baseClasses} ${levelClasses[titleLevel]} ${underlineClass}`;
+    return `${baseClasses} ${levelClasses[level]} ${underlineClass}`;
   };
 
   const renderTitle = () => {
-    const id = enableAnchorLink ? slugify(content) : undefined;
+    const id =
+      titleData.enableAnchorLink && titleData.text
+        ? slugify(titleData.text)
+        : undefined;
 
     const titleContent = (
       <>
-        {content}
-        {enableAnchorLink && (
+        {titleData.text}
+        {titleData.enableAnchorLink && (
           <a
             href={`#${currentPath}#${id}`}
             className="ml-2 inline-block text-gray-400 hover:text-blue-500"
@@ -101,7 +92,7 @@ const TitleBlock: React.FC<{
       ...(id && { id, "data-anchor-id": id }),
     };
 
-    switch (titleLevel) {
+    switch (titleData.level) {
       case 1:
         return <h1 {...titleProps}>{titleContent}</h1>;
       case 2:

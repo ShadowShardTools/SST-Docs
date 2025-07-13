@@ -1,33 +1,24 @@
 // At top
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  lazy,
-  Suspense,
-} from "react";
+import { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { UseDocumentationData } from "../services/UseDocumentationData";
 import type { DocItem } from "../types/entities/DocItem";
 import ErrorMessage from "../components/dialog/ErrorMessage";
-import { useThemeStyles } from "../hooks/useThemeStyles";
 import Header from "../layouts/Header/Header";
 import Sidebar from "../layouts/Sidebar";
 import Navigation from "../layouts/Navigation/Navigation";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
+import type { StyleTheme } from "../types/entities/StyleTheme";
 
 const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
-const SearchModal = lazy(() => import("../layouts/SearchModal"));
 
-const MainPage: React.FC = () => {
+const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const navigate = useNavigate();
   const { docId } = useParams();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
   const [selectedItem, setSelectedItem] = useState<DocItem | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const {
@@ -40,8 +31,6 @@ const MainPage: React.FC = () => {
     loading,
     error,
   } = UseDocumentationData();
-
-  const styles = useThemeStyles();
 
   // Handle first-load navigation or URL param change
   useEffect(() => {
@@ -79,30 +68,6 @@ const MainPage: React.FC = () => {
     },
     [navigate],
   );
-
-  const filteredItems = useMemo(() => {
-    const query = searchTerm.toLowerCase();
-    return !query
-      ? []
-      : items.filter((item) => {
-          const titleMatch = item.title.toLowerCase().includes(query);
-          const blockMatch = item.content?.some((block) => {
-            const content = block.content?.toLowerCase?.();
-            if (
-              ["description", "quote"].includes(block.type) ||
-              block.type.startsWith("title")
-            )
-              return content?.includes(query);
-            if (block.type === "list")
-              return block.listItems?.some((i) =>
-                i.toLowerCase().includes(query),
-              );
-            if (block.type === "code") return content?.includes(query);
-            return false;
-          });
-          return titleMatch || blockMatch;
-        });
-  }, [items, searchTerm]);
 
   if (error.versions) {
     return (
@@ -182,18 +147,6 @@ const MainPage: React.FC = () => {
           {renderContent()}
         </div>
       </main>
-
-      <Suspense fallback={null}>
-        <SearchModal
-          styles={styles}
-          isOpen={isSearchOpen}
-          onClose={() => setIsSearchOpen(false)}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          results={filteredItems}
-          onSelect={navigateToItem}
-        />
-      </Suspense>
     </div>
   );
 };

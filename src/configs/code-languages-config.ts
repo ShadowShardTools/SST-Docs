@@ -1,4 +1,4 @@
-export const LANGUAGE_CONFIG = {
+export const CODE_LANGUAGE_CONFIG = {
   javascript: { name: "JavaScript", ext: "js" },
   typescript: { name: "TypeScript", ext: "ts" },
   python: { name: "Python", ext: "py" },
@@ -32,4 +32,4 @@ export const LANGUAGE_CONFIG = {
   text: { name: "Text", ext: "txt" },
 } as const;
 
-export type SupportedLanguage = keyof typeof LANGUAGE_CONFIG;
+export type SupportedLanguage = keyof typeof CODE_LANGUAGE_CONFIG;

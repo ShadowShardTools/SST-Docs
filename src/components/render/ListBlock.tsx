@@ -1,50 +1,39 @@
 import React, { useMemo } from "react";
-import { type StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { ListData } from "../../types/data/ListData";
 
 interface ListBlockProps {
   index: number;
   styles: StyleTheme;
-  listItems?: string[];
-  listType?: "ul" | "ol";
-  listStartNumber?: number;
-  listAriaLabel?: string;
-  listInside?: boolean;
+  listData: ListData;
 }
 
-const ListBlock: React.FC<ListBlockProps> = ({
-  index,
-  styles,
-  listItems = [],
-  listType = "ul",
-  listStartNumber,
-  listAriaLabel,
-  listInside = false,
-}) => {
+const ListBlock: React.FC<ListBlockProps> = ({ index, styles, listData }) => {
   const processedItems = useMemo(() => {
-    return listItems
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0);
-  }, [listItems]);
+    return (listData.items ?? [])
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}, [listData.items]);
 
   if (processedItems.length === 0) return null;
 
-  const ListComponent = listType === "ol" ? "ol" : "ul";
+  const ListComponent = listData.type === "ol" ? "ol" : "ul";
 
   const listClass = [
     styles.text.list,
-    listType === "ol" ? "list-decimal" : "list-disc",
-    listInside ? "list-inside" : "",
+    listData.type === "ol" ? "list-decimal" : "list-disc",
+    listData.inside ? "ml-4" : "",
   ].join(" ");
 
   return (
     <ListComponent
       key={index}
       className={listClass}
-      {...(listType === "ol" && listStartNumber !== undefined
-        ? { start: listStartNumber }
+      {...(listData.type === "ol" && listData.startNumber !== undefined
+        ? { start: listData.startNumber }
         : {})}
       role="list"
-      aria-label={listAriaLabel}
+      aria-label={listData.ariaLabel}
     >
       {processedItems.map((item, i) => (
         <li key={i} role="listitem">

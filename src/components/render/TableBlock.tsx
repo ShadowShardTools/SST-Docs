@@ -1,21 +1,19 @@
 import React from "react";
-import type { StyleTheme } from "../../siteConfig";
-import type { TableCell } from "../../types/entities/TableCell";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { TableData } from "../../types/data/TableData";
 
 interface TableBlockProps {
   index: number;
   styles: StyleTheme;
-  tableType?: "vertical" | "horizontal" | "matrix";
-  tableData: TableCell[][];
+  tableData: TableData;
 }
 
 const TableBlock: React.FC<TableBlockProps> = ({
   tableData,
   styles,
   index,
-  tableType = "vertical",
 }) => {
-  if (!tableData?.length) {
+  if (!tableData.data?.length) {
     return (
       <div key={index} className="mb-6 p-4 text-center text-gray-500">
         No data available
@@ -34,7 +32,7 @@ const TableBlock: React.FC<TableBlockProps> = ({
       }}
     >
       <table
-        className={`${styles.components.tableBorder} border rounded-lg`}
+        className={`${styles.table.border} border rounded-lg`}
         style={{
           borderCollapse: "collapse",
           tableLayout: "auto",
@@ -42,24 +40,26 @@ const TableBlock: React.FC<TableBlockProps> = ({
         }}
       >
         <tbody>
-          {tableData.map((row, rowIndex) => (
+          {tableData.data.map((row, rowIndex) => (
             <tr
               key={`row-${rowIndex}`}
-              className={`border-b ${styles.components.tableBorder} last:border-b-0 ${styles.components.tableRows}`}
+              className={`border-b ${styles.table.border} last:border-b-0 ${styles.table.rows}`}
             >
               {row.map((cell, cellIndex) => {
                 const CellComponent = cell.isHeader ? "th" : "td";
                 const isMatrixCorner =
-                  tableType === "matrix" && rowIndex === 0 && cellIndex === 0;
-                const baseCellClass = `px-2 py-1 border-r ${styles.components.tableBorder} last:border-r-0`;
+                  tableData.type === "matrix" &&
+                  rowIndex === 0 &&
+                  cellIndex === 0;
+                const baseCellClass = `px-2 py-1 border-r ${styles.table.border} last:border-r-0`;
 
                 const cellStyle = isMatrixCorner
-                  ? styles.components.tableCorner
+                  ? styles.table.cornerCell
                   : cell.isHeader ||
-                      (tableType === "vertical" && rowIndex === 0) ||
-                      (tableType === "horizontal" && cellIndex === 0)
-                    ? styles.components.tableHeaders
-                    : styles.components.tableRows;
+                      (tableData.type === "vertical" && rowIndex === 0) ||
+                      (tableData.type === "horizontal" && cellIndex === 0)
+                    ? styles.table.headers
+                    : styles.table.rows;
 
                 return (
                   <CellComponent

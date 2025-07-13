@@ -1,8 +1,8 @@
 import { memo, useMemo, useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import type { Version } from "../types/entities/Version";
-import type { StyleTheme } from "../siteConfig";
 import LoadingSpinner from "./dialog/LoadingSpinner";
+import type { StyleTheme } from "../types/entities/StyleTheme";
 
 interface VersionSelectorProps {
   styles: StyleTheme;
@@ -55,7 +55,7 @@ const VersionSelector = memo<VersionSelectorProps>(
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`flex justify-between items-center w-full gap-2 p-2 cursor-pointer ${styles.components.button}`}
+          className={`flex justify-between items-center w-full gap-2 p-2 cursor-pointer ${styles.buttons.common}`}
           disabled={!versions.length}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
@@ -68,16 +68,16 @@ const VersionSelector = memo<VersionSelectorProps>(
 
         {isOpen && (
           <ul
-            className={`absolute top-full left-0 mt-1 z-50 min-w-full max-h-60 overflow-y-auto ${styles.components.dropdown}`}
+            className={`absolute top-full left-0 mt-1 z-50 min-w-full max-h-60 overflow-y-auto ${styles.dropdown.container}`}
             role="listbox"
           >
             {versions.map(({ version, label }) => (
               <li key={version}>
                 <button
                   onClick={() => handleSelect(version)}
-                  className={`w-full px-3 py-2 cursor-pointer ${styles.components.dropdownItem} ${
+                  className={`w-full px-3 py-2 cursor-pointer ${styles.dropdown.item} ${
                     version === currentVersion
-                      ? styles.components.dropdownItemActive
+                      ? styles.dropdown.itemActive
                       : ""
                   }`}
                   role="option"

@@ -1,6 +1,7 @@
 import Desmos from "desmos";
 import { useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme";
+import type { GraphData } from "../../types/data/GraphData";
 
 declare global {
   interface Window {
@@ -8,9 +9,9 @@ declare global {
   }
 }
 
-const GraphBlock: React.FC<{ index: number; graphExpressions: string[] }> = ({
+const GraphBlock: React.FC<{ index: number; graphData: GraphData }> = ({
   index,
-  graphExpressions,
+  graphData,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const calculatorRef = useRef<Desmos.Calculator | null>(null);
@@ -28,7 +29,7 @@ const GraphBlock: React.FC<{ index: number; graphExpressions: string[] }> = ({
 
     calculatorRef.current = calculator;
 
-    graphExpressions.forEach((expr, index) => {
+    graphData.expressions.forEach((expr, index) => {
       calculator.setExpression({
         id: `expr-${index}`,
         latex: expr,
@@ -39,7 +40,7 @@ const GraphBlock: React.FC<{ index: number; graphExpressions: string[] }> = ({
       calculatorRef.current?.destroy?.();
       calculatorRef.current = null;
     };
-  }, [graphExpressions, theme]);
+  }, [graphData.expressions, theme]);
 
   return (
     <div key={index} className="mb-6">

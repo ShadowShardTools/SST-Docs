@@ -1,8 +1,8 @@
-import type { ContentBlock } from "./ContentBlock";
+import type { Content } from "./Content";
 
 export interface DocItem {
   id: string;
   title: string;
-  content: ContentBlock[];
+  content: Content[];
   tags?: string[];
 }

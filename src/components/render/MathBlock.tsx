@@ -1,14 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
-import type { StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { MathData } from "../../types/data/MathData";
 
 const MathBlock: React.FC<{
   index: number;
   styles: StyleTheme;
-  content: string;
-}> = ({ index, styles, content }) => {
+  mathData: MathData;
+}> = ({ index, styles, mathData }) => {
   const [html, setHtml] = useState<string>("");
 
-  const trimmedContent = useMemo(() => content.trim(), [content]);
+  const trimmedContent = useMemo(
+    () => mathData.expression.trim(),
+    [mathData.expression],
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -32,7 +36,7 @@ const MathBlock: React.FC<{
     return () => {
       isMounted = false;
     };
-  }, [content]);
+  }, [mathData.expression]);
 
   if (!trimmedContent) {
     return null;

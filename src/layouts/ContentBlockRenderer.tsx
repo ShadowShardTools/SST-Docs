@@ -3,13 +3,12 @@ import {
   blockImports,
   type BlockType,
 } from "../generated/blockImports.generated";
-import type { ContentBlock } from "../types/entities/ContentBlock";
-import type { StyleTheme } from "../siteConfig";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
+import type { StyleTheme } from "../types/entities/StyleTheme";
 
 interface ContentBlockRendererProps {
   styles: StyleTheme;
-  content: ContentBlock[];
+  content: any[];
   currentPath: string;
 }
 

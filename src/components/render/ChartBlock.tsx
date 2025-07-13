@@ -23,8 +23,8 @@ import {
   Pie,
   Scatter,
 } from "react-chartjs-2";
-import type { ContentBlock } from "../../types/entities/ContentBlock";
-import { type StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { ChartData } from "../../types/data/ChartData";
 
 ChartJS.register(
   BarElement,
@@ -64,16 +64,16 @@ type ChartType = keyof typeof chartMap;
 interface Props {
   index: number;
   styles: StyleTheme;
-  block: ContentBlock;
+  chartData?: ChartData;
   scale?: number;
 }
 
-const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
-  if (!block.chartData || !block.chartType) return null;
+const ChartBlock: React.FC<Props> = ({ styles, chartData, scale = 1 }) => {
+  if (!chartData || !chartData.type) return null;
 
   /* --- ensure chartType is a valid key --- */
-  if (!(block.chartType in chartMap)) return null;
-  const chartType = block.chartType as ChartType;
+  if (!(chartData.type in chartMap)) return null;
+  const type = chartData.type as ChartType;
 
   const widthPercent = `${(isNaN(scale) || scale <= 0 ? 1 : scale) * 100}%`;
 
@@ -82,13 +82,13 @@ const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
     responsive: true,
     plugins: {
       legend: {
-        labels: { color: styles.charts.legendLabelColor },
+        labels: { color: styles.chart.legendLabelColor },
       },
       tooltip: {
-        backgroundColor: styles.charts.tooltipBg,
-        titleColor: styles.charts.tooltipTitleColor,
-        bodyColor: styles.charts.tooltipBodyColor,
-        borderColor: styles.charts.tooltipBorderColor,
+        backgroundColor: styles.chart.tooltipBg,
+        titleColor: styles.chart.tooltipTitleColor,
+        bodyColor: styles.chart.tooltipBodyColor,
+        borderColor: styles.chart.tooltipBorderColor,
         borderWidth: 1,
       },
     },
@@ -96,21 +96,21 @@ const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
 
   /* ---------- axis helpers ---------- */
   const makeCartesianAxis = () => ({
-    grid: { color: styles.charts.gridLineColor, borderDash: [] },
-    ticks: { color: styles.charts.axisTickColor },
+    grid: { color: styles.chart.gridLineColor, borderDash: [] },
+    ticks: { color: styles.chart.axisTickColor },
   });
 
   const makeRadialAxis = () => ({
-    grid: { color: styles.charts.gridLineColor, borderDash: [] },
-    angleLines: { color: styles.charts.gridLineColor, borderDash: [] },
-    pointLabels: { color: styles.charts.axisTickColor },
+    grid: { color: styles.chart.gridLineColor, borderDash: [] },
+    angleLines: { color: styles.chart.gridLineColor, borderDash: [] },
+    pointLabels: { color: styles.chart.axisTickColor },
   });
 
   /* ---------- per-chart options ---------- */
   const options =
-    chartType === "radar" || chartType === "polarArea"
+    chartData.type === "radar" || chartData.type === "polarArea"
       ? { ...baseOptions, scales: { r: makeRadialAxis() } }
-      : chartType === "bubble" || chartType === "scatter"
+      : chartData.type === "bubble" || chartData.type === "scatter"
         ? {
             ...baseOptions,
             scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
@@ -121,10 +121,10 @@ const ChartBlock: React.FC<Props> = ({ styles, block, scale = 1 }) => {
           };
 
   /* ---------- render ---------- */
-  const ChartComponent = chartMap[chartType];
+  const ChartComponent = chartMap[type];
   return (
     <div className="mb-6 text-center mx-auto" style={{ width: widthPercent }}>
-      <ChartComponent data={block.chartData} options={options} />
+      <ChartComponent data={chartData} options={options} />
     </div>
   );
 };

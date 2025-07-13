@@ -11,9 +11,9 @@ import Branch from "./Branch";
 import DocRow from "./DocRow";
 import { buildEntries } from "./navigationUtils";
 import SidebarNavigationHints from "../../components/dialog/SidebarNavigationHints";
-import type { StyleTheme } from "../../siteConfig";
 import type { Category } from "../../types/entities/Category";
 import type { DocItem } from "../../types/entities/DocItem";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
 
 /* -------------------------------------------------------------------------- */
 /*                                Navigation                                  */
@@ -160,10 +160,10 @@ const Navigation: React.FC<NavigationProps> = ({
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Enter here to filter…"
-          className={`${styles.components.input} w-full pl-8 pr-2 py-1.5 border`}
+          className={`${styles.input} w-full pl-8 pr-2 py-1.5 border`}
         />
         <kbd
-          className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints} absolute right-2.5 top-1/2 -translate-y-1/2`}
+          className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key} absolute right-2.5 top-1/2 -translate-y-1/2`}
         >
           F
         </kbd>

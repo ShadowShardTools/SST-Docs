@@ -4,8 +4,8 @@
   "content": [
     {
       "type": "chart",
-      "chartType": "bar",
       "chartData": {
+        "type": "bar",
         "title": "Bar Chart Example",
         "labels": [
           "Red",
@@ -30,8 +30,8 @@
     },
     {
       "type": "chart",
-      "chartType": "line",
       "chartData": {
+        "type": "line",
         "title": "Line Chart Example",
         "labels": [
           "Q1",
@@ -56,8 +56,8 @@
     },
     {
       "type": "chart",
-      "chartType": "radar",
       "chartData": {
+        "type": "radar",
         "title": "Radar Chart Example",
         "labels": [
           "Speed",
@@ -96,8 +96,8 @@
     },
     {
       "type": "chart",
-      "chartType": "doughnut",
       "chartData": {
+        "type": "doughnut",
         "title": "Doughnut Chart Example",
         "labels": [
           "Chrome",
@@ -123,8 +123,8 @@
     },
     {
       "type": "chart",
-      "chartType": "polarArea",
       "chartData": {
+        "type": "polarArea",
         "title": "Polar Area Chart Example",
         "labels": [
           "North",
@@ -152,8 +152,8 @@
     },
     {
       "type": "chart",
-      "chartType": "bubble",
       "chartData": {
+        "type": "bubble",
         "title": "Bubble Chart Example",
         "labels": [
           "Data"
@@ -185,8 +185,8 @@
     },
     {
       "type": "chart",
-      "chartType": "pie",
       "chartData": {
+        "type": "pie",
         "title": "Pie Chart Example",
         "labels": [
           "Apple",
@@ -211,8 +211,8 @@
     },
     {
       "type": "chart",
-      "chartType": "scatter",
       "chartData": {
+        "type": "scatter",
         "title": "Scatter Chart Example",
         "labels": [
           "Data"

@@ -4,48 +4,55 @@
   "content": [
     {
       "type": "title",
-      "content": "Single Language Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Single Language Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "code",
-      "content": "console.log('Hello, World!');",
-      "codeLanguage": "javascript",
-      "codeName": "hello.js",
-      "codeShowLineNumbers": true
+      "codeData": {
+        "content": "console.log('Hello, World!');",
+        "language": "javascript",
+        "name": "hello.js",
+        "showLineNumbers": true
+      }
     },
     {
       "type": "title",
-      "content": "Multi-language Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Multi-language Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "code",
-      "codeSections": [
-        {
-          "language": "html",
-          "content": "<h1>Hello</h1>",
-          "filename": "index.html"
-        },
-        {
-          "language": "css",
-          "content": "h1 { color: blue; }",
-          "filename": "styles.css"
-        },
-        {
-          "language": "javascript",
-          "content": "document.querySelector('h1').textContent = 'Hi!';",
-          "filename": "script.js"
-        }
-      ],
-      "codeShowLineNumbers": true,
-      "codeAllowDownload": true,
-      "codeWrapLines": true,
-      "codeCollapsible": true,
-      "codeDefaultCollapsed": false,
-      "codeTitle": "Simple Web Example"
+      "codeData": {
+        "sections": [
+          {
+            "language": "html",
+            "content": "<h1>Hello</h1>",
+            "filename": "index.html"
+          },
+          {
+            "language": "css",
+            "content": "h1 { color: blue; }",
+            "filename": "styles.css"
+          },
+          {
+            "language": "javascript",
+            "content": "document.querySelector('h1').textContent = 'Hi!';",
+            "filename": "script.js"
+          }
+        ],
+        "showLineNumbers": true,
+        "allowDownload": true,
+        "wrapLines": true,
+        "collapsible": true,
+        "defaultCollapsed": false
+      }
     }
   ]
 }

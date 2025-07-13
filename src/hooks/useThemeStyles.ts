@@ -1,6 +1,6 @@
 import { useTheme } from "./useTheme";
-import { siteConfig } from "../siteConfig";
-import type { StyleTheme } from "../siteConfig";
+import { siteConfig } from "../configs/site-config";
+import type { StyleTheme } from "../types/entities/StyleTheme";
 
 export function useThemeStyles(): StyleTheme {
   const theme = useTheme();

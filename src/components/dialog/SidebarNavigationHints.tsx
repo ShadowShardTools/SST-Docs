@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
 
 const SidebarNavigationHints: React.FC<{
   styles: StyleTheme;
@@ -9,32 +9,32 @@ const SidebarNavigationHints: React.FC<{
   >
     <div className="flex items-center gap-1">
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
       >
         Esc
       </kbd>
-      <span className={`${styles.text.hints}`}>Unfocus filter</span>
+      <span className={`${styles.hints.text}`}>Unfocus filter</span>
     </div>
     <div className="flex items-center gap-1">
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
       >
         Ctrl
       </kbd>
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
       >
         ↑ or ↓
       </kbd>
-      <span className={`${styles.text.hints}`}>Navigate items</span>
+      <span className={`${styles.hints.text}`}>Navigate items</span>
     </div>
     <div className="flex items-center gap-1">
       <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+        className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
       >
         Enter
       </kbd>
-      <span className={`${styles.text.hints}`}>Select or toggle</span>
+      <span className={`${styles.hints.text}`}>Select or toggle</span>
     </div>
   </div>
 );

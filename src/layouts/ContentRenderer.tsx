@@ -1,13 +1,13 @@
 import React, { lazy, useEffect, useMemo } from "react";
-import type { ContentBlock } from "../types/entities/ContentBlock";
 import type { Category } from "../types/entities/Category";
 import ContentBlockRenderer from "./ContentBlockRenderer";
-import { type StyleTheme } from "../siteConfig";
+import type { StyleTheme } from "../types/entities/StyleTheme";
+import type { TitleData } from "../types/data/TitleData";
 const TitleBlock = lazy(() => import("../components/render/TitleBlock"));
 
 interface Props {
   styles: StyleTheme;
-  content: ContentBlock[];
+  content: any[];
   title: string;
   docId: string;
   tree: Category[];
@@ -68,9 +68,15 @@ const ContentRendererBase: React.FC<Props> = ({
     return arr.length ? `${arr.join(" > ")} > ${title}` : "";
   }, [tree, docId, title]);
 
+  const titleData: TitleData = {
+    text: title,
+    level: 1,
+    enableAnchorLink: true,
+  };
+
   return (
     <>
-      <TitleBlock index={0} styles={styles} content={title} />
+      <TitleBlock index={0} styles={styles} titleData={titleData} />
       {breadcrumb && (
         <div className="text-sm text-gray-400 mb-4">{breadcrumb}</div>
       )}

@@ -4,27 +4,35 @@
   "content": [
     {
       "type": "title",
-      "content": "Katex Math Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Katex Math Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "math",
-      "content": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}"
+      "mathData": {
+        "expression": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}"
+      }
     },
     {
       "type": "title",
-      "content": "Desmos Graphs Example",
-      "titleLevel": "2",
-      "enableAnchorLink": true
+      "titleData": {
+        "text": "Desmos Graphs Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
     },
     {
       "type": "graph",
-      "graphExpressions": [
-        "y=\\sin(x)",
-        "y=\\cos(x)",
-        "y=\\sin(x)+\\cos(x)"
-      ]
+      "graphData": {
+        "expressions": [
+          "y=\\sin(x)",
+          "y=\\cos(x)",
+          "y=\\sin(x)+\\cos(x)"
+        ]
+      }
     }
   ]
 }

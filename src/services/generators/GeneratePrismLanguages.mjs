@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-/* -------------------------------------------------------------------------- */
-/*  Collects used PrismJS languages → src/generated/prism-languages.generated */
-/* -------------------------------------------------------------------------- */
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -12,33 +9,61 @@ const c = {
 };
 const info = (msg) => console.log(c.cyan('➜'), msg);
 
-const dataDir   = path.resolve('public', 'data');
-const outFile   = path.resolve('src', 'generated', 'prism-languages.generated.ts');
+const dataDir = path.resolve('public', 'data');
+const outFile = path.resolve('src', 'generated', 'prism-languages.generated.ts');
+
+// PrismJS language alias map
+const aliasMap = {
+  html: 'markup',
+  xml: 'markup',
+  svg: 'markup',
+};
 
 async function collectLangs() {
   const all = new Set();
   const versions = await fs.readdir(dataDir);
+
   for (const v of versions) {
     const itemsDir = path.join(dataDir, v, 'items');
     try {
       const files = (await fs.readdir(itemsDir)).filter(f => f.endsWith('.json'));
       for (const f of files) {
-        const { content = [] } = JSON.parse(
-          await fs.readFile(path.join(itemsDir, f), 'utf8')
-        );
-        content.forEach(b => b?.type === 'code' && b.scriptLanguage && all.add(b.scriptLanguage));
+        const json = await fs.readFile(path.join(itemsDir, f), 'utf8');
+        const { content = [] } = JSON.parse(json);
+
+        content.forEach(b => {
+          if (b?.type === 'code') {
+            if (b.codeLanguage) all.add(b.codeLanguage);
+            if (Array.isArray(b.codeSections)) {
+              b.codeSections.forEach(section => {
+                if (section.language) all.add(section.language);
+              });
+            }
+          }
+        });
       }
-    } catch { /* skip */ }
+    } catch {
+      /* skip missing folders/files */
+    }
   }
-  return [...all].sort();
+
+  // Apply alias mapping and deduplicate
+  const resolved = [...all]
+    .map(l => aliasMap[l] || l)
+    .filter(Boolean)
+    .filter((v, i, self) => self.indexOf(v) === i) // dedupe
+    .sort();
+
+  return resolved;
 }
 
 (async () => {
   info('Generating Prism language imports …');
   const langs = await collectLangs();
-  const body  = [
+  const body = [
     '// ⚠️  AUTO-GENERATED — DO NOT EDIT',
-    '// PrismJS components used across all content\n',
+    '// PrismJS components used across all content',
+    '',
     ...langs.map(l => `import 'prismjs/components/prism-${l}.js';`),
     '',
   ].join('\n');

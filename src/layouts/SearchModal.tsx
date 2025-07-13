@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import type { DocItem } from "../types/entities/DocItem";
-import type { StyleTheme } from "../siteConfig";
+import type { StyleTheme } from "../types/entities/StyleTheme";
 
 interface SearchModalProps {
   styles: StyleTheme;
@@ -84,12 +84,12 @@ const SearchModal: React.FC<SearchModalProps> = ({
       onClick={onClose}
     >
       <div
-        className={`w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border ${styles.components.searchModalBorders}`}
+        className={`w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border ${styles.searchModal.borders}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* search input */}
         <div
-          className={`flex items-center border-b px-4 py-2 ${styles.components.searchModalHeader} ${styles.components.searchModalBorders}`}
+          className={`flex items-center border-b px-4 py-2 ${styles.searchModal.header} ${styles.searchModal.borders}`}
         >
           <input
             ref={inputRef}
@@ -106,7 +106,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
 
         {/* results */}
         <div
-          className={`max-h-96 overflow-y-auto ${styles.components.searchModalResultBackground}`}
+          className={`max-h-96 overflow-y-auto ${styles.searchModal.resultBackground}`}
         >
           {searchTerm ? (
             results.length === 0 ? (
@@ -146,7 +146,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
                         onSelect(item);
                         onClose();
                       }}
-                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? styles.components.searchModalSelectedItem : styles.components.searchModalItem}`}
+                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? styles.searchModal.selectedItem : styles.searchModal.item}`}
                     >
                       {/* title */}
                       <div
@@ -184,38 +184,38 @@ const SearchModal: React.FC<SearchModalProps> = ({
 
         {/* footer */}
         <div
-          className={`border-t px-4 py-2 flex justify-between items-center ${styles.components.searchModalFooter} ${styles.components.searchModalBorders}`}
+          className={`border-t px-4 py-2 flex justify-between items-center ${styles.searchModal.footer} ${styles.searchModal.borders}`}
         >
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+                className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
               >
                 ↑
               </kbd>
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+                className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
               >
                 ↓
               </kbd>
-              <span className={`${styles.text.hints}`}>to navigate</span>
+              <span className={`${styles.hints.text}`}>to navigate</span>
             </div>
             <div className="flex items-center gap-1">
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+                className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
               >
                 Enter
               </kbd>
-              <span className={`${styles.text.hints}`}>to select</span>
+              <span className={`${styles.hints.text}`}>to select</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <kbd
-              className={`px-1.5 py-0.5 pointer-events-none ${styles.components.keyHints}`}
+              className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
             >
               Esc
             </kbd>
-            <span className={`${styles.text.hints}`}>to close</span>
+            <span className={`${styles.hints.text}`}>to close</span>
           </div>
         </div>
       </div>

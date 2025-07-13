@@ -2,7 +2,7 @@ import GithubButtonLink from "../../components/GithubLink";
 import SearchBar from "../../components/SearchBar";
 import ThemeButton from "../../components/ThemeButton";
 import VersionSelector from "../../components/VersionSelector";
-import type { StyleTheme } from "../../siteConfig";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
 import type { Version } from "../../types/entities/Version";
 
 interface MobileMenuProps {
