@@ -8,7 +8,7 @@ interface CarouselImage extends BaseImage {
 }
 
 export interface ImageData {
-  type: "single" | "compare" | "carousel" | "slider";
+  type: "single" | "compare" | "carousel" | "slider" | "grid";
   scale?: number;
   alignment?: "left" | "center" | "right";
 

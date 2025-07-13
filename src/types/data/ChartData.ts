@@ -8,4 +8,6 @@ export interface ChartData {
     backgroundColor?: string;
     borderColor?: string;
   }[];
+  alignment?: "left" | "center" | "right";
+  scale?: number;
 }

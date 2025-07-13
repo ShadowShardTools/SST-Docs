@@ -21,14 +21,10 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({ styles, onClick }) => (
       <span>Search</span>
     </div>
     <div className="flex gap-1 items-center">
-      <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
-      >
+      <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}>
         Ctrl
       </kbd>
-      <kbd
-        className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
-      >
+      <kbd className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}>
         K
       </kbd>
     </div>

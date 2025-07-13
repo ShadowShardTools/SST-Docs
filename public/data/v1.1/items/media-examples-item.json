@@ -100,6 +100,43 @@
     {
       "type": "title",
       "titleData": {
+        "text": "Image Grid Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "image",
+      "imageData": {
+        "type": "grid",
+        "images": [
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+            "alt": "Image Example 1",
+            "caption": "First example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+            "alt": "Image Example 2",
+            "caption": "Second example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
+            "alt": "Image Example 1",
+            "caption": "First example image"
+          },
+          {
+            "src": "/SST-Docs/data/v1.1/images/Image_Example_2.png",
+            "alt": "Image Example 2",
+            "caption": "Second example image"
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
         "text": "Audio Example",
         "level": "2",
         "enableAnchorLink": true

@@ -42,14 +42,31 @@ const GraphBlock: React.FC<{ index: number; graphData: GraphData }> = ({
     };
   }, [graphData.expressions, theme]);
 
+  const alignment = graphData.alignment ?? "center";
+  const rawScale = graphData.scale ?? 1;
+  const scale = rawScale > 0 ? rawScale : 1;
+  const width = `${scale * 100}%`;
+
+  const alignmentClasses = {
+    left: "mr-auto",
+    center: "mx-auto",
+    right: "ml-auto",
+  };
+
   return (
-    <div key={index} className="mb-6">
-      <div
-        ref={containerRef}
-        role="img"
-        aria-label="Interactive graph"
-        className="w-full h-96 rounded border bg-white dark:bg-zinc-900 shadow-sm"
-      />
+    <div
+      key={index}
+      className={`mb-6 ${alignmentClasses[alignment]}`}
+      style={{ width }}
+    >
+      <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+        <div
+          ref={containerRef}
+          role="img"
+          aria-label="Interactive graph"
+          className="absolute top-0 left-0 w-full h-full rounded border bg-white dark:bg-zinc-900 shadow-sm"
+        />
+      </div>
     </div>
   );
 };

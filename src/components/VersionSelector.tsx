@@ -76,9 +76,7 @@ const VersionSelector = memo<VersionSelectorProps>(
                 <button
                   onClick={() => handleSelect(version)}
                   className={`w-full px-3 py-2 cursor-pointer ${styles.dropdown.item} ${
-                    version === currentVersion
-                      ? styles.dropdown.itemActive
-                      : ""
+                    version === currentVersion ? styles.dropdown.itemActive : ""
                   }`}
                   role="option"
                   aria-selected={version === currentVersion}

@@ -174,13 +174,35 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
               <p className={`mt-2 ${styles.text.alternative}`}>
                 {imageData.beforeImage.alt &&
                   `${sliderPercentage}% ${imageData.beforeImage.alt}`}
-                {imageData.beforeImage.alt &&
-                  imageData.afterImage.alt &&
-                  " / "}
+                {imageData.beforeImage.alt && imageData.afterImage.alt && " / "}
                 {imageData.afterImage.alt &&
                   `${100 - sliderPercentage}% ${imageData.afterImage.alt}`}
               </p>
             )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderImageGrid = () => {
+    if (!imageData.images || imageData.images.length === 0) return null;
+
+    return (
+      <div key={index} className={baseClasses}>
+        <div
+          className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignmentClasses[alignment]}`}
+          style={{ width: widthPercent }}
+        >
+          {imageData.images.map((img, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <img
+                src={img.src}
+                alt={img.alt || `Image ${i + 1}`}
+                className="w-full h-auto"
+              />
+              {renderCaption(img.caption || img.alt)}
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -195,6 +217,8 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
       return renderCarousel();
     case "slider":
       return renderSliderCompare();
+    case "grid":
+      return renderImageGrid();
     default:
       console.warn(`Unknown image type: ${imageData.type}`);
       return null;

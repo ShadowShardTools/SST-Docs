@@ -15,12 +15,17 @@ export const lightTheme: StyleTheme = {
     text: "text-xs text-gray-500",
     key: "text-xs text-gray-500 border border-gray-300 rounded bg-white",
   },
-  input: "text-sm text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+  input:
+    "text-sm text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   buttons: {
-    common: "font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
-    small: "text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
-    tabSmall: "text-xs font-semibold text-gray-300 bg-stone-700 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
-    tabSmallActive: "text-xs font-semibold text-gray-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
+    common:
+      "font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+    small:
+      "text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+    tabSmall:
+      "text-xs font-semibold text-gray-300 bg-stone-700 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+    tabSmallActive:
+      "text-xs font-semibold text-gray-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
   },
   dropdown: {
     container: "bg-white border border-gray-300 rounded-md shadow-lg",
@@ -47,7 +52,8 @@ export const lightTheme: StyleTheme = {
     quote: "bg-stone-300 border-l-4 border-stone-500 text-gray-700 italic",
   },
   code: {
-    header: "bg-stone-700/80 text-gray-200 border-blue-500 border-b border-stone-300",
+    header:
+      "bg-stone-700/80 text-gray-200 border-blue-500 border-b border-stone-300",
     language: "text-xs font-semibold text-stone-300 mt-1 text-right",
   },
   audioPlayer: {
@@ -55,7 +61,8 @@ export const lightTheme: StyleTheme = {
     playButton: "bg-stone-700 hover:bg-stone-600 text-white transition-colors",
     time: "text-gray-700 text-xs tabular-nums text-right",
     slider: "bg-gray-700",
-    sliderThumb: "[&::-webkit-slider-thumb]:bg-stone-600 [&::-moz-range-thumb]:bg-stone-600",
+    sliderThumb:
+      "[&::-webkit-slider-thumb]:bg-stone-600 [&::-moz-range-thumb]:bg-stone-600",
   },
   chart: {
     legendLabelColor: "#1f2937",
@@ -68,7 +75,8 @@ export const lightTheme: StyleTheme = {
   },
   navigation: {
     row: "focus:outline-none",
-    rowActive: "font-semibold text-stone-700 bg-stone-200 border-l-2 border-stone-500 transition-colors",
+    rowActive:
+      "font-semibold text-stone-700 bg-stone-200 border-l-2 border-stone-500 transition-colors",
     rowFocused: "ring-2 ring-stone-500",
     rowHover: "hover:text-stone-500 transition-colors",
   },

@@ -11,9 +11,9 @@ interface ListBlockProps {
 const ListBlock: React.FC<ListBlockProps> = ({ index, styles, listData }) => {
   const processedItems = useMemo(() => {
     return (listData.items ?? [])
-    .map((item) => item.trim())
-    .filter((item) => item.length > 0);
-}, [listData.items]);
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+  }, [listData.items]);
 
   if (processedItems.length === 0) return null;
 

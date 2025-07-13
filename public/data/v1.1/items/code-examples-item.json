@@ -16,7 +16,8 @@
         "content": "console.log('Hello, World!');",
         "language": "javascript",
         "name": "hello.js",
-        "showLineNumbers": true
+        "showLineNumbers": true,
+        "allowDownload": true
       }
     },
     {
@@ -30,6 +31,7 @@
     {
       "type": "code",
       "codeData": {
+        "name": "Simple code example",
         "sections": [
           {
             "language": "html",

@@ -283,31 +283,35 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       <div
         className={`flex items-center justify-between px-3 py-2 ${styles.code.header}`}
       >
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          {codeData.name && <span>{codeData.name}</span>}
-
-          {hasMultipleSections ? (
-            <div className="flex items-center gap-1 flex-wrap">
-              {normalizedSections.map((section, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleTabChange(i)}
-                  className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${
-                    i === activeTab
-                      ? styles.buttons.tabSmallActive
-                      : styles.buttons.tabSmall
-                  }`}
-                  title={`Switch to ${getLanguageDisplayName(section.language)}`}
-                >
-                  {getLanguageDisplayName(section.language)}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <span>
-              {currentSection.filename ||
+        <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
+          {!hasMultipleSections ? (
+            <span className="truncate">
+              {codeData.name ??
+                currentSection.filename ??
                 getLanguageDisplayName(currentSection.language)}
             </span>
+          ) : (
+            <>
+              {codeData.name && (
+                <span className="truncate">{codeData.name}</span>
+              )}
+              <div className="flex items-center gap-1 flex-wrap">
+                {normalizedSections.map((section, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleTabChange(i)}
+                    className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${
+                      i === activeTab
+                        ? styles.buttons.tabSmallActive
+                        : styles.buttons.tabSmall
+                    }`}
+                    title={`Switch to ${getLanguageDisplayName(section.language)}`}
+                  >
+                    {getLanguageDisplayName(section.language)}
+                  </button>
+                ))}
+              </div>
+            </>
           )}
         </div>
 

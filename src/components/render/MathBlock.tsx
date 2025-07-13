@@ -9,10 +9,8 @@ const MathBlock: React.FC<{
 }> = ({ index, styles, mathData }) => {
   const [html, setHtml] = useState<string>("");
 
-  const trimmedContent = useMemo(
-    () => mathData.expression.trim(),
-    [mathData.expression],
-  );
+  const expression = mathData.expression ?? "";
+  const trimmedContent = useMemo(() => expression.trim(), [expression]);
 
   useEffect(() => {
     let isMounted = true;
@@ -36,16 +34,21 @@ const MathBlock: React.FC<{
     return () => {
       isMounted = false;
     };
-  }, [mathData.expression]);
+  }, [trimmedContent]);
 
-  if (!trimmedContent) {
-    return null;
-  }
+  if (!trimmedContent) return null;
+
+  const alignment = mathData.alignment ?? "center";
+  const alignmentClasses = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
+  };
 
   return (
-    <div key={index} className="mb-6 text-center">
+    <div key={index} className={`mb-6 ${alignmentClasses[alignment]}`}>
       <div
-        className={`${styles.text.math}`}
+        className={styles.text.math}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

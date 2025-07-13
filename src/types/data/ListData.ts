@@ -4,4 +4,5 @@ export interface ListData {
   startNumber?: number;
   ariaLabel?: string;
   inside?: boolean;
+  alignment?: "left" | "center" | "right";
 }

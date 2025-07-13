@@ -40,10 +40,6 @@ ChartJS.register(
   Legend,
 );
 
-/* ------------------------------------------------------------------ */
-/*  Chart map + helper type                                            */
-/* ------------------------------------------------------------------ */
-
 const chartMap = {
   bar: Bar,
   line: Line,
@@ -57,27 +53,31 @@ const chartMap = {
 
 type ChartType = keyof typeof chartMap;
 
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
 interface Props {
   index: number;
   styles: StyleTheme;
   chartData?: ChartData;
-  scale?: number;
 }
 
-const ChartBlock: React.FC<Props> = ({ styles, chartData, scale = 1 }) => {
-  if (!chartData || !chartData.type) return null;
+const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
+  if (!chartData || !chartData.type || !(chartData.type in chartMap))
+    return null;
 
-  /* --- ensure chartType is a valid key --- */
-  if (!(chartData.type in chartMap)) return null;
   const type = chartData.type as ChartType;
 
-  const widthPercent = `${(isNaN(scale) || scale <= 0 ? 1 : scale) * 100}%`;
+  const rawScale = chartData.scale ?? 1;
+  const scale = rawScale > 0 ? rawScale : 1;
+  const widthPercent = `${scale * 100}%`;
 
-  /* ---------- shared plugin & color options ---------- */
+  // Alignment classes
+  const alignment = chartData.alignment ?? "center";
+  const alignmentClasses = {
+    left: "mr-auto",
+    center: "mx-auto",
+    right: "ml-auto",
+  };
+
+  // Shared plugin options
   const baseOptions = {
     responsive: true,
     plugins: {
@@ -94,7 +94,6 @@ const ChartBlock: React.FC<Props> = ({ styles, chartData, scale = 1 }) => {
     },
   } as const;
 
-  /* ---------- axis helpers ---------- */
   const makeCartesianAxis = () => ({
     grid: { color: styles.chart.gridLineColor, borderDash: [] },
     ticks: { color: styles.chart.axisTickColor },
@@ -106,7 +105,6 @@ const ChartBlock: React.FC<Props> = ({ styles, chartData, scale = 1 }) => {
     pointLabels: { color: styles.chart.axisTickColor },
   });
 
-  /* ---------- per-chart options ---------- */
   const options =
     chartData.type === "radar" || chartData.type === "polarArea"
       ? { ...baseOptions, scales: { r: makeRadialAxis() } }
@@ -120,10 +118,13 @@ const ChartBlock: React.FC<Props> = ({ styles, chartData, scale = 1 }) => {
             scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
           };
 
-  /* ---------- render ---------- */
   const ChartComponent = chartMap[type];
+
   return (
-    <div className="mb-6 text-center mx-auto" style={{ width: widthPercent }}>
+    <div
+      className={`mb-6 text-center ${alignmentClasses[alignment]}`}
+      style={{ width: widthPercent }}
+    >
       <ChartComponent data={chartData} options={options} />
     </div>
   );

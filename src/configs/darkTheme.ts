@@ -11,12 +11,13 @@ export const darkTheme: StyleTheme = {
     list: "list-inside text-gray-300 mb-2 space-y-1",
     math: "text-gray-200 text-lg",
   },
-  input: "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-  hints:{
+  input:
+    "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+  hints: {
     text: "text-xs text-gray-400",
     key: "text-xs text-gray-400 border border-gray-600 rounded",
   },
-  buttons:{
+  buttons: {
     common:
       "font-bold text-gray-100 bg-indigo-900/50 border border-indigo-800 rounded-md transition-colors hover:bg-indigo-700/70",
     small:
@@ -26,18 +27,18 @@ export const darkTheme: StyleTheme = {
     tabSmallActive:
       "text-xs font-semibold text-gray-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
   },
-  dropdown:{
+  dropdown: {
     container: "bg-slate-800 border border-indigo-600 rounded-md shadow-lg",
     item: "text-white text-left hover:bg-indigo-600/50 transition-colors whitespace-nowrap",
     itemActive: "border-l-2 bg-indigo-900/60 font-bold",
   },
-  table:{
+  table: {
     cornerCell: "bg-indigo-900/50 font-bold text-gray-200 text-lg",
     headers: "bg-indigo-900/80 font-semibold text-gray-200 text-lg",
     rows: "bg-indigo-950/5 text-gray-200",
     border: "border-indigo-700",
   },
-  divider:{
+  divider: {
     border: "border-gray-500",
     gradient: "from-transparent via-gray-500 to-transparent",
     text: "text-gray-500 text-sm",
@@ -50,11 +51,11 @@ export const darkTheme: StyleTheme = {
     neutral: "bg-indigo-300/20 text-gray-200 border-gray-500",
     quote: "bg-indigo-900/50 border-l-4 border-white text-white italic",
   },
-  code:{
+  code: {
     header: "bg-indigo-900/80 text-white border-b border-indigo-500",
     language: "text-xs font-semibold text-indigo-300 mt-1 text-right",
   },
-  audioPlayer:{
+  audioPlayer: {
     container: "bg-indigo-900/50",
     playButton:
       "bg-indigo-700 hover:bg-indigo-600 text-white transition-colors",
@@ -72,7 +73,7 @@ export const darkTheme: StyleTheme = {
     axisTickColor: "#e5e7eb", // gray-200
     gridLineColor: "rgba(255,255,255,0.1)",
   },
-  navigation:{
+  navigation: {
     row: "text-gray-50 focus:outline-none",
     rowActive:
       "font-semibold text-gray-50 bg-indigo-900/60 border-l-2 border-blue-50 transition-colors",

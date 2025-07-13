@@ -15,7 +15,7 @@ const TitleBlock: React.FC<{
       .trim()
       .replace(/\s+/g, "-")
       .replace(/[^\w-]/g, "");
-      
+
   const getSpacingClasses = () => {
     switch (titleData.spacing) {
       case "small":

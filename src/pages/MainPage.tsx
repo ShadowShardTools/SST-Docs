@@ -10,6 +10,7 @@ import Sidebar from "../layouts/Sidebar";
 import Navigation from "../layouts/Navigation/Navigation";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
 import type { StyleTheme } from "../types/entities/StyleTheme";
+import SearchModal from "../layouts/SearchModal";
 
 const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
 
@@ -20,6 +21,8 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
   const [selectedItem, setSelectedItem] = useState<DocItem | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState<DocItem[]>([]);
 
   const {
     versions,
@@ -59,6 +62,39 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const lower = searchTerm.toLowerCase();
+
+    const matches = items.filter(
+      (item) =>
+        item.title.toLowerCase().includes(lower) ||
+        item.content.some((block) => {
+          if (
+            ["description", "quote"].includes(block.type ?? "") ||
+            block.type?.startsWith("title")
+          ) {
+            return block.textData?.text?.toLowerCase().includes(lower);
+          }
+          if (block.type === "list") {
+            return block.listData?.items?.some((li) =>
+              li.toLowerCase().includes(lower),
+            );
+          }
+          if (block.type === "code") {
+            return block.codeData?.content?.toLowerCase().includes(lower);
+          }
+          return false;
+        }),
+    );
+
+    setSearchResults(matches);
+  }, [searchTerm, items]);
 
   const navigateToItem = useCallback(
     (item: DocItem, anchor?: string) => {
@@ -147,6 +183,18 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           {renderContent()}
         </div>
       </main>
+      <SearchModal
+        styles={styles}
+        isOpen={isSearchOpen}
+        onClose={() => {
+          setIsSearchOpen(false);
+          setSearchTerm("");
+        }}
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        results={searchResults}
+        onSelect={(item) => navigateToItem(item)}
+      />
     </div>
   );
 };

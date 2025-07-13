@@ -1,3 +1,4 @@
 export interface MathData {
-  expression: string;
+  expression?: string;
+  alignment?: "left" | "center" | "right";
 }

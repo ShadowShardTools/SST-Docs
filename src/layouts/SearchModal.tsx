@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { FixedSizeList as List } from "react-window";
 import type { DocItem } from "../types/entities/DocItem";
 import type { StyleTheme } from "../types/entities/StyleTheme";
 
@@ -18,6 +19,8 @@ const highlight = (text: string, term: string) =>
     '<mark class="bg-yellow-200">$1</mark>',
   );
 
+const ITEM_HEIGHT = 72;
+
 const SearchModal: React.FC<SearchModalProps> = ({
   styles,
   isOpen,
@@ -29,8 +32,9 @@ const SearchModal: React.FC<SearchModalProps> = ({
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<any>(null);
 
-  /* --------------------------- focus management -------------------------- */
+  // Focus input when modal opens
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -39,7 +43,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
     }
   }, [isOpen]);
 
-  /* ------------------------ keyboard navigation -------------------------- */
+  // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -71,10 +75,59 @@ const SearchModal: React.FC<SearchModalProps> = ({
     return () => window.removeEventListener("keydown", handler);
   }, [isOpen, selectedIndex, results, onClose, onSelect]);
 
-  /* Ensure selected index never exceeds results length */
   useEffect(() => {
-    setSelectedIndex((idx) => Math.min(idx, Math.max(0, results.length - 1)));
-  }, [results.length]);
+    listRef.current?.scrollToItem?.(selectedIndex, "smart");
+  }, [selectedIndex]);
+
+  // Memoized processed results
+  const processedResults = useMemo(() => {
+    const lower = searchTerm.toLowerCase();
+
+    return results.map((item) => {
+      const matchBlock = item.content.find((block) => {
+        const type = block.type ?? "";
+
+        if (type === "text" || type === "message-box" || type === "title") {
+          return (
+            block.textData?.text?.toLowerCase().includes(lower) ||
+            block.titleData?.text?.toLowerCase().includes(lower)
+          );
+        }
+
+        if (type === "list") {
+          return block.listData?.items?.some((li) =>
+            li.toLowerCase().includes(lower),
+          );
+        }
+
+        if (type === "code") {
+          return block.codeData?.content?.toLowerCase().includes(lower);
+        }
+
+        return false;
+      });
+
+      let snippet: string | undefined;
+      if (matchBlock) {
+        const type = matchBlock.type ?? "";
+        if (type === "list") {
+          snippet = matchBlock.listData?.items?.find((li) =>
+            li.toLowerCase().includes(lower),
+          );
+        } else if (
+          type === "text" ||
+          type === "message-box" ||
+          type.startsWith("title")
+        ) {
+          snippet = matchBlock.textData?.text;
+        } else if (type === "code") {
+          snippet = matchBlock.codeData?.content;
+        }
+      }
+
+      return { ...item, snippet };
+    });
+  }, [results, searchTerm]);
 
   if (!isOpen) return null;
 
@@ -87,7 +140,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
         className={`w-full max-w-2xl rounded-lg shadow-lg overflow-hidden border ${styles.searchModal.borders}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* search input */}
+        {/* Search input */}
         <div
           className={`flex items-center border-b px-4 py-2 ${styles.searchModal.header} ${styles.searchModal.borders}`}
         >
@@ -104,76 +157,60 @@ const SearchModal: React.FC<SearchModalProps> = ({
           />
         </div>
 
-        {/* results */}
-        <div
-          className={`max-h-96 overflow-y-auto ${styles.searchModal.resultBackground}`}
-        >
+        {/* Results */}
+        <div className={`max-h-96 ${styles.searchModal.resultBackground}`}>
           {searchTerm ? (
-            results.length === 0 ? (
+            processedResults.length === 0 ? (
               <p className="text-gray-500 text-sm text-center py-6">
                 No results found
               </p>
             ) : (
-              <ul>
-                {results.map((item, i) => {
-                  const lower = searchTerm.toLowerCase();
-                  const matchBlock = item.content.find((block) => {
-                    if (
-                      ["description", "quote"].includes(block.type) ||
-                      block.type.startsWith("title")
-                    )
-                      return block.content.toLowerCase().includes(lower);
-                    if (block.type === "list")
-                      return block.listItems?.some((li) =>
-                        li.toLowerCase().includes(lower),
-                      );
-                    if (block.type === "code")
-                      return block.content.toLowerCase().includes(lower);
-                    return false;
-                  });
-
-                  const snippet =
-                    matchBlock?.type === "list"
-                      ? matchBlock.listItems?.find((li) =>
-                          li.toLowerCase().includes(lower),
-                        )
-                      : matchBlock?.content;
-
+              <List
+                height={384}
+                itemCount={processedResults.length}
+                itemSize={ITEM_HEIGHT}
+                width="100%"
+                ref={listRef}
+              >
+                {({ index, style }) => {
+                  const item = processedResults[index];
                   return (
-                    <li
+                    <div
                       key={item.id}
                       onClick={() => {
                         onSelect(item);
                         onClose();
                       }}
-                      className={`px-4 py-3 cursor-pointer ${selectedIndex === i ? styles.searchModal.selectedItem : styles.searchModal.item}`}
+                      style={style}
+                      className={`px-4 py-3 cursor-pointer ${
+                        selectedIndex === index
+                          ? styles.searchModal.selectedItem
+                          : styles.searchModal.item
+                      }`}
                     >
-                      {/* title */}
                       <div
-                        className={`${styles.text.searchModalItemHeaderText}`}
+                        className={`${styles.searchModal.itemHeaderText}`}
                         dangerouslySetInnerHTML={{
                           __html: highlight(item.title, searchTerm),
                         }}
                       />
-                      {/* snippet */}
-                      {snippet && (
+                      {item.snippet && (
                         <p
-                          className={`${styles.text.searchModalItemFoundSectionText}`}
+                          className={`${styles.searchModal.itemFoundSectionText}`}
                           dangerouslySetInnerHTML={{
-                            __html: highlight(snippet, searchTerm),
+                            __html: highlight(item.snippet, searchTerm),
                           }}
                         />
                       )}
-                      {/* tags */}
                       {item.tags?.length && (
-                        <div className={`${styles.text.searchModalItemTags}`}>
+                        <div className={`${styles.searchModal.itemTags}`}>
                           {item.tags.join(", ")}
                         </div>
                       )}
-                    </li>
+                    </div>
                   );
-                })}
-              </ul>
+                }}
+              </List>
             )
           ) : (
             <p className="text-gray-400 text-sm text-center py-6">
@@ -182,7 +219,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
           )}
         </div>
 
-        {/* footer */}
+        {/* Footer */}
         <div
           className={`border-t px-4 py-2 flex justify-between items-center ${styles.searchModal.footer} ${styles.searchModal.borders}`}
         >
