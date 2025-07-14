@@ -19,6 +19,7 @@ export interface Content {
     | "message-box"
     | "table"
     | "image"
+    | "divider"
     | "audio"
     | "youtube"
     | "code"

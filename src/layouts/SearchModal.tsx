@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { FixedSizeList as List } from "react-window";
 import type { DocItem } from "../types/entities/DocItem";
 import type { StyleTheme } from "../types/entities/StyleTheme";
@@ -13,13 +13,18 @@ interface SearchModalProps {
   onSelect: (item: DocItem) => void;
 }
 
-const highlight = (text: string, term: string) =>
-  text.replace(
-    new RegExp(`(${term})`, "ig"),
+const highlight = (text: string, term: string) => {
+  if (!term.trim()) return text;
+
+  // Escape special regex characters
+  const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(
+    new RegExp(`(${escapedTerm})`, "gi"),
     '<mark class="bg-yellow-200">$1</mark>',
   );
+};
 
-const ITEM_HEIGHT = 72;
+const ITEM_HEIGHT = 92;
 
 const SearchModal: React.FC<SearchModalProps> = ({
   styles,
@@ -32,102 +37,188 @@ const SearchModal: React.FC<SearchModalProps> = ({
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<any>(null);
+  const listRef = useRef<List>(null);
+
+  // Generate snippet with context around search term
+  const generateSnippet = useCallback((item: DocItem, term: string) => {
+    const termLower = term.toLowerCase();
+
+    // First try to find in title
+    if (item.title.toLowerCase().includes(termLower)) {
+      return item.title;
+    }
+
+    // Then search through content
+    for (const content of item.content) {
+      let text = '';
+
+      if (content.textData?.text) {
+        text = content.textData.text;
+      } else if (content.titleData?.text) {
+        text = content.titleData.text;
+      } else if (content.messageBoxData?.text) {
+        text = content.messageBoxData.text;
+      } else if (content.codeData?.content) {
+        text = content.codeData.content;
+      } else if (content.listData?.items) {
+        text = content.listData.items.join(' ');
+      }
+
+      if (text && text.toLowerCase().includes(termLower)) {
+        const index = text.toLowerCase().indexOf(termLower);
+        const start = Math.max(0, index - 50);
+        const end = Math.min(text.length, index + term.length + 50);
+        let snippet = text.substring(start, end);
+
+        if (start > 0) snippet = '...' + snippet;
+        if (end < text.length) snippet = snippet + '...';
+
+        return snippet;
+      }
+    }
+
+    // Fallback to tags
+    if (item.tags) {
+      const matchingTag = item.tags.find(tag => tag.toLowerCase().includes(termLower));
+      if (matchingTag) {
+        return `Tag: ${matchingTag}`;
+      }
+    }
+
+    return '';
+  }, []);
+
+  // Process and filter results based on search term
+  const processedResults = useMemo(() => {
+    if (!searchTerm.trim()) return [];
+
+    const term = searchTerm.toLowerCase();
+
+    return results
+      .filter(item => {
+        // Search in title
+        if (item.title.toLowerCase().includes(term)) return true;
+
+        // Search in content
+        const hasContentMatch = item.content.some(content => {
+          if (content.textData?.text?.toLowerCase().includes(term)) return true;
+          if (content.titleData?.text?.toLowerCase().includes(term)) return true;
+          if (content.listData?.items?.some(item => item.toLowerCase().includes(term))) return true;
+          if (content.messageBoxData?.text?.toLowerCase().includes(term)) return true;
+          if (content.codeData?.content?.toLowerCase().includes(term)) return true;
+          if (content.codeData?.name?.toLowerCase().includes(term)) return true;
+          return false;
+        });
+
+        if (hasContentMatch) return true;
+
+        // Search in tags
+        if (item.tags?.some(tag => tag.toLowerCase().includes(term))) return true;
+
+        return false;
+      })
+      .flatMap((item) => {
+        const termLower = searchTerm.toLowerCase();
+        const matches: {
+          item: DocItem;
+          snippet: string;
+          blockIndex?: number;
+        }[] = [];
+
+        if (item.title.toLowerCase().includes(termLower)) {
+          matches.push({ item, snippet: item.title });
+        }
+
+        item.content.forEach((block, blockIndex) => {
+          let text = '';
+          if (block.titleData?.text?.toLowerCase().includes(termLower)) {
+            text = block.titleData.text;
+          } else if (block.textData?.text?.toLowerCase().includes(termLower)) {
+            text = block.textData.text;
+          } else if (block.messageBoxData?.text?.toLowerCase().includes(termLower)) {
+            text = block.messageBoxData.text;
+          } else if (
+            block.listData?.items?.some((li) =>
+              li.toLowerCase().includes(termLower),
+            )
+          ) {
+            text = block.listData.items.join(" ");
+          } else if (block.codeData?.content?.toLowerCase().includes(termLower)) {
+            text = block.codeData.content;
+          }
+
+          if (text) {
+            const idx = text.toLowerCase().indexOf(termLower);
+            const snippet = `${idx > 0 ? "..." : ""}${text.substring(
+              idx - 30 > 0 ? idx - 30 : 0,
+              idx + termLower.length + 30,
+            )}...`;
+            matches.push({ item, snippet, blockIndex });
+          }
+        });
+
+        item.tags?.forEach((tag) => {
+          if (tag.toLowerCase().includes(termLower)) {
+            matches.push({ item, snippet: `Tag: ${tag}` });
+          }
+        });
+
+        return matches;
+      });
+  }, [results, searchTerm, generateSnippet]);
+
+  // Reset selected index when results change
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [processedResults]);
 
   // Focus input when modal opens
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    } else {
-      setSelectedIndex(0);
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
     }
   }, [isOpen]);
 
   // Keyboard navigation
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (!isOpen) return;
 
-      switch (e.key) {
-        case "Escape":
-          e.preventDefault();
-          onClose();
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          setSelectedIndex(prev =>
+            prev < processedResults.length - 1 ? prev + 1 : prev
+          );
           break;
-        case "ArrowDown":
-          e.preventDefault();
-          setSelectedIndex((prev) => Math.min(prev + 1, results.length - 1));
+        case 'ArrowUp':
+          event.preventDefault();
+          setSelectedIndex(prev => prev > 0 ? prev - 1 : prev);
           break;
-        case "ArrowUp":
-          e.preventDefault();
-          setSelectedIndex((prev) => Math.max(prev - 1, 0));
-          break;
-        case "Enter":
-          e.preventDefault();
-          if (results[selectedIndex]) {
-            onSelect(results[selectedIndex]);
+        case 'Enter':
+          event.preventDefault();
+          if (processedResults[selectedIndex]) {
+            onSelect(processedResults[selectedIndex].item);
             onClose();
           }
+          break;
+        case 'Escape':
+          event.preventDefault();
+          onClose();
           break;
       }
     };
 
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [isOpen, selectedIndex, results, onClose, onSelect]);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, processedResults, selectedIndex, onSelect, onClose]);
 
+  // Scroll to selected item
   useEffect(() => {
-    listRef.current?.scrollToItem?.(selectedIndex, "smart");
+    if (listRef.current && selectedIndex >= 0) {
+      listRef.current.scrollToItem(selectedIndex, 'smart');
+    }
   }, [selectedIndex]);
-
-  // Memoized processed results
-  const processedResults = useMemo(() => {
-    const lower = searchTerm.toLowerCase();
-
-    return results.map((item) => {
-      const matchBlock = item.content.find((block) => {
-        const type = block.type ?? "";
-
-        if (type === "text" || type === "message-box" || type === "title") {
-          return (
-            block.textData?.text?.toLowerCase().includes(lower) ||
-            block.titleData?.text?.toLowerCase().includes(lower)
-          );
-        }
-
-        if (type === "list") {
-          return block.listData?.items?.some((li) =>
-            li.toLowerCase().includes(lower),
-          );
-        }
-
-        if (type === "code") {
-          return block.codeData?.content?.toLowerCase().includes(lower);
-        }
-
-        return false;
-      });
-
-      let snippet: string | undefined;
-      if (matchBlock) {
-        const type = matchBlock.type ?? "";
-        if (type === "list") {
-          snippet = matchBlock.listData?.items?.find((li) =>
-            li.toLowerCase().includes(lower),
-          );
-        } else if (
-          type === "text" ||
-          type === "message-box" ||
-          type.startsWith("title")
-        ) {
-          snippet = matchBlock.textData?.text;
-        } else if (type === "code") {
-          snippet = matchBlock.codeData?.content;
-        }
-      }
-
-      return { ...item, snippet };
-    });
-  }, [results, searchTerm]);
 
   if (!isOpen) return null;
 
@@ -148,74 +239,76 @@ const SearchModal: React.FC<SearchModalProps> = ({
             ref={inputRef}
             type="text"
             value={searchTerm}
-            onChange={(e) => {
-              onSearchChange(e.target.value);
-              setSelectedIndex(0);
-            }}
+            onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search documentation..."
-            className="flex-1 px-3 py-2 text-sm focus:outline-none"
+            className="flex-1 px-3 py-2 text-sm focus:outline-none bg-transparent"
           />
         </div>
 
         {/* Results */}
         <div className={`max-h-96 ${styles.searchModal.resultBackground}`}>
-          {searchTerm ? (
-            processedResults.length === 0 ? (
-              <p className="text-gray-500 text-sm text-center py-6">
-                No results found
-              </p>
-            ) : (
-              <List
-                height={384}
-                itemCount={processedResults.length}
-                itemSize={ITEM_HEIGHT}
-                width="100%"
-                ref={listRef}
-              >
-                {({ index, style }) => {
-                  const item = processedResults[index];
-                  return (
-                    <div
-                      key={item.id}
-                      onClick={() => {
-                        onSelect(item);
-                        onClose();
-                      }}
-                      style={style}
-                      className={`px-4 py-3 cursor-pointer ${
-                        selectedIndex === index
-                          ? styles.searchModal.selectedItem
-                          : styles.searchModal.item
-                      }`}
-                    >
-                      <div
-                        className={`${styles.searchModal.itemHeaderText}`}
-                        dangerouslySetInnerHTML={{
-                          __html: highlight(item.title, searchTerm),
-                        }}
-                      />
-                      {item.snippet && (
-                        <p
-                          className={`${styles.searchModal.itemFoundSectionText}`}
-                          dangerouslySetInnerHTML={{
-                            __html: highlight(item.snippet, searchTerm),
-                          }}
-                        />
-                      )}
-                      {item.tags?.length && (
-                        <div className={`${styles.searchModal.itemTags}`}>
-                          {item.tags.join(", ")}
-                        </div>
-                      )}
-                    </div>
-                  );
-                }}
-              </List>
-            )
-          ) : (
+          {!searchTerm.trim() ? (
             <p className="text-gray-400 text-sm text-center py-6">
               Start typing to search...
             </p>
+          ) : processedResults.length === 0 ? (
+            <p className="text-gray-500 text-sm text-center py-6">
+              No results found
+            </p>
+          ) : (
+            <List
+              itemCount={processedResults.length}
+              itemSize={ITEM_HEIGHT}
+              height={Math.min(384, processedResults.length * ITEM_HEIGHT)}
+              width="100%"
+              ref={listRef}
+            >
+              {({ index, style }) => {
+                const { item, snippet } = processedResults[index];
+                return (
+                  <div
+                    key={`${item.id}-${index}`}
+                    style={style}
+                    onClick={() => {
+                      onSelect(item);
+                      onClose();
+                    }}
+                    className={`px-4 py-1 cursor-pointer border-b last:border-b-0 ${selectedIndex === index
+                        ? styles.searchModal.selectedItem
+                        : styles.searchModal.item
+                      }`}
+                  >
+                    <div
+                      className={`mb-1 ${styles.searchModal.itemHeaderText}`}
+                      dangerouslySetInnerHTML={{
+                        __html: highlight(item.title, searchTerm),
+                      }}
+                    />
+                    {snippet && (
+                      <p
+                        className={`text-xs mb-2 line-clamp-2 ${styles.searchModal.itemFoundSectionText}`}
+                        dangerouslySetInnerHTML={{
+                          __html: highlight(snippet, searchTerm),
+                        }}
+                      />
+                    )}
+                    {Array.isArray(item.tags) && item.tags.length > 0 && (
+                      <div className={`flex flex-wrap gap-1`}>
+                        {item.tags?.map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className={`px-2 py-0.5 ${styles.searchModal.itemTags}`}
+                            dangerouslySetInnerHTML={{
+                              __html: highlight(tag, searchTerm),
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }}
+            </List>
           )}
         </div>
 
@@ -226,33 +319,33 @@ const SearchModal: React.FC<SearchModalProps> = ({
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
+                className={`px-1.5 py-0.5 pointer-events-none text-xs ${styles.hints.key}`}
               >
                 ↑
               </kbd>
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
+                className={`px-1.5 py-0.5 pointer-events-none text-xs ${styles.hints.key}`}
               >
                 ↓
               </kbd>
-              <span className={`${styles.hints.text}`}>to navigate</span>
+              <span className={`text-xs ${styles.hints.text}`}>to navigate</span>
             </div>
             <div className="flex items-center gap-1">
               <kbd
-                className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
+                className={`px-1.5 py-0.5 pointer-events-none text-xs ${styles.hints.key}`}
               >
                 Enter
               </kbd>
-              <span className={`${styles.hints.text}`}>to select</span>
+              <span className={`text-xs ${styles.hints.text}`}>to select</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <kbd
-              className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
+              className={`px-1.5 py-0.5 pointer-events-none text-xs ${styles.hints.key}`}
             >
               Esc
             </kbd>
-            <span className={`${styles.hints.text}`}>to close</span>
+            <span className={`text-xs ${styles.hints.text}`}>to close</span>
           </div>
         </div>
       </div>

@@ -97,6 +97,6 @@ export const lightTheme: StyleTheme = {
     selectedItem: "bg-stone-300 hover:bg-stone-300/70",
     itemHeaderText: "font-bold text-stone-600",
     itemFoundSectionText: "text-xs text-gray-500 mt-1 line-clamp-2",
-    itemTags: "text-[11px] text-gray-400 mt-0.5 italic truncate",
+    itemTags: "bg-gray-100 rounded-full text-[11px] text-gray-400 mt-0.5 italic truncate",
   },
 };

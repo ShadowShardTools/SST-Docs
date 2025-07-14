@@ -89,7 +89,7 @@ export const darkTheme: StyleTheme = {
     selectedItem: "bg-indigo-900/60 hover:bg-indigo-900/80",
     itemHeaderText: "font-bold text-indigo-400",
     itemFoundSectionText: "text-xs text-gray-300 mt-1 line-clamp-2",
-    itemTags: "text-[11px] text-gray-500 mt-0.5 italic truncate",
+    itemTags: "bg-indigo-400/40 rounded-full text-[11px] text-gray-100 mt-0.5 italic truncate",
   },
   sections: {
     siteBackground: "bg-slate-950",

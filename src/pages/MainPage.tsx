@@ -63,6 +63,7 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Search functionality
   useEffect(() => {
     if (!searchTerm.trim()) {
       setSearchResults([]);
@@ -75,22 +76,42 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       (item) =>
         item.title.toLowerCase().includes(lower) ||
         item.content.some((block) => {
-          if (
-            ["description", "quote"].includes(block.type ?? "") ||
-            block.type?.startsWith("title")
-          ) {
-            return block.textData?.text?.toLowerCase().includes(lower);
+          // Check textData for text and title content
+          if (block.textData?.text?.toLowerCase().includes(lower)) {
+            return true;
           }
-          if (block.type === "list") {
-            return block.listData?.items?.some((li) =>
-              li.toLowerCase().includes(lower),
-            );
+          
+          // Check titleData for title content
+          if (block.titleData?.text?.toLowerCase().includes(lower)) {
+            return true;
           }
-          if (block.type === "code") {
-            return block.codeData?.content?.toLowerCase().includes(lower);
+          
+          // Check messageBoxData for message box content
+          if (block.messageBoxData?.text?.toLowerCase().includes(lower)) {
+            return true;
           }
+          
+          // Check list items
+          if (block.listData?.items?.some((li) =>
+            li.toLowerCase().includes(lower)
+          )) {
+            return true;
+          }
+          
+          // Check code content
+          if (block.codeData?.content?.toLowerCase().includes(lower)) {
+            return true;
+          }
+          
+          // Check code name/filename
+          if (block.codeData?.name?.toLowerCase().includes(lower)) {
+            return true;
+          }
+          
           return false;
-        }),
+        }) ||
+        // Also search in tags
+        item.tags?.some(tag => tag.toLowerCase().includes(lower))
     );
 
     setSearchResults(matches);
@@ -105,11 +126,24 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     [navigate],
   );
 
+  // Handle search modal close
+  const handleSearchClose = useCallback(() => {
+    setIsSearchOpen(false);
+    setSearchTerm("");
+    setSearchResults([]);
+  }, []);
+
+  // Handle search item selection
+  const handleSearchSelect = useCallback((item: DocItem) => {
+    navigateToItem(item);
+    handleSearchClose();
+  }, [navigateToItem, handleSearchClose]);
+
   if (error.versions) {
     return (
       <ErrorMessage
         message={error.versions}
-        onRetry={() => location.reload()}
+        onRetry={() => window.location.reload()}
       />
     );
   }
@@ -183,17 +217,15 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           {renderContent()}
         </div>
       </main>
+      
       <SearchModal
         styles={styles}
         isOpen={isSearchOpen}
-        onClose={() => {
-          setIsSearchOpen(false);
-          setSearchTerm("");
-        }}
+        onClose={handleSearchClose}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         results={searchResults}
-        onSelect={(item) => navigateToItem(item)}
+        onSelect={handleSearchSelect}
       />
     </div>
   );
