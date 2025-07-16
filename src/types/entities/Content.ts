@@ -16,14 +16,14 @@ export interface Content {
     | "title"
     | "text"
     | "list"
-    | "message-box"
     | "table"
-    | "image"
+    | "message-box"
     | "divider"
+    | "image"
     | "audio"
     | "youtube"
-    | "code"
     | "math"
+    | "code"
     | "chart"
     | "graph";
 
@@ -31,12 +31,12 @@ export interface Content {
   textData?: TextData;
   listData?: ListData;
   tableData?: TableData;
+  messageBoxData?: MessageBoxData;
   dividerData?: DividerData;
   imageData?: ImageData;
-  messageBoxData?: MessageBoxData;
   audioData?: AudioData;
   mathData?: MathData;
-  graphData?: GraphData;
   codeData?: CodeData;
   chartData?: ChartData;
+  graphData?: GraphData;
 }

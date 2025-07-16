@@ -80,6 +80,18 @@ export const lightTheme: StyleTheme = {
     rowFocused: "ring-2 ring-stone-500",
     rowHover: "hover:text-stone-500 transition-colors",
   },
+  searchModal: {
+    header: "bg-white",
+    resultBackground: "bg-stone-100",
+    footer: "bg-white",
+    borders: "border-gray-800",
+    item: "hover:bg-stone-300/70 border-b border-stone-300",
+    selectedItem: "bg-stone-300 hover:bg-stone-300/70 border-b border-stone-300",
+    itemHeaderText: "font-bold text-stone-600",
+    itemFoundSectionText: "text-xs text-gray-500 mt-1 line-clamp-2",
+    itemTags:
+      "bg-stone-400 rounded-full text-[11px] text-gray-50 mt-0.5 italic truncate",
+  },
   sections: {
     siteBackground: "bg-stone-400",
     siteBorders: "border-x border-stone-600",
@@ -87,16 +99,5 @@ export const lightTheme: StyleTheme = {
     headerMobileBackground: "bg-stone-50 border-b border-stone-400 shadow-md",
     sidebarBackground: "bg-stone-50 border-r border-stone-400",
     contentBackground: "bg-gray-100",
-  },
-  searchModal: {
-    header: "bg-white",
-    resultBackground: "bg-stone-100",
-    footer: "bg-white",
-    borders: "border-gray-800",
-    item: "hover:bg-stone-300/70",
-    selectedItem: "bg-stone-300 hover:bg-stone-300/70",
-    itemHeaderText: "font-bold text-stone-600",
-    itemFoundSectionText: "text-xs text-gray-500 mt-1 line-clamp-2",
-    itemTags: "bg-gray-100 rounded-full text-[11px] text-gray-400 mt-0.5 italic truncate",
   },
 };

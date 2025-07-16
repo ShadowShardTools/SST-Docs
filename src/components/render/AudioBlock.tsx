@@ -1,35 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Play, Pause } from "lucide-react";
 import type { StyleTheme } from "../../types/entities/StyleTheme";
+import { formatTime } from "../AudioBlock/formatTime";
+import type { AudioData } from "../../types/data/AudioData";
 
 interface AudioBlockProps {
   styles: StyleTheme;
-  audioSrc?: string;
-  audioCaption?: string;
-  audioMimeType?: string;
+  audioData: AudioData;
 }
-
-const formatTime = (sec: number) => {
-  if (isNaN(sec)) return "0:00";
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60)
-    .toString()
-    .padStart(2, "0");
-  return `${m}:${s}`;
-};
 
 const AudioBlock: React.FC<AudioBlockProps> = ({
   styles,
-  audioSrc = "",
-  audioCaption,
-  audioMimeType = "audio/mpeg",
+  audioData,
 }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [current, setCurrent] = useState(0);
 
-  /* ---------- sync state with <audio> ---------- */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -49,18 +37,16 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
     };
   }, []);
 
-  /* ---------- reload media when `audioSrc` changes ---------- */
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.load(); // <—— forces the browser to re-evaluate sources
+      audioRef.current.load();
       setIsPlaying(false);
       setCurrent(0);
       setDuration(0);
     }
-  }, [audioSrc]);
+  }, [audioData.src]);
 
-  /* ---------- controls ---------- */
-  const togglePlay = async () => {
+  const togglePlay = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -69,39 +55,33 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
         audio.pause();
         setIsPlaying(false);
       } else {
-        await audio.play(); // wait for browser approval / decoding
+        await audio.play();
         setIsPlaying(true);
       }
     } catch (err) {
-      // Most failures are autoplay / decoding issues
       console.error("Cannot play audio:", err);
       setIsPlaying(false);
     }
-  };
+  }, [isPlaying]);
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
     if (!audio) return;
     const t = Number(e.target.value);
     audio.currentTime = t;
     setCurrent(t);
-  };
+  }, []);
 
-  /* ---------- UI ---------- */
   return (
     <div className="mb-6">
-      {/* Hidden audio element – use `src` attr instead of nested <source> */}
-      <audio ref={audioRef} src={audioSrc} preload="metadata">
-        {/* fallback for archaic browsers */}
-        <source src={audioSrc} type={audioMimeType} />
+      <audio ref={audioRef} src={audioData.src} preload="metadata">
+        <source src={audioData.src} type={audioData.mimeType} />
         Your browser does not support the audio element.
       </audio>
 
-      {/* Custom controls */}
       <div
         className={`flex items-center gap-3 rounded-md px-4 py-3 ${styles.audioPlayer.container}`}
       >
-        {/* Play / Pause */}
         <button
           onClick={togglePlay}
           className={`p-2 rounded-full cursor-pointer ${styles.audioPlayer.playButton}`}
@@ -113,12 +93,10 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
           )}
         </button>
 
-        {/* Time – current */}
         <span className={`w-12 select-none ${styles.audioPlayer.time}`}>
           {formatTime(current)}
         </span>
 
-        {/* Progress bar */}
         <input
           type="range"
           min={0}
@@ -135,14 +113,13 @@ const AudioBlock: React.FC<AudioBlockProps> = ({
             ${styles.audioPlayer.sliderThumb}`}
         />
 
-        {/* Time – duration */}
         <span className={`w-12 select-none ${styles.audioPlayer.time}`}>
           {formatTime(duration)}
         </span>
       </div>
 
-      {audioCaption && (
-        <p className={styles.text.alternative}>{audioCaption}</p>
+      {audioData.caption && (
+        <p className={styles.text.alternative}>{audioData.caption}</p>
       )}
     </div>
   );

@@ -85,11 +85,12 @@ export const darkTheme: StyleTheme = {
     resultBackground: "bg-zinc-900",
     footer: "bg-zinc-850",
     borders: "border-gray-500",
-    item: "hover:bg-indigo-900/80",
-    selectedItem: "bg-indigo-900/60 hover:bg-indigo-900/80",
+    item: "hover:bg-indigo-900/80 border-b border-indigo-400/30",
+    selectedItem: "bg-indigo-900/60 hover:bg-indigo-900/80 border-y border-indigo-400/30",
     itemHeaderText: "font-bold text-indigo-400",
     itemFoundSectionText: "text-xs text-gray-300 mt-1 line-clamp-2",
-    itemTags: "bg-indigo-400/40 rounded-full text-[11px] text-gray-100 mt-0.5 italic truncate",
+    itemTags:
+      "bg-indigo-400/40 rounded-full text-[11px] text-gray-100 mt-0.5 italic truncate",
   },
   sections: {
     siteBackground: "bg-slate-950",

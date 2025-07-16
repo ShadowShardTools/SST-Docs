@@ -23,8 +23,8 @@ const ListBlock: React.FC<ListBlockProps> = ({ index, styles, listData }) => {
     listData.alignment === "center"
       ? "text-center"
       : listData.alignment === "right"
-      ? "text-right"
-      : "text-left";
+        ? "text-right"
+        : "text-left";
 
   const listClass = [
     styles.text.list,

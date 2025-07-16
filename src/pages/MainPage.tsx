@@ -10,7 +10,7 @@ import Sidebar from "../layouts/Sidebar";
 import Navigation from "../layouts/Navigation/Navigation";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
 import type { StyleTheme } from "../types/entities/StyleTheme";
-import SearchModal from "../layouts/SearchModal";
+import SearchModal from "../layouts/SearchModal/SearchModal";
 
 const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
 
@@ -80,38 +80,40 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           if (block.textData?.text?.toLowerCase().includes(lower)) {
             return true;
           }
-          
+
           // Check titleData for title content
           if (block.titleData?.text?.toLowerCase().includes(lower)) {
             return true;
           }
-          
+
           // Check messageBoxData for message box content
           if (block.messageBoxData?.text?.toLowerCase().includes(lower)) {
             return true;
           }
-          
+
           // Check list items
-          if (block.listData?.items?.some((li) =>
-            li.toLowerCase().includes(lower)
-          )) {
+          if (
+            block.listData?.items?.some((li) =>
+              li.toLowerCase().includes(lower),
+            )
+          ) {
             return true;
           }
-          
+
           // Check code content
           if (block.codeData?.content?.toLowerCase().includes(lower)) {
             return true;
           }
-          
+
           // Check code name/filename
           if (block.codeData?.name?.toLowerCase().includes(lower)) {
             return true;
           }
-          
+
           return false;
         }) ||
         // Also search in tags
-        item.tags?.some(tag => tag.toLowerCase().includes(lower))
+        item.tags?.some((tag) => tag.toLowerCase().includes(lower)),
     );
 
     setSearchResults(matches);
@@ -134,10 +136,13 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   }, []);
 
   // Handle search item selection
-  const handleSearchSelect = useCallback((item: DocItem) => {
-    navigateToItem(item);
-    handleSearchClose();
-  }, [navigateToItem, handleSearchClose]);
+  const handleSearchSelect = useCallback(
+    (item: DocItem) => {
+      navigateToItem(item);
+      handleSearchClose();
+    },
+    [navigateToItem, handleSearchClose],
+  );
 
   if (error.versions) {
     return (
@@ -217,7 +222,7 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           {renderContent()}
         </div>
       </main>
-      
+
       <SearchModal
         styles={styles}
         isOpen={isSearchOpen}

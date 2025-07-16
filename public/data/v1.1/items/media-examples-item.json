@@ -144,9 +144,11 @@
     },
     {
       "type": "audio",
-      "audioSrc": "/SST-Docs/data/v1.1/audio/AudioSample.mp3",
-      "audioMimeType": "audio/mpeg",
-      "audioCaption": "Ambient sample"
+      "audioData": {
+        "src": "/SST-Docs/data/v1.1/audio/AudioSample.mp3",
+        "mimeType": "audio/mpeg",
+        "caption": "Ambient sample"
+      }
     },
     {
       "type": "title",
