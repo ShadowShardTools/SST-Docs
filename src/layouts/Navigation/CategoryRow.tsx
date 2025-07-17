@@ -5,21 +5,32 @@ import type { Category } from "../../types/entities/Category";
 import type { StyleTheme } from "../../types/entities/StyleTheme";
 
 export interface CategoryRowProps {
+  styles: StyleTheme;
   node: Category;
   depth: number;
+  active: boolean;
   expanded: boolean;
   focused: boolean;
   toggle: (id: string) => void;
-  styles: StyleTheme;
+  select: (c: Category) => void;
 }
 
 const CategoryRowBase = (
-  { node, depth, expanded, focused, toggle, styles }: CategoryRowProps,
+  {
+    styles,
+    node,
+    depth,
+    active,
+    expanded,
+    focused,
+    toggle,
+    select,
+  }: CategoryRowProps,
   ref: React.Ref<HTMLButtonElement>,
 ) => {
   const cls = useMemo(
-    () => rowClasses(false, focused, depth, styles),
-    [focused, depth, styles],
+    () => rowClasses(styles, active, focused, depth),
+    [styles, active, focused, depth],
   );
 
   return (
@@ -29,7 +40,7 @@ const CategoryRowBase = (
       role="treeitem"
       aria-expanded={expanded}
       aria-selected={focused}
-      onClick={() => toggle(node.id)}
+      onClick={() => select(node)}
       className={cls}
       style={{ justifyContent: "space-between", width: "100%" }}
     >
@@ -37,11 +48,18 @@ const CategoryRowBase = (
         <Folder className="w-4 h-4 shrink-0" />
         {node.title}
       </span>
-      {expanded ? (
-        <ChevronDown className="w-4 h-4 shrink-0" />
-      ) : (
-        <ChevronRight className="w-4 h-4 shrink-0" />
-      )}
+      <span
+        onClick={(e) => {
+          e.stopPropagation();
+          toggle(node.id);
+        }}
+      >
+        {expanded ? (
+          <ChevronDown className="w-4 h-4 shrink-0" />
+        ) : (
+          <ChevronRight className="w-4 h-4 shrink-0" />
+        )}
+      </span>
     </button>
   );
 };

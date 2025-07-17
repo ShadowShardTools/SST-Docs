@@ -11,6 +11,7 @@ export type StyleTheme = {
   audioPlayer: Record<string, string>;
   chart: Record<string, string>;
   navigation: Record<string, string>;
+  categoryCard: Record<string, string>;
   searchModal: Record<string, string>;
   sections: Record<string, string>;
 };

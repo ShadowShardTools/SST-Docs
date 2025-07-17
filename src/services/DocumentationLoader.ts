@@ -1,6 +1,7 @@
 import type { Version } from "../types/entities/Version";
 import type { Category } from "../types/entities/Category";
 import type { DocItem } from "../types/entities/DocItem";
+import type { Content } from "../types/entities/Content";
 
 interface IndexJson {
   categories: string[];
@@ -11,6 +12,7 @@ interface RawCategory {
   id: string;
   title: string;
   description?: string;
+  content?: Content[];
   docs?: string[];
   children?: string[];
 }
@@ -170,6 +172,7 @@ export class DocumentationLoader {
         id: raw.id,
         title: raw.title,
         description: raw.description,
+        content: raw.content ?? [],
         docs,
         children,
       };

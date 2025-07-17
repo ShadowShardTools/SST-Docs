@@ -12,25 +12,25 @@ export const lightTheme: StyleTheme = {
     math: "text-gray-800 text-lg",
   },
   hints: {
-    text: "text-xs text-gray-500",
-    key: "text-xs text-gray-500 border border-gray-300 rounded bg-white",
+    text: "text-xs text-stone-500",
+    key: "text-xs text-stone-500 border border-stone-300 rounded bg-white",
   },
   input:
-    "text-sm text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+    "text-sm text-stone-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   buttons: {
     common:
-      "font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+      "font-bold text-stone-700 bg-stone-100 border border-stone-300 rounded-md transition-colors hover:bg-stone-200",
     small:
-      "text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+      "text-xs font-semibold text-stone-700 bg-stone-100 border border-stone-300 rounded-md transition-colors hover:bg-stone-200",
     tabSmall:
-      "text-xs font-semibold text-gray-300 bg-stone-700 border border-gray-300 rounded-md transition-colors hover:bg-gray-200",
+      "text-xs font-semibold text-stone-300 bg-stone-700 border border-stone-300 rounded-md transition-colors hover:bg-stone-200",
     tabSmallActive:
-      "text-xs font-semibold text-gray-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
+      "text-xs font-semibold text-stone-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
   },
   dropdown: {
-    container: "bg-white border border-gray-300 rounded-md shadow-lg",
+    container: "bg-white border border-stone-300 rounded-md shadow-lg",
     item: "text-left hover:bg-stone-200/50 transition-colors whitespace-nowrap",
-    itemActive: "border-l-2 text-stone-700 bg-stone-200 font-bold",
+    itemActive: "border-l-2 'text-stone-700' bg-stone-200 font-bold",
   },
   table: {
     cornerCell: "bg-stone-900/80 font-bold text-white text-lg",
@@ -79,6 +79,12 @@ export const lightTheme: StyleTheme = {
       "font-semibold text-stone-700 bg-stone-200 border-l-2 border-stone-500 transition-colors",
     rowFocused: "ring-2 ring-stone-500",
     rowHover: "hover:text-stone-500 transition-colors",
+    hideOrShowHintsText: "text-stone-600 hover:underline focus:outline-none",
+  },
+  categoryCard: {
+    body: "bg-gray-200 border border-gray-300 rounded-xl text-left transition-colors hover:bg-stone-300",
+    headerText: "text-stone-700 text-lg font-semibold mb-1",
+    descriptionText: "text-sm text-gray-600 line-clamp-3",
   },
   searchModal: {
     header: "bg-white",
@@ -86,7 +92,8 @@ export const lightTheme: StyleTheme = {
     footer: "bg-white",
     borders: "border-gray-800",
     item: "hover:bg-stone-300/70 border-b border-stone-300",
-    selectedItem: "bg-stone-300 hover:bg-stone-300/70 border-b border-stone-300",
+    selectedItem:
+      "bg-stone-300 hover:bg-stone-300/70 border-b border-stone-300",
     itemHeaderText: "font-bold text-stone-600",
     itemFoundSectionText: "text-xs text-gray-500 mt-1 line-clamp-2",
     itemTags:

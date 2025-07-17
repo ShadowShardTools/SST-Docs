@@ -2,7 +2,10 @@ import type { DocItem } from "../../../types/entities/DocItem";
 import type { SearchMatch } from "../types";
 import { itemMatchesSearchTerm } from "./itemMatchesSearchTerm";
 
-export const processSearchResults = (results: DocItem[], searchTerm: string): SearchMatch[] => {
+export const processSearchResults = (
+  results: DocItem[],
+  searchTerm: string,
+): SearchMatch[] => {
   if (!searchTerm.trim()) return [];
 
   const termLower = searchTerm.toLowerCase();
@@ -24,9 +27,15 @@ export const processSearchResults = (results: DocItem[], searchTerm: string): Se
           text = block.titleData.text;
         } else if (block.textData?.text?.toLowerCase().includes(termLower)) {
           text = block.textData.text;
-        } else if (block.messageBoxData?.text?.toLowerCase().includes(termLower)) {
+        } else if (
+          block.messageBoxData?.text?.toLowerCase().includes(termLower)
+        ) {
           text = block.messageBoxData.text;
-        } else if (block.listData?.items?.some((li) => li.toLowerCase().includes(termLower))) {
+        } else if (
+          block.listData?.items?.some((li) =>
+            li.toLowerCase().includes(termLower),
+          )
+        ) {
           text = block.listData.items.join(" ");
         } else if (block.codeData?.content?.toLowerCase().includes(termLower)) {
           text = block.codeData.content;

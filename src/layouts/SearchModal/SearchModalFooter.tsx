@@ -23,9 +23,7 @@ const SearchModalFooter: React.FC<SearchModalFooterProps> = ({ styles }) => {
           >
             ↓
           </kbd>
-          <span className={`text-xs ${styles.hints.text}`}>
-            to navigate
-          </span>
+          <span className={`text-xs ${styles.hints.text}`}>to navigate</span>
         </div>
         <div className="flex items-center gap-1">
           <kbd

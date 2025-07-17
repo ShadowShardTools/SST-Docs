@@ -10,7 +10,7 @@ import { Search } from "lucide-react";
 import Branch from "./Branch";
 import DocRow from "./DocRow";
 import { buildEntries } from "./navigationUtils";
-import SidebarNavigationHints from "../../components/dialog/SidebarNavigationHints";
+import NavigationHints from "./NavigationHints";
 import type { Category } from "../../types/entities/Category";
 import type { DocItem } from "../../types/entities/DocItem";
 import type { StyleTheme } from "../../types/entities/StyleTheme";
@@ -23,9 +23,9 @@ export interface NavigationProps {
   styles: StyleTheme;
   tree: Category[];
   standaloneDocs?: DocItem[];
-  onSelect: (doc: DocItem) => void;
-  selectedItem?: DocItem | null;
-  isSearchOpen?: boolean; // if external search modal is open – skip nav hotkeys
+  onSelect: (entry: DocItem | Category) => void;
+  selectedItem?: DocItem | Category | null;
+  isSearchOpen?: boolean;
 }
 
 const Navigation: React.FC<NavigationProps> = ({
@@ -125,8 +125,8 @@ const Navigation: React.FC<NavigationProps> = ({
           e.preventDefault();
           if (entry.type === "doc") {
             onSelect(entry.item);
-          } else {
-            toggle(entry.id);
+          } else if (entry.type === "category") {
+            onSelect(entry.node);
           }
           break;
         }
@@ -170,7 +170,7 @@ const Navigation: React.FC<NavigationProps> = ({
       </div>
 
       {/* Hints */}
-      <SidebarNavigationHints styles={styles} className="mb-4" />
+      <NavigationHints styles={styles} />
 
       {/* Navigation tree */}
       <nav
@@ -193,7 +193,9 @@ const Navigation: React.FC<NavigationProps> = ({
                     ref={null}
                     doc={d}
                     depth={0}
-                    active={selectedItem?.id === d.id}
+                    active={
+                      selectedItem?.id === d.id && !("children" in selectedItem)
+                    }
                     focused={currentKey === `doc-${d.id}`}
                     select={onSelect}
                     styles={styles}

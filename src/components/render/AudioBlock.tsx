@@ -9,10 +9,7 @@ interface AudioBlockProps {
   audioData: AudioData;
 }
 
-const AudioBlock: React.FC<AudioBlockProps> = ({
-  styles,
-  audioData,
-}) => {
+const AudioBlock: React.FC<AudioBlockProps> = ({ styles, audioData }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);

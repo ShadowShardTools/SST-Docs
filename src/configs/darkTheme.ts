@@ -76,9 +76,15 @@ export const darkTheme: StyleTheme = {
   navigation: {
     row: "text-gray-50 focus:outline-none",
     rowActive:
-      "font-semibold text-gray-50 bg-indigo-900/60 border-l-2 border-blue-50 transition-colors",
+      "font-semibold text-gray-50 bg-indigo-900/60 border-l-2 border-white transition-colors",
     rowFocused: "ring-2 ring-indigo-600",
-    rowHover: "hover:text-indigo-600 transition-colors",
+    rowHover: "hover:text-indigo-500 transition-colors",
+    hideOrShowHintsText: "text-indigo-500 hover:underline focus:outline-none",
+  },
+  categoryCard: {
+    body: "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
+    headerText: "text-gray-50 text-lg font-semibold mb-1",
+    descriptionText: "text-sm text-indigo-400 line-clamp-3",
   },
   searchModal: {
     header: "bg-zinc-850 text-gray-400",
@@ -86,7 +92,8 @@ export const darkTheme: StyleTheme = {
     footer: "bg-zinc-850",
     borders: "border-gray-500",
     item: "hover:bg-indigo-900/80 border-b border-indigo-400/30",
-    selectedItem: "bg-indigo-900/60 hover:bg-indigo-900/80 border-y border-indigo-400/30",
+    selectedItem:
+      "bg-indigo-900/60 hover:bg-indigo-900/80 border-y border-indigo-400/30",
     itemHeaderText: "font-bold text-indigo-400",
     itemFoundSectionText: "text-xs text-gray-300 mt-1 line-clamp-2",
     itemTags:

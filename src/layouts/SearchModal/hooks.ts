@@ -4,7 +4,10 @@ import { processSearchResults } from "./utilities/processSearchResults";
 import type { DocItem } from "../../types/entities/DocItem";
 import type { SearchMatch } from "./types";
 
-export const useSearchResults = (results: DocItem[], searchTerm: string): SearchMatch[] => {
+export const useSearchResults = (
+  results: DocItem[],
+  searchTerm: string,
+): SearchMatch[] => {
   return useMemo(() => {
     return processSearchResults(results, searchTerm);
   }, [results, searchTerm]);
@@ -14,7 +17,7 @@ export const useKeyboardNavigation = (
   isOpen: boolean,
   processedResults: SearchMatch[],
   onSelect: (item: DocItem) => void,
-  onClose: () => void
+  onClose: () => void,
 ) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const listRef = useRef<List>(null);

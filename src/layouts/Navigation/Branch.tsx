@@ -12,9 +12,9 @@ export interface BranchProps {
   open: Record<string, boolean>;
   toggle: (id: string) => void;
   filter: string;
-  current: DocItem | null | undefined;
+  current: DocItem | Category | null | undefined;
   focusedKey: string | null;
-  select: (d: DocItem) => void;
+  select: (d: DocItem | Category) => void;
   styles: StyleTheme;
 }
 
@@ -35,15 +35,20 @@ const Branch: React.FC<BranchProps> = ({
   const catKey = `cat-${node.id}`;
   const catFocused = focusedKey === catKey;
 
+  const isCurrentCategory =
+    current && "children" in current && current.id === node.id;
+
   return (
     <div className={depth ? "ml-4 space-y-1" : "space-y-1"}>
       <CategoryRow
         ref={null}
         node={node}
         depth={depth}
+        active={Boolean(isCurrentCategory)}
         expanded={expanded}
         focused={catFocused}
         toggle={toggle}
+        select={select}
         styles={styles}
       />
 

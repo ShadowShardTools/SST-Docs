@@ -20,9 +20,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({
     <div
       onClick={handleClick}
       className={`h-full px-4 py-1 cursor-pointer ${
-        isSelected
-          ? styles.searchModal.selectedItem
-          : styles.searchModal.item
+        isSelected ? styles.searchModal.selectedItem : styles.searchModal.item
       }`}
     >
       {/* Item Title */}

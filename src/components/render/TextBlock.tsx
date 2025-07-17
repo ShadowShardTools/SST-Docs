@@ -8,7 +8,11 @@ const TextBlock: React.FC<{
   textData: TextData;
 }> = ({ index, styles, textData }) => {
   return (
-    <p key={index} className={`${styles.text.general}`}>
+    <p
+      key={index}
+      className={`${styles.text.general}`}
+      style={{ whiteSpace: "pre-line" }}
+    >
       {textData.text}
     </p>
   );

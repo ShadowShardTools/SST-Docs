@@ -8,8 +8,8 @@ export interface SidebarProps {
   styles: StyleTheme;
   tree: Category[];
   standaloneDocs?: DocItem[];
-  onSelect: (doc: DocItem) => void;
-  selectedItem?: DocItem | null;
+  onSelect: (entry: DocItem | Category) => void;
+  selectedItem?: DocItem | Category | null;
   isSearchOpen?: boolean;
 }
 

@@ -2,8 +2,18 @@ import React from "react";
 import { FixedSizeList as List } from "react-window";
 import SearchResultItem from "./SearchResultItem";
 import SearchModalFooter from "./SearchModalFooter";
-import { useSearchResults, useKeyboardNavigation, useInputFocus } from "./hooks";
-import { ITEM_HEIGHT, MAX_RESULTS_HEIGHT, SEARCH_PLACEHOLDER, EMPTY_SEARCH_MESSAGE, NO_RESULTS_MESSAGE } from "./constants";
+import {
+  useSearchResults,
+  useKeyboardNavigation,
+  useInputFocus,
+} from "./hooks";
+import {
+  ITEM_HEIGHT,
+  MAX_RESULTS_HEIGHT,
+  SEARCH_PLACEHOLDER,
+  EMPTY_SEARCH_MESSAGE,
+  NO_RESULTS_MESSAGE,
+} from "./constants";
 import type { SearchModalProps } from "./types";
 
 const SearchModal: React.FC<SearchModalProps> = ({
@@ -17,7 +27,12 @@ const SearchModal: React.FC<SearchModalProps> = ({
 }) => {
   // Custom hooks for separation of concerns
   const processedResults = useSearchResults(results, searchTerm);
-  const { selectedIndex, listRef } = useKeyboardNavigation(isOpen, processedResults, onSelect, onClose);
+  const { selectedIndex, listRef } = useKeyboardNavigation(
+    isOpen,
+    processedResults,
+    onSelect,
+    onClose,
+  );
   const inputRef = useInputFocus(isOpen);
 
   // Early return if modal is closed
@@ -66,7 +81,10 @@ const SearchModal: React.FC<SearchModalProps> = ({
             <List
               itemCount={processedResults.length}
               itemSize={ITEM_HEIGHT}
-              height={Math.min(MAX_RESULTS_HEIGHT, processedResults.length * ITEM_HEIGHT)}
+              height={Math.min(
+                MAX_RESULTS_HEIGHT,
+                processedResults.length * ITEM_HEIGHT,
+              )}
               width="100%"
               ref={listRef}
             >

@@ -3,10 +3,10 @@ import type { Category } from "../../types/entities/Category";
 import type { DocItem } from "../../types/entities/DocItem";
 
 export const rowClasses = (
+  styles: StyleTheme,
   active: boolean,
   focused: boolean,
   depth: number,
-  styles: StyleTheme,
 ): string =>
   [
     `flex items-center gap-2 px-2 py-1 cursor-pointer ${styles.navigation.row}`,
@@ -38,6 +38,7 @@ export interface FlatEntryDoc {
 export interface FlatEntryCat {
   type: "category";
   id: string;
+  node: Category;
   depth: number;
   key: string; // cat-${id}
 }
@@ -67,21 +68,20 @@ export const buildEntries = (
     );
 
   const visit = (node: Category, depth: number): void => {
-    if (!lower && !open[node.id]) {
-      list.push({
-        type: "category",
-        id: node.id,
-        depth,
-        key: `cat-${node.id}`,
-      });
-      return;
-    }
+    // Skip the category if it doesn't match the filter at all
+    if (filter && !branchMatches(node, lower)) return;
 
-    list.push({ type: "category", id: node.id, depth, key: `cat-${node.id}` });
+    list.push({
+      type: "category",
+      id: node.id,
+      node,
+      depth,
+      key: `cat-${node.id}`,
+    });
 
     if (open[node.id]) {
       node.docs?.forEach((d) => {
-        if (!testString(d.title, lower)) return;
+        if (filter && !testString(d.title, lower)) return;
         list.push({
           type: "doc",
           id: d.id,
@@ -90,6 +90,7 @@ export const buildEntries = (
           key: `doc-${d.id}`,
         });
       });
+
       node.children?.forEach((c) => visit(c, depth + 1));
     }
   };

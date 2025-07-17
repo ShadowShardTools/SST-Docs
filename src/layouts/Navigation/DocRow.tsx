@@ -5,22 +5,22 @@ import type { DocItem } from "../../types/entities/DocItem";
 import type { StyleTheme } from "../../types/entities/StyleTheme";
 
 export interface DocRowProps {
+  styles: StyleTheme;
   doc: DocItem;
   depth: number;
   active: boolean;
   focused: boolean;
   select: (d: DocItem) => void;
-  styles: StyleTheme;
 }
 
 // forwardRef + memo  ➔ rerenders only when props really change
 const DocRowBase = (
-  { doc, depth, active, focused, select, styles }: DocRowProps,
+  { styles, doc, depth, active, focused, select }: DocRowProps,
   ref: React.Ref<HTMLLIElement>,
 ) => {
   const cls = useMemo(
-    () => rowClasses(active, focused, depth, styles),
-    [active, focused, depth, styles],
+    () => rowClasses(styles, active, focused, depth),
+    [styles, active, focused, depth],
   );
 
   return (

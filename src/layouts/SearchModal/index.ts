@@ -1,6 +1,10 @@
 export { default as SearchModal } from "./SearchModal";
 
-export type { SearchModalProps, SearchMatch, SearchResultItemProps } from "./types";
+export type {
+  SearchModalProps,
+  SearchMatch,
+  SearchResultItemProps,
+} from "./types";
 
 export { highlightSearchTerm } from "./utilities/highlight.ts";
 export { generateSnippet } from "./utilities/generateSnippet.ts";

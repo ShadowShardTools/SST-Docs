@@ -11,6 +11,8 @@ import Navigation from "../layouts/Navigation/Navigation";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
 import type { StyleTheme } from "../types/entities/StyleTheme";
 import SearchModal from "../layouts/SearchModal/SearchModal";
+import type { Category } from "../types/entities/Category";
+import CategoryNavigatorRenderer from "../layouts/CategoryNavigatorRenderer";
 
 const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
 
@@ -20,6 +22,9 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
   const [selectedItem, setSelectedItem] = useState<DocItem | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<DocItem[]>([]);
@@ -37,13 +42,53 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
 
   // Handle first-load navigation or URL param change
   useEffect(() => {
-    if (!items.length) return;
-    const found = docId ? items.find((i) => i.id === docId) : items[0];
-    if (found) {
-      setSelectedItem(found);
-      if (!docId) navigate(`/${found.id}`, { replace: true });
+    if (!items.length && !tree.length && !standaloneDocs.length) return;
+
+    // If no docId in URL, select first available item
+    if (!docId) {
+      const firstItem = standaloneDocs[0] || items[0];
+      if (firstItem) {
+        setSelectedItem(firstItem);
+        setSelectedCategory(null);
+        navigate(`/${firstItem.id}`, { replace: true });
+      }
+      return;
     }
-  }, [docId, items, navigate]);
+
+    // Look for the docId in all items (including standalone docs)
+    const allItems = [...items, ...standaloneDocs];
+    const foundDoc = allItems.find((i) => i.id === docId);
+    if (foundDoc) {
+      setSelectedItem(foundDoc);
+      setSelectedCategory(null);
+      return;
+    }
+
+    // If not found in items, check categories
+    const findCategory = (nodes: Category[]): Category | null => {
+      for (const cat of nodes) {
+        if (cat.id === docId) return cat;
+        const child = findCategory(cat.children ?? []);
+        if (child) return child;
+      }
+      return null;
+    };
+
+    const foundCat = findCategory(tree);
+    if (foundCat) {
+      setSelectedCategory(foundCat);
+      setSelectedItem(null);
+      return;
+    }
+
+    // If nothing found, fallback to first available item
+    const firstItem = standaloneDocs[0] || items[0];
+    if (firstItem) {
+      setSelectedItem(firstItem);
+      setSelectedCategory(null);
+      navigate(`/${firstItem.id}`, { replace: true });
+    }
+  }, [docId, items, tree, standaloneDocs, navigate]);
 
   // Global shortcut to open search
   useEffect(() => {
@@ -63,7 +108,7 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Search functionality
+  // Search functionality - include standalone docs
   useEffect(() => {
     if (!searchTerm.trim()) {
       setSearchResults([]);
@@ -71,8 +116,9 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     }
 
     const lower = searchTerm.toLowerCase();
+    const allItems = [...items, ...standaloneDocs];
 
-    const matches = items.filter(
+    const matches = allItems.filter(
       (item) =>
         item.title.toLowerCase().includes(lower) ||
         item.content.some((block) => {
@@ -117,13 +163,23 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     );
 
     setSearchResults(matches);
-  }, [searchTerm, items]);
+  }, [searchTerm, items, standaloneDocs]);
 
-  const navigateToItem = useCallback(
-    (item: DocItem, anchor?: string) => {
-      navigate(`/${item.id}${anchor ? `#${anchor}` : ""}`);
-      setSelectedItem(item);
-      setIsMobileNavOpen(false);
+  const isCategory = (entry: DocItem | Category): entry is Category => {
+    return "docs" in entry || "children" in entry;
+  };
+
+  const navigateToEntry = useCallback(
+    (entry: DocItem | Category) => {
+      if (isCategory(entry)) {
+        setSelectedCategory(entry);
+        setSelectedItem(null);
+      } else {
+        setSelectedItem(entry);
+        setSelectedCategory(null);
+      }
+
+      navigate(`/${entry.id}`, { replace: true });
     },
     [navigate],
   );
@@ -138,10 +194,10 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   // Handle search item selection
   const handleSearchSelect = useCallback(
     (item: DocItem) => {
-      navigateToItem(item);
+      navigateToEntry(item);
       handleSearchClose();
     },
-    [navigateToItem, handleSearchClose],
+    [navigateToEntry, handleSearchClose],
   );
 
   if (error.versions) {
@@ -160,30 +216,47 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           styles={styles}
           tree={tree}
           standaloneDocs={standaloneDocs}
-          onSelect={navigateToItem}
-          selectedItem={selectedItem}
+          onSelect={navigateToEntry}
+          selectedItem={selectedItem ?? selectedCategory}
         />
       );
     }
 
     if (loading.content) return <LoadingSpinner />;
     if (error.content) return <ErrorMessage message={error.content} />;
-    if (!selectedItem)
+
+    const selected = selectedItem ?? selectedCategory;
+    if (!selected) {
       return (
         <div className="text-gray-500 text-center mt-16">
-          Select a document from the sidebar
+          Select a document or category from the sidebar
         </div>
       );
+    }
+
+    const isCategory = "docs" in selected || "children" in selected;
 
     return (
       <Suspense fallback={<LoadingSpinner />}>
+        {/* Always render ContentRenderer for both DocItem and Category */}
         <ContentRenderer
           styles={styles}
-          title={selectedItem.title}
-          content={selectedItem.content}
-          docId={selectedItem.id}
+          title={selected.title}
+          content={selected.content ?? []}
+          docId={selected.id}
           tree={tree}
         />
+
+        {/* If it's a category, also render the navigator below the content */}
+        {isCategory && (
+          <div className="mt-8">
+            <CategoryNavigatorRenderer
+              category={selected as Category}
+              styles={styles}
+              onSelect={navigateToEntry}
+            />
+          </div>
+        )}
       </Suspense>
     );
   };
@@ -210,8 +283,8 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
               styles={styles}
               tree={tree}
               standaloneDocs={standaloneDocs}
-              onSelect={navigateToItem}
-              selectedItem={selectedItem}
+              onSelect={navigateToEntry}
+              selectedItem={selectedItem ?? selectedCategory}
               isSearchOpen={isSearchOpen}
             />
           </Suspense>
