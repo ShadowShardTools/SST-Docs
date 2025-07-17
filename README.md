@@ -2,8 +2,8 @@
 
 [SST Docs](https://shadowshardtools.github.io/SST-Docs/) is a modern, searchable, versioned documentation site built with React, TypeScript, Tailwind CSS, and Lucide icons. It is designed to display structured JSON content and supports categories, dynamic blocks, keyboard navigation, and a mobile layout.
 
-![image](https://github.com/user-attachments/assets/6ea2108c-90f6-407e-99df-639feecb2a9e)
-![image](https://github.com/user-attachments/assets/a1085490-6919-4236-8a79-06c806abae9f)
+<img width="1648" height="1030" alt="image" src="https://github.com/user-attachments/assets/aa06a602-4333-46d1-be1f-a15eddcaeb7e" />
+<img width="1649" height="1025" alt="image" src="https://github.com/user-attachments/assets/f002795b-dab4-4b6c-9b26-5e468b5394e0" />
 
 ## 🚀 Features
 - User-friendly version selector
