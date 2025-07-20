@@ -15,7 +15,7 @@ const TableBlock: React.FC<TableBlockProps> = ({
 }) => {
   if (!tableData.data?.length) {
     return (
-      <div key={index} className="mb-6 p-4 text-center text-gray-500">
+      <div key={index} className={`mb-6 p-4 ${styles.table.empty}`}>
         No data available
       </div>
     );

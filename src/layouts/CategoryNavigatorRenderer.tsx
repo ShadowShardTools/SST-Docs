@@ -20,7 +20,7 @@ const CategoryNavigatorRenderer: React.FC<CategoryNavigatorRendererProps> = ({
 
   if (children.length === 0 && docs.length === 0) {
     return (
-      <div className="text-gray-500 text-center mt-16">
+      <div className={`${styles.category.empty} mt-16`}>
         This category is empty.
       </div>
     );
@@ -33,16 +33,16 @@ const CategoryNavigatorRenderer: React.FC<CategoryNavigatorRendererProps> = ({
         <button
           key={child.id}
           onClick={() => onSelect(child)}
-          className={`p-4 cursor-pointer ${styles.categoryCard.body}`}
+          className={`p-4 cursor-pointer ${styles.category.cardBody}`}
         >
           <div
-            className={`flex items-center gap-2 ${styles.categoryCard.headerText}`}
+            className={`flex items-center gap-2 ${styles.category.cardHeaderText}`}
           >
             <Folder className="w-6 h-6 shrink-0" />
             <h3>{child.title}</h3>
           </div>
           {child.description && (
-            <p className={`${styles.categoryCard.descriptionText}`}>
+            <p className={`${styles.category.cardDescriptionText}`}>
               {child.description}
             </p>
           )}
@@ -54,16 +54,16 @@ const CategoryNavigatorRenderer: React.FC<CategoryNavigatorRendererProps> = ({
         <button
           key={doc.id}
           onClick={() => onSelect(doc)}
-          className={`p-4 cursor-pointer ${styles.categoryCard.body}`}
+          className={`p-4 cursor-pointer ${styles.category.cardBody}`}
         >
           <div
-            className={`flex items-center gap-2 ${styles.categoryCard.headerText}`}
+            className={`flex items-center gap-2 ${styles.category.cardHeaderText}`}
           >
             <FileText className="w-6 h-6 shrink-0" />
             <h3>{doc.title}</h3>
           </div>
           {doc.description && (
-            <p className={`${styles.categoryCard.descriptionText}`}>
+            <p className={`${styles.category.cardDescriptionText}`}>
               {doc.description}
             </p>
           )}

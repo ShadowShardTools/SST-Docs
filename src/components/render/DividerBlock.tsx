@@ -46,7 +46,7 @@ const DividerBlock: React.FC<{
       <div key={index} className={`${getSpacingClasses()} flex items-center`}>
         <div className={getDividerClasses().replace("w-full", "flex-1")} />
         <span
-          className={`px-4 ${styles.divider.text || "text-gray-500 text-sm"}`}
+          className={`px-4 ${styles.divider.text}`}
         >
           {dividerData.text}
         </span>

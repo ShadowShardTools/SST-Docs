@@ -64,7 +64,7 @@ const GraphBlock: React.FC<{ index: number; graphData: GraphData }> = ({
           ref={containerRef}
           role="img"
           aria-label="Interactive graph"
-          className="absolute top-0 left-0 w-full h-full rounded border bg-white dark:bg-zinc-900 shadow-sm"
+          className="absolute top-0 left-0 w-full h-full"
         />
       </div>
     </div>

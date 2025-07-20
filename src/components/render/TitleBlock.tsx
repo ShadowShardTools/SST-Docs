@@ -70,7 +70,7 @@ const TitleBlock: React.FC<{
         {titleData.enableAnchorLink && (
           <a
             href={`#${currentPath}#${id}`}
-            className="ml-2 inline-block text-gray-400 hover:text-blue-500"
+            className={`ml-2 inline-block ${styles.text.titleAnchor}`}
             aria-label="Anchor link"
             onClick={(e) => {
               e.preventDefault();

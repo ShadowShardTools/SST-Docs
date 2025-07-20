@@ -149,10 +149,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
 
   if (!normalizedSections.length) {
     return (
-      <div className="mb-6 p-4 border rounded text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800">
-        <div className="text-center">
-          <p className="text-sm">No code content provided</p>
-        </div>
+      <div className={`mb-6 p-4 rounded`}>
+        <p>No code content provided</p>
       </div>
     );
   }
@@ -248,7 +246,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           <div className="flex min-h-full">
             {codeData.showLineNumbers && (
-              <LineNumbers content={currentSection.content} />
+              <LineNumbers styles={styles} content={currentSection.content} />
             )}
             <div className="flex-1 relative">
               {normalizedSections.map((section, i) => (

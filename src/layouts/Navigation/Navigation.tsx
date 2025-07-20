@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Search } from "lucide-react";
 
 import Branch from "./Branch";
 import DocRow from "./DocRow";
@@ -153,14 +152,13 @@ const Navigation: React.FC<NavigationProps> = ({
     <>
       {/* Filter input */}
       <div className="mb-3 relative">
-        <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" />
         <input
           ref={inputRef}
           type="text"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Enter here to filter…"
-          className={`${styles.input} w-full pl-8 pr-2 py-1.5 border`}
+          className={`${styles.input} w-full px-2 py-1.5 border`}
         />
         <kbd
           className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key} absolute right-2.5 top-1/2 -translate-y-1/2`}
@@ -181,9 +179,6 @@ const Navigation: React.FC<NavigationProps> = ({
         {/* Stand-alone docs */}
         {standaloneDocs.length > 0 && (
           <section>
-            <h2 className="text-sm font-semibold text-gray-500 uppercase mb-2">
-              General
-            </h2>
             <ul className="space-y-1">
               {standaloneDocs
                 .filter((d) => d.title.toLowerCase().includes(lower))

@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
           type="button"
           onClick={onMobileNavToggle}
           aria-label="Toggle navigation"
-          className="md:hidden p-2 text-gray-500 hover:text-gray-700"
+          className={`md:hidden p-2 ${styles.header.mobileNavigationToggle}`}
         >
           {isMobileNavOpen ? (
             <X className="w-6 h-6" />
@@ -62,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
-            className="p-2 text-gray-500 hover:text-gray-700"
+            className={`p-2 ${styles.header.mobileMenuToggle}`}
           >
             {isMenuOpen ? (
               <X className="w-6 h-6" />

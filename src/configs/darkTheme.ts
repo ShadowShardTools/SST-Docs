@@ -1,21 +1,28 @@
 import type { StyleTheme } from "../types/entities/StyleTheme";
 
 export const darkTheme: StyleTheme = {
+  input:
+    "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   text: {
     logoText: "text-xl font-semibold text-gray-50",
     titleLevel1: "text-4xl font-bold text-indigo-400 mb-3 mt-8 first:mt-0",
     titleLevel2: "text-2xl font-semibold text-gray-100 mb-4 mt-8 first:mt-0",
     titleLevel3: "text-xl font-medium text-gray-200 mb-3 mt-6 first:mt-0",
+    titleAnchor: "text-gray-400 hover:text-blue-500",
+    breadcrumb: "text-sm text-gray-400",
     general: "text-base text-gray-300 mb-2 leading-relaxed",
     alternative: "text-sm text-gray-400 mt-2 text-center italic",
     list: "list-inside text-gray-300 mb-2 space-y-1",
     math: "text-gray-200 text-lg",
   },
-  input:
-    "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   hints: {
     text: "text-xs text-gray-400",
     key: "text-xs text-gray-400 border border-gray-600 rounded",
+  },
+  divider: {
+    border: "border-gray-500",
+    gradient: "from-transparent via-gray-500 to-transparent",
+    text: "text-gray-500 text-sm",
   },
   buttons: {
     common:
@@ -32,17 +39,6 @@ export const darkTheme: StyleTheme = {
     item: "text-white text-left hover:bg-indigo-600/50 transition-colors whitespace-nowrap",
     itemActive: "border-l-2 bg-indigo-900/60 font-bold",
   },
-  table: {
-    cornerCell: "bg-indigo-900/50 font-bold text-gray-200 text-lg",
-    headers: "bg-indigo-900/80 font-semibold text-gray-200 text-lg",
-    rows: "bg-indigo-950/5 text-gray-200",
-    border: "border-indigo-700",
-  },
-  divider: {
-    border: "border-gray-500",
-    gradient: "from-transparent via-gray-500 to-transparent",
-    text: "text-gray-500 text-sm",
-  },
   messageBox: {
     info: "bg-blue-900/40 text-blue-200 border-blue-400/60",
     warning: "bg-yellow-900/40 text-yellow-200 border-yellow-400/60",
@@ -51,9 +47,18 @@ export const darkTheme: StyleTheme = {
     neutral: "bg-indigo-300/20 text-gray-200 border-gray-500",
     quote: "bg-indigo-900/50 border-l-4 border-white text-white italic",
   },
+  table: {
+    cornerCell: "bg-indigo-900/50 font-bold text-gray-200 text-lg",
+    headers: "bg-indigo-900/80 font-semibold text-gray-200 text-lg",
+    rows: "bg-indigo-950/5 text-gray-200",
+    border: "border-indigo-700",
+    empty: "text-gray-500 text-center",
+  },
   code: {
     header: "bg-indigo-900/80 text-white border-b border-indigo-500",
     language: "text-xs font-semibold text-indigo-300 mt-1 text-right",
+    lines: "text-sm text-gray-500 border-r border-gray-300",
+    empty: "bg-gray-50 text-gray-500 text-center text-sm border"
   },
   audioPlayer: {
     container: "bg-indigo-900/50",
@@ -73,6 +78,16 @@ export const darkTheme: StyleTheme = {
     axisTickColor: "#e5e7eb", // gray-200
     gridLineColor: "rgba(255,255,255,0.1)",
   },
+  header: {
+    mobileNavigationToggle: "text-gray-500 hover:text-gray-700",
+    mobileMenuToggle: "text-gray-500 hover:text-gray-700",
+  },
+  category: {
+    empty: "text-gray-500 text-center",
+    cardBody: "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
+    cardHeaderText: "text-gray-50 text-lg font-semibold mb-1",
+    cardDescriptionText: "text-sm text-indigo-400 line-clamp-3",
+  },
   navigation: {
     row: "text-gray-50 focus:outline-none",
     rowActive:
@@ -81,16 +96,15 @@ export const darkTheme: StyleTheme = {
     rowHover: "hover:text-indigo-500 transition-colors",
     hideOrShowHintsText: "text-indigo-500 hover:underline focus:outline-none",
   },
-  categoryCard: {
-    body: "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
-    headerText: "text-gray-50 text-lg font-semibold mb-1",
-    descriptionText: "text-sm text-indigo-400 line-clamp-3",
-  },
   searchModal: {
-    header: "bg-zinc-850 text-gray-400",
     resultBackground: "bg-zinc-900",
+    resultEmptyInputText: "text-gray-400 text-sm text-center",
+    resultNoResultText: "text-gray-400 text-sm text-center",
+
+    header: "bg-zinc-850 text-gray-400",
     footer: "bg-zinc-850",
     borders: "border-gray-500",
+
     item: "hover:bg-indigo-900/80 border-b border-indigo-400/30",
     selectedItem:
       "bg-indigo-900/60 hover:bg-indigo-900/80 border-y border-indigo-400/30",

@@ -70,11 +70,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
         {/* Results Section */}
         <div className={`max-h-96 ${styles.searchModal.resultBackground}`}>
           {!searchTerm.trim() ? (
-            <p className="text-gray-400 text-sm text-center py-6">
+            <p className={`${styles.searchModal.resultEmptyInputText} py-6`}>
               {EMPTY_SEARCH_MESSAGE}
             </p>
           ) : processedResults.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-6">
+            <p className={`${styles.searchModal.resultNoResultText} py-6`}>
               {NO_RESULTS_MESSAGE}
             </p>
           ) : (

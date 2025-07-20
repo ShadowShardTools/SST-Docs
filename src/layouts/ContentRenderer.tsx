@@ -78,7 +78,7 @@ const ContentRendererBase: React.FC<Props> = ({
     <>
       <TitleBlock index={0} styles={styles} titleData={titleData} />
       {breadcrumb && (
-        <div className="text-sm text-gray-400 mb-4">{breadcrumb}</div>
+        <div className={`${styles.text.breadcrumb} mb-4`}>{breadcrumb}</div>
       )}
 
       <ContentBlockRenderer

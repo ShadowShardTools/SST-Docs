@@ -7,7 +7,7 @@ const NavigationHints: React.FC<{
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className={`text-xs mt-2 mb-2`}>
+    <div className={`text-xs mt-2 mb-4`}>
       <button
         onClick={() => setExpanded((prev) => !prev)}
         className={`select-none cursor-pointer mb-1 ${styles.navigation.hideOrShowHintsText}`}

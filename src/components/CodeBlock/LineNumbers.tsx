@@ -1,10 +1,10 @@
-// File: components/CodeBlock/LineNumbers.tsx
 import { memo } from "react";
+import type { StyleTheme } from "../../types/entities/StyleTheme";
 
-export const LineNumbers = memo(({ content }: { content: string }) => {
+export const LineNumbers = memo(({ styles, content }: { styles: StyleTheme; content: string }) => {
   const lines = content.split("\n");
   return (
-    <div className="select-none pr-4 text-sm text-gray-500 border-r border-gray-300 dark:border-gray-600 flex-shrink-0">
+    <div className={`select-none pr-4 flex-shrink-0 ${styles.code.lines}`}>
       {lines.map((_, i) => (
         <div key={i} className="text-right leading-6 min-h-[1.5rem]">
           {i + 1}
