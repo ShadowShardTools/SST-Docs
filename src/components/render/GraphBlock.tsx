@@ -56,8 +56,8 @@ const GraphBlock: React.FC<{ index: number; graphData: GraphData }> = ({
   return (
     <div
       key={index}
-      className={`mb-6 ${alignmentClasses[alignment]}`}
-      style={{ width }}
+      className={`mb-6 w-full md:${alignmentClasses[alignment]}`}
+      style={{ width: undefined, ...(scale !== 1 && { width }) }}
     >
       <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
         <div

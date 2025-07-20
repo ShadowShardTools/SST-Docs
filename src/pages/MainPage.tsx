@@ -290,10 +290,10 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           </Suspense>
         )}
         <div
-          className={`flex-1 p-2 md:p-6 ${styles.sections.contentBackground} transition-colors`}
-        >
-          {renderContent()}
-        </div>
+  className={`flex-1 p-2 md:p-6 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
+>
+  {renderContent()}
+</div>
       </main>
 
       <SearchModal

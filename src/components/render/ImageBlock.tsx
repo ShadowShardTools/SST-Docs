@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, lazy, Suspense, useEffect } from "react";
 import type { StyleTheme } from "../../types/entities/StyleTheme";
 import type { ImageData } from "../../types/data/ImageData";
 
@@ -22,10 +22,29 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
   imageData,
 }) => {
   const [sliderPercentage, setSliderPercentage] = useState(50);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const scale = imageData.scale ?? 1;
   const isValidScale = scale > 0;
-  const widthPercent = `${(isValidScale ? scale : 1) * 100}%`;
+  
+  // Use full width on mobile, apply scale only on desktop
+  const getContainerWidth = () => {
+    if (isMobile || !isValidScale || scale === 1) {
+      return "100%";
+    }
+    return `${scale * 100}%`;
+  };
 
   const alignment = imageData.alignment ?? "center";
 
@@ -37,8 +56,14 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 
   const containerAlignmentClasses = {
     left: "mr-auto",
-    center: "mx-auto",
+    center: "mx-auto", 
     right: "ml-auto",
+  };
+
+  // Use responsive container alignment
+  const getContainerAlignment = () => {
+    if (isMobile) return "w-full";
+    return containerAlignmentClasses[alignment];
   };
 
   const baseClasses = `mb-6 ${alignmentClasses[alignment]}`;
@@ -54,8 +79,8 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
     return (
       <div key={index} className={baseClasses}>
         <div
-          className={containerAlignmentClasses[alignment]}
-          style={{ width: widthPercent }}
+          className={getContainerAlignment()}
+          style={{ width: getContainerWidth() }}
         >
           <img
             src={imageData.image.src}
@@ -74,8 +99,8 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
     return (
       <div key={index} className={baseClasses}>
         <div
-          className={`flex gap-4 justify-center ${containerAlignmentClasses[alignment]}`}
-          style={{ width: widthPercent }}
+          className={`flex gap-4 justify-center ${getContainerAlignment()}`}
+          style={{ width: getContainerWidth() }}
         >
           <div className="w-1/2">
             <img
@@ -115,8 +140,8 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
     return (
       <div key={index} className={baseClasses}>
         <div
-          className={containerAlignmentClasses[alignment]}
-          style={{ width: widthPercent }}
+          className={getContainerAlignment()}
+          style={{ width: getContainerWidth() }}
         >
           <Suspense
             fallback={
@@ -149,8 +174,8 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
     return (
       <div key={index} className={baseClasses}>
         <div
-          className={containerAlignmentClasses[alignment]}
-          style={{ width: widthPercent }}
+          className={getContainerAlignment()}
+          style={{ width: getContainerWidth() }}
         >
           <Suspense
             fallback={
@@ -187,14 +212,27 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
   const renderImageGrid = () => {
     if (!imageData.images || imageData.images.length === 0) return null;
 
+    const cellScale = (isMobile || scale <= 0) ? 1 : scale;
+
     return (
       <div key={index} className={baseClasses}>
         <div
-          className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignmentClasses[alignment]}`}
-          style={{ width: widthPercent }}
+          className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${getContainerAlignment()}`}
         >
           {imageData.images.map((img, i) => (
-            <div key={i} className="flex flex-col items-center">
+            <div
+              key={i}
+              className="flex flex-col items-center"
+              style={{
+                transform: cellScale !== 1 ? `scale(${cellScale})` : undefined,
+                transformOrigin:
+                  alignment === "left"
+                    ? "left"
+                    : alignment === "right"
+                      ? "right"
+                      : "center",
+              }}
+            >
               <img
                 src={img.src}
                 alt={img.alt || `Image ${i + 1}`}
