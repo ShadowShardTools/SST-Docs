@@ -122,10 +122,12 @@ const Navigation: React.FC<NavigationProps> = ({
           const entry = entries[cursor];
           if (!entry) return;
           e.preventDefault();
+
           if (entry.type === "doc") {
             onSelect(entry.item);
           } else if (entry.type === "category") {
             onSelect(entry.node);
+            if (!open[entry.id]) toggle(entry.id); // only expand
           }
           break;
         }

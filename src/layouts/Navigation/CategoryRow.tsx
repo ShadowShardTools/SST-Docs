@@ -40,7 +40,10 @@ const CategoryRowBase = (
       role="treeitem"
       aria-expanded={expanded}
       aria-selected={focused}
-      onClick={() => select(node)}
+      onClick={() => {
+        select(node);
+        if (!expanded) toggle(node.id);
+      }}
       className={cls}
       style={{ justifyContent: "space-between", width: "100%" }}
     >
@@ -55,9 +58,9 @@ const CategoryRowBase = (
         }}
       >
         {expanded ? (
-          <ChevronDown className="w-4 h-4 shrink-0" />
+          <ChevronDown className="w-5 h-5 shrink-0" />
         ) : (
-          <ChevronRight className="w-4 h-4 shrink-0" />
+          <ChevronRight className="w-5 h-5 shrink-0" />
         )}
       </span>
     </button>
