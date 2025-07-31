@@ -57,6 +57,11 @@ const NavigationHints: React.FC<{
             <kbd
               className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
             >
+              Ctrl
+            </kbd>
+            <kbd
+              className={`px-1.5 py-0.5 pointer-events-none ${styles.hints.key}`}
+            >
               Enter
             </kbd>
             <span className={`${styles.hints.text}`}>Select</span>

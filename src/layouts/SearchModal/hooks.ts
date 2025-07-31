@@ -3,6 +3,7 @@ import { FixedSizeList as List } from "react-window";
 import { processSearchResults } from "./utilities/processSearchResults";
 import type { DocItem } from "../../types/entities/DocItem";
 import type { SearchMatch } from "./types";
+import { KEYBOARD_SHORTCUTS } from "./constants";
 
 export const useSearchResults = (
   results: DocItem[],
@@ -33,24 +34,24 @@ export const useKeyboardNavigation = (
       if (!isOpen) return;
 
       switch (event.key) {
-        case "ArrowDown":
+        case KEYBOARD_SHORTCUTS.ARROW_DOWN:
           event.preventDefault();
           setSelectedIndex((prev) =>
             prev < processedResults.length - 1 ? prev + 1 : prev,
           );
           break;
-        case "ArrowUp":
+        case KEYBOARD_SHORTCUTS.ARROW_UP:
           event.preventDefault();
           setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
           break;
-        case "Enter":
+        case KEYBOARD_SHORTCUTS.ENTER:
           event.preventDefault();
           if (processedResults[selectedIndex]) {
             onSelect(processedResults[selectedIndex].item);
             onClose();
           }
           break;
-        case "Escape":
+        case KEYBOARD_SHORTCUTS.ESCAPE:
           event.preventDefault();
           onClose();
           break;

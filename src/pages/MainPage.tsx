@@ -1,7 +1,7 @@
 // At top
 import { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useMediaQuery } from "./useMediaQuery";
 import { UseDocumentationData } from "../services/UseDocumentationData";
 import type { DocItem } from "../types/entities/DocItem";
 import ErrorMessage from "../components/dialog/ErrorMessage";
@@ -218,6 +218,7 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           standaloneDocs={standaloneDocs}
           onSelect={navigateToEntry}
           selectedItem={selectedItem ?? selectedCategory}
+          isSearchOpen={isSearchOpen}
         />
       );
     }
@@ -290,10 +291,10 @@ const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           </Suspense>
         )}
         <div
-  className={`flex-1 p-2 md:p-6 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
->
-  {renderContent()}
-</div>
+          className={`flex-1 p-2 md:p-6 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
+        >
+          {renderContent()}
+        </div>
       </main>
 
       <SearchModal

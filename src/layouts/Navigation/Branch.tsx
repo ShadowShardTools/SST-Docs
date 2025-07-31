@@ -1,5 +1,4 @@
 import React from "react";
-import { branchMatches } from "./navigationUtils";
 import DocRow from "./DocRow";
 import CategoryRow from "./CategoryRow";
 import type { Category } from "../../types/entities/Category";
@@ -29,8 +28,6 @@ const Branch: React.FC<BranchProps> = ({
   select,
   styles,
 }) => {
-  if (!branchMatches(node, filter)) return null;
-
   const expanded = !!open[node.id];
   const catKey = `cat-${node.id}`;
   const catFocused = focusedKey === catKey;

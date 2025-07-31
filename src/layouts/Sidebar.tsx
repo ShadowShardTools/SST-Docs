@@ -19,7 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   standaloneDocs = [],
   onSelect,
   selectedItem,
-  isSearchOpen = false,
+  isSearchOpen,
 }) => {
   return (
     <aside

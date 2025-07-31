@@ -28,16 +28,16 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const scale = imageData.scale ?? 1;
   const isValidScale = scale > 0;
-  
+
   // Use full width on mobile, apply scale only on desktop
   const getContainerWidth = () => {
     if (isMobile || !isValidScale || scale === 1) {
@@ -56,7 +56,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 
   const containerAlignmentClasses = {
     left: "mr-auto",
-    center: "mx-auto", 
+    center: "mx-auto",
     right: "ml-auto",
   };
 
@@ -212,7 +212,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
   const renderImageGrid = () => {
     if (!imageData.images || imageData.images.length === 0) return null;
 
-    const cellScale = (isMobile || scale <= 0) ? 1 : scale;
+    const cellScale = isMobile || scale <= 0 ? 1 : scale;
 
     return (
       <div key={index} className={baseClasses}>

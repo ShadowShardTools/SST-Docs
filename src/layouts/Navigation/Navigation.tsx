@@ -8,7 +8,7 @@ import React, {
 
 import Branch from "./Branch";
 import DocRow from "./DocRow";
-import { buildEntries } from "./navigationUtils";
+import { branchMatches, buildEntries, testString } from "./navigationUtils";
 import NavigationHints from "./NavigationHints";
 import type { Category } from "../../types/entities/Category";
 import type { DocItem } from "../../types/entities/DocItem";
@@ -33,7 +33,7 @@ const Navigation: React.FC<NavigationProps> = ({
   standaloneDocs = [],
   onSelect,
   selectedItem,
-  isSearchOpen = false,
+  isSearchOpen,
 }) => {
   /* ----------------------------- state helpers --------------------------- */
   const [open, setOpen] = useState<Record<string, boolean>>({});
@@ -54,6 +54,23 @@ const Navigation: React.FC<NavigationProps> = ({
   const [cursor, setCursor] = useState(0);
   const currentKey = entries[cursor]?.key ?? null;
 
+  const filteredTree = useMemo(() => {
+    const lower = filter.toLowerCase();
+
+    const filterBranch = (node: Category): Category | null => {
+      if (!branchMatches(node, lower)) return null;
+      return {
+        ...node,
+        children: node.children
+          ?.map(filterBranch)
+          .filter((c): c is Category => c !== null),
+        docs: node.docs?.filter((d) => testString(d.title, lower)),
+      };
+    };
+
+    return tree.map(filterBranch).filter((c): c is Category => c !== null);
+  }, [tree, filter]);
+
   // keep cursor in range when list shrinks
   useEffect(() => {
     if (cursor >= entries.length) setCursor(entries.length ? 0 : 0);
@@ -71,7 +88,7 @@ const Navigation: React.FC<NavigationProps> = ({
   /* -------------------------- keyboard shortcuts ------------------------- */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (isSearchOpen) return; // external modal overrides nav hotkeys
+      if (isSearchOpen) return;
 
       const activeElement = document.activeElement as HTMLElement | null;
       const isTyping =
@@ -119,6 +136,7 @@ const Navigation: React.FC<NavigationProps> = ({
           break;
         }
         case "Enter": {
+          if (!e.ctrlKey) break;
           const entry = entries[cursor];
           if (!entry) return;
           e.preventDefault();
@@ -203,14 +221,14 @@ const Navigation: React.FC<NavigationProps> = ({
         )}
 
         {/* Category tree */}
-        {tree.map((node) => (
+        {filteredTree.map((node) => (
           <Branch
             key={node.id}
             node={node}
             depth={0}
             open={open}
             toggle={toggle}
-            filter={lower}
+            filter={lower} // optional, can remove in next step
             current={selectedItem}
             focusedKey={currentKey}
             select={onSelect}

@@ -58,7 +58,7 @@ export const darkTheme: StyleTheme = {
     header: "bg-indigo-900/80 text-white border-b border-indigo-500",
     language: "text-xs font-semibold text-indigo-300 mt-1 text-right",
     lines: "text-sm text-gray-500 border-r border-gray-300",
-    empty: "bg-gray-50 text-gray-500 text-center text-sm border"
+    empty: "bg-gray-50 text-gray-500 text-center text-sm border",
   },
   audioPlayer: {
     container: "bg-indigo-900/50",
@@ -84,7 +84,8 @@ export const darkTheme: StyleTheme = {
   },
   category: {
     empty: "text-gray-500 text-center",
-    cardBody: "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
+    cardBody:
+      "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
     cardHeaderText: "text-gray-50 text-lg font-semibold mb-1",
     cardDescriptionText: "text-sm text-indigo-400 line-clamp-3",
   },

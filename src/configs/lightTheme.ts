@@ -58,7 +58,7 @@ export const lightTheme: StyleTheme = {
     header: "bg-stone-700/80 text-gray-200 border-b border-stone-300",
     language: "text-xs font-semibold text-stone-300 mt-1 text-right",
     lines: "text-sm text-gray-500 border-r border-gray-300",
-    empty: "bg-gray-50 text-gray-500 text-center text-sm border"
+    empty: "bg-gray-50 text-gray-500 text-center text-sm border",
   },
   audioPlayer: {
     container: "bg-gray-300",
@@ -83,7 +83,8 @@ export const lightTheme: StyleTheme = {
   },
   category: {
     empty: "text-gray-500 text-center",
-    cardBody: "bg-gray-200 border border-gray-300 rounded-xl text-left transition-colors hover:bg-stone-300",
+    cardBody:
+      "bg-gray-200 border border-gray-300 rounded-xl text-left transition-colors hover:bg-stone-300",
     cardHeaderText: "text-stone-700 text-lg font-semibold mb-1",
     cardDescriptionText: "text-sm text-gray-600 line-clamp-3",
   },
