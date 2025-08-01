@@ -7,10 +7,10 @@ import type { DocItem } from "../types/entities/DocItem";
 import ErrorMessage from "../components/dialog/ErrorMessage";
 import Header from "../layouts/Header/Header";
 import Sidebar from "../layouts/Sidebar";
-import Navigation from "../layouts/Navigation/Navigation";
+import Navigation from "../layouts/navigation/components/Navigation";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
 import type { StyleTheme } from "../types/entities/StyleTheme";
-import SearchModal from "../layouts/SearchModal/SearchModal";
+import SearchModal from "../layouts/searchModal/SearchModal";
 import type { Category } from "../types/entities/Category";
 import CategoryNavigatorRenderer from "../layouts/CategoryNavigatorRenderer";
 

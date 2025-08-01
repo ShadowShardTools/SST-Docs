@@ -1,9 +1,9 @@
 import React from "react";
-import DocRow from "./DocRow";
+import type { Category } from "../../../types/entities/Category";
+import type { DocItem } from "../../../types/entities/DocItem";
+import type { StyleTheme } from "../../../types/entities/StyleTheme";
 import CategoryRow from "./CategoryRow";
-import type { Category } from "../../types/entities/Category";
-import type { DocItem } from "../../types/entities/DocItem";
-import type { StyleTheme } from "../../types/entities/StyleTheme";
+import DocRow from "./DocRow";
 
 export interface BranchProps {
   node: Category;

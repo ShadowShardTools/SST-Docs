@@ -1,6 +1,8 @@
-import type { StyleTheme } from "../../types/entities/StyleTheme";
-import type { Category } from "../../types/entities/Category";
-import type { DocItem } from "../../types/entities/DocItem";
+import type { FlatEntry } from "../types";
+import { KEY_PREFIXES } from "../constants";
+import type { StyleTheme } from "../../../types/entities/StyleTheme";
+import type { Category } from "../../../types/entities/Category";
+import type { DocItem } from "../../../types/entities/DocItem";
 
 export const rowClasses = (
   styles: StyleTheme,
@@ -16,7 +18,7 @@ export const rowClasses = (
     !active ? styles.navigation.rowHover : "",
   ].join(" ");
 
-export const testString = (s: string | undefined, q: string) =>
+export const testString = (s: string | undefined, q: string): boolean =>
   s?.toLowerCase().includes(q) ?? false;
 
 export const branchMatches = (node: Category, q: string): boolean =>
@@ -24,27 +26,12 @@ export const branchMatches = (node: Category, q: string): boolean =>
   (node.docs?.some((d) => testString(d.title, q)) ?? false) ||
   (node.children?.some((c) => branchMatches(c, q)) ?? false);
 
-/* -------------------------------------------------------------------------- */
-/*                               Flat list util                               */
-/* -------------------------------------------------------------------------- */
+export const createCategoryKey = (id: string): string =>
+  `${KEY_PREFIXES.CATEGORY}${id}`;
 
-export interface FlatEntryDoc {
-  type: "doc";
-  id: string;
-  item: DocItem;
-  depth: number;
-  key: string; // doc-${id}
-}
-export interface FlatEntryCat {
-  type: "category";
-  id: string;
-  node: Category;
-  depth: number;
-  key: string; // cat-${id}
-}
-export type FlatEntry = FlatEntryDoc | FlatEntryCat;
+export const createDocumentKey = (id: string): string =>
+  `${KEY_PREFIXES.DOCUMENT}${id}`;
 
-/** Build a flat list of nav rows (used for cursor / hotkeys). */
 export const buildEntries = (
   tree: Category[],
   standaloneDocs: DocItem[],
@@ -63,7 +50,7 @@ export const buildEntries = (
         id: d.id,
         item: d,
         depth: 0,
-        key: `doc-${d.id}`,
+        key: createDocumentKey(d.id),
       }),
     );
 
@@ -76,7 +63,7 @@ export const buildEntries = (
       id: node.id,
       node,
       depth,
-      key: `cat-${node.id}`,
+      key: createCategoryKey(node.id),
     });
 
     if (open[node.id]) {
@@ -87,7 +74,7 @@ export const buildEntries = (
           id: d.id,
           item: d,
           depth: depth + 1,
-          key: `doc-${d.id}`,
+          key: createDocumentKey(d.id),
         });
       });
 
@@ -97,4 +84,30 @@ export const buildEntries = (
 
   tree.forEach((n) => visit(n, 0));
   return list;
+};
+
+export const filterTree = (tree: Category[], filter: string): Category[] => {
+  const lower = filter.toLowerCase();
+
+  const filterBranch = (node: Category): Category | null => {
+    if (!branchMatches(node, lower)) return null;
+    return {
+      ...node,
+      children: node.children
+        ?.map(filterBranch)
+        .filter((c): c is Category => c !== null),
+      docs: node.docs?.filter((d) => testString(d.title, lower)),
+    };
+  };
+
+  return tree.map(filterBranch).filter((c): c is Category => c !== null);
+};
+
+export const scrollElementIntoView = (key: string): void => {
+  const el = document.querySelector<HTMLElement>(`[data-key="${key}"]`);
+  el?.scrollIntoView({ block: "nearest" });
+};
+
+export const isTypingInElement = (element: HTMLElement | null): boolean => {
+  return element !== null && ["INPUT", "TEXTAREA"].includes(element.tagName);
 };

@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { Folder, ChevronDown, ChevronRight } from "lucide-react";
-import { rowClasses } from "./navigationUtils";
-import type { Category } from "../../types/entities/Category";
-import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { Category } from "../../../types/entities/Category";
+import type { StyleTheme } from "../../../types/entities/StyleTheme";
+import { rowClasses } from "../utilities";
 
 export interface CategoryRowProps {
   styles: StyleTheme;

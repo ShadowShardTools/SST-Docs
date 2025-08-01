@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import type { StyleTheme } from "../../types/entities/StyleTheme";
+import type { NavigationHintsProps } from "../types";
 
-const NavigationHints: React.FC<{
-  styles: StyleTheme;
-}> = ({ styles }) => {
+const NavigationHints: React.FC<NavigationHintsProps> = ({ styles }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className={`text-xs mt-2 mb-4`}>
+    <div className="text-xs mt-2 mb-4">
       <button
         onClick={() => setExpanded((prev) => !prev)}
         className={`select-none cursor-pointer mb-1 ${styles.navigation.hideOrShowHintsText}`}
@@ -23,7 +21,7 @@ const NavigationHints: React.FC<{
             >
               Esc
             </kbd>
-            <span className={`${styles.hints.text}`}>Unfocus filter</span>
+            <span className={styles.hints.text}>Unfocus filter</span>
           </div>
           <div className="flex items-center gap-1">
             <kbd
@@ -36,7 +34,7 @@ const NavigationHints: React.FC<{
             >
               ↑/↓
             </kbd>
-            <span className={`${styles.hints.text}`}>Navigate items</span>
+            <span className={styles.hints.text}>Navigate items</span>
           </div>
           <div className="flex items-center gap-1">
             <kbd
@@ -49,9 +47,7 @@ const NavigationHints: React.FC<{
             >
               ←/→
             </kbd>
-            <span className={`${styles.hints.text}`}>
-              Expand/Collapse category
-            </span>
+            <span className={styles.hints.text}>Expand/Collapse category</span>
           </div>
           <div className="flex items-center gap-1">
             <kbd
@@ -64,7 +60,7 @@ const NavigationHints: React.FC<{
             >
               Enter
             </kbd>
-            <span className={`${styles.hints.text}`}>Select</span>
+            <span className={styles.hints.text}>Select</span>
           </div>
         </div>
       )}
