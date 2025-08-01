@@ -1,18 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
-import { processSearchResults } from "./utilities/processSearchResults";
-import type { DocItem } from "../../types/entities/DocItem";
-import type { SearchMatch } from "./types";
-import { KEYBOARD_SHORTCUTS } from "./constants";
-
-export const useSearchResults = (
-  results: DocItem[],
-  searchTerm: string,
-): SearchMatch[] => {
-  return useMemo(() => {
-    return processSearchResults(results, searchTerm);
-  }, [results, searchTerm]);
-};
+import type { SearchMatch } from "../types";
+import type { DocItem } from "../../../types/entities/DocItem";
+import { KEYBOARD_SHORTCUTS } from "../constants";
 
 export const useKeyboardNavigation = (
   isOpen: boolean,
@@ -70,16 +60,4 @@ export const useKeyboardNavigation = (
   }, [selectedIndex]);
 
   return { selectedIndex, listRef };
-};
-
-export const useInputFocus = (isOpen: boolean) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen]);
-
-  return inputRef;
 };

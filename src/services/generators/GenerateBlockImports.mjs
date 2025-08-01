@@ -17,7 +17,6 @@ const warn = (m) => console.warn(c.yellow('⚠'), m);
 
 /* ---------- paths ------------------------------------------------------- */
 const root          = path.resolve('.');
-const dataRoot      = path.join(root, 'public', 'data');
 const renderRoot    = path.join(root, 'src', 'components', 'render');
 const generatedRoot = path.join(root, 'src', 'generated');
 const outFile       = path.join(generatedRoot, 'blockImports.generated.ts');

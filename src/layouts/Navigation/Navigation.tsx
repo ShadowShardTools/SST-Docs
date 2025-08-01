@@ -2,9 +2,6 @@ import React, { useMemo, useRef } from "react";
 import Branch from "./components/Branch";
 import DocRow from "./components/DocRow";
 import NavigationHints from "./components/NavigationHints";
-import { useNavigationState } from "./hooks/useNavigationState";
-import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";
-import { useCursorSync } from "./hooks/useCursorSync";
 import {
   buildEntries,
   filterTree,
@@ -12,6 +9,7 @@ import {
   createDocumentKey,
 } from "./utilities";
 import type { NavigationProps } from "./types";
+import { useNavigationState, useCursorSync, useKeyboardNavigation } from "./hooks";
 
 const Navigation: React.FC<NavigationProps> = ({
   styles,

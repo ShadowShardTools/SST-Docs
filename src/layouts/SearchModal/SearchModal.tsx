@@ -1,12 +1,6 @@
 import React from "react";
 import { FixedSizeList as List } from "react-window";
-import SearchResultItem from "./SearchResultItem";
-import SearchModalFooter from "./SearchModalFooter";
-import {
-  useSearchResults,
-  useKeyboardNavigation,
-  useInputFocus,
-} from "./hooks";
+import SearchModalFooter from "./components/SearchModalFooter";
 import {
   ITEM_HEIGHT,
   MAX_RESULTS_HEIGHT,
@@ -15,6 +9,12 @@ import {
   NO_RESULTS_MESSAGE,
 } from "./constants";
 import type { SearchModalProps } from "./types";
+import SearchResultItem from "./components/SearchResultItem";
+import {
+  useInputFocus,
+  useKeyboardNavigation,
+  useSearchResults,
+} from "./hooks";
 
 const SearchModal: React.FC<SearchModalProps> = ({
   styles,

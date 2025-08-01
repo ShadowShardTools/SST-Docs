@@ -1,6 +1,6 @@
 import React from "react";
-import { highlightSearchTerm } from "./utilities/highlight";
-import type { SearchResultItemProps } from "./types";
+import type { SearchResultItemProps } from "../types";
+import { highlightSearchTerm } from "../utilities";
 
 const SearchResultItem: React.FC<SearchResultItemProps> = ({
   item,

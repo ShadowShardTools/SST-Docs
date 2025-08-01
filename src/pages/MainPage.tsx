@@ -10,9 +10,9 @@ import Sidebar from "../layouts/Sidebar";
 import Navigation from "../layouts/navigation/components/Navigation";
 import LoadingSpinner from "../components/dialog/LoadingSpinner";
 import type { StyleTheme } from "../types/entities/StyleTheme";
-import SearchModal from "../layouts/searchModal/SearchModal";
 import type { Category } from "../types/entities/Category";
 import CategoryNavigatorRenderer from "../layouts/CategoryNavigatorRenderer";
+import SearchModal from "../layouts/searchModal/SearchModal";
 
 const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
 
