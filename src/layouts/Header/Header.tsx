@@ -53,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({
 
         {/* Center: logo */}
         <div className="flex-1 flex justify-center md:justify-start">
-          <Logo />
+          <Logo styles={styles} />
         </div>
 
         {/* Mobile menu toggle */}
@@ -83,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({
               onVersionChange={onVersionChange}
               loading={loading}
             />
-            <ThemeButton />
+            <ThemeButton styles={styles} />
             <GithubButtonLink styles={styles} />
           </div>
         </div>

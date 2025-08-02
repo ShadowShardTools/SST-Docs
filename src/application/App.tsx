@@ -1,6 +1,6 @@
 // src/App.tsx
 import { Routes, Route, HashRouter } from "react-router-dom";
-import MainPage from "./pages/MainPage";
+import MainPage from "./MainPage";
 import { useThemeStyles } from "./hooks/useThemeStyles";
 
 function App() {

@@ -15,9 +15,9 @@
   },
   "scripts": {
     "generate": "run-p generate:*",
-    "generate:blocks": "node src/services/generators/GenerateBlockImports.mjs",
-    "generate:index": "node src/services/generators/GenerateIndex.mjs",
-    "generate:prism": "node src/services/generators/GeneratePrismLanguages.mjs",
+    "generate:blocks": "node src/generators/GenerateBlockImports.mjs",
+    "generate:index": "node src/generators/GenerateIndex.mjs",
+    "generate:prism": "node src/generators/GeneratePrismLanguages.mjs",
     "dev": "npm run generate && vite",
     "build": "npm run generate && tsc -b && vite build",
     "start": "vite preview",

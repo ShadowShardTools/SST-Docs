@@ -1,7 +1,7 @@
 import Desmos from "desmos";
 import { useEffect, useRef } from "react";
-import { useTheme } from "../../../../hooks/useTheme";
 import type { GraphData } from "../../types";
+import { useTheme } from "../../../../application/hooks/useTheme";
 
 declare global {
   interface Window {

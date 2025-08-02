@@ -5,7 +5,7 @@ import GithubButtonLink from "../cta/GithubLink";
 import SearchBar from "./SearchBar";
 import ThemeButton from "./ThemeButton";
 
-interface MobileMenuProps {
+interface Props {
   styles: StyleTheme;
   versions: Version[];
   currentVersion: string;
@@ -14,7 +14,7 @@ interface MobileMenuProps {
   onSearchOpen: () => void;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({
+const MobileMenu: React.FC<Props> = ({
   styles,
   versions,
   currentVersion,
@@ -33,7 +33,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       onVersionChange={onVersionChange}
       loading={loading}
     />
-    <ThemeButton />
+    <ThemeButton styles={styles} />
     <GithubButtonLink styles={styles} />
   </div>
 );

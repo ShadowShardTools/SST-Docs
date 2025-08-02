@@ -1,7 +1,7 @@
 // At top
 import { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMediaQuery } from "./useMediaQuery";
+import { useMediaQuery } from "./hooks/useMediaQuery";
 import { UseDocumentationData } from "../layouts/render/services/useDocumentationData";
 import ErrorMessage from "../layouts/dialog/ErrorMessage";
 import Header from "../layouts/header/Header";

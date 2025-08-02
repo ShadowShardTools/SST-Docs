@@ -1,12 +1,15 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useThemeStyles } from "../../hooks/useThemeStyles";
+import type { StyleTheme } from "../../types/StyleTheme";
 
 const THEME_KEY = "theme";
 
-const ThemeButton: React.FC = () => {
+interface Props {
+  styles: StyleTheme;
+}
+
+const ThemeButton: React.FC<Props> = ({ styles }) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const styles = useThemeStyles();
 
   const applyTheme = (newTheme: "light" | "dark") => {
     const html = document.documentElement;
