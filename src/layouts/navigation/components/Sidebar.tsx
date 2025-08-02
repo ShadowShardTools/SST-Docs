@@ -4,7 +4,7 @@ import Navigation from "./Navigation";
 import type { StyleTheme } from "../../../types/StyleTheme";
 import type { DocItem } from "../../render/types";
 
-export interface SidebarProps {
+export interface Props {
   styles: StyleTheme;
   tree: Category[];
   standaloneDocs?: DocItem[];
@@ -13,7 +13,7 @@ export interface SidebarProps {
   isSearchOpen?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const Sidebar: React.FC<Props> = ({
   styles,
   tree,
   standaloneDocs = [],

@@ -5,7 +5,7 @@ import CategoryRow from "./CategoryRow";
 import DocRow from "./DocRow";
 import type { DocItem } from "../../render/types/DocItem";
 
-export interface BranchProps {
+export interface Props {
   node: Category;
   depth: number;
   open: Record<string, boolean>;
@@ -17,7 +17,7 @@ export interface BranchProps {
   styles: StyleTheme;
 }
 
-const Branch: React.FC<BranchProps> = ({
+const Branch: React.FC<Props> = ({
   node,
   depth,
   open,

@@ -1,11 +1,11 @@
 import React, { lazy, useMemo } from "react";
-import type { TitleData } from "../types";
-import type { Category } from "../types";
-import ContentBlockRenderer from "./ContentBlockRenderer";
-import useHashScroll from "../hooks/useHashScroll";
 import type { StyleTheme } from "../../../types/StyleTheme";
-import findPath from "../../navigation/utilities/tree/findPath";
-const TitleBlock = lazy(() => import("./blocks/TitleBlock"));
+import { findPath } from "../../navigation/utilities";
+import { useHashScroll } from "../hooks";
+import ContentBlockRenderer from "./ContentBlockRenderer";
+import type { Category } from "../types";
+import type { TitleData } from "../../blocks/types";
+const TitleBlock = lazy(() => import("../../blocks/components/TitleBlock"));
 
 interface Props {
   styles: StyleTheme;

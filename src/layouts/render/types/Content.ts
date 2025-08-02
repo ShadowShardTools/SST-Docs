@@ -1,13 +1,13 @@
-import type { ChartData } from "./data/ChartData";
-import type { CodeData } from "./data/CodeData";
-import type { DividerData } from "./data/DividerData";
-import type { GraphData } from "./data/GraphData";
-import type { ListData } from "./data/ListData";
-import type { MathData } from "./data/MathData";
-import type { MessageBoxData } from "./data/MessageBoxData";
-import type { TableData } from "./data/TableData";
-import type { TextData } from "./data/TextData";
-import type { TitleData } from "./data/TitleData";
+import type { ChartData } from "../../blocks/types/ChartData";
+import type { CodeData } from "../../blocks/types/CodeData";
+import type { DividerData } from "../../blocks/types/DividerData";
+import type { GraphData } from "../../blocks/types/GraphData";
+import type { ListData } from "../../blocks/types/ListData";
+import type { MathData } from "../../blocks/types/MathData";
+import type { MessageBoxData } from "../../blocks/types/MessageBoxData";
+import type { TableData } from "../../blocks/types/TableData";
+import type { TextData } from "../../blocks/types/TextData";
+import type { TitleData } from "../../blocks/types/TitleData";
 
 export interface Content {
   type?:

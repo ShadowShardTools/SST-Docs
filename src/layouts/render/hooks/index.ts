@@ -1,2 +1,2 @@
 export { useHashScroll } from "./useHashScroll";
-export { usePrismHighlighting } from "./usePrismHighlighting";
+export { useMediaQuery } from "./useMediaQuery";

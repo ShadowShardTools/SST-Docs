@@ -1,6 +1,5 @@
 import React from "react";
 import { FixedSizeList as List } from "react-window";
-import type { SearchModalProps } from "../types";
 import {
   SEARCH_PLACEHOLDER,
   EMPTY_SEARCH_MESSAGE,
@@ -15,8 +14,20 @@ import {
 } from "../hooks";
 import SearchModalFooter from "./SearchModalFooter";
 import SearchResultItem from "./SearchResultItem";
+import type { StyleTheme } from "../../../types/StyleTheme";
+import type { DocItem } from "../../render/types";
 
-const SearchModal: React.FC<SearchModalProps> = ({
+interface Props {
+  styles: StyleTheme;
+  isOpen: boolean;
+  onClose: () => void;
+  searchTerm: string;
+  onSearchChange: (val: string) => void;
+  results: DocItem[];
+  onSelect: (item: DocItem) => void;
+}
+
+const SearchModal: React.FC<Props> = ({
   styles,
   isOpen,
   onClose,

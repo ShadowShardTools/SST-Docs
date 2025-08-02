@@ -1,8 +1,18 @@
 import React from "react";
-import type { SearchResultItemProps } from "../types";
 import { highlightSearchTerm } from "../utilities";
+import type { StyleTheme } from "../../../types/StyleTheme";
+import type { DocItem } from "../../render/types";
+interface Props {
+  item: DocItem;
+  snippet: string;
+  searchTerm: string;
+  isSelected: boolean;
+  styles: StyleTheme;
+  onSelect: (item: DocItem) => void;
+  onClose: () => void;
+}
 
-const SearchResultItem: React.FC<SearchResultItemProps> = ({
+const SearchResultItem: React.FC<Props> = ({
   item,
   snippet,
   searchTerm,

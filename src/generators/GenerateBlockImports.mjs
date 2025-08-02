@@ -21,11 +21,10 @@ const renderRoot = path.join(
   root,
   "src",
   "layouts",
-  "render",
-  "components",
   "blocks",
+  "components"
 );
-const generatedRoot = path.join(root, "src", "layouts", "render", "generatedImports");
+const generatedRoot = path.join(root, "src", "layouts", "blocks", "generatedImports");
 const outFile = path.join(generatedRoot, "blockImports.generated.ts");
 
 /* ---------- helpers ----------------------------------------------------- */

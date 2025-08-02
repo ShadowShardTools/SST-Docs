@@ -11,7 +11,7 @@ const info = (msg) => console.log(c.cyan("➜"), msg);
 
 const dataDir = path.resolve("public", "data");
 const outFile = path.resolve(
-  "src", "layouts", "render", "generatedImports",
+  "src", "layouts", "blocks", "generatedImports",
   "prism-languages.generated.ts",
 );
 

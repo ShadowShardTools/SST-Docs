@@ -4,7 +4,7 @@ import type { Category } from "../../render/types/Category";
 import type { StyleTheme } from "../../../types/StyleTheme";
 import { rowClasses } from "../utilities";
 
-export interface CategoryRowProps {
+export interface Props {
   styles: StyleTheme;
   node: Category;
   depth: number;
@@ -16,16 +16,7 @@ export interface CategoryRowProps {
 }
 
 const CategoryRowBase = (
-  {
-    styles,
-    node,
-    depth,
-    active,
-    expanded,
-    focused,
-    toggle,
-    select,
-  }: CategoryRowProps,
+  { styles, node, depth, active, expanded, focused, toggle, select }: Props,
   ref: React.Ref<HTMLButtonElement>,
 ) => {
   const cls = useMemo(

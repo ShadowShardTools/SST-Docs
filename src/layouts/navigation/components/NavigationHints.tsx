@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import type { NavigationHintsProps } from "../types";
+import type { StyleTheme } from "../../../types/StyleTheme";
 
-const NavigationHints: React.FC<NavigationHintsProps> = ({ styles }) => {
+export interface Props {
+  styles: StyleTheme;
+}
+
+const NavigationHints: React.FC<Props> = ({ styles }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (

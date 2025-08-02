@@ -1,16 +1,15 @@
 import React from "react";
 import { FileText, Folder } from "lucide-react";
 import type { StyleTheme } from "../../../types/StyleTheme";
-import type { Category } from "../types/Category";
-import type { DocItem } from "../types/DocItem";
+import type { Category, DocItem } from "../types";
 
-interface CategoryNavigatorRendererProps {
+interface Props {
   styles: StyleTheme;
   category: Category;
   onSelect: (entry: DocItem | Category) => void;
 }
 
-const CategoryNavigatorRenderer: React.FC<CategoryNavigatorRendererProps> = ({
+const CategoryNavigatorRenderer: React.FC<Props> = ({
   styles,
   category,
   onSelect,

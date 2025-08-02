@@ -65,7 +65,7 @@
       "messageBoxData": {
         "type": "quote",
         "text": "Quote Example",
-        "messageSize": "medium"
+        "size": "medium"
       }
     },
     {
@@ -73,7 +73,7 @@
       "messageBoxData": {
         "type": "info",
         "text": "This is an info message with basic content",
-        "messageSize": "medium",
+        "size": "medium",
         "showIcon": true
       }
     },
@@ -82,7 +82,7 @@
       "messageBoxData": {
         "type": "warning",
         "text": "This is a warning message with important information",
-        "messageSize": "medium",
+        "size": "medium",
         "showIcon": true
       }
     },
@@ -91,7 +91,7 @@
       "messageBoxData": {
         "type": "error",
         "text": "This is an error message indicating something went wrong",
-        "messageSize": "medium",
+        "size": "medium",
         "showIcon": true
       }
     },
@@ -100,7 +100,7 @@
       "messageBoxData": {
         "type": "success",
         "text": "This is a success message celebrating completion",
-        "messageSize": "medium",
+        "size": "medium",
         "showIcon": true
       }
     },
@@ -109,7 +109,7 @@
       "messageBoxData": {
         "type": "neutral",
         "text": "This is a neutral message with general information",
-        "messageSize": "medium",
+        "size": "medium",
         "showIcon": true
       }
     },
@@ -118,7 +118,7 @@
       "messageBoxData": {
         "type": "info",
         "text": "This is an large info message with basic content",
-        "messageSize": "large",
+        "size": "large",
         "showIcon": true
       }
     },
@@ -127,7 +127,7 @@
       "messageBoxData": {
         "type": "success",
         "text": "This is a success message celebrating completion without icon",
-        "messageSize": "medium",
+        "size": "medium",
         "showIcon": false
       }
     },
@@ -136,7 +136,7 @@
       "messageBoxData": {
         "type": "neutral",
         "text": "Small message without icon",
-        "messageSize": "small",
+        "size": "small",
         "showIcon": false
       }
     },

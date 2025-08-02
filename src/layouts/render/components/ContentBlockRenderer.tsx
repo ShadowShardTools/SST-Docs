@@ -2,17 +2,17 @@ import React, { Suspense, memo } from "react";
 import {
   blockImports,
   type BlockType,
-} from "../generatedImports/blockImports.generated";
+} from "../../blocks/generatedImports/blockImports.generated";
 import LoadingSpinner from "../../dialog/LoadingSpinner";
 import type { StyleTheme } from "../../../types/StyleTheme";
 
-interface ContentBlockRendererProps {
+interface Props {
   styles: StyleTheme;
   content: any[];
   currentPath: string;
 }
 
-const ContentBlockRenderer: React.FC<ContentBlockRendererProps> = memo(
+const ContentBlockRenderer: React.FC<Props> = memo(
   ({ styles, content, currentPath }) => {
     return (
       <>

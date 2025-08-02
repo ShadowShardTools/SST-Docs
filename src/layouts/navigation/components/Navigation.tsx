@@ -4,7 +4,6 @@ import {
   useCursorSync,
   useKeyboardNavigation,
 } from "../hooks";
-import type { NavigationProps } from "../types";
 import {
   buildEntries,
   filterTree,
@@ -14,8 +13,19 @@ import {
 import Branch from "./Branch";
 import DocRow from "./DocRow";
 import NavigationHints from "./NavigationHints";
+import type { StyleTheme } from "../../../types/StyleTheme";
+import type { Category, DocItem } from "../../render/types";
 
-const Navigation: React.FC<NavigationProps> = ({
+export interface Props {
+  styles: StyleTheme;
+  tree: Category[];
+  standaloneDocs?: DocItem[];
+  onSelect: (entry: DocItem | Category) => void;
+  selectedItem?: DocItem | Category | null;
+  isSearchOpen?: boolean;
+}
+
+const Navigation: React.FC<Props> = ({
   styles,
   tree,
   standaloneDocs = [],
