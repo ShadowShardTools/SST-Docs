@@ -2,12 +2,12 @@ import { useState } from "react";
 import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import MobileMenu from "./MobileMenu";
-import GithubButtonLink from "../../components/GithubLink";
-import VersionSelector from "../../components/VersionSelector";
-import SearchBar from "../../components/SearchBar";
-import type { Version } from "../../types/entities/Version";
-import ThemeButton from "../../components/ThemeButton";
-import type { StyleTheme } from "../../types/entities/StyleTheme";
+import VersionSelector from "./VersionSelector";
+import type { Version } from "../render/types/Version";
+import type { StyleTheme } from "../../types/StyleTheme";
+import GithubButtonLink from "../cta/GithubLink";
+import SearchBar from "./SearchBar";
+import ThemeButton from "./ThemeButton";
 
 interface HeaderProps {
   styles: StyleTheme;

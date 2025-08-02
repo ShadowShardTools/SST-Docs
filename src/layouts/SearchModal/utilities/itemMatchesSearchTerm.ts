@@ -1,4 +1,4 @@
-import type { DocItem } from "../../../types/entities/DocItem";
+import type { DocItem } from "../../render/types/DocItem";
 
 export const itemMatchesSearchTerm = (item: DocItem, term: string): boolean => {
   const termLower = term.toLowerCase();

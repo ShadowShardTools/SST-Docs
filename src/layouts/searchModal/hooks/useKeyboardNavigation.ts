@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import type { SearchMatch } from "../types";
-import type { DocItem } from "../../../types/entities/DocItem";
 import { KEYBOARD_SHORTCUTS } from "../constants";
+import type { DocItem } from "../../render/types";
 
 export const useKeyboardNavigation = (
   isOpen: boolean,

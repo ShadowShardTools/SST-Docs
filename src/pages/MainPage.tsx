@@ -2,19 +2,21 @@
 import { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "./useMediaQuery";
-import { UseDocumentationData } from "../services/UseDocumentationData";
-import type { DocItem } from "../types/entities/DocItem";
-import ErrorMessage from "../components/dialog/ErrorMessage";
-import Header from "../layouts/Header/Header";
-import Sidebar from "../layouts/Sidebar";
+import { UseDocumentationData } from "../layouts/render/services/useDocumentationData";
+import ErrorMessage from "../layouts/dialog/ErrorMessage";
+import Header from "../layouts/header/Header";
+import Sidebar from "../layouts/navigation/components/Sidebar";
 import Navigation from "../layouts/navigation/components/Navigation";
-import LoadingSpinner from "../components/dialog/LoadingSpinner";
-import type { StyleTheme } from "../types/entities/StyleTheme";
-import type { Category } from "../types/entities/Category";
-import CategoryNavigatorRenderer from "../layouts/CategoryNavigatorRenderer";
-import SearchModal from "../layouts/searchModal/SearchModal";
+import LoadingSpinner from "../layouts/dialog/LoadingSpinner";
+import type { StyleTheme } from "../types/StyleTheme";
+import type { Category } from "../layouts/render/types/Category";
+import CategoryNavigatorRenderer from "../layouts/render/components/CategoryNavigatorRenderer";
+import type { DocItem } from "../layouts/render/types";
+import SearchModal from "../layouts/searchModal/components/SearchModal";
 
-const ContentRenderer = lazy(() => import("../layouts/ContentRenderer"));
+const ContentRenderer = lazy(
+  () => import("../layouts/render/components/ContentRendererBase"),
+);
 
 const MainPage: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const navigate = useNavigate();

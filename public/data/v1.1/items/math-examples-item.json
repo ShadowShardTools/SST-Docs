@@ -27,11 +27,7 @@
     {
       "type": "graph",
       "graphData": {
-        "expressions": [
-          "y=\\sin(x)",
-          "y=\\cos(x)",
-          "y=\\sin(x)+\\cos(x)"
-        ]
+        "expressions": ["y=\\sin(x)", "y=\\cos(x)", "y=\\sin(x)+\\cos(x)"]
       }
     }
   ]

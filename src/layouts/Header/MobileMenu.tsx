@@ -1,9 +1,9 @@
-import GithubButtonLink from "../../components/GithubLink";
-import SearchBar from "../../components/SearchBar";
-import ThemeButton from "../../components/ThemeButton";
-import VersionSelector from "../../components/VersionSelector";
-import type { StyleTheme } from "../../types/entities/StyleTheme";
-import type { Version } from "../../types/entities/Version";
+import VersionSelector from "./VersionSelector";
+import type { StyleTheme } from "../../types/StyleTheme";
+import type { Version } from "../render/types/Version";
+import GithubButtonLink from "../cta/GithubLink";
+import SearchBar from "./SearchBar";
+import ThemeButton from "./ThemeButton";
 
 interface MobileMenuProps {
   styles: StyleTheme;

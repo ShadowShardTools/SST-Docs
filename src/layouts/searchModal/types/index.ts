@@ -1,5 +1,5 @@
-import type { DocItem } from "../../../types/entities/DocItem";
-import type { StyleTheme } from "../../../types/entities/StyleTheme";
+import type { StyleTheme } from "../../../types/StyleTheme";
+import type { DocItem } from "../../render/types";
 
 export interface SearchModalProps {
   styles: StyleTheme;

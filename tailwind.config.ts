@@ -1,14 +1,11 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/line-clamp'),
-  ]
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
+  ],
 };
 
 export default config;

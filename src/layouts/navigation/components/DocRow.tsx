@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { FileText } from "lucide-react";
-import type { DocItem } from "../../../types/entities/DocItem";
 import { rowClasses } from "../utilities";
-import type { StyleTheme } from "../../../types/entities/StyleTheme";
+import type { StyleTheme } from "../../../types/StyleTheme";
+import type { DocItem } from "../../render/types/DocItem";
 
 export interface DocRowProps {
   styles: StyleTheme;

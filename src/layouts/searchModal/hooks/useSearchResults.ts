@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import type { DocItem } from "../../../types/entities/DocItem";
 import { processSearchResults } from "../utilities/processSearchResults";
 import type { SearchMatch } from "../types";
+import type { DocItem } from "../../render/types";
 
 export const useSearchResults = (
   results: DocItem[],

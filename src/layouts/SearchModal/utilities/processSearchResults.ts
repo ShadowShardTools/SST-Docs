@@ -1,4 +1,4 @@
-import type { DocItem } from "../../../types/entities/DocItem";
+import type { DocItem } from "../../render/types/DocItem";
 import type { SearchMatch } from "../types";
 import { itemMatchesSearchTerm } from "./itemMatchesSearchTerm";
 

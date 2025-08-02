@@ -1,5 +1,5 @@
 import React from "react";
-import type { StyleTheme } from "../../../types/entities/StyleTheme";
+import type { StyleTheme } from "../../../types/StyleTheme";
 
 interface SearchModalFooterProps {
   styles: StyleTheme;

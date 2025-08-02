@@ -6,6 +6,7 @@
 <img width="1649" height="1025" alt="image" src="https://github.com/user-attachments/assets/f002795b-dab4-4b6c-9b26-5e468b5394e0" />
 
 ## 🚀 Features
+
 - User-friendly version selector
 - Sidebar and mobile navigation with filter and keyboard support (`F`, `↑↓`, `Enter`, `Esc`)
 - Search modal with highlighted results (trigger with `/` or `Ctrl + K`)
@@ -18,9 +19,11 @@
 - Config customization
 
 ## ⚒️ Installation / Contribution
+
 All information is available on the website - [SST Docs](https://shadowshardtools.github.io/SST-Docs/)
 
 ## 📦 Dependencies
+
 - React
 - React Router
 - Tailwind CSS
@@ -31,9 +34,11 @@ All information is available on the website - [SST Docs](https://shadowshardtool
 - Katex
 
 ## 📄 License
+
 MIT
 
 ## 🖋️ Created By
+
 ShadowShardTools - Founded by Valerii Deineka
 
 ## 🔗 Links

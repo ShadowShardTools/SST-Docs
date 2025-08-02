@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@splidejs/react-splide/css";
-@import 'katex/dist/katex.min.css';
+@import "katex/dist/katex.min.css";
 
 html {
   scroll-behavior: smooth;
