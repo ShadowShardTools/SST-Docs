@@ -3,12 +3,18 @@
   "title": "Examples",
   "description": "Example description for the category",
   "content": [
-      {
-          "type": "text",
-          "textData": {
-              "text": "Categories are separate pages in their own right and can have all the content that you have in regular documentation pages. This category contains a set of examples with different types of content blocks."
-          }
+    {
+      "type": "text",
+      "textData": {
+        "text": "Categories are separate pages in their own right and can have all the content that you have in regular documentation pages. This category contains a set of examples with different types of content blocks."
       }
+    }
   ],
-  "docs": ["common-examples-item", "media-examples-item", "math-examples-item", "code-examples-item", "charts-examples-item"]
+  "docs": [
+    "common-examples-item",
+    "media-examples-item",
+    "math-examples-item",
+    "code-examples-item",
+    "charts-examples-item"
+  ]
 }
