@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../types/entities/StyleTheme";
+import type { StyleTheme } from "../types/StyleTheme";
 
 export const darkTheme: StyleTheme = {
   input:

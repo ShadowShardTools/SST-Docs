@@ -2,9 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/107807003" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://avatars.githubusercontent.com/u/107807003"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SST  Docs</title>
+    <title>SST Docs</title>
   </head>
   <body>
     <div id="root"></div>
@@ -16,7 +20,9 @@
   (function () {
     try {
       const theme = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       const isDark = theme === "dark" || (!theme && prefersDark);
       if (isDark) document.documentElement.classList.add("dark");
     } catch (e) {

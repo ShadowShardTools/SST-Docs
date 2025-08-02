@@ -16,21 +16,11 @@
         "type": "bar",
         "title": "Bar Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Red",
-          "Blue",
-          "Yellow",
-          "Green"
-        ],
+        "labels": ["Red", "Blue", "Yellow", "Green"],
         "datasets": [
           {
             "label": "Votes",
-            "data": [
-              12,
-              19,
-              3,
-              5
-            ],
+            "data": [12, 19, 3, 5],
             "backgroundColor": "#3b82f6",
             "borderColor": "#1d4ed8"
           }
@@ -51,21 +41,11 @@
         "type": "line",
         "title": "Line Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Q1",
-          "Q2",
-          "Q3",
-          "Q4"
-        ],
+        "labels": ["Q1", "Q2", "Q3", "Q4"],
         "datasets": [
           {
             "label": "Revenue ($k)",
-            "data": [
-              15,
-              25,
-              20,
-              30
-            ],
+            "data": [15, 25, 20, 30],
             "borderColor": "#3b82f6",
             "fill": false
           }
@@ -86,35 +66,17 @@
         "type": "radar",
         "title": "Radar Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Speed",
-          "Reliability",
-          "Comfort",
-          "Safety",
-          "Efficiency"
-        ],
+        "labels": ["Speed", "Reliability", "Comfort", "Safety", "Efficiency"],
         "datasets": [
           {
             "label": "Car A",
-            "data": [
-              65,
-              59,
-              90,
-              81,
-              56
-            ],
+            "data": [65, 59, 90, 81, 56],
             "backgroundColor": "rgba(59, 130, 246, 0.2)",
             "borderColor": "#3b82f6"
           },
           {
             "label": "Car B",
-            "data": [
-              28,
-              48,
-              40,
-              19,
-              96
-            ],
+            "data": [28, 48, 40, 19, 96],
             "backgroundColor": "rgba(239, 68, 68, 0.2)",
             "borderColor": "#ef4444"
           }
@@ -135,24 +97,12 @@
         "type": "doughnut",
         "title": "Doughnut Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Chrome",
-          "Firefox",
-          "Safari"
-        ],
+        "labels": ["Chrome", "Firefox", "Safari"],
         "datasets": [
           {
             "label": "Browser Share",
-            "data": [
-              55,
-              25,
-              20
-            ],
-            "backgroundColor": [
-              "#3b82f6",
-              "#ef4444",
-              "#facc15"
-            ]
+            "data": [55, 25, 20],
+            "backgroundColor": ["#3b82f6", "#ef4444", "#facc15"]
           }
         ]
       }
@@ -171,26 +121,11 @@
         "type": "polarArea",
         "title": "Polar Area Chart Example",
         "scale": 0.6,
-        "labels": [
-          "North",
-          "East",
-          "South",
-          "West"
-        ],
+        "labels": ["North", "East", "South", "West"],
         "datasets": [
           {
-            "data": [
-              11,
-              16,
-              7,
-              12
-            ],
-            "backgroundColor": [
-              "#3b82f6",
-              "#22c55e",
-              "#f97316",
-              "#a855f7"
-            ]
+            "data": [11, 16, 7, 12],
+            "backgroundColor": ["#3b82f6", "#22c55e", "#f97316", "#a855f7"]
           }
         ]
       }
@@ -209,9 +144,7 @@
         "type": "bubble",
         "title": "Bubble Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Data"
-        ],
+        "labels": ["Data"],
         "datasets": [
           {
             "label": "Bubbles",
@@ -251,23 +184,11 @@
         "type": "pie",
         "title": "Pie Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Apple",
-          "Samsung",
-          "Huawei"
-        ],
+        "labels": ["Apple", "Samsung", "Huawei"],
         "datasets": [
           {
-            "data": [
-              40,
-              30,
-              30
-            ],
-            "backgroundColor": [
-              "#ef4444",
-              "#22c55e",
-              "#3b82f6"
-            ]
+            "data": [40, 30, 30],
+            "backgroundColor": ["#ef4444", "#22c55e", "#3b82f6"]
           }
         ]
       }
@@ -286,9 +207,7 @@
         "type": "scatter",
         "title": "Scatter Chart Example",
         "scale": 0.6,
-        "labels": [
-          "Data"
-        ],
+        "labels": ["Data"],
         "datasets": [
           {
             "label": "Measurements",

@@ -1,4 +1,4 @@
-import type { DocItem } from "../../../types/entities/DocItem";
+import type { DocItem } from "../../render/types/DocItem";
 
 export const generateSnippet = (item: DocItem, term: string): string => {
   const termLower = term.toLowerCase();
