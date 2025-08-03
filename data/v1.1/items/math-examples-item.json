@@ -27,7 +27,10 @@
     {
       "type": "graph",
       "graphData": {
-        "expressions": ["y=\\sin(x)", "y=\\cos(x)", "y=\\sin(x)+\\cos(x)"]
+        "expressions": ["y=\\sin(x)", "y=\\cos(x)", "y=\\sin(x)+\\cos(x)"],
+        "expressionsCustomization": true,
+        "scale": 0.85,
+        "alignment": "center"
       }
     }
   ]
