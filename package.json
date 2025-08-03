@@ -28,9 +28,8 @@
   },
   "dependencies": {
     "@splidejs/react-splide": "^0.7.12",
-    "@splidejs/splide": "^4.1.4",
+    "@tailwindcss/typography": "^0.5.16",
     "chart.js": "^4.5.0",
-    "clsx": "^2.1.1",
     "desmos": "^1.5.4",
     "katex": "^0.16.22",
     "lucide-react": "^0.509.0",
@@ -39,10 +38,8 @@
     "react-chartjs-2": "^5.3.0",
     "react-compare-image": "^3.5.5",
     "react-dom": "^19.1.0",
-    "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^7.6.0",
     "react-window": "^1.8.11",
-    "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
@@ -58,7 +55,6 @@
     "gh-pages": "^6.3.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
-    "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   }

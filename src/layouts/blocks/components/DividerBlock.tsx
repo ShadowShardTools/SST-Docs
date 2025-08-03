@@ -9,7 +9,7 @@ interface Props {
 }
 
 const DividerBlock: React.FC<Props> = ({ index, styles, dividerData }) => {
-  const getSpacingClasses = () => {
+  const getSpacingClass = (): string => {
     switch (dividerData.spacing) {
       case "small":
         return "my-4";
@@ -22,42 +22,47 @@ const DividerBlock: React.FC<Props> = ({ index, styles, dividerData }) => {
     }
   };
 
-  const getDividerClasses = () => {
-    const baseClasses = `w-full ${styles.divider.border || "border-gray-300"}`;
+  const getDividerClass = (): string => {
+    const base = `w-full ${styles.divider.border || "border-gray-300"}`;
 
     switch (dividerData.type) {
       case "line":
-        return `${baseClasses} border-t`;
+        return `${base} border-t`;
       case "dashed":
-        return `${baseClasses} border-t-2 border-dashed`;
+        return `${base} border-t-2 border-dashed`;
       case "dotted":
-        return `${baseClasses} border-t-2 border-dotted`;
+        return `${base} border-t-2 border-dotted`;
       case "double":
-        return `${baseClasses} border-t-4 border-double`;
+        return `${base} border-t-4 border-double`;
       case "thick":
-        return `${baseClasses} border-t-2`;
+        return `${base} border-t-2`;
       case "gradient":
         return `h-px w-full bg-gradient-to-r ${styles.divider.gradient || "from-transparent via-gray-300 to-transparent"}`;
       default:
-        return `${baseClasses} border-t`;
+        return `${base} border-t`;
     }
   };
 
+  const spacingClass = getSpacingClass();
+  const dividerClass = getDividerClass();
+
   if (dividerData.text) {
+    const sideDivider = dividerClass.replace("w-full", "flex-1");
+
     return (
-      <div key={index} className={`${getSpacingClasses()} flex items-center`}>
-        <div className={getDividerClasses().replace("w-full", "flex-1")} />
+      <div key={index} className={`${spacingClass} flex items-center`}>
+        <div className={sideDivider} />
         <span className={`px-4 ${styles.divider.text}`}>
           {dividerData.text}
         </span>
-        <div className={getDividerClasses().replace("w-full", "flex-1")} />
+        <div className={sideDivider} />
       </div>
     );
   }
 
   return (
-    <div key={index} className={getSpacingClasses()}>
-      <div className={getDividerClasses()} />
+    <div key={index} className={spacingClass}>
+      <div className={dividerClass} />
     </div>
   );
 };

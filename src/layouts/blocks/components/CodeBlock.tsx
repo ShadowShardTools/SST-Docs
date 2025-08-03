@@ -15,8 +15,13 @@ import {
 } from "../../../configs/code-languages-config";
 import type { CodeData, CodeSection } from "../types";
 import { usePrismHighlighting } from "../hooks";
-import { sanitizeFilename } from "../utilities/string/sanitizeFilename";
 import { LineNumbers } from "./LineNumbers";
+import {
+  copyToClipboard,
+  createTimeout,
+  downloadTextFile,
+  sanitizeFilename,
+} from "../utilities";
 
 interface Props {
   index: number;
@@ -36,7 +41,7 @@ const CodeBlock: React.FC<Props> = ({
   const [copied, setCopied] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [collapsed, setCollapsed] = useState(codeData.defaultCollapsed);
-  const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<{ clear: () => void } | null>(null);
 
   const normalizedSections = useMemo((): CodeSection[] => {
     if (codeData.sections?.length) {
@@ -61,7 +66,7 @@ const CodeBlock: React.FC<Props> = ({
     }
 
     return [];
-  }, [codeData.sections, codeData.content, codeData.language, codeData.name]);
+  }, [codeData]);
 
   const { prismLoaded, codeRefs } = usePrismHighlighting(
     normalizedSections,
@@ -79,24 +84,12 @@ const CodeBlock: React.FC<Props> = ({
       const section = normalizedSections[sectionIndex];
       if (!section) return;
 
-      try {
-        await navigator.clipboard.writeText(section.content);
+      const success = await copyToClipboard(section.content);
+      if (success) {
         setCopied(`${sectionIndex}`);
-        if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
-        copyTimeoutRef.current = setTimeout(() => setCopied(null), 2000);
+        if (timeoutRef.current) timeoutRef.current.clear();
+        timeoutRef.current = createTimeout(() => setCopied(null), 2000);
         onCopy?.(section.content, section.language);
-      } catch {
-        const textarea = document.createElement("textarea");
-        textarea.value = section.content;
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-          document.execCommand("copy");
-          setCopied(`${sectionIndex}`);
-          copyTimeoutRef.current = setTimeout(() => setCopied(null), 2000);
-        } finally {
-          document.body.removeChild(textarea);
-        }
       }
     },
     [normalizedSections, onCopy],
@@ -107,26 +100,12 @@ const CodeBlock: React.FC<Props> = ({
       const section = normalizedSections[sectionIndex];
       if (!section) return;
 
-      try {
-        const blob = new Blob([section.content], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        const ext = CODE_LANGUAGE_CONFIG[section.language]?.ext ?? "txt";
-        const filename = section.filename
-          ? sanitizeFilename(section.filename)
-          : `code-${index}-${sectionIndex}.${ext}`;
+      const ext = CODE_LANGUAGE_CONFIG[section.language]?.ext ?? "txt";
+      const filename = section.filename
+        ? sanitizeFilename(section.filename)
+        : `code-${index}-${sectionIndex}.${ext}`;
 
-        link.href = url;
-        link.download = filename;
-        link.style.display = "none";
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(url), 100);
-      } catch (error) {
-        console.error("Failed to download file:", error);
-      }
+      downloadTextFile(section.content, filename);
     },
     [normalizedSections, index],
   );
@@ -142,9 +121,7 @@ const CodeBlock: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    return () => {
-      if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
-    };
+    return () => timeoutRef.current?.clear();
   }, []);
 
   if (!normalizedSections.length) {

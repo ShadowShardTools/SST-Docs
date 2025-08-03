@@ -9,6 +9,6 @@ export type MessageBoxSize = "small" | "medium" | "large";
 export interface MessageBoxData {
   type?: MessageBoxType;
   text?: string;
-  size?: MessageBoxSize;
+  size?: "small" | "medium" | "large";
   showIcon?: boolean;
 }

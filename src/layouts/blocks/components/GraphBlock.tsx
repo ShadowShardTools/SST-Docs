@@ -2,6 +2,8 @@ import Desmos from "desmos";
 import { useEffect, useRef } from "react";
 import type { GraphData } from "../types";
 import { useCurrentTheme } from "../../../application/hooks/useCurrentTheme";
+import { ALIGNMENT_CLASSES } from "../constants";
+import { validateScale, getResponsiveWidth } from "../utilities";
 
 declare global {
   interface Window {
@@ -24,8 +26,8 @@ const GraphBlock: React.FC<Props> = ({ index, graphData }) => {
     if (!container) return;
 
     const calculator = Desmos.GraphingCalculator(container, {
-      expressions: true,
-      keypad: true,
+      expressions: graphData.expressionsCustomization,
+      keypad: graphData.expressionsCustomization,
       invertedColors: theme === "dark",
     });
 
@@ -44,30 +46,24 @@ const GraphBlock: React.FC<Props> = ({ index, graphData }) => {
     };
   }, [graphData.expressions, theme]);
 
+  const scale = validateScale(graphData.scale);
+  const width = getResponsiveWidth(scale, false);
   const alignment = graphData.alignment ?? "center";
-  const rawScale = graphData.scale ?? 1;
-  const scale = rawScale > 0 ? rawScale : 1;
-  const width = `${scale * 100}%`;
-
-  const alignmentClasses = {
-    left: "mr-auto",
-    center: "mx-auto",
-    right: "ml-auto",
-  };
 
   return (
-    <div
-      key={index}
-      className={`mb-6 w-full md:${alignmentClasses[alignment]}`}
-      style={{ width: undefined, ...(scale !== 1 && { width }) }}
-    >
-      <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-        <div
-          ref={containerRef}
-          role="img"
-          aria-label="Interactive graph"
-          className="absolute top-0 left-0 w-full h-full"
-        />
+    <div key={index} className="mb-6 w-full">
+      <div
+        className={`${scale !== 1 ? ALIGNMENT_CLASSES[alignment].container : "mx-auto"}`}
+        style={{ width }}
+      >
+        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+          <div
+            ref={containerRef}
+            role="img"
+            aria-label="Interactive graph"
+            className="absolute top-0 left-0 w-full h-full"
+          />
+        </div>
       </div>
     </div>
   );

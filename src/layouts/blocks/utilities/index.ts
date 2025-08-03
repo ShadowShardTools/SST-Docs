@@ -2,7 +2,6 @@
 
 // string
 export { slugify } from "../../blocks/utilities/string/slugify";
-export { truncateText } from "../../blocks/utilities/string/truncateText";
 export { sanitizeFilename } from "../../blocks/utilities/string/sanitizeFilename";
 export { extractYouTubeId } from "../../blocks/utilities/string/extractYouTubeId";
 
@@ -23,5 +22,6 @@ export { isValidImageUrl } from "./validation/isValidImageUrl";
 export { isValidYouTubeId } from "./validation/isValidYouTubeId";
 export { validateScale } from "./validation/validateScale";
 
-// media
+// dom
 export { getResponsiveWidth } from "./dom/getResponsiveWidth";
+export { processListItems } from "./dom/processListItems";

@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 import type { StyleTheme } from "../../../types/StyleTheme";
 import type { ListData } from "../types";
+import { ALIGNMENT_CLASSES } from "../constants";
+import { processListItems } from "../utilities";
 
 interface Props {
   index: number;
@@ -9,22 +11,16 @@ interface Props {
 }
 
 const ListBlock: React.FC<Props> = ({ index, styles, listData }) => {
-  const processedItems = useMemo(() => {
-    return (listData.items ?? [])
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0);
-  }, [listData.items]);
+  const processedItems = useMemo(
+    () => processListItems(listData.items),
+    [listData.items],
+  );
 
   if (processedItems.length === 0) return null;
 
   const ListComponent = listData.type === "ol" ? "ol" : "ul";
 
-  const alignmentClass =
-    listData.alignment === "center"
-      ? "text-center"
-      : listData.alignment === "right"
-        ? "text-right"
-        : "text-left";
+  const alignmentClass = ALIGNMENT_CLASSES[listData.alignment || "left"]?.text;
 
   const listClass = [
     styles.text.list,

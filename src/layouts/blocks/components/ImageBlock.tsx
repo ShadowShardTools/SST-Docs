@@ -1,13 +1,13 @@
 import React, { useState, lazy, Suspense } from "react";
 import type { StyleTheme } from "../../../types/StyleTheme";
+import type { ImageData } from "../types";
+import { validateScale, getResponsiveWidth } from "../utilities";
+import { useMobileDevice } from "../hooks";
 import {
   ALIGNMENT_CLASSES,
   SPACING_CLASSES,
   DEFAULT_CAROUSEL_OPTIONS,
 } from "../constants";
-import { validateScale, getResponsiveWidth } from "../utilities";
-import type { ImageData } from "../types";
-import { useMobileDevice } from "../hooks";
 
 const Splide = lazy(() =>
   import("@splidejs/react-splide").then((m) => ({ default: m.Splide })),
@@ -29,29 +29,22 @@ const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
 
   const scale = validateScale(imageData.scale);
   const alignment = imageData.alignment ?? "center";
-
-  // Use responsive container alignment
-  const getContainerAlignment = () => {
-    if (isMobile) return "w-full";
-    return ALIGNMENT_CLASSES[alignment].container;
-  };
+  const width = getResponsiveWidth(scale, isMobile);
 
   const baseClasses = `${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`;
+  const containerAlignment = isMobile
+    ? "w-full"
+    : ALIGNMENT_CLASSES[alignment].container;
 
-  const renderCaption = (caption?: string) => {
-    if (!caption) return null;
-    return <p className={`mt-2 ${styles.text.alternative}`}>{caption}</p>;
-  };
+  const renderCaption = (caption?: string) =>
+    caption ? (
+      <p className={`mt-2 ${styles.text.alternative}`}>{caption}</p>
+    ) : null;
 
-  const renderSingleImage = () => {
-    if (!imageData.image) return null;
-
-    return (
+  const renderSingleImage = () =>
+    imageData.image && (
       <div key={index} className={baseClasses}>
-        <div
-          className={getContainerAlignment()}
-          style={{ width: getResponsiveWidth(scale, isMobile) }}
-        >
+        <div className={containerAlignment} style={{ width }}>
           <img
             src={imageData.image.src}
             alt={imageData.image.alt || "Image"}
@@ -61,41 +54,31 @@ const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
         </div>
       </div>
     );
-  };
 
-  const renderCompareImages = () => {
-    if (!imageData.beforeImage || !imageData.afterImage) return null;
-
-    return (
+  const renderCompareImages = () =>
+    imageData.beforeImage &&
+    imageData.afterImage && (
       <div key={index} className={baseClasses}>
         <div
-          className={`flex gap-4 justify-center ${getContainerAlignment()}`}
-          style={{ width: getResponsiveWidth(scale, isMobile) }}
+          className={`flex gap-4 justify-center ${containerAlignment}`}
+          style={{ width }}
         >
-          <div className="w-1/2">
-            <img
-              src={imageData.beforeImage.src}
-              alt={imageData.beforeImage.alt || "Before"}
-              className="w-full h-auto"
-            />
-            {renderCaption(imageData.beforeImage.alt)}
-          </div>
-
-          <div className="w-1/2">
-            <img
-              src={imageData.afterImage.src}
-              alt={imageData.afterImage.alt || "After"}
-              className="w-full h-auto"
-            />
-            {renderCaption(imageData.afterImage.alt)}
-          </div>
+          {[imageData.beforeImage, imageData.afterImage].map((img, i) => (
+            <div key={i} className="w-1/2">
+              <img
+                src={img.src}
+                alt={img.alt || (i === 0 ? "Before" : "After")}
+                className="w-full h-auto"
+              />
+              {renderCaption(img.alt)}
+            </div>
+          ))}
         </div>
       </div>
     );
-  };
 
   const renderCarousel = () => {
-    if (!imageData.images || imageData.images.length === 0) return null;
+    if (!imageData.images?.length) return null;
 
     const carouselOptions = {
       ...DEFAULT_CAROUSEL_OPTIONS,
@@ -104,10 +87,7 @@ const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
 
     return (
       <div key={index} className={baseClasses}>
-        <div
-          className={getContainerAlignment()}
-          style={{ width: getResponsiveWidth(scale, isMobile) }}
-        >
+        <div className={containerAlignment} style={{ width }}>
           <Suspense
             fallback={
               <div className="h-64 bg-gray-200 animate-pulse rounded" />
@@ -133,15 +113,11 @@ const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
     );
   };
 
-  const renderSliderCompare = () => {
-    if (!imageData.beforeImage || !imageData.afterImage) return null;
-
-    return (
+  const renderSliderCompare = () =>
+    imageData.beforeImage &&
+    imageData.afterImage && (
       <div key={index} className={baseClasses}>
-        <div
-          className={getContainerAlignment()}
-          style={{ width: getResponsiveWidth(scale, isMobile) }}
-        >
+        <div className={containerAlignment} style={{ width }}>
           <Suspense
             fallback={
               <div className="h-64 bg-gray-200 animate-pulse rounded" />
@@ -172,17 +148,16 @@ const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
         </div>
       </div>
     );
-  };
 
   const renderImageGrid = () => {
-    if (!imageData.images || imageData.images.length === 0) return null;
+    if (!imageData.images?.length) return null;
 
     const cellScale = isMobile || scale <= 0 ? 1 : scale;
 
     return (
       <div key={index} className={baseClasses}>
         <div
-          className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${getContainerAlignment()}`}
+          className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignment}`}
         >
           {imageData.images.map((img, i) => (
             <div

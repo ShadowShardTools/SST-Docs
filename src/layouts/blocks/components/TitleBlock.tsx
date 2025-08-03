@@ -3,6 +3,7 @@ import { LinkIcon } from "lucide-react";
 import type { StyleTheme } from "../../../types/StyleTheme";
 import type { TitleData } from "../types";
 import { slugify } from "../utilities";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
 
 interface Props {
   index: number;
@@ -17,83 +18,65 @@ const TitleBlock: React.FC<Props> = ({
   titleData,
   currentPath = "",
 }) => {
-  const getSpacingClasses = () => {
-    switch (titleData.spacing) {
-      case "small":
-        return "mb-4";
-      case "medium":
-        return "mb-6";
-      case "large":
-        return "mb-8";
-      default:
-        return "";
-    }
+  const level = titleData.level ?? 1;
+  const spacingKey = (titleData.spacing ??
+    "medium") as keyof typeof SPACING_CLASSES;
+  const spacingClass = SPACING_CLASSES[spacingKey];
+  const alignmentClass = ALIGNMENT_CLASSES[titleData.alignment ?? "left"].text;
+
+  const levelClassMap = {
+    1: styles.text.titleLevel1 || "text-4xl",
+    2: styles.text.titleLevel2 || "text-3xl",
+    3: styles.text.titleLevel3 || "text-2xl",
   };
 
-  const getAlignmentClasses = () => {
-    switch (titleData.alignment) {
-      case "left":
-        return "text-left";
-      case "center":
-        return "text-center";
-      case "right":
-        return "text-right";
-      default:
-        return "text-left";
-    }
-  };
+  const underlineClass = titleData.underline
+    ? `border-b-2 pb-2 ${styles.text.titleUnderline || "border-gray-300"}`
+    : "";
 
-  const getTitleClasses = () => {
-    const baseClasses = `${getAlignmentClasses()} font-bold scroll-mt-20 group relative`;
-    const levelClasses = {
-      1: styles.text.titleLevel1 || "text-4xl",
-      2: styles.text.titleLevel2 || "text-3xl",
-      3: styles.text.titleLevel3 || "text-2xl",
-    };
+  const id =
+    titleData.enableAnchorLink && titleData.text
+      ? slugify(titleData.text)
+      : undefined;
 
-    const level = titleData.level ?? 1; // ensure level is defined
-    const underlineClass = titleData.underline
-      ? `border-b-2 pb-2 ${styles.text.titleUnderline || "border-gray-300"}`
-      : "";
+  const titleContent = (
+    <>
+      {titleData.text}
+      {titleData.enableAnchorLink && id && (
+        <a
+          href={`#${currentPath}#${id}`}
+          className={`ml-2 inline-block ${styles.text.titleAnchor}`}
+          aria-label="Anchor link"
+          onClick={(e) => {
+            e.preventDefault();
+            window.history.replaceState(null, "", `#${currentPath}#${id}`);
+            document
+              .getElementById(id)
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        >
+          <LinkIcon className="w-4 h-4" />
+        </a>
+      )}
+    </>
+  );
 
-    return `${baseClasses} ${levelClasses[level]} ${underlineClass}`;
+  const titleClass = [
+    alignmentClass,
+    "font-bold scroll-mt-20 group relative",
+    levelClassMap[level],
+    underlineClass,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const titleProps = {
+    className: titleClass,
+    ...(id && { id, "data-anchor-id": id }),
   };
 
   const renderTitle = () => {
-    const id =
-      titleData.enableAnchorLink && titleData.text
-        ? slugify(titleData.text)
-        : undefined;
-
-    const titleContent = (
-      <>
-        {titleData.text}
-        {titleData.enableAnchorLink && (
-          <a
-            href={`#${currentPath}#${id}`}
-            className={`ml-2 inline-block ${styles.text.titleAnchor}`}
-            aria-label="Anchor link"
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.replaceState(null, "", `#${currentPath}#${id}`);
-              document
-                .getElementById(id!)
-                ?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-          >
-            <LinkIcon className="w-4 h-4" />
-          </a>
-        )}
-      </>
-    );
-
-    const titleClasses = getTitleClasses();
-    const titleProps = {
-      className: titleClasses,
-      ...(id && { id, "data-anchor-id": id }),
-    };
-
-    switch (titleData.level) {
+    switch (level) {
       case 1:
         return <h1 {...titleProps}>{titleContent}</h1>;
       case 2:
@@ -106,10 +89,8 @@ const TitleBlock: React.FC<Props> = ({
   };
 
   return (
-    <div key={index} className={getSpacingClasses()}>
-      <div
-        className={`${styles.sections.titleBackground || "border-gray-300"}`}
-      >
+    <div key={index} className={spacingClass}>
+      <div className={styles.sections.titleBackground || "border-gray-300"}>
         {renderTitle()}
       </div>
     </div>

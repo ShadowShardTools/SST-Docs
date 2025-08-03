@@ -25,6 +25,8 @@ import {
 } from "react-chartjs-2";
 import type { ChartData } from "../types";
 import type { StyleTheme } from "../../../types/StyleTheme";
+import { ALIGNMENT_CLASSES } from "../constants";
+import { validateScale, getResponsiveWidth } from "../utilities";
 
 ChartJS.register(
   BarElement,
@@ -65,19 +67,10 @@ const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
 
   const type = chartData.type as ChartType;
 
-  const rawScale = chartData.scale ?? 1;
-  const scale = rawScale > 0 ? rawScale : 1;
-  const widthPercent = `${scale * 100}%`;
-
-  // Alignment classes
+  const scale = validateScale(chartData.scale);
+  const widthPercent = getResponsiveWidth(scale, false);
   const alignment = chartData.alignment ?? "center";
-  const alignmentClasses = {
-    left: "mr-auto",
-    center: "mx-auto",
-    right: "ml-auto",
-  };
 
-  // Shared plugin options
   const baseOptions = {
     responsive: true,
     plugins: {
@@ -108,21 +101,16 @@ const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
   const options =
     chartData.type === "radar" || chartData.type === "polarArea"
       ? { ...baseOptions, scales: { r: makeRadialAxis() } }
-      : chartData.type === "bubble" || chartData.type === "scatter"
-        ? {
-            ...baseOptions,
-            scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
-          }
-        : {
-            ...baseOptions,
-            scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
-          };
+      : {
+          ...baseOptions,
+          scales: { x: makeCartesianAxis(), y: makeCartesianAxis() },
+        };
 
   const ChartComponent = chartMap[type];
 
   return (
     <div
-      className={`mb-6 text-center ${alignmentClasses[alignment]}`}
+      className={`mb-6 text-center ${ALIGNMENT_CLASSES[alignment].container}`}
       style={{ width: widthPercent }}
     >
       <ChartComponent data={chartData} options={options} />
