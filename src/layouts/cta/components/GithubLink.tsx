@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../../types/StyleTheme";
+import type { StyleTheme } from "../../../types/StyleTheme";
 
 const GithubButtonLink: React.FC<{ styles: StyleTheme }> = ({ styles }) => (
   <a

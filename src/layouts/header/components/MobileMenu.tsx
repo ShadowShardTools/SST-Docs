@@ -1,9 +1,9 @@
-import VersionSelector from "./VersionSelector";
 import type { StyleTheme } from "../../../types/StyleTheme";
 import type { Version } from "../../render/types/Version";
-import GithubButtonLink from "../../cta/GithubLink";
-import SearchBar from "./SearchBar";
-import ThemeButton from "./ThemeButton";
+import GithubButtonLink from "../../cta/components/GithubLink";
+import SearchBar from "../../cta/components/SearchBar";
+import ThemeButton from "../../cta/components/ThemeButton";
+import VersionSelector from "../../cta/components/VersionSelector";
 
 interface Props {
   styles: StyleTheme;

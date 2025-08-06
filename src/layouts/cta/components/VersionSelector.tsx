@@ -1,7 +1,7 @@
 import { memo, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import LoadingSpinner from "../../dialog/LoadingSpinner";
 import type { StyleTheme } from "../../../types/StyleTheme";
+import LoadingSpinner from "../../dialog/LoadingSpinner";
 import type { Version } from "../../render/types";
 import { useClickOutside, useEscapeKey } from "../utilities";
 

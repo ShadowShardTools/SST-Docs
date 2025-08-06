@@ -1,8 +1,8 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
-import useCurrentTheme from "../../../application/hooks/useCurrentTheme";
-import { useThemeToggle } from "../hooks/useThemeToggle";
+import { useCurrentTheme } from "../../../application/hooks";
 import type { StyleTheme } from "../../../types/StyleTheme";
+import { useThemeToggle } from "../hooks/useThemeToggle";
 
 interface Props {
   styles: StyleTheme;

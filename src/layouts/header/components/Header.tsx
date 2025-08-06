@@ -3,11 +3,11 @@ import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import type { Version } from "../../render/types/Version";
 import type { StyleTheme } from "../../../types/StyleTheme";
-import GithubButtonLink from "../../cta/GithubLink";
+import GithubButtonLink from "../../cta/components/GithubLink";
 import MobileMenu from "./MobileMenu";
-import SearchBar from "./SearchBar";
-import ThemeButton from "./ThemeButton";
-import VersionSelector from "./VersionSelector";
+import SearchBar from "../../cta/components/SearchBar";
+import ThemeButton from "../../cta/components/ThemeButton";
+import VersionSelector from "../../cta/components/VersionSelector";
 
 interface HeaderProps {
   styles: StyleTheme;
