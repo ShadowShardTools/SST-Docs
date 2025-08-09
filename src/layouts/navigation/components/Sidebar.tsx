@@ -1,7 +1,7 @@
 import React from "react";
 import type { Category } from "../../render/types/Category";
 import Navigation from "./Navigation";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DocItem } from "../../render/types";
 
 export interface Props {

@@ -1,6 +1,6 @@
 import React from "react";
 import { FileText, Folder } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { Category, DocItem } from "../types";
 
 interface Props {

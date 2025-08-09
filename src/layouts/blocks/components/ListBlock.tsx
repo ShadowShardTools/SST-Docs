@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { ListData } from "../types";
 import { ALIGNMENT_CLASSES } from "../constants";
 import { processListItems } from "../utilities";

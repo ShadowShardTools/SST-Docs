@@ -1,5 +1,5 @@
 import { memo } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 interface Props {
   styles: StyleTheme;

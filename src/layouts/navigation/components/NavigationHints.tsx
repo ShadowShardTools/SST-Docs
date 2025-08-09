@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 export interface Props {
   styles: StyleTheme;

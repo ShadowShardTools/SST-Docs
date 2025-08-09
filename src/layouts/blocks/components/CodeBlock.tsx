@@ -8,7 +8,7 @@ import React, {
   useEffect,
 } from "react";
 import { Copy, Check, Download, ChevronDown, ChevronUp } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,

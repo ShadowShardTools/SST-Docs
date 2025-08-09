@@ -1,6 +1,6 @@
 import React from "react";
 import { LinkIcon } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { TitleData } from "../types";
 import { slugify } from "../utilities";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";

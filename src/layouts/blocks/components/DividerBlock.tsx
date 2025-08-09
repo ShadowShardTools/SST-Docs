@@ -1,5 +1,5 @@
 import React from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DividerData } from "../types";
 
 interface Props {

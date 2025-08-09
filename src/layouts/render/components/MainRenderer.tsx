@@ -1,19 +1,19 @@
 import { useCallback, useState, lazy, Suspense } from "react";
-import ErrorMessage from "../../dialog/ErrorMessage";
 import Header from "../../header/components/Header";
 import Sidebar from "../../navigation/components/Sidebar";
 import Navigation from "../../navigation/components/Navigation";
-import LoadingSpinner from "../../dialog/LoadingSpinner";
 import CategoryNavigatorRenderer from "./CategoryNavigatorRenderer";
 import SearchModal from "../../searchModal/components/SearchModal";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { UseDocumentationData } from "../services/useDocumentationData";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import useDocNavigation from "../hooks/useDocNavigation";
 import useSearchLogic from "../hooks/useSearchLogic";
 import type { DocItem, Category } from "../types";
 import isCategory from "../utilities/isCategory";
 import useSearchOpener from "../hooks/useSearchOpener";
+import ErrorMessage from "../../dialog/components/ErrorMessage";
+import LoadingSpinner from "../../dialog/components/LoadingSpinner";
 
 const ContentRenderer = lazy(() => import("./ContentRendererBase"));
 

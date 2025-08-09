@@ -3,8 +3,8 @@ import {
   blockImports,
   type BlockType,
 } from "../../blocks/generatedImports/blockImports.generated";
-import LoadingSpinner from "../../dialog/LoadingSpinner";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import LoadingSpinner from "../../dialog/components/LoadingSpinner";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 interface Props {
   styles: StyleTheme;

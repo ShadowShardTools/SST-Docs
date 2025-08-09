@@ -2,7 +2,7 @@ import { useState } from "react";
 import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import type { Version } from "../../render/types/Version";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import GithubButtonLink from "../../cta/components/GithubLink";
 import MobileMenu from "./MobileMenu";
 import SearchBar from "../../cta/components/SearchBar";

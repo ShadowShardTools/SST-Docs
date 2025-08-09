@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { ImageData } from "../types";
 import { validateScale, getResponsiveWidth } from "../utilities";
 import { useMobileDevice } from "../hooks";

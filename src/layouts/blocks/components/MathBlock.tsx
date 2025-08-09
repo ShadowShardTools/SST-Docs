@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
 import { useKaTeX } from "../hooks";
 import type { MathData } from "../types";

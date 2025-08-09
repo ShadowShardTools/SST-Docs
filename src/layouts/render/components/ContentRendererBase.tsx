@@ -1,5 +1,5 @@
 import React, { lazy, useMemo } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { findPath } from "../../navigation/utilities";
 import { useHashScroll } from "../hooks";
 import ContentBlockRenderer from "./ContentBlockRenderer";

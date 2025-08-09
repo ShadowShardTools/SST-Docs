@@ -1,6 +1,6 @@
 import React from "react";
 import { Play, Pause } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { formatTime } from "../utilities";
 import type { AudioData } from "../types";

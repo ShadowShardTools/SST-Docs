@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../types/StyleTheme";
+import type { StyleTheme } from "../application/types/StyleTheme";
 
 export const darkTheme: StyleTheme = {
   input:

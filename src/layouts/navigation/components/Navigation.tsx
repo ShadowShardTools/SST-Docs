@@ -13,7 +13,7 @@ import {
 import Branch from "./Branch";
 import DocRow from "./DocRow";
 import NavigationHints from "./NavigationHints";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { Category, DocItem } from "../../render/types";
 
 export interface Props {

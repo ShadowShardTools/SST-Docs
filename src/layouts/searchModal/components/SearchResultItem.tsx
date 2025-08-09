@@ -1,6 +1,6 @@
 import React from "react";
 import { highlightSearchTerm } from "../utilities";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DocItem } from "../../render/types";
 interface Props {
   item: DocItem;

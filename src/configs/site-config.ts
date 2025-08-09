@@ -1,4 +1,4 @@
-import { type StyleTheme } from "../types/StyleTheme";
+import { type StyleTheme } from "../application/types/StyleTheme";
 import { darkTheme } from "./darkTheme";
 import { lightTheme } from "./lightTheme";
 
