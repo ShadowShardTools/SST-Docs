@@ -1,5 +1,5 @@
 export interface TextData {
   text?: string;
   alignment?: "left" | "center" | "right";
-  spacing?: string;
+  spacing?: "none" | "small" | "medium" | "large";
 }

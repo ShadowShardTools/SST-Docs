@@ -14,3 +14,4 @@ export type {
 export type { TableData } from "./TableData";
 export type { TextData } from "./TextData";
 export type { TitleData } from "./TitleData";
+export type { YoutubeData } from "./YoutubeData";

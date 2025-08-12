@@ -6,7 +6,7 @@
       "type": "title",
       "titleData": {
         "text": "Single Language Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -24,7 +24,7 @@
       "type": "title",
       "titleData": {
         "text": "Multi-language Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },

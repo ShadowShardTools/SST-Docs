@@ -6,7 +6,7 @@
       "type": "title",
       "titleData": {
         "text": "Katex Math Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -20,7 +20,7 @@
       "type": "title",
       "titleData": {
         "text": "Desmos Graphs Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },

@@ -1,8 +1,16 @@
-import { type Color, PDFDocument, type PDFPage, type PDFFont } from "pdf-lib";
-import { Config } from "./config";
+import {
+  type Color,
+  PDFDocument,
+  type PDFPage,
+  type PDFFont,
+  PDFName,
+  PDFString,
+} from "pdf-lib";
+import { Config } from "../../configs/pdf-config";
 
 export type Fonts = {
   regular: PDFFont;
+  italic: PDFFont;
   bold: PDFFont;
   mono: PDFFont;
 };
@@ -14,8 +22,8 @@ export class PdfCanvas {
   private yPosition = Config.MARGIN;
 
   readonly margin = Config.MARGIN;
-  readonly pageWidth = Config.LETTER.width;
-  readonly pageHeight = Config.LETTER.height;
+  readonly pageWidth = Config.PAGE.width;
+  readonly pageHeight = Config.PAGE.height;
 
   constructor(doc: PDFDocument, page: PDFPage, fonts: Fonts) {
     this.doc = doc;
@@ -234,6 +242,59 @@ export class PdfCanvas {
     });
 
     if (advanceCursor) this.yPosition = yy + needed;
+  }
+
+  /** Clickable link annotation (optionally underlines the area). */
+  drawLink(opts: {
+    x: number;
+    y: number; // top-down Y (same coords as other PdfCanvas methods)
+    width: number;
+    height: number;
+    url: string;
+    underline?: boolean; // draw an underline under the area
+    underlineColor?: Color; // color for underline (defaults to Config.COLORS.text)
+    underlineWidth?: number; // thickness for underline
+  }): void {
+    const { x, y, width, height, url, underline = false } = opts;
+
+    // Convert to PDF bottom-up rect
+    const left = x;
+    const bottom = this.page.getHeight() - (y + height);
+    const right = x + width;
+    const top = bottom + height;
+
+    const ctx = this.doc.context;
+    const rectArr = ctx.obj([left, bottom, right, top]);
+
+    const action = ctx.obj({
+      Type: PDFName.of("Action"),
+      S: PDFName.of("URI"),
+      URI: PDFString.of(url),
+    });
+
+    const linkAnnot = ctx.obj({
+      Type: PDFName.of("Annot"),
+      Subtype: PDFName.of("Link"),
+      Rect: rectArr,
+      Border: ctx.obj([0, 0, 0]), // no visible border
+      A: action,
+    });
+
+    // Attach annotation to the current page
+    // @ts-ignore - node is intentionally internal
+    this.page.node.addAnnot(linkAnnot);
+
+    // Optional underline (visual affordance)
+    if (underline) {
+      this.drawLine({
+        x1: x,
+        x2: x + width,
+        y: y + height - 1, // just under the text area
+        color: opts.underlineColor ?? (Config.COLORS?.text as Color),
+        lineWidth: opts.underlineWidth ?? 1,
+        advanceCursor: false,
+      });
+    }
   }
 
   getFonts(): Fonts {

@@ -6,7 +6,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Bar Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -31,7 +31,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Line Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -56,7 +56,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Radar Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -87,7 +87,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Doughnut Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -111,7 +111,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Polar Area Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -134,7 +134,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Bubble Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },
@@ -174,7 +174,7 @@
       "type": "title",
       "titleData": {
         "text": "Chart: Pie Example",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     },

@@ -11,6 +11,7 @@ import type {
   TableData,
   TextData,
   TitleData,
+  YoutubeData,
 } from "../../blocks/types";
 
 export interface Content {
@@ -37,6 +38,7 @@ export interface Content {
   dividerData?: DividerData;
   imageData?: ImageData;
   audioData?: AudioData;
+  youtubeData?: YoutubeData;
   mathData?: MathData;
   codeData?: CodeData;
   chartData?: ChartData;

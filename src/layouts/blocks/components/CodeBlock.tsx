@@ -15,13 +15,30 @@ import {
 } from "../../../configs/code-languages-config";
 import type { CodeData, CodeSection } from "../types";
 import { usePrismHighlighting } from "../hooks";
-import { LineNumbers } from "./LineNumbers";
 import {
   copyToClipboard,
   createTimeout,
   downloadTextFile,
   sanitizeFilename,
 } from "../utilities";
+
+interface LineNumbersProps {
+  styles: StyleTheme;
+  content: string;
+}
+
+const LineNumbers = memo(({ styles, content }: LineNumbersProps) => {
+  const lines = content.split("\n");
+  return (
+    <div className={`select-none pr-4 flex-shrink-0 ${styles.code.lines}`}>
+      {lines.map((_, i) => (
+        <div key={i} className="text-right leading-6 min-h-[1.5rem]">
+          {i + 1}
+        </div>
+      ))}
+    </div>
+  );
+});
 
 interface Props {
   index: number;

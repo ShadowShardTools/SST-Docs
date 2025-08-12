@@ -6,7 +6,7 @@
       "type": "title",
       "titleData": {
         "text": "Title-H1 Example",
-        "level": "1",
+        "level": 1,
         "enableAnchorLink": true
       }
     },
@@ -14,7 +14,7 @@
       "type": "title",
       "titleData": {
         "text": "Title-H2 Example centered",
-        "level": "2",
+        "level": 2,
         "alignment": "center",
         "enableAnchorLink": true
       }
@@ -23,7 +23,7 @@
       "type": "title",
       "titleData": {
         "text": "Title-H3 Example underlined with large spacing",
-        "level": "3",
+        "level": 3,
         "underline": true,
         "spacing": "large",
         "enableAnchorLink": true
@@ -32,7 +32,8 @@
     {
       "type": "text",
       "textData": {
-        "text": "Text Example"
+        "text": "Text Example",
+        "alignment": "center"
       }
     },
     {
@@ -44,7 +45,8 @@
           "List Example",
           "List Example",
           "List Example"
-        ]
+        ],
+        "inside": false
       }
     },
     {

@@ -1,9 +1,9 @@
-interface BaseImage {
+export interface BaseImage {
   src: string;
   alt?: string;
 }
 
-interface CarouselImage extends BaseImage {
+export interface CarouselImage extends BaseImage {
   caption?: string;
 }
 

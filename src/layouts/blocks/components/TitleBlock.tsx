@@ -20,7 +20,7 @@ const TitleBlock: React.FC<Props> = ({
 }) => {
   const level = titleData.level ?? 1;
   const spacingKey = (titleData.spacing ??
-    "medium") as keyof typeof SPACING_CLASSES;
+    "none") as keyof typeof SPACING_CLASSES;
   const spacingClass = SPACING_CLASSES[spacingKey];
   const alignmentClass = ALIGNMENT_CLASSES[titleData.alignment ?? "left"].text;
 

@@ -6,7 +6,7 @@
       "type": "title",
       "titleData": {
         "text": "Standalone",
-        "level": "2",
+        "level": 2,
         "enableAnchorLink": true
       }
     }

@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import type { Category, Version, DocItem } from "../../layouts/render/types";
-import { Config } from "./config";
+import { Config } from "../../configs/pdf-config";
 import { PdfCanvas, type Fonts } from "./PdfCanvas";
 import { loadLucideIcons } from "./icons";
 import type { RenderContext } from "./types/RenderContext";
@@ -13,21 +13,20 @@ export class PDFGenerator {
   private doc!: PDFDocument;
   private canvas!: PdfCanvas;
   private fonts!: Fonts;
-
   private ctx!: RenderContext;
 
   private async initContext() {
     this.doc = await PDFDocument.create();
     const regular = await this.doc.embedFont(StandardFonts.Helvetica);
+    const italic = await this.doc.embedFont(StandardFonts.HelveticaOblique);
     const bold = await this.doc.embedFont(StandardFonts.HelveticaBold);
     const mono = await this.doc.embedFont(StandardFonts.Courier);
-    this.fonts = { regular, bold, mono };
+    this.fonts = { regular, italic, bold, mono };
 
-    const page = this.doc.addPage([Config.LETTER.width, Config.LETTER.height]);
+    const page = this.doc.addPage([Config.PAGE.width, Config.PAGE.height]);
     this.canvas = new PdfCanvas(this.doc, page, this.fonts);
 
     const icons = await loadLucideIcons(this.doc);
-
     this.ctx = { doc: this.doc, canvas: this.canvas, fonts: this.fonts, icons };
   }
 
@@ -40,39 +39,40 @@ export class PDFGenerator {
     await this.initContext();
 
     // Title page
-    addTitle(this.ctx, "SST Documentation", 1);
-    addText(this.ctx, `Version: ${version.version}`);
-    addDivider(this.ctx);
+    await addTitle(this.ctx, { text: "SST Documentation", level: 1 });
+    await addText(this.ctx, { text: `Version: ${version.version}` });
+    await addDivider(this.ctx, { type: "line", spacing: "medium" });
 
     // Simple TOC
-    addTitle(this.ctx, "Table of Contents", 2);
+    await addTitle(this.ctx, { text: "Table of Contents", level: 2 });
     for (const category of tree) {
-      addText(this.ctx, `- ${category.title}`);
+      addText(this.ctx, { text: `- ${category.title}` });
       if (category.children?.length) {
-        for (const child of category.children)
-          addText(this.ctx, `  - ${child.title}`);
+        for (const child of category.children) {
+          await addText(this.ctx, { text: `  - ${child.title}` });
+        }
       }
     }
     if (standaloneDocs.length > 0) {
-      addText(this.ctx, "- Additional Documentation");
-      for (const d of standaloneDocs) addText(this.ctx, `  - ${d.title}`);
+      await addText(this.ctx, { text: "- Additional Documentation" });
+      for (const d of standaloneDocs)
+        await addText(this.ctx, { text: `  - ${d.title}` });
     }
-    addDivider(this.ctx);
+    await addDivider(this.ctx, { type: "line", spacing: "medium" });
 
     // Body
-    for (const category of tree) processCategory(this.ctx, category, 1);
+    for (const category of tree) {
+      await processCategory(this.ctx, category);
+    }
 
     // Standalone docs
     if (standaloneDocs.length > 0) {
-      addTitle(this.ctx, "Additional Documentation", 1);
+      await addTitle(this.ctx, { text: "Additional Documentation", level: 1 });
+      const { processContent } = await import("./processContent"); // async processor
       for (const doc of standaloneDocs) {
-        addTitle(this.ctx, doc.title, 2);
-        if (doc.description) addText(this.ctx, doc.description);
-        if (doc.tags?.length)
-          addText(this.ctx, `🏷️ Tags: ${doc.tags.join(", ")}`);
-        // Reuse content processor via a tiny shim
-        const { processContent } = await import("./processContent");
-        processContent(this.ctx, doc.content);
+        await addTitle(this.ctx, { text: doc.title, level: 2 });
+        if (doc.description) addText(this.ctx, { text: doc.description });
+        await processContent(this.ctx, doc.content);
       }
     }
 
