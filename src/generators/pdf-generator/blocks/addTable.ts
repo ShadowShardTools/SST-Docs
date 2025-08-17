@@ -34,7 +34,8 @@ export async function addTable(ctx: RenderContext, table: TableData) {
   const widthOf = (text: string, isHeader: boolean) =>
     ctx.canvas.widthOf(text, isHeader ? fontHeader : fontRow, size);
 
-  const isMatrixCorner = (r: number, c: number) => type === "matrix" && r === 0 && c === 0;
+  const isMatrixCorner = (r: number, c: number) =>
+    type === "matrix" && r === 0 && c === 0;
 
   const isHeaderCell = (r: number, c: number, cell: TableCell) => {
     if (cell?.isHeader) return true;
@@ -92,9 +93,7 @@ export async function addTable(ctx: RenderContext, table: TableData) {
       const header = isHeaderCell(r, c, cell);
       const corner = isMatrixCorner(r, c);
 
-      const bg =
-        (corner && cornerFill) ||
-        (header && headerFill);
+      const bg = (corner && cornerFill) || (header && headerFill);
 
       if (bg) {
         ctx.canvas.drawRect({

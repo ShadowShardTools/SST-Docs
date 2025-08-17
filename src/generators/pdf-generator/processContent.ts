@@ -2,8 +2,6 @@
 import type { Content } from "../../layouts/render/types";
 import { addChart } from "./blocks/addChart";
 import { addCode } from "./blocks/addBlock";
-import { addGraph } from "./blocks/addGraph";
-import { addImage } from "./blocks/addImage";
 import { addList } from "./blocks/addList";
 import { addMath } from "./blocks/addMath";
 import { addMessageBox } from "./blocks/addMessageBox";
@@ -14,6 +12,8 @@ import { addUnknown } from "./blocks/addUnknown";
 import { addYoutube } from "./blocks/addYoutube";
 import type { RenderContext } from "./types/RenderContext";
 import { addAudio } from "./blocks/addAudio";
+import { addDivider } from "./blocks/addDivider";
+import { addGraph } from "./blocks/addGraph";
 
 export async function processContent(ctx: RenderContext, content: Content[]) {
   for (const [index, item] of (content ?? []).entries()) {
@@ -36,10 +36,14 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
           if (item.tableData) await addTable(ctx, item.tableData);
           break;
         case "message-box":
-          if (item.messageBoxData) await addMessageBox(ctx, item.messageBoxData);
+          if (item.messageBoxData)
+            await addMessageBox(ctx, item.messageBoxData);
+          break;
+        case "divider":
+          if (item.dividerData) await addDivider(ctx, item.dividerData);
           break;
         case "image":
-          if (item.imageData) await addImage(ctx, item.imageData);
+          //if (item.imageData) await addImage(ctx, item.imageData);
           break;
         case "youtube":
           if (item.youtubeData) await addYoutube(ctx, item.youtubeData);
@@ -56,12 +60,18 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
         case "chart":
           if (item.chartData) await addChart(ctx, item.chartData);
           break;
+        case "graph":
+          if (item.graphData) await addGraph(ctx, item.graphData);
+          break;
         default:
           addUnknown(ctx, item.type);
           break;
       }
     } catch (e) {
-      console.error(`❌ Error processing item #${index} of type '${item.type}':`, e);
+      console.error(
+        `❌ Error processing item #${index} of type '${item.type}':`,
+        e,
+      );
     }
   }
 }

@@ -1,230 +1,208 @@
-import { rgb } from "pdf-lib";
 import { Config } from "../../../configs/pdf-config";
 import type { RenderContext } from "../types/RenderContext";
 import type { DividerData } from "../../../layouts/blocks/types";
 
-// spacing like your React block
+type PdfColor = Parameters<RenderContext["canvas"]["drawLine"]>[0]["color"];
+
+// ---- spacing like your React block -----------------------------------------
 function spacingFor(data: DividerData) {
+  const S = Config.SPACING;
   switch (data?.spacing) {
     case "small":
-      return { top: 8, bottom: 8 };
+      return { top: 0, bottom: S.small };
     case "medium":
-      return { top: 12, bottom: 12 };
+      return { top: 0, bottom: S.medium };
     case "large":
-      return { top: 16, bottom: 16 };
+      return { top: 0, bottom: S.large };
     default:
-      return { top: 0, bottom: Config.SPACING.dividerBottom };
+      return { top: 0, bottom: S.dividerBottom };
   }
 }
 
-// rough text width if PdfCanvas exposes no text-width API
-function measureTextWidth(ctx: RenderContext, text: string, size: number) {
-  // Prefer a canvas helper if you have one
+// Prefer PdfCanvas helpers, fallback heuristics
+function textWidth(
+  ctx: RenderContext,
+  text: string,
+  fontSize: number,
+  bold = false,
+) {
   const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.textWidth === "function") {
-    return anyCanvas.textWidth(ctx.fonts.bold, size, text);
+  if (typeof anyCanvas.widthOf === "function") {
+    return anyCanvas.widthOf(
+      text,
+      bold ? ctx.fonts.bold : ctx.fonts.regular,
+      fontSize,
+    );
   }
-  // Fallback: decent heuristic for sans fonts
-  return text.length * size * 0.55;
+  if (typeof anyCanvas.textWidth === "function") {
+    return anyCanvas.textWidth(
+      bold ? ctx.fonts.bold : ctx.fonts.regular,
+      fontSize,
+      text,
+    );
+  }
+  // reasonable sans fallback
+  return text.length * fontSize * 0.55 * (bold ? 1.03 : 1);
 }
 
-function drawDashedLine(
+function lineHt(ctx: RenderContext, fontSize: number) {
+  const anyCanvas = ctx.canvas as any;
+  if (typeof anyCanvas.lineHeight === "function") {
+    return anyCanvas.lineHeight(ctx.fonts.regular, fontSize);
+  }
+  return Math.max(fontSize, Math.round(fontSize * 1.2));
+}
+
+// Draw a rule segment with style
+function drawRuleSegment(
   ctx: RenderContext,
   x1: number,
   x2: number,
   y: number,
-  color: any,
-  lineWidth: number,
-  dash: number,
-  gap: number,
+  color: PdfColor,
+  type: DividerData["type"] | undefined,
+  baseWidth: number,
 ) {
-  let x = x1;
-  while (x < x2) {
-    const segEnd = Math.min(x + dash, x2);
+  const w = Math.max(0, x2 - x1);
+  if (w <= 0) return;
+
+  const drawSolid = (yy: number, lw = baseWidth) =>
     ctx.canvas.drawLine({
-      x1: x,
-      x2: segEnd,
-      y,
+      x1,
+      x2,
+      y: yy,
       color,
-      lineWidth,
+      lineWidth: lw,
       advanceCursor: false,
     });
-    x = segEnd + gap;
+
+  const drawDashedRange = (
+    dash: number,
+    gap: number,
+    yy: number,
+    lw = baseWidth,
+  ) => {
+    let x = x1;
+    while (x < x2) {
+      const segEnd = Math.min(x + dash, x2);
+      ctx.canvas.drawLine({
+        x1: x,
+        x2: segEnd,
+        y: yy,
+        color,
+        lineWidth: lw,
+        advanceCursor: false,
+      });
+      x = segEnd + gap;
+    }
+  };
+
+  switch (type ?? "line") {
+    case "double":
+      drawSolid(y, 1);
+      drawSolid(y + 3, 1);
+      break;
+    case "thick":
+      drawSolid(y, 2);
+      break;
+    case "dashed":
+      drawDashedRange(6, 4, y, baseWidth);
+      break;
+    case "dotted":
+      drawDashedRange(2, 3, y, baseWidth);
+      break;
+    case "gradient": {
+      const anyCtx = ctx as any;
+      if (typeof anyCtx.drawHorizontalGradient === "function") {
+        anyCtx.drawHorizontalGradient(x1, y, w, color);
+      } else {
+        drawSolid(y, baseWidth);
+      }
+      break;
+    }
+    default:
+      drawSolid(y, baseWidth);
   }
 }
 
-export function addDivider(ctx: RenderContext, data: DividerData) {
+export async function addDivider(ctx: RenderContext, data: DividerData) {
   const { top, bottom } = spacingFor(data);
   const pageW = Config.PAGE.width;
   const xL = Config.MARGIN;
   const xR = pageW - Config.MARGIN;
-  const yBase = ctx.canvas.getY() + top;
-
-  // ensure space for label (if any) + rule
-  const labelSize = Config.FONT_SIZES.body;
-  const lineHeight = labelSize; // Use font size as a proxy for line height
-  const extraForLabel = data?.text ? lineHeight + 6 : 0; // text + small gap
-  ctx.canvas.ensureSpace(top + extraForLabel + bottom);
-
-  // advance to top spacing
-  ctx.canvas.setY(yBase);
+  const contentW = xR - xL;
 
   const color = Config.COLORS.divider;
   const lineWidthBase = 1;
 
-  // If there is a centered label, draw side lines + text
-  if (data?.text && data?.text.trim().length) {
-    // measure label width
-    const text = data.text.trim();
-    const textW = measureTextWidth(ctx, text, labelSize);
+  // Space planning
+  const hasLabel = !!data?.text?.trim();
+  const labelSize = Config.FONT_SIZES.body;
+  const lh = lineHt(ctx, labelSize);
+  const needed = top + (hasLabel ? lh + 6 : 1) + bottom;
+  ctx.canvas.ensureSpace(needed);
 
-    // paddings left/right of the text where lines should stop
+  // Advance to top spacing
+  ctx.canvas.setY(ctx.canvas.getY() + top);
+
+  if (hasLabel) {
+    const label = data!.text!.trim();
     const pad = 12;
 
-    // Position text first to get the correct baseline
+    // Measure label and place as single line centered (avoid wrapping)
+    const tW = Math.min(textWidth(ctx, label, labelSize, false), contentW); // use REGULAR
+    const centerX = xL + contentW / 2;
+    const textX = Math.max(xL, Math.min(centerX - tW / 2, xR - tW));
     const textY = ctx.canvas.getY();
 
-    // draw text centered
+    // Draw the label (REGULAR font)
     ctx.canvas.drawTextBlock({
-      text,
-      x: xL,
+      text: label,
+      x: textX,
       y: textY,
-      width: xR - xL,
-      font: ctx.fonts.bold,
+      width: tW,
+      font: ctx.fonts.regular, // <- not bold
       size: labelSize,
-      color: rgb(0.615, 0.643, 0.694), // matches your divider text style
+      color: Config.COLORS.divider,
       align: "center",
+      lineGap: 0,
       advanceCursor: false,
     });
 
-    // compute line y to be vertically centered to the text
-    const lineY = textY + lineHeight / 2;
+    // Lines on sides, vertically centered to label block
+    const lineY = textY + lh / 2;
+    const leftStop = Math.max(xL, textX - pad);
+    const rightStart = Math.min(xR, textX + tW + pad);
 
-    // compute line stops around centered text
-    const contentW = xR - xL;
-    const centerX = xL + contentW / 2;
-    const leftStop = centerX - textW / 2 - pad;
-    const rightStart = centerX + textW / 2 + pad;
-
-    // draw rule segments vertically centered to the text
-    const type = data?.type ?? "line";
-    if (type === "double") {
-      // For double lines centered to text
-      drawDashedLine(ctx, xL, leftStop, lineY, color, 1, 1000, 0);
-      drawDashedLine(ctx, rightStart, xR, lineY, color, 1, 1000, 0);
-      drawDashedLine(ctx, xL, leftStop, lineY + 3, color, 1, 1000, 0);
-      drawDashedLine(ctx, rightStart, xR, lineY + 3, color, 1, 1000, 0);
-    } else if (type === "thick") {
-      drawDashedLine(ctx, xL, leftStop, lineY, color, 2, 1000, 0);
-      drawDashedLine(ctx, rightStart, xR, lineY, color, 2, 1000, 0);
-    } else if (type === "dashed") {
-      drawDashedLine(ctx, xL, leftStop, lineY, color, lineWidthBase, 6, 4);
-      drawDashedLine(ctx, rightStart, xR, lineY, color, lineWidthBase, 6, 4);
-    } else if (type === "dotted") {
-      // emulate dotted using tiny dashes with gaps
-      drawDashedLine(ctx, xL, leftStop, lineY, color, lineWidthBase, 2, 3);
-      drawDashedLine(ctx, rightStart, xR, lineY, color, lineWidthBase, 2, 3);
-    } else if (type === "gradient") {
-      ctx.canvas.drawLine({
-        x1: xL,
-        x2: leftStop,
-        y: lineY,
+    if (leftStop - xL >= 2) {
+      drawRuleSegment(
+        ctx,
+        xL,
+        leftStop,
+        lineY,
         color,
-        lineWidth: lineWidthBase,
-        advanceCursor: false,
-      });
-      ctx.canvas.drawLine({
-        x1: rightStart,
-        x2: xR,
-        y: lineY,
+        data?.type,
+        lineWidthBase,
+      );
+    }
+    if (xR - rightStart >= 2) {
+      drawRuleSegment(
+        ctx,
+        rightStart,
+        xR,
+        lineY,
         color,
-        lineWidth: lineWidthBase,
-        advanceCursor: false,
-      });
-    } else {
-      // simple line
-      ctx.canvas.drawLine({
-        x1: xL,
-        x2: leftStop,
-        y: lineY,
-        color,
-        lineWidth: lineWidthBase,
-        advanceCursor: false,
-      });
-      ctx.canvas.drawLine({
-        x1: rightStart,
-        x2: xR,
-        y: lineY,
-        color,
-        lineWidth: lineWidthBase,
-        advanceCursor: false,
-      });
+        data?.type,
+        lineWidthBase,
+      );
     }
 
-    // move cursor below the text
-    ctx.canvas.setY(textY + labelSize + bottom);
+    ctx.canvas.setY(textY + lh + bottom);
     return;
   }
 
-  // No label — single full-width rule
+  // No label: full-width rule
   const y = ctx.canvas.getY();
-  const type = data?.type ?? "line";
-
-  if (type === "double") {
-    ctx.canvas.drawLine({
-      x1: xL,
-      x2: xR,
-      y,
-      color,
-      lineWidth: 1,
-      advanceCursor: false,
-    });
-    ctx.canvas.drawLine({
-      x1: xL,
-      x2: xR,
-      y: y + 3,
-      color,
-      lineWidth: 1,
-      advanceCursor: false,
-    });
-  } else if (type === "thick") {
-    ctx.canvas.drawLine({
-      x1: xL,
-      x2: xR,
-      y,
-      color,
-      lineWidth: 2,
-      advanceCursor: false,
-    });
-  } else if (type === "dashed") {
-    drawDashedLine(ctx, xL, xR, y, color, lineWidthBase, 6, 4);
-  } else if (type === "dotted") {
-    drawDashedLine(ctx, xL, xR, y, color, lineWidthBase, 2, 3);
-  } else if (type === "gradient") {
-    const anyCtx = ctx as any;
-    if (anyCtx.drawHorizontalGradient) {
-      anyCtx.drawHorizontalGradient(xL, y, xR - xL, color);
-    } else {
-      // fallback
-      ctx.canvas.drawLine({
-        x1: xL,
-        x2: xR,
-        y,
-        color,
-        lineWidth: lineWidthBase,
-        advanceCursor: false,
-      });
-    }
-  } else {
-    ctx.canvas.drawLine({
-      x1: xL,
-      x2: xR,
-      y,
-      color,
-      lineWidth: lineWidthBase,
-      advanceCursor: false,
-    });
-  }
-
+  drawRuleSegment(ctx, xL, xR, y, color, data?.type, lineWidthBase);
   ctx.canvas.setY(y + bottom);
 }

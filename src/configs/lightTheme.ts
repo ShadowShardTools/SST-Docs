@@ -77,6 +77,10 @@ export const lightTheme: StyleTheme = {
     axisTickColor: "#4b5563",
     gridLineColor: "rgba(0,0,0,0.05)",
   },
+  graph: {
+    background: "#e7e5e4",
+    defaultCurve: "#0a88ffff",
+  },
   header: {
     mobileNavigationToggle: "text-stone-500 hover:text-stone-700",
     mobileMenuToggle: "text-stone-500 hover:text-stone-700",

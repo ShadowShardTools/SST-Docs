@@ -6,7 +6,7 @@ export const Config = {
   MARGIN: 40,
   COLORS: {
     text: rgb(0x37 / 255, 0x41 / 255, 0x51 / 255), // gray-700
-    divider: rgb(0.87, 0.87, 0.87),
+    divider: rgb(0xa8 / 255, 0xa2 / 255, 0x9e / 255),
     codeBackground: rgb(0.973, 0.976, 0.98),
     codeBorder: rgb(0.914, 0.925, 0.937),
 
@@ -41,17 +41,17 @@ export const Config = {
     h1: 24,
     h2: 16,
     h3: 14,
-    body: 12,
-    list: 12,
-    table: 10,
-    messageBox: 12,
-    code: 12,
+    body: 11,
+    list: 11,
+    table: 11,
+    messageBox: 11,
+    code: 10,
     codeLabel: 10,
   },
   SPACING: {
     small: 5,
     medium: 10,
-    large: 20,
+    large: 16,
 
     titleTop: 4,
     titleBottom: 10,

@@ -5,6 +5,7 @@ import {
   type PDFFont,
   PDFName,
   PDFString,
+  PDFImage,
 } from "pdf-lib";
 import { Config } from "../../configs/pdf-config";
 
@@ -295,6 +296,29 @@ export class PdfCanvas {
         advanceCursor: false,
       });
     }
+  }
+
+  drawImage(opts: {
+    image: PDFImage;
+    x: number;
+    y?: number; // top-down
+    width: number;
+    height: number;
+    advanceCursor?: boolean;
+  }): void {
+    const { image, x, y, width, height, advanceCursor = false } = opts;
+
+    this.ensureSpace(height, y);
+    const topY = y ?? this.yPosition;
+
+    this.page.drawImage(image, {
+      x,
+      y: this.toPdfY(topY + height), // convert top-down → bottom-up
+      width,
+      height,
+    });
+
+    if (advanceCursor) this.yPosition = topY + height;
   }
 
   getFonts(): Fonts {

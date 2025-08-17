@@ -3,7 +3,10 @@ import { rgb } from "pdf-lib";
 import { Config } from "../../../configs/pdf-config";
 import type { RenderContext } from "../types/RenderContext";
 import type { CodeData, CodeSection } from "../../../layouts/blocks/types";
-import { CODE_LANGUAGE_CONFIG, type SupportedLanguage } from "../../../configs/code-languages-config";
+import {
+  CODE_LANGUAGE_CONFIG,
+  type SupportedLanguage,
+} from "../../../configs/code-languages-config";
 
 export async function addCode(ctx: RenderContext, data: CodeData) {
   if ((!data.content || !data.content.trim()) && !data.sections?.length) return;
@@ -53,7 +56,10 @@ export async function addCode(ctx: RenderContext, data: CodeData) {
       width - paddingX * 2 - lineNumWidth,
     );
     const lh = ctx.canvas.lineHeight(mono, size);
-    const codeHeight = Math.max(40, lines.length * lh + paddingY * 2 + headerHeight);
+    const codeHeight = Math.max(
+      40,
+      lines.length * lh + paddingY * 2 + headerHeight,
+    );
 
     ctx.canvas.ensureSpace(codeHeight + Config.SPACING.medium);
 
@@ -97,6 +103,12 @@ export async function addCode(ctx: RenderContext, data: CodeData) {
       advanceCursor: false,
     });
 
-    ctx.canvas.setY(top + codeHeight + (idx < sections.length - 1 ? gapBetweenSections : Config.SPACING.medium));
+    ctx.canvas.setY(
+      top +
+        codeHeight +
+        (idx < sections.length - 1
+          ? gapBetweenSections
+          : Config.SPACING.medium),
+    );
   });
 }

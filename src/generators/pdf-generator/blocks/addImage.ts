@@ -1,13 +1,8 @@
-import { rgb, type PDFImage } from "pdf-lib";
+/*import { rgb, type PDFImage } from "pdf-lib";
 import type { RenderContext } from "../../../generators/pdf-generator/types/RenderContext";
 import type { ImageData } from "../../../layouts/blocks/types";
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
 import { Config } from "../../../configs/pdf-config";
 import type { BaseImage, CarouselImage } from "../../../layouts/blocks/types/ImageData";
-import { fileURLToPath } from "node:url";
-
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../../"); 
 
 export async function addImage(ctx: RenderContext, imageData: ImageData): Promise<void> {
   const align = imageData.alignment ?? "center";
@@ -33,48 +28,18 @@ export async function addImage(ctx: RenderContext, imageData: ImageData): Promis
 }
 
 function clampScale(s?: number) { return s == null || Number.isNaN(s) ? 1 : Math.max(0.2, Math.min(1, s)); }
+
 function contentBox(ctx: RenderContext, scale: number) {
   const pageW = (ctx.canvas as any).pageWidth ?? Config.PAGE.width;
   const margin = (ctx.canvas as any).margin ?? Config.MARGIN;
   const maxW = pageW - 2 * margin;
   return { x: margin, y: (ctx.canvas as any).getY?.() ?? Config.MARGIN, w: maxW * scale };
 }
+
 function xForAlign(totalW: number, boxX: number, boxW: number, align: "left" | "center" | "right") {
   if (align === "left") return boxX;
   if (align === "right") return boxX + (boxW - totalW);
   return boxX + (boxW - totalW) / 2;
-}
-
-async function loadImage(ctx: RenderContext, src: string): Promise<PDFImage> {
-  const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.embedImage === "function") return await anyCanvas.embedImage(src);
-  const bytes = await readBinary(src);
-  const doc = (ctx as any).doc ?? (ctx.canvas as any).doc ?? (ctx as any).pdfDoc;
-  try { return await doc.embedPng(bytes); } catch { return await doc.embedJpg(bytes); }
-}
-
-async function readBinary(src: string): Promise<Uint8Array> {
-  if (src.startsWith("data:")) {
-    const base64 = src.split(",")[1];
-    return Uint8Array.from(Buffer.from(base64, "base64"));
-  }
-  if (/^https?:\/\//i.test(src)) {
-    const https = await import("node:https");
-    const buffers: Buffer[] = await new Promise((resolve, reject) => {
-      https.get(src, (res) => {
-        const chunks: Buffer[] = [];
-        res.on("data", (d) => chunks.push(d as Buffer));
-        res.on("end", () => resolve(chunks));
-        res.on("error", reject);
-      }).on("error", reject);
-    });
-    return Uint8Array.from(Buffer.concat(buffers));
-  }
-
-  const normalizedSrc = src.replace(/^\/+/, ""); // strip leading slashes
-  const filePath = path.resolve(projectRoot, "public", normalizedSrc);
-  const buf = await fs.readFile(filePath);
-  return Uint8Array.from(buf);
 }
 
 async function drawCaption(ctx: RenderContext, text?: string, width?: number, align: "left" | "center" | "right" = "center") {
@@ -186,3 +151,4 @@ function drawPDFImage(ctx: RenderContext, img: PDFImage, x: number, y: number, w
     page.drawImage(img, { x, y: page.getHeight() - y - h, width: w, height: h });
   }
 }
+*/

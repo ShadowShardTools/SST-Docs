@@ -10,6 +10,7 @@ export type StyleTheme = {
   code: Record<string, string>;
   audioPlayer: Record<string, string>;
   chart: Record<string, string>;
+  graph: Record<string, string>;
   searchModal: Record<string, string>;
   navigation: Record<string, string>;
   category: Record<string, string>;

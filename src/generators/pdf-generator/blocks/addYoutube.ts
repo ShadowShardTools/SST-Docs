@@ -1,3 +1,4 @@
+// src/generators/pdf-generator/blocks/addYoutube.ts
 import { Config } from "../../../configs/pdf-config";
 import type { YoutubeData } from "../../../layouts/blocks/types";
 import { extractYouTubeId } from "../../../layouts/blocks/utilities";
@@ -12,61 +13,147 @@ export async function addYoutube(ctx: RenderContext, data: YoutubeData) {
   const url = `https://youtu.be/${videoId}`;
   const align = data.alignment ?? "left";
 
-  const captionText = data.caption ? `${data.caption}: ` : "";
-  const linkFont = ctx.fonts.bold;
-  const linkSize = Config.FONT_SIZES.body;
-  const captionFont = ctx.fonts.italic;
+  const captionText = data.caption?.trim() ? `${data.caption.trim()}: ` : "";
+  const linkFont = ctx.fonts.bold; // stylistic choice for link
+  const captionFont = ctx.fonts.italic; // stylistic choice for caption
+  const size = Config.FONT_SIZES.body;
 
-  // Measure parts
-  const captionWidth = captionText
-    ? ctx.canvas.widthOf(captionText, captionFont, linkSize)
+  // Measure widths
+  const captionW = captionText
+    ? ctx.canvas.widthOf(captionText, captionFont, size)
     : 0;
-  const linkWidth = ctx.canvas.widthOf(url, linkFont, linkSize);
+  const linkW = ctx.canvas.widthOf(url, linkFont, size);
+  const totalW = captionW + linkW;
 
-  // Determine X positions based on alignment
-  let startX = contentX;
-  if (align === "center") {
-    const totalWidth = captionWidth + linkWidth;
-    startX = contentX + (contentW - totalWidth) / 2;
-  } else if (align === "right") {
-    const totalWidth = captionWidth + linkWidth;
-    startX = contentX + (contentW - totalWidth);
+  // Line height and total space needed
+  const lineH = ctx.canvas.lineHeight(captionFont, size);
+  const fitsOneLine = !captionText || totalW <= contentW;
+
+  // If it doesn't fit on one line, we'll draw caption then link on the next line.
+  const captionLines =
+    !fitsOneLine && captionText
+      ? ctx.canvas.wrapText(captionText, captionFont, size, contentW)
+      : [];
+  const captionBlockH =
+    captionLines.length > 0
+      ? captionLines.length * lineH
+      : captionText && fitsOneLine
+        ? lineH
+        : 0;
+
+  const needed =
+    (fitsOneLine ? lineH : captionBlockH + lineH) + Config.SPACING.textBottom;
+
+  // Ensure space FIRST, then read fresh Y
+  ctx.canvas.ensureSpace(needed);
+  const y = ctx.canvas.getY();
+
+  if (fitsOneLine) {
+    // Single-line layout: [caption][link] on the same baseline
+    let startX = contentX;
+    if (align === "center") {
+      startX = contentX + (contentW - totalW) / 2;
+    } else if (align === "right") {
+      startX = contentX + (contentW - totalW);
+    }
+
+    // Caption (optional)
+    if (captionText) {
+      ctx.canvas.drawTextBlock({
+        text: captionText,
+        x: startX,
+        y,
+        width: captionW, // tight width to avoid wrapping
+        font: captionFont,
+        size,
+        color: Config.COLORS.text,
+        lineGap: 0,
+        align: "left",
+        advanceCursor: false,
+      });
+    }
+
+    // Link
+    const linkX = startX + captionW;
+    ctx.canvas.drawTextBlock({
+      text: url,
+      x: linkX,
+      y,
+      width: linkW, // tight width to avoid wrapping
+      font: linkFont,
+      size,
+      color: Config.COLORS.link ?? Config.COLORS.text,
+      lineGap: 0,
+      align: "left",
+      advanceCursor: false,
+    });
+
+    // Clickable area for the link
+    ctx.canvas.drawLink({
+      x: linkX,
+      y,
+      width: linkW,
+      height: size + 2,
+      url,
+      underline: false,
+    });
+
+    // Advance cursor
+    ctx.canvas.setY(y + lineH + Config.SPACING.textBottom);
+    return;
   }
 
-  const y = ctx.canvas.getY();
-  const lineH = ctx.canvas.lineHeight(captionFont, linkSize, 2);
-  ctx.canvas.ensureSpace(lineH + Config.SPACING.textBottom);
-
-  // Draw caption
+  // Two-line fallback: caption block (wrap) on first line(s), link on the next line
+  // Draw caption (wrapped, aligned)
   if (captionText) {
-    ctx.canvas.getPage().drawText(captionText, {
-      x: startX,
-      y: ctx.canvas.getPage().getHeight() - (y + linkSize),
-      size: linkSize,
+    ctx.canvas.drawTextBlock({
+      text: captionText,
+      x: contentX,
+      y,
+      width: contentW,
       font: captionFont,
+      size,
       color: Config.COLORS.text,
+      lineGap: 2,
+      align,
+      advanceCursor: true, // move Y below caption automatically
     });
   }
 
-  // Draw link
-  const linkX = startX + captionWidth;
-  ctx.canvas.getPage().drawText(url, {
+  const linkY = ctx.canvas.getY();
+
+  // Compute link X by alignment (we draw without wrapping)
+  let linkX = contentX;
+  if (align === "center") {
+    linkX = contentX + (contentW - linkW) / 2;
+  } else if (align === "right") {
+    linkX = contentX + (contentW - linkW);
+  }
+
+  // Draw link text
+  ctx.canvas.drawTextBlock({
+    text: url,
     x: linkX,
-    y: ctx.canvas.getPage().getHeight() - (y + linkSize),
-    size: linkSize,
+    y: linkY,
+    width: linkW, // tight width, no wrap
     font: linkFont,
+    size,
     color: Config.COLORS.link ?? Config.COLORS.text,
+    lineGap: 0,
+    align: "left",
+    advanceCursor: false,
   });
 
-  // Clickable area for the link only
+  // Clickable link area
   ctx.canvas.drawLink({
     x: linkX,
-    y,
-    width: linkWidth,
-    height: linkSize + 2,
+    y: linkY,
+    width: linkW,
+    height: size + 2,
     url,
     underline: false,
   });
 
-  ctx.canvas.setY(y + lineH + Config.SPACING.textBottom);
+  // Advance cursor past link
+  ctx.canvas.setY(linkY + lineH + Config.SPACING.textBottom);
 }

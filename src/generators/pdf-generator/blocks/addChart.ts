@@ -160,7 +160,7 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
       scales: ["radar", "polarArea"].includes(type)
         ? {
             r: {
-              grid: { color: "rgba(0,0,0,0.05)" },
+              grid: { color: "rgba(0,0,0,0.05)", lineWidth: 3 },
               angleLines: { color: "rgba(0,0,0,0.05)" },
               pointLabels: { color: "#4b5563", font: { size: 14 } }, // bigger radar labels
               ticks: { color: "#4b5563", font: { size: 14 } }, // bigger radar ticks
@@ -168,11 +168,11 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
           }
         : {
             x: {
-              grid: { color: "rgba(0,0,0,0.05)" },
+              grid: { color: "rgba(0,0,0,0.05)", lineWidth: 3 },
               ticks: { color: "#4b5563", font: { size: 14 } }, // bigger x-axis labels
             },
             y: {
-              grid: { color: "rgba(0,0,0,0.05)" },
+              grid: { color: "rgba(0,0,0,0.05)", lineWidth: 3 },
               ticks: { color: "#4b5563", font: { size: 14 } }, // bigger y-axis labels
             },
           },

@@ -78,6 +78,10 @@ export const darkTheme: StyleTheme = {
     axisTickColor: "#e5e7eb", // gray-200
     gridLineColor: "rgba(255,255,255,0.1)",
   },
+  graph: {
+    background: "#d5d5e7ff",
+    defaultCurve: "#2529ffff",
+  },
   header: {
     mobileNavigationToggle: "text-gray-500 hover:text-gray-700",
     mobileMenuToggle: "text-gray-500 hover:text-gray-700",

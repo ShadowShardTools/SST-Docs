@@ -11,12 +11,17 @@ export function addUnknown(ctx: RenderContext, type: string) {
   const text = `Unknown content type: ${type}`;
 
   // Tailwind-like "warning" theme (same numbers you used in addMessageBox)
-  const fill = rgb(1, 0.973, 0.863);       // bg-yellow-100
+  const fill = rgb(1, 0.973, 0.863); // bg-yellow-100
   const stroke = rgb(0.992, 0.925, 0.682); // border-yellow-300
   const textColor = rgb(0.322, 0.255, 0.051); // text-yellow-800
 
   // Measure text and total box height
-  const lines = ctx.canvas.wrapText(text, ctx.fonts.regular, fontSize, width - pad * 2);
+  const lines = ctx.canvas.wrapText(
+    text,
+    ctx.fonts.regular,
+    fontSize,
+    width - pad * 2,
+  );
   const lh = ctx.canvas.lineHeight(ctx.fonts.regular, fontSize);
   const textH = lines.length * lh;
   const boxH = textH + pad * 2;

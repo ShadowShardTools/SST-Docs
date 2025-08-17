@@ -19,7 +19,12 @@ const tex = new TeX({ packages: AllPackages });
 const svg = new SVG({ fontCache: "none" }); // embed glyphs into the SVG
 const mjDoc = mathjax.document("", { InputJax: tex, OutputJax: svg });
 
-type PngRender = { png: Uint8Array; width: number; height: number; scale: number };
+type PngRender = {
+  png: Uint8Array;
+  width: number;
+  height: number;
+  scale: number;
+};
 
 // Extract just the <svg>...</svg> from MathJax's <mjx-container>
 function extractSvgMarkup(node: any): string {
@@ -28,7 +33,8 @@ function extractSvgMarkup(node: any): string {
   if (inner.includes("<svg")) {
     const start = inner.indexOf("<svg");
     const end = inner.indexOf("</svg>");
-    if (start >= 0 && end > start) return inner.slice(start, end + "</svg>".length);
+    if (start >= 0 && end > start)
+      return inner.slice(start, end + "</svg>".length);
   }
 
   // Robust path: walk children to find the first <svg> element
@@ -48,7 +54,7 @@ function extractSvgMarkup(node: any): string {
 
 async function renderMathToPng(
   latex: string,
-  opts?: { display?: boolean; scale?: number }
+  opts?: { display?: boolean; scale?: number },
 ): Promise<PngRender> {
   const node = mjDoc.convert(latex, {
     display: opts?.display ?? true,
@@ -59,7 +65,9 @@ async function renderMathToPng(
   const svgMarkup = extractSvgMarkup(node);
 
   if (!svgMarkup || !svgMarkup.trim().startsWith("<svg")) {
-    throw new Error("MathJax did not produce a valid <svg> root for the given LaTeX.");
+    throw new Error(
+      "MathJax did not produce a valid <svg> root for the given LaTeX.",
+    );
   }
 
   const scale = Math.max(1, Math.floor(opts?.scale ?? 3));
@@ -76,7 +84,7 @@ async function renderMathToPng(
 async function embedPngMath(
   ctx: RenderContext,
   img: PngRender,
-  alignment: "left" | "center" | "right"
+  alignment: "left" | "center" | "right",
 ) {
   const { canvas } = ctx as any;
   const contentW = canvas.pageWidth - 2 * canvas.margin;
@@ -121,28 +129,37 @@ function getPdfHandles(ctx: RenderContext, canvas: any) {
     (ctx as any).pdf ??
     (ctx as any).pdfDoc ??
     (ctx as any).document ??
-    (canvas?.getDoc?.() ?? undefined);
+    canvas?.getDoc?.() ??
+    undefined;
   const page =
     (ctx as any).page ??
     (canvas as any)?.page ??
-    (canvas?.getPage?.() ?? undefined);
+    canvas?.getPage?.() ??
+    undefined;
 
   if (!doc || !page) {
     throw new Error(
-      "RenderContext must expose a pdf-lib document and current page (e.g., ctx.doc/ctx.page or canvas.getDoc()/canvas.getPage())."
+      "RenderContext must expose a pdf-lib document and current page (e.g., ctx.doc/ctx.page or canvas.getDoc()/canvas.getPage()).",
     );
   }
   return { doc, page };
 }
 
-export async function addMath(ctx: RenderContext, mathData: MathData): Promise<void> {
+export async function addMath(
+  ctx: RenderContext,
+  mathData: MathData,
+): Promise<void> {
   const expression = mathData.expression?.trim();
   if (!expression) return;
 
-  const alignment: "left" | "center" | "right" = (mathData.alignment as any) ?? "center";
+  const alignment: "left" | "center" | "right" =
+    (mathData.alignment as any) ?? "center";
 
   try {
-    const rendered = await renderMathToPng(expression, { display: true, scale: 3 });
+    const rendered = await renderMathToPng(expression, {
+      display: true,
+      scale: 3,
+    });
     await embedPngMath(ctx, rendered, alignment);
   } catch (err) {
     // Fallback: render the raw TeX as monospace text so the document still builds

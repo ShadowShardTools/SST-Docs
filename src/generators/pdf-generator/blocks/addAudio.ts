@@ -9,7 +9,7 @@ import type { AudioData } from "../../../layouts/blocks/types";
  *  Audio player available only in browser version.
  *  Audio name to find: <filename.ext>
  */
-export function addAudio(ctx: RenderContext, data: AudioData) {
+export async function addAudio(ctx: RenderContext, data: AudioData) {
   if (!data?.src?.trim()) return;
 
   const pad = 12;
@@ -22,16 +22,26 @@ export function addAudio(ctx: RenderContext, data: AudioData) {
   const line2 = `Audio name to find: ${filename}`;
 
   // Tailwind-like "info" theme (same numbers used in addMessageBox)
-  const fill = rgb(0.878, 0.949, 1);        // bg-blue-100 (#DBEAFE)
-  const stroke = rgb(0.769, 0.867, 0.933);  // border-blue-300
+  const fill = rgb(0.878, 0.949, 1); // bg-blue-100 (#DBEAFE)
+  const stroke = rgb(0.769, 0.867, 0.933); // border-blue-300
   const textColor = rgb(0.031, 0.188, 0.388); // text-blue-800
 
   const innerW = width - pad * 2;
   const lh = ctx.canvas.lineHeight(ctx.fonts.regular, fontSize);
 
   // Measure both lines using the same wrapping logic as the canvas
-  const lines1 = ctx.canvas.wrapText(line1, ctx.fonts.regular, fontSize, innerW);
-  const lines2 = ctx.canvas.wrapText(line2, ctx.fonts.regular, fontSize, innerW);
+  const lines1 = ctx.canvas.wrapText(
+    line1,
+    ctx.fonts.regular,
+    fontSize,
+    innerW,
+  );
+  const lines2 = ctx.canvas.wrapText(
+    line2,
+    ctx.fonts.regular,
+    fontSize,
+    innerW,
+  );
 
   const interGap = 2; // small gap between the two text blocks (matches lineGap)
   const textH = lines1.length * lh + interGap + lines2.length * lh;
