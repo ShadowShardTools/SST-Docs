@@ -1,8 +1,8 @@
 import { type StyleTheme } from "../application/types/StyleTheme";
-import { darkTheme } from "./darkTheme";
-import { lightTheme } from "./lightTheme";
+import { darkTheme } from "./themes/darkTheme";
+import { lightTheme } from "./themes/lightTheme";
 
-export type SiteConfig = {
+export type StylesConfig = {
   logo: {
     image: string;
     text: string;
@@ -11,9 +11,13 @@ export type SiteConfig = {
     light: StyleTheme;
     dark: StyleTheme;
   };
+  // For browser fetch
+  publicDataPath: string;
+  // For Node.js CLI (absolute/relative filesystem path)
+  fsDataPath: string;
 };
 
-export const siteConfig: SiteConfig = {
+export const stylesConfig: StylesConfig = {
   logo: {
     image: "https://avatars.githubusercontent.com/u/107807003",
     text: "SST Docs",
@@ -22,4 +26,6 @@ export const siteConfig: SiteConfig = {
     light: lightTheme,
     dark: darkTheme,
   },
+  publicDataPath: "/SST-Docs/data/",
+  fsDataPath: "./public/SST-Docs/data/",
 };

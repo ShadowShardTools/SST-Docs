@@ -1,10 +1,10 @@
 import { useCurrentTheme } from "./useCurrentTheme";
-import { siteConfig } from "../../configs/site-config";
+import { stylesConfig } from "../../configs/site-config";
 import type { StyleTheme } from "../types/StyleTheme";
 
 export function useThemeStyles(): StyleTheme {
   const theme = useCurrentTheme();
-  return siteConfig.themes[theme];
+  return stylesConfig.themes[theme];
 }
 
 export default useThemeStyles;

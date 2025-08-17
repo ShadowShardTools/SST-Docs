@@ -5,7 +5,7 @@ import Navigation from "../../navigation/components/Navigation";
 import CategoryNavigatorRenderer from "./CategoryNavigatorRenderer";
 import SearchModal from "../../searchModal/components/SearchModal";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { UseDocumentationData } from "../services/useDocumentationData";
+import { useDocumentationData } from "../services/useDocumentationData";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import useDocNavigation from "../hooks/useDocNavigation";
 import useSearchLogic from "../hooks/useSearchLogic";
@@ -31,7 +31,7 @@ const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     standaloneDocs,
     loading,
     error,
-  } = UseDocumentationData();
+  } = useDocumentationData();
 
   const { selectedItem, selectedCategory, navigateToEntry } = useDocNavigation(
     items,

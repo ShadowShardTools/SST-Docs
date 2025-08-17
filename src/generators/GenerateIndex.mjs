@@ -1,25 +1,54 @@
 #!/usr/bin/env node
 /* -------------------------------------------------------------------------- */
-/*  Scans public/data/<version>/** → writes index.json per version            */
+/*  Scans <fsDataPath>/<version>/** → writes index.json per version           */
 /*  New format (recursive categories, no subcategories folder):               */
-/*    {                                                                       */
-/*      "categories": ["ui", "guides"],   // root-level category ids      */
-/*      "items": ["intro", "setup", ...]   // all doc item ids           */
-/*    }                                                                       */
+/*    { "categories": ["ui","guides"], "items": ["intro","setup", ...] }      */
 /* -------------------------------------------------------------------------- */
 import { readdir, readFile, writeFile, stat } from "node:fs/promises";
+import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+/* ---------- tiny colour logger ------------------------------------------- */
 const c = {
   cyan: (s) => `\x1b[36m${s}\x1b[0m`,
   green: (s) => `\x1b[32m${s}\x1b[0m`,
   yellow: (s) => `\x1b[33m${s}\x1b[0m`,
+  red: (s) => `\x1b[31m${s}\x1b[0m`,
 };
-const info = (msg) => console.log(c.cyan("➜"), msg);
-const warn = (msg) => console.warn(c.yellow("⚠"), msg);
+const info = (m) => console.log(c.cyan("➜"), m);
+const warn = (m) => console.warn(c.yellow("⚠"), m);
+const fail = (m) => console.error(c.red("✖"), m);
 
-const dataDir = path.resolve("public", "data");
+/* ---------- resolve project root & fsDataPath ---------------------------- */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const root = path.resolve(__dirname, "..", "..", ".."); // adjust if you move file
 
+function toAbs(raw) {
+  const cleaned = String(raw).replace(/\\/g, "/").replace(/\/+$/, "");
+  return path.isAbsolute(cleaned)
+    ? cleaned
+    : path.resolve(root, cleaned.replace(/^\.\//, ""));
+}
+
+async function resolveFsDataPath() {
+  if (process.env.FS_DATA_PATH) {
+    info(`Using FS_DATA_PATH from environment`);
+    return toAbs(process.env.FS_DATA_PATH);
+  }
+  const jsonPath = path.join(root, "configs", "paths.json");
+  try {
+    const txt = await fs.readFile(jsonPath, "utf8");
+    const j = JSON.parse(txt);
+    if (typeof j.fsDataPath === "string" && j.fsDataPath.trim()) {
+      info(`Using fsDataPath from ${path.relative(root, jsonPath)}`);
+      return toAbs(j.fsDataPath);
+    }
+  } catch { /* ignore */ }
+}
+
+/* ---------- helpers ------------------------------------------------------- */
 async function listJsonIds(dir) {
   try {
     const files = await readdir(dir);
@@ -32,8 +61,10 @@ async function listJsonIds(dir) {
 }
 
 async function generateIndex(versionDir) {
-  const categories = await listJsonIds(path.join(versionDir, "categories"));
+  const categoriesDir = path.join(versionDir, "categories");
   const itemsDir = path.join(versionDir, "items");
+
+  const categories = await listJsonIds(categoriesDir);
   const itemIds = await listJsonIds(itemsDir);
 
   const validItemIds = [];
@@ -41,10 +72,10 @@ async function generateIndex(versionDir) {
     try {
       const json = await readFile(path.join(itemsDir, `${name}.json`), "utf8");
       const { id } = JSON.parse(json);
-      if (typeof id === "string") {
+      if (typeof id === "string" && id.trim()) {
         validItemIds.push(id);
       } else {
-        warn(`Missing "id" in ${name}.json`);
+        warn(`Missing or invalid "id" in ${path.join(itemsDir, `${name}.json`)}`);
       }
     } catch {
       warn(`Bad JSON: ${name}.json in ${path.basename(versionDir)}`);
@@ -59,14 +90,32 @@ async function generateIndex(versionDir) {
   console.log(c.green("✔"), `${path.basename(versionDir)}/index.json`);
 }
 
+/* ---------- main ---------------------------------------------------------- */
 (async () => {
-  info("Generating version indexes …");
-  const versions = await readdir(dataDir);
+  const dataDir = await resolveFsDataPath();
+
+  // validate dataDir
+  try {
+    const s = await stat(dataDir);
+    if (!s.isDirectory()) throw new Error("Not a directory");
+  } catch {
+    fail(`Invalid fsDataPath: ${dataDir}`);
+    process.exit(1);
+  }
+
+  info(`Generating version indexes from ${dataDir} …`);
+
+  const entries = await readdir(dataDir, { withFileTypes: true });
+  const versions = entries.filter((e) => e.isDirectory()).map((e) => e.name);
+
+  if (!versions.length) {
+    warn("No version directories found.");
+  }
+
   for (const v of versions) {
     const dir = path.join(dataDir, v);
-    if ((await stat(dir)).isDirectory()) {
-      await generateIndex(dir);
-    }
+    await generateIndex(dir);
   }
+
   console.log(c.green("🏁  All index.json files generated."));
 })();

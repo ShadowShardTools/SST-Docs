@@ -4,6 +4,9 @@ export type { CodeData, CodeSection } from "./CodeData";
 export type { DividerData } from "./DividerData";
 export type { GraphData } from "./GraphData";
 export type { ImageData } from "./ImageData";
+export type { ImageCompareData } from "./ImageCompareData";
+export type { ImageCarouselData } from "./ImageCarouselData";
+export type { ImageGridData } from "./ImageGridData";
 export type { ListData } from "./ListData";
 export type { MathData } from "./MathData";
 export type {

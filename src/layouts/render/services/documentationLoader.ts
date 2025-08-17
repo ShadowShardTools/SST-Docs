@@ -2,6 +2,7 @@ import type { Version } from "../types/Version";
 import type { Category } from "../types/Category";
 import type { Content } from "../types/Content";
 import type { DocItem } from "../types/DocItem";
+import { stylesConfig } from "../../../configs/site-config";
 
 interface IndexJson {
   categories: string[];
@@ -17,7 +18,7 @@ interface RawCategory {
   children?: string[];
 }
 
-export class DocumentationLoader {
+export class documentationLoader {
   private static baseUrl: string | null = null;
 
   private static getBaseUrl(): string {
@@ -25,6 +26,10 @@ export class DocumentationLoader {
       this.baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     }
     return this.baseUrl;
+  }
+
+  private static getDataPath(): string {
+    return `${this.getBaseUrl()}${stylesConfig.publicDataPath.replace(/\/$/, "")}`;
   }
 
   private static async fetchJson<T>(path: string): Promise<T> {
@@ -38,7 +43,7 @@ export class DocumentationLoader {
   }
 
   static async loadVersions(): Promise<Version[]> {
-    return this.fetchJson<Version[]>(`${this.getBaseUrl()}/data/versions.json`);
+    return this.fetchJson<Version[]>(`${this.getDataPath()}/versions.json`);
   }
 
   static async loadVersionData(version: string): Promise<{
@@ -46,7 +51,7 @@ export class DocumentationLoader {
     tree: Category[];
     standaloneDocs: DocItem[];
   }> {
-    const basePath = `${this.getBaseUrl()}/data/${version}`;
+    const basePath = `${this.getDataPath()}/${version}`;
 
     /* ----------------------------- index.json ---------------------------- */
     const index = await this.fetchJson<IndexJson>(`${basePath}/index.json`);

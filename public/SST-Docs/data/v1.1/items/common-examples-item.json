@@ -63,7 +63,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "quote",
         "text": "Quote Example",
@@ -71,7 +71,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "info",
         "text": "This is an info message with basic content",
@@ -80,7 +80,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "warning",
         "text": "This is a warning message with important information",
@@ -89,7 +89,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "error",
         "text": "This is an error message indicating something went wrong",
@@ -98,7 +98,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "success",
         "text": "This is a success message celebrating completion",
@@ -107,7 +107,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "neutral",
         "text": "This is a neutral message with general information",
@@ -116,7 +116,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "info",
         "text": "This is an large info message with basic content",
@@ -125,7 +125,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "success",
         "text": "This is a success message celebrating completion without icon",
@@ -134,7 +134,7 @@
       }
     },
     {
-      "type": "message-box",
+      "type": "messageBox",
       "messageBoxData": {
         "type": "neutral",
         "text": "Small message without icon",

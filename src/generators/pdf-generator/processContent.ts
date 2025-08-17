@@ -35,7 +35,7 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
         case "table":
           if (item.tableData) await addTable(ctx, item.tableData);
           break;
-        case "message-box":
+        case "messageBox":
           if (item.messageBoxData)
             await addMessageBox(ctx, item.messageBoxData);
           break;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Version } from "../types/Version";
 import type { Category } from "../types/Category";
-import { DocumentationLoader } from "./documentationLoader";
+import { documentationLoader } from "./documentationLoader";
 import type { DocItem } from "../types/DocItem";
 
 interface LoadingState {
@@ -14,7 +14,7 @@ interface ErrorState {
   content?: string;
 }
 
-export function UseDocumentationData() {
+export function useDocumentationData() {
   const [versions, setVersions] = useState<Version[]>([]);
   const [currentVersion, setCurrentVersion] = useState("");
 
@@ -47,7 +47,7 @@ export function UseDocumentationData() {
           baseUrl: import.meta.env.BASE_URL,
         }));
 
-        const versionList = await DocumentationLoader.loadVersions();
+        const versionList = await documentationLoader.loadVersions();
         console.log("Versions loaded:", versionList);
 
         if (!isMounted) return;
@@ -104,7 +104,7 @@ export function UseDocumentationData() {
           setError((err) => ({ ...err, content: undefined }));
         }
 
-        const data = await DocumentationLoader.loadVersionData(currentVersion);
+        const data = await documentationLoader.loadVersionData(currentVersion);
         console.log("Content loaded successfully:", {
           itemsCount: data.items.length,
           treeCount: data.tree.length,
@@ -152,7 +152,7 @@ export function UseDocumentationData() {
     setError((err) => ({ ...err, content: undefined }));
 
     try {
-      const data = await DocumentationLoader.loadVersionData(currentVersion);
+      const data = await documentationLoader.loadVersionData(currentVersion);
       setItems(data.items);
       setTree(data.tree);
       setStandaloneDocs(data.standaloneDocs ?? []);

@@ -2,11 +2,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DocumentationPDFGenerator } from "./DocumentationPDFGenerator";
+import { stylesConfig } from "../../configs/site-config";
 
 const thisFile = fileURLToPath(import.meta.url);
 
 async function main() {
-  const dataPath = process.argv[2] || "./public/data";
+  const dataPath = process.argv[2] || stylesConfig.fsDataPath;
   const generator = new DocumentationPDFGenerator(dataPath);
 
   try {

@@ -5,6 +5,9 @@ import type {
   DividerData,
   GraphData,
   ImageData,
+  ImageCarouselData,
+  ImageCompareData,
+  ImageGridData,
   ListData,
   MathData,
   MessageBoxData,
@@ -20,9 +23,12 @@ export interface Content {
     | "text"
     | "list"
     | "table"
-    | "message-box"
+    | "messageBox"
     | "divider"
     | "image"
+    | "imageCompare"
+    | "imageCarousel"
+    | "imageGrid"
     | "audio"
     | "youtube"
     | "math"
@@ -37,6 +43,9 @@ export interface Content {
   messageBoxData?: MessageBoxData;
   dividerData?: DividerData;
   imageData?: ImageData;
+  imageCompareData?: ImageCompareData;
+  imageCarouselData?: ImageCarouselData;
+  imageGridData?: ImageGridData;
   audioData?: AudioData;
   youtubeData?: YoutubeData;
   mathData?: MathData;

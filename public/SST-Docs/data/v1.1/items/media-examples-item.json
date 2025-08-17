@@ -13,7 +13,6 @@
     {
       "type": "image",
       "imageData": {
-        "type": "single",
         "image": {
           "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
           "alt": "Image Example 1"
@@ -31,9 +30,9 @@
       }
     },
     {
-      "type": "image",
-      "imageData": {
-        "type": "compare",
+      "type": "imageCompare",
+      "imageCompareData": {
+        "type": "individual",
         "beforeImage": {
           "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
           "alt": "Image Example 1"
@@ -46,8 +45,8 @@
       }
     },
     {
-      "type": "image",
-      "imageData": {
+      "type": "imageCompare",
+      "imageCompareData": {
         "type": "slider",
         "beforeImage": {
           "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
@@ -71,9 +70,8 @@
       }
     },
     {
-      "type": "image",
-      "imageData": {
-        "type": "carousel",
+      "type": "imageCarousel",
+      "imageCarouselData": {
         "images": [
           {
             "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",
@@ -106,9 +104,8 @@
       }
     },
     {
-      "type": "image",
+      "type": "imageGrid",
       "imageData": {
-        "type": "grid",
         "images": [
           {
             "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",

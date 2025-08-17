@@ -5,11 +5,16 @@ import type { Category, DocItem, Version } from "../../layouts/render/types";
 import type { IndexJson, RawCategory } from "./types";
 import { PDFGenerator } from "./PDFGenerator";
 
+import { stylesConfig } from "../../configs/site-config";
+
 export class DocumentationPDFGenerator {
   private dataPath: string;
 
-  constructor(dataPath: string = "./public/data") {
-    this.dataPath = dataPath;
+  constructor(dataPath: string = stylesConfig.fsDataPath) {
+    // Resolve relative path against project root
+    this.dataPath = path.isAbsolute(dataPath)
+      ? dataPath
+      : path.resolve(dataPath);
   }
 
   private async fileExists(filePath: string): Promise<boolean> {
