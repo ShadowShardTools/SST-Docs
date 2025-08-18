@@ -4,10 +4,10 @@
 /*  New format (recursive categories, no subcategories folder):               */
 /*    { "categories": ["ui","guides"], "items": ["intro","setup", ...] }      */
 /* -------------------------------------------------------------------------- */
+import 'dotenv/config';
+
 import { readdir, readFile, writeFile, stat } from "node:fs/promises";
-import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 /* ---------- tiny colour logger ------------------------------------------- */
 const c = {
@@ -21,31 +21,21 @@ const warn = (m) => console.warn(c.yellow("⚠"), m);
 const fail = (m) => console.error(c.red("✖"), m);
 
 /* ---------- resolve project root & fsDataPath ---------------------------- */
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const root = path.resolve(__dirname, "..", "..", ".."); // adjust if you move file
-
 function toAbs(raw) {
   const cleaned = String(raw).replace(/\\/g, "/").replace(/\/+$/, "");
   return path.isAbsolute(cleaned)
     ? cleaned
-    : path.resolve(root, cleaned.replace(/^\.\//, ""));
+    : path.resolve(cleaned.replace(/^\.\//, ""));
 }
 
 async function resolveFsDataPath() {
-  if (process.env.FS_DATA_PATH) {
-    info(`Using FS_DATA_PATH from environment`);
-    return toAbs(process.env.FS_DATA_PATH);
+  const fromImportMeta = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.FS_DATA_PATH) || undefined;
+  const fromProcess = process.env.FS_DATA_PATH;
+  const envVal = fromImportMeta ?? fromProcess;
+  if (envVal) {
+    console.log("➜ Using FS_DATA_PATH from environment");
+    return toAbs(envVal);
   }
-  const jsonPath = path.join(root, "configs", "paths.json");
-  try {
-    const txt = await fs.readFile(jsonPath, "utf8");
-    const j = JSON.parse(txt);
-    if (typeof j.fsDataPath === "string" && j.fsDataPath.trim()) {
-      info(`Using fsDataPath from ${path.relative(root, jsonPath)}`);
-      return toAbs(j.fsDataPath);
-    }
-  } catch { /* ignore */ }
 }
 
 /* ---------- helpers ------------------------------------------------------- */

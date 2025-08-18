@@ -2,7 +2,6 @@ import type { Version } from "../types/Version";
 import type { Category } from "../types/Category";
 import type { Content } from "../types/Content";
 import type { DocItem } from "../types/DocItem";
-import { stylesConfig } from "../../../configs/site-config";
 
 interface IndexJson {
   categories: string[];
@@ -29,7 +28,8 @@ export class documentationLoader {
   }
 
   private static getDataPath(): string {
-    return `${this.getBaseUrl()}${stylesConfig.publicDataPath.replace(/\/$/, "")}`;
+    const cfg = import.meta.env.VITE_PUBLIC_DATA_PATH as string | undefined;
+    return `${this.getBaseUrl()}${cfg?.replace(/\/$/, "")}`;
   }
 
   private static async fetchJson<T>(path: string): Promise<T> {

@@ -11,10 +11,6 @@ export type StylesConfig = {
     light: StyleTheme;
     dark: StyleTheme;
   };
-  // For browser fetch
-  publicDataPath: string;
-  // For Node.js CLI (absolute/relative filesystem path)
-  fsDataPath: string;
 };
 
 export const stylesConfig: StylesConfig = {
@@ -26,6 +22,4 @@ export const stylesConfig: StylesConfig = {
     light: lightTheme,
     dark: darkTheme,
   },
-  publicDataPath: "/SST-Docs/data/",
-  fsDataPath: "./public/SST-Docs/data/",
 };

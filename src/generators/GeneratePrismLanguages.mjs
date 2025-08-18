@@ -3,6 +3,8 @@
 /*  Scans <fsDataPath>/<version>/items/*.json → writes prism-languages.*      */
 /*  Sources fsDataPath from ENV → config/paths.json → fallback                */
 /* -------------------------------------------------------------------------- */
+import 'dotenv/config';
+
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,24 +29,16 @@ function toAbs(raw) {
   const cleaned = String(raw).replace(/\\/g, "/").replace(/\/+$/, "");
   return path.isAbsolute(cleaned)
     ? cleaned
-    : path.resolve(root, cleaned.replace(/^\.\//, ""));
+    : path.resolve(cleaned.replace(/^\.\//, ""));
 }
 
 async function resolveFsDataPath() {
-  if (process.env.FS_DATA_PATH) {
-    info(`Using FS_DATA_PATH from environment`);
-    return toAbs(process.env.FS_DATA_PATH);
-  }
-  const jsonPath = path.join(root, "configs", "paths.json");
-  try {
-    const txt = await fs.readFile(jsonPath, "utf8");
-    const j = JSON.parse(txt);
-    if (typeof j.fsDataPath === "string" && j.fsDataPath.trim()) {
-      info(`Using fsDataPath from ${path.relative(root, jsonPath)}`);
-      return toAbs(j.fsDataPath);
-    }
-  } catch {
-    /* ignore */
+  const fromImportMeta = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.FS_DATA_PATH) || undefined;
+  const fromProcess = process.env.FS_DATA_PATH;
+  const envVal = fromImportMeta ?? fromProcess;
+  if (envVal) {
+    console.log("➜ Using FS_DATA_PATH from environment");
+    return toAbs(envVal);
   }
 }
 

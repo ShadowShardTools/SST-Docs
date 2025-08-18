@@ -3,6 +3,8 @@
 /*  Auto-generates src/layouts/blocks/generatedImports/blockImports.generated.ts
 /*  Pure ESM JS (no TS import). Resolves fsDataPath from ENV/JSON/TS text.     */
 /* -------------------------------------------------------------------------- */
+import 'dotenv/config';
+
 import fs from "node:fs/promises";
 import path from "node:path";
 import glob from "fast-glob";
@@ -31,31 +33,21 @@ const generatedRoot = path.join(
 );
 const outFile = path.join(generatedRoot, "blockImports.generated.ts");
 
-/* ---------- resolve fsDataPath without importing TS ---------------------- */
-async function resolveFsDataPath() {
-  if (process.env.FS_DATA_PATH) {
-    info(`Using FS_DATA_PATH from environment: ${process.env.FS_DATA_PATH}`);
-    return toAbs(process.env.FS_DATA_PATH);
-  }
-  
-  const jsonCandidate = path.join(root, "configs", "paths.json");
-  try {
-    const txt = await fs.readFile(jsonCandidate, "utf8");
-    const j = JSON.parse(txt);
-    if (typeof j.fsDataPath === "string" && j.fsDataPath.trim()) {
-      info(`Using fsDataPath from ${path.relative(root, jsonCandidate)}`);
-      return toAbs(j.fsDataPath);
-    }
-  } catch {
-    /* ignore */
-  }
-}
-
 function toAbs(raw) {
-  const cleaned = raw.replace(/\\/g, "/").replace(/\/+$/, "");
+  const cleaned = String(raw).replace(/\\/g, "/").replace(/\/+$/, "");
   return path.isAbsolute(cleaned)
     ? cleaned
-    : path.resolve(root, cleaned.replace(/^\.\//, ""));
+    : path.resolve(cleaned.replace(/^\.\//, ""));
+}
+
+async function resolveFsDataPath() {
+  const fromImportMeta = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.FS_DATA_PATH) || undefined;
+  const fromProcess = process.env.FS_DATA_PATH;
+  const envVal = fromImportMeta ?? fromProcess;
+  if (envVal) {
+    console.log("➜ Using FS_DATA_PATH from environment");
+    return toAbs(envVal);
+  }
 }
 
 /* ---------- helpers ------------------------------------------------------- */

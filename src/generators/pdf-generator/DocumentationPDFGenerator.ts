@@ -5,16 +5,27 @@ import type { Category, DocItem, Version } from "../../layouts/render/types";
 import type { IndexJson, RawCategory } from "./types";
 import { PDFGenerator } from "./PDFGenerator";
 
-import { stylesConfig } from "../../configs/site-config";
+function resolveDataPath(input?: string): string {
+  // 1) CLI flag: --fsDataPath <path>
+  const argv = process.argv.slice(2);
+  const i = argv.indexOf("--fsDataPath");
+  const fromCli = i !== -1 && argv[i + 1] ? argv[i + 1] : undefined;
+
+  // 2) Env var
+  const fromEnv = process.env.FS_DATA_PATH;
+
+  // 3) Provided arg (constructor) has highest priority
+  const candidate = input ?? fromCli ?? fromEnv ?? "./public/SST-Docs/data";
+
+  // Ensure it’s a string and normalize to absolute
+  return path.isAbsolute(candidate) ? candidate : path.resolve(candidate);
+}
 
 export class DocumentationPDFGenerator {
   private dataPath: string;
 
-  constructor(dataPath: string = stylesConfig.fsDataPath) {
-    // Resolve relative path against project root
-    this.dataPath = path.isAbsolute(dataPath)
-      ? dataPath
-      : path.resolve(dataPath);
+  constructor(dataPath?: string) {
+    this.dataPath = resolveDataPath(dataPath);
   }
 
   private async fileExists(filePath: string): Promise<boolean> {
