@@ -105,7 +105,7 @@
     },
     {
       "type": "imageGrid",
-      "imageData": {
+      "imageGridData": {
         "images": [
           {
             "src": "/SST-Docs/data/v1.1/images/Image_Example_1.png",

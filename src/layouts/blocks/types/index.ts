@@ -2,7 +2,6 @@ export type { AudioData } from "./AudioData";
 export type { ChartData } from "./ChartData";
 export type { CodeData, CodeSection } from "./CodeData";
 export type { DividerData } from "./DividerData";
-export type { GraphData } from "./GraphData";
 export type { ImageData } from "./ImageData";
 export type { ImageCompareData } from "./ImageCompareData";
 export type { ImageCarouselData } from "./ImageCarouselData";

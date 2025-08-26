@@ -1,8 +1,8 @@
-import type { Category } from "../../layouts/render/types";
-import { addText } from "./blocks/addText";
-import { addTitle } from "./blocks/addTitle";
+import type { Category } from "../../../layouts/render/types";
+import { addText } from "../blocks/addText";
+import { addTitle } from "../blocks/addTitle";
 import { processContent } from "./processContent";
-import type { RenderContext } from "./types/RenderContext";
+import type { RenderContext } from "../types/RenderContext";
 
 export async function processCategory(
   ctx: RenderContext,

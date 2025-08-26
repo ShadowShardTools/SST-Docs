@@ -1,154 +1,137 @@
-/*import { rgb, type PDFImage } from "pdf-lib";
-import type { RenderContext } from "../../../generators/pdf-generator/types/RenderContext";
+// src/generators/pdf-generator/blocks/addImage.ts
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import appRoot from "app-root-path";
+import type { RenderContext } from "../types/RenderContext";
 import type { ImageData } from "../../../layouts/blocks/types";
 import { Config } from "../../../configs/pdf-config";
-import type { BaseImage, CarouselImage } from "../../../layouts/blocks/types/ImageData";
 
-export async function addImage(ctx: RenderContext, imageData: ImageData): Promise<void> {
-  const align = imageData.alignment ?? "center";
-  const scale = clampScale(imageData.scale);
+/* ------------------------------ helpers ---------------------------------- */
 
-  switch (imageData.type) {
-    case "single":
-      if (imageData.image) await drawSingle(ctx, imageData.image, align, scale);
-      break;
-    case "compare":
-      if (imageData.beforeImage && imageData.afterImage) await drawCompare(ctx, imageData.beforeImage, imageData.afterImage, align, scale);
-      break;
-    case "slider":
-      if (imageData.beforeImage && imageData.afterImage) await drawSliderSideBySide(ctx, imageData, align, scale);
-      break;
-    case "carousel":
-      if (imageData.images?.length) await drawCarousel(ctx, imageData.images, align, scale);
-      break;
-    case "grid":
-      if (imageData.images?.length) await drawGrid(ctx, imageData.images, align, scale);
-      break;
+function clampScale(scale?: number): number {
+  if (typeof scale !== "number" || !Number.isFinite(scale)) return 1;
+  return Math.min(Math.max(scale, 0.1), 1);
+}
+
+function isHttpUrl(p: string) {
+  return /^https?:\/\//i.test(p);
+}
+
+function toAbs(raw: string): string {
+  const cleaned = String(raw).replace(/\\/g, "/").replace(/\/+$/, "");
+  return path.isAbsolute(cleaned)
+    ? cleaned
+    : path.resolve(cleaned.replace(/^\.\//, ""));
+}
+
+function getFsDataPathSync(): string {
+  return toAbs(path.join(appRoot.path, "public"));
+}
+
+function resolveImagePath(src: string): string {
+  if (isHttpUrl(src)) {
+    throw new Error("Remote URLs are not supported in PDF generation.");
   }
+  let s = src.replace(/\\/g, "/");
+  if (s.startsWith("/")) s = s.slice(1); // keep path.join from discarding the root
+  const dataRootAbs = getFsDataPathSync();
+  return path.join(dataRootAbs, s);
 }
 
-function clampScale(s?: number) { return s == null || Number.isNaN(s) ? 1 : Math.max(0.2, Math.min(1, s)); }
+async function embedImageFromFile(ctx: RenderContext, absPath: string) {
+  const buf = await fs.readFile(absPath);
+  const ext = path.extname(absPath).toLowerCase();
 
-function contentBox(ctx: RenderContext, scale: number) {
-  const pageW = (ctx.canvas as any).pageWidth ?? Config.PAGE.width;
-  const margin = (ctx.canvas as any).margin ?? Config.MARGIN;
-  const maxW = pageW - 2 * margin;
-  return { x: margin, y: (ctx.canvas as any).getY?.() ?? Config.MARGIN, w: maxW * scale };
+  if (ext === ".png") return ctx.doc.embedPng(buf);
+  if (ext === ".jpg" || ext === ".jpeg") return ctx.doc.embedJpg(buf);
+
+  // Auto-detect by magic
+  if (buf.length > 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e)
+    return ctx.doc.embedPng(buf);
+  if (buf.length > 2 && buf[0] === 0xff && buf[1] === 0xd8)
+    return ctx.doc.embedJpg(buf);
+
+  throw new Error(`Unsupported image format: ${absPath}. Use PNG or JPG.`);
 }
 
-function xForAlign(totalW: number, boxX: number, boxW: number, align: "left" | "center" | "right") {
-  if (align === "left") return boxX;
-  if (align === "right") return boxX + (boxW - totalW);
-  return boxX + (boxW - totalW) / 2;
-}
+/* --------------------------------- API ----------------------------------- */
 
-async function drawCaption(ctx: RenderContext, text?: string, width?: number, align: "left" | "center" | "right" = "center") {
-  if (!text?.trim()) return;
-  const anyCanvas = ctx.canvas as any;
-  anyCanvas.setY?.((anyCanvas.getY?.() ?? 0) + 6);
-  anyCanvas.drawTextBlock?.({
-    text,
-    x: anyCanvas.margin ?? Config.MARGIN,
-    width: width ?? ((anyCanvas.pageWidth ?? Config.PAGE.width) - 2 * (anyCanvas.margin ?? Config.MARGIN)),
-    font: ctx.fonts.italic ?? ctx.fonts.regular,
-    size: Config.FONT_SIZES?.body ?? 10,
-    color: Config.COLORS?.text ?? rgb(0, 0, 0),
-    align,
-    lineGap: 2,
-    advanceCursor: true,
-  });
-}
+export async function addImage(ctx: RenderContext, data: ImageData): Promise<void> {
+  const image = data.image;
+  if (!image?.src) return;                    // ← narrow once
+  const src = image.src;
 
-async function drawSingle(ctx: RenderContext, img: BaseImage, align: "left" | "center" | "right", scale: number) {
-  const box = contentBox(ctx, scale);
-  const pdfImg = await loadImage(ctx, img.src);
-  const { w, h } = fitWithin(pdfImg, box.w, (ctx.canvas as any).pageHeight ? ((ctx.canvas as any).pageHeight - box.y - Config.MARGIN) : undefined);
-  ensureSpace(ctx, h);
-  drawPDFImage(ctx, pdfImg, xForAlign(w, box.x, box.w, align), (ctx.canvas as any).getY?.(), w, h);
-  await drawCaption(ctx, img.alt, box.w, align);
-}
+  const alignment: "left" | "center" | "right" =
+    (data.alignment as any) ?? "center";
+  const scale = clampScale(data.scale);
 
-async function drawCompare(ctx: RenderContext, before: BaseImage, after: BaseImage, align: "left" | "center" | "right", scale: number) {
-  const gap = 12, box = contentBox(ctx, scale);
-  const [leftImg, rightImg] = await Promise.all([loadImage(ctx, before.src), loadImage(ctx, after.src)]);
-  const halfW = (box.w - gap) / 2;
-  const leftSize = fitWithin(leftImg, halfW), rightSize = fitWithin(rightImg, halfW);
-  const rowH = Math.max(leftSize.h, rightSize.h);
-  ensureSpace(ctx, rowH);
-  const startX = xForAlign(leftSize.w + rightSize.w + gap, box.x, box.w, align);
-  const y = (ctx.canvas as any).getY?.();
-  drawPDFImage(ctx, leftImg, startX, y, leftSize.w, rowH);
-  drawPDFImage(ctx, rightImg, startX + leftSize.w + gap, y, rightSize.w, rowH);
-  await drawCaption(ctx, [before.alt, after.alt].filter(Boolean).join("  |  ") || undefined, box.w, align);
-}
+  const spacingTop = Config.SPACING.medium;
+  const spacingBottom = Config.SPACING.medium;
 
-async function drawSliderSideBySide(ctx: RenderContext, data: ImageData, align: "left" | "center" | "right", scale: number) {
-  const perc = 0.5, gap = 8, box = contentBox(ctx, scale);
-  const [leftImg, rightImg] = await Promise.all([loadImage(ctx, data.beforeImage!.src), loadImage(ctx, data.afterImage!.src)]);
-  const halfW = (box.w - gap) / 2;
-  const leftSize = fitWithin(leftImg, halfW), rightSize = fitWithin(rightImg, halfW);
-  const rowH = Math.max(leftSize.h, rightSize.h);
-  ensureSpace(ctx, rowH + 16);
-  const startX = xForAlign(leftSize.w + rightSize.w + gap, box.x, box.w, align);
-  const y = (ctx.canvas as any).getY?.();
-  drawPDFImage(ctx, leftImg, startX, y, leftSize.w, rowH);
-  (ctx.canvas as any).drawLine?.({ x1: startX + leftSize.w + gap / 2, y1: y, x2: startX + leftSize.w + gap / 2, y2: y + rowH, color: Config.COLORS?.divider ?? rgb(0.8, 0.8, 0.8), width: 1 });
-  drawPDFImage(ctx, rightImg, startX + leftSize.w + gap, y, rightSize.w, rowH);
-  if (data.showPercentage && (data.beforeImage?.alt || data.afterImage?.alt)) {
-    const leftLabel = data.beforeImage?.alt ? `${Math.round(perc * 100)}% ${data.beforeImage.alt}` : undefined;
-    const rightLabel = data.afterImage?.alt ? `${Math.round((1 - perc) * 100)}% ${data.afterImage.alt}` : undefined;
-    await drawCaption(ctx, [leftLabel, rightLabel].filter(Boolean).join(" / ") || undefined, box.w, align);
-  }
-}
+  try {
+    const absPath = resolveImagePath(src);
+    const pdfImg = await embedImageFromFile(ctx, absPath);
 
-async function drawCarousel(ctx: RenderContext, images: CarouselImage[], align: "left" | "center" | "right", scale: number) {
-  for (let i = 0; i < images.length; i++) {
-    if (i > 0) (ctx.canvas as any).addPage?.();
-    await drawSingle(ctx, images[i]!, align, scale);
-  }
-}
+    const contentW = ctx.canvas.contentWidth;
+    const drawW = Math.max(1, Math.min(contentW, Math.round(contentW * scale)));
 
-async function drawGrid(ctx: RenderContext, images: CarouselImage[], align: "left" | "center" | "right", scale: number) {
-  const box = contentBox(ctx, scale), gap = 10, cols = box.w >= 440 ? 3 : 2, cellW = (box.w - gap * (cols - 1)) / cols;
-  let x = 0, y = 0, rowH = 0;
-  for (let i = 0; i < images.length; i++) {
-    const pdfImg = await loadImage(ctx, images[i]!.src);
-    const size = fitWithin(pdfImg, cellW);
-    if (i % cols === 0) {
-      if (i > 0) {
-        ensureSpace(ctx, rowH + gap);
-        (ctx.canvas as any).setY?.(((ctx.canvas as any).getY?.() ?? 0) + rowH + gap);
-      } else ensureSpace(ctx, size.h);
-      x = 0; y = (ctx.canvas as any).getY?.() ?? 0; rowH = 0;
+    const aspect = (pdfImg as any).height / (pdfImg as any).width;
+    const drawH = drawW * aspect;
+
+    const caption = (image.alt ?? "").trim(); // ← use `image`, not `data.image`
+    const capSize = Config.FONT_SIZES.alternative ?? 10;
+    const capColor = Config.COLORS.alternativeText ?? Config.COLORS.text;
+    const capGap = caption ? 6 : 0;
+
+    let capH = 0;
+    if (caption) {
+      const m = ctx.canvas.measureAndWrap(caption, {
+        font: ctx.fonts.regular,
+        size: capSize,
+        maxWidth: drawW,
+        lineHeight: 1 + 2 / capSize,
+      });
+      capH = m.totalHeight;
     }
-    const drawX = xForAlign(cols * cellW + (cols - 1) * gap, box.x, box.w, align) + x;
-    drawPDFImage(ctx, pdfImg, drawX, y, size.w, size.h);
-    rowH = Math.max(rowH, size.h);
-    x += cellW + gap;
-  }
-  (ctx.canvas as any).setY?.(((ctx.canvas as any).getY?.() ?? 0) + rowH);
-}
 
-function fitWithin(img: PDFImage, maxW?: number, maxH?: number) {
-  let w = img.width, h = img.height;
-  if (maxW != null && w > maxW) { const k = maxW / w; w = maxW; h *= k; }
-  if (maxH != null && h > maxH) { const k = maxH / h; h = maxH; w *= k; }
-  return { w, h };
-}
-function ensureSpace(ctx: RenderContext, needed: number) {
-  const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.ensureSpace === "function") anyCanvas.ensureSpace(needed);
-  else if (typeof anyCanvas.addPage === "function") {
-    const y = anyCanvas.getY?.() ?? 0, pageH = anyCanvas.pageHeight ?? Config.PAGE.height;
-    if (y + needed > pageH - (anyCanvas.margin ?? Config.MARGIN)) anyCanvas.addPage();
+    ctx.canvas.ensureBlock({
+      minHeight: spacingTop + drawH + capGap + capH + spacingBottom,
+      keepTogether: true,
+    });
+
+    ctx.canvas.moveY(spacingTop);
+
+    ctx.canvas.drawImage(pdfImg as any, {
+      width: drawW,
+      height: undefined, // preserve aspect
+      align: alignment,
+    });
+
+    if (caption) {
+      ctx.canvas.moveY(capGap);
+      ctx.canvas.drawText(caption, {
+        font: ctx.fonts.regular,
+        size: capSize,
+        color: capColor,
+        align: alignment === "center" ? "center" : "left",
+        maxWidth: drawW,
+        spacingBefore: 0,
+        spacingAfter: 0,
+        lineHeight: 1 + 2 / capSize,
+      });
+    }
+
+    ctx.canvas.moveY(spacingBottom);
+  } catch (err) {
+    const msg = `[Image could not be embedded: ${src}]`;
+    ctx.canvas.drawText(msg, {
+      font: ctx.fonts.mono ?? ctx.fonts.regular,
+      size: Config.FONT_SIZES.body,
+      color: Config.COLORS.text,
+      align: "left",
+      maxWidth: ctx.canvas.contentWidth,
+      spacingBefore: spacingTop,
+      spacingAfter: spacingBottom,
+    });
   }
 }
-function drawPDFImage(ctx: RenderContext, img: PDFImage, x: number, y: number, w: number, h: number) {
-  const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.drawImage === "function") anyCanvas.drawImage({ image: img, x, y, width: w, height: h });
-  else {
-    const page = (anyCanvas.page ?? (anyCanvas.getPage?.() ?? (ctx as any).page));
-    page.drawImage(img, { x, y: page.getHeight() - y - h, width: w, height: h });
-  }
-}
-*/

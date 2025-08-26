@@ -15,26 +15,6 @@
       "mathData": {
         "expression": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}"
       }
-    },
-    {
-      "type": "title",
-      "titleData": {
-        "text": "Graphs Example",
-        "level": 2,
-        "enableAnchorLink": true
-      }
-    },
-    {
-      "type": "graph",
-      "graphData": {
-        "expressions": [
-          "sin(x)",
-          "cos(x)",
-          "x^2 / 10"
-        ],
-        "alignment": "center",
-        "scale": 0.8
-      }
     }
   ]
 }

@@ -3,7 +3,6 @@ import type {
   ChartData,
   CodeData,
   DividerData,
-  GraphData,
   ImageData,
   ImageCarouselData,
   ImageCompareData,
@@ -51,5 +50,4 @@ export interface Content {
   mathData?: MathData;
   codeData?: CodeData;
   chartData?: ChartData;
-  graphData?: GraphData;
 }

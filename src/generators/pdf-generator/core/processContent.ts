@@ -1,19 +1,18 @@
-// src/generators/pdf-generator/processContent.ts
-import type { Content } from "../../layouts/render/types";
-import { addChart } from "./blocks/addChart";
-import { addCode } from "./blocks/addBlock";
-import { addList } from "./blocks/addList";
-import { addMath } from "./blocks/addMath";
-import { addMessageBox } from "./blocks/addMessageBox";
-import { addTable } from "./blocks/addTable";
-import { addText } from "./blocks/addText";
-import { addTitle } from "./blocks/addTitle";
-import { addUnknown } from "./blocks/addUnknown";
-import { addYoutube } from "./blocks/addYoutube";
-import type { RenderContext } from "./types/RenderContext";
-import { addAudio } from "./blocks/addAudio";
-import { addDivider } from "./blocks/addDivider";
-import { addGraph } from "./blocks/addGraph";
+import type { Content } from "../../../layouts/render/types";
+import { addAudio } from "../blocks/addAudio";
+import { addChart } from "../blocks/addChart";
+import { addCode } from "../blocks/addCode";
+import { addDivider } from "../blocks/addDivider";
+import { addImage } from "../blocks/addImage";
+import { addList } from "../blocks/addList";
+import { addMath } from "../blocks/addMath";
+import { addMessageBox } from "../blocks/addMessageBox";
+import { addTable } from "../blocks/addTable";
+import { addText } from "../blocks/addText";
+import { addTitle } from "../blocks/addTitle";
+import { addUnknown } from "../blocks/addUnknown";
+import { addYoutube } from "../blocks/addYoutube";
+import type { RenderContext } from "../types/RenderContext";
 
 export async function processContent(ctx: RenderContext, content: Content[]) {
   for (const [index, item] of (content ?? []).entries()) {
@@ -43,7 +42,7 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
           if (item.dividerData) await addDivider(ctx, item.dividerData);
           break;
         case "image":
-          //if (item.imageData) await addImage(ctx, item.imageData);
+          if (item.imageData) await addImage(ctx, item.imageData);
           break;
         case "youtube":
           if (item.youtubeData) await addYoutube(ctx, item.youtubeData);
@@ -59,9 +58,6 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
           break;
         case "chart":
           if (item.chartData) await addChart(ctx, item.chartData);
-          break;
-        case "graph":
-          if (item.graphData) await addGraph(ctx, item.graphData);
           break;
         default:
           addUnknown(ctx, item.type);

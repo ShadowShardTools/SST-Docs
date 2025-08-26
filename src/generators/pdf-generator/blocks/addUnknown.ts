@@ -1,60 +1,65 @@
-// src/generators/pdf-generator/blocks/addUnknownBlock.ts
+// src/generators/pdf-generator/blocks/addUnknown.ts
 import { rgb } from "pdf-lib";
 import type { RenderContext } from "../types/RenderContext";
 import { Config } from "../../../configs/pdf-config";
 
 export function addUnknown(ctx: RenderContext, type: string) {
   const pad = 12;
-  const fontSize = Config.FONT_SIZES.messageBox; // match message box sizing
-  const width = Config.PAGE.width - 2 * Config.MARGIN;
+  const font = ctx.fonts.regular;
+  const size = Config.FONT_SIZES.messageBox;
+  const width = ctx.canvas.contentWidth;
+  const spacingBottom = Config.SPACING.messageBoxBottom;
 
   const text = `Unknown content type: ${type}`;
 
-  // Tailwind-like "warning" theme (same numbers you used in addMessageBox)
-  const fill = rgb(1, 0.973, 0.863); // bg-yellow-100
-  const stroke = rgb(0.992, 0.925, 0.682); // border-yellow-300
-  const textColor = rgb(0.322, 0.255, 0.051); // text-yellow-800
+  // Theme (same as your warning/message box)
+  const fill = rgb(1, 0.973, 0.863);         // bg-yellow-100
+  const stroke = rgb(0.992, 0.925, 0.682);   // border-yellow-300
+  const textColor = rgb(0.322, 0.255, 0.051);// text-yellow-800
 
-  // Measure text and total box height
-  const lines = ctx.canvas.wrapText(
-    text,
-    ctx.fonts.regular,
-    fontSize,
-    width - pad * 2,
-  );
-  const lh = ctx.canvas.lineHeight(ctx.fonts.regular, fontSize);
-  const textH = lines.length * lh;
-  const boxH = textH + pad * 2;
+  // Wrap to fit inside padded box
+  const lineHeight = 1 + 2 / size;
+  const { lines, totalHeight } = ctx.canvas.measureAndWrap(text, {
+    font,
+    size,
+    maxWidth: width - pad * 2,
+    lineHeight,
+  });
 
-  // Make sure there is room (like addMessageBox)
-  ctx.canvas.ensureSpace(boxH + Config.SPACING.messageBoxBottom);
-  const top = ctx.canvas.getY();
+  const boxH = totalHeight + pad * 2;
+
+  // Ensure whole box + spacing fits on the current page
+  ctx.canvas.ensureSpace({ minHeight: boxH + spacingBottom });
+
+  // Remember where the box starts
+  const top = ctx.canvas.cursorY;
 
   // Background box
-  ctx.canvas.drawRect({
-    x: Config.MARGIN,
-    y: top,
-    width,
-    height: boxH,
+  ctx.canvas.drawBox(width, boxH, {
     fill,
     stroke,
-    lineWidth: 1.5,
-    advanceCursor: false,
+    strokeWidth: 1.5,
+    padding: 0, // we'll handle padding manually for uniform per-line
   });
 
-  // Text
-  ctx.canvas.drawTextBlock({
-    text,
-    x: Config.MARGIN + pad,
-    y: top + pad,
-    width: width - pad * 2,
-    font: ctx.fonts.regular,
-    size: fontSize,
-    color: textColor,
-    lineGap: 2,
-    advanceCursor: false,
-  });
+  // Draw each wrapped line with uniform left padding
+  ctx.canvas.cursorY = top + pad;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    ctx.canvas.drawText(line, {
+      font,
+      size,
+      color: textColor,
+      align: "left",
+      maxWidth: width - pad * 2,
+      spacingBefore: 0,
+      spacingAfter: 0,  // lineHeight already advances the cursor
+      lineHeight,
+      indent: pad,      // applies to this (single) line → uniform padding
+    });
+  }
 
-  // Move cursor below
-  ctx.canvas.setY(top + boxH + Config.SPACING.messageBoxBottom);
+  // Move below the box and add bottom spacing
+  ctx.canvas.cursorY = top + boxH;
+  ctx.canvas.moveY(spacingBottom);
 }

@@ -1,9 +1,21 @@
 import * as fs from "node:fs/promises";
 import path from "node:path";
+import appRoot from "app-root-path";
 
-import type { Category, DocItem, Version } from "../../layouts/render/types";
-import type { IndexJson, RawCategory } from "./types";
+import type { Category, DocItem, Version } from "../../../layouts/render/types";
+import type { IndexJson, RawCategory } from "../types";
 import { PDFGenerator } from "./PDFGenerator";
+
+function normalizeDir(p: string): string {
+  return p.replace(/\\/g, "/").replace(/\/+$/, "");
+}
+
+function resolveAgainstProjectRoot(candidate: string): string {
+  // If absolute, keep as-is; if relative, resolve from project root (not CWD)
+  return path.isAbsolute(candidate)
+    ? candidate
+    : path.join(appRoot.path, candidate);
+}
 
 function resolveDataPath(input?: string): string {
   // 1) CLI flag: --fsDataPath <path>
@@ -17,10 +29,10 @@ function resolveDataPath(input?: string): string {
   // 3) Provided arg (constructor) has highest priority
   const candidate = input ?? fromCli ?? fromEnv ?? "./public/SST-Docs/data";
 
-  // Ensure it’s a string and normalize to absolute
-  return path.isAbsolute(candidate) ? candidate : path.resolve(candidate);
+  // Resolve RELATIVE paths from project root; then normalize & absolutize
+  const abs = resolveAgainstProjectRoot(String(candidate));
+  return normalizeDir(path.resolve(abs));
 }
-
 export class DocumentationPDFGenerator {
   private dataPath: string;
 
@@ -199,7 +211,7 @@ export class DocumentationPDFGenerator {
           const outputPath = path.join(
             this.dataPath,
             version.version,
-            `SST-Documentation-${version.version}.pdf`,
+            `${version.version}.pdf`,
           );
           await generator.generatePDF(
             version,

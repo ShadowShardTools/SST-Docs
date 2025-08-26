@@ -7,15 +7,15 @@ export async function addTable(ctx: RenderContext, table: TableData) {
   const rows = table?.data ?? [];
   if (!rows.length || !rows[0]?.length) return;
 
-  const type = table.type ?? "vertical"; // default to first-row headers like HTML tables
+  const type = table.type ?? "vertical"; // default like HTML: first row = header
 
-  // Layout / style
-  const margin = ctx.canvas.margin;
-  const pageW = ctx.canvas.pageWidth;
-  const contentW = pageW - 2 * margin;
+  // Layout / style from PdfCanvas content box
+  const xL = ctx.canvas.contentLeft;
+  const contentW = ctx.canvas.contentWidth;
 
   const size = Config.FONT_SIZES.table;
-  const lineGap = 2;
+  const lineGapPx = 2;
+  const lineHeight = 1 + lineGapPx / size; // ~ old lineGap=2
   const padX = 8;
   const padY = 6;
   const minRowH = Math.max(22, size + padY * 2);
@@ -24,6 +24,7 @@ export async function addTable(ctx: RenderContext, table: TableData) {
   const headerFill = Config.COLORS.tableHeader;
   const cornerFill = Config.COLORS.tableCorner;
   const headerTextColor = Config.COLORS.tableHeaderText;
+  const bodyTextColor = Config.COLORS.text;
 
   const cols = rows[0].length;
   const colW = contentW / cols;
@@ -31,13 +32,10 @@ export async function addTable(ctx: RenderContext, table: TableData) {
   const fontRow = ctx.fonts.regular;
   const fontHeader = ctx.fonts.bold;
 
-  const widthOf = (text: string, isHeader: boolean) =>
-    ctx.canvas.widthOf(text, isHeader ? fontHeader : fontRow, size);
-
   const isMatrixCorner = (r: number, c: number) =>
     type === "matrix" && r === 0 && c === 0;
 
-  const isHeaderCell = (r: number, c: number, cell: TableCell) => {
+  const isHeaderCell = (r: number, c: number, cell: TableCell | undefined) => {
     if (cell?.isHeader) return true;
     if (type === "matrix") return r === 0 || c === 0;
     if (type === "vertical") return r === 0;
@@ -45,95 +43,138 @@ export async function addTable(ctx: RenderContext, table: TableData) {
     return false;
   };
 
-  // Quick line-wrap measure to estimate row height
-  const measureCellHeight = (text: string, asHeader: boolean) => {
-    const maxW = colW - padX * 2;
-    if (maxW <= 0) return minRowH;
-
-    const words = (text ?? "").split(/\s+/);
-    let lines = 1;
-    let lineW = 0;
-
-    for (const word of words) {
-      const token = (lineW ? " " : "") + word;
-      const w = widthOf(token, asHeader);
-      if (lineW + w > maxW) {
-        lines += 1;
-        lineW = widthOf(word, asHeader);
-      } else {
-        lineW += w;
-      }
-    }
-
-    const lineH = size + lineGap;
-    return Math.max(minRowH, padY * 2 + lines * lineH);
-  };
-
+  // Measure row heights once (no wrapping surprises later)
   const rowHeights = rows.map((row, r) => {
     let h = minRowH;
     for (let c = 0; c < cols; c++) {
       const cell = row[c];
       const asHeader = isHeaderCell(r, c, cell);
-      h = Math.max(h, measureCellHeight(cell?.content ?? "", asHeader));
+      const font = asHeader ? fontHeader : fontRow;
+      const maxWidth = Math.max(0, colW - padX * 2);
+      const { totalHeight } = ctx.canvas.measureAndWrap(cell?.content ?? "", {
+        font,
+        size,
+        maxWidth,
+        lineHeight,
+      });
+      h = Math.max(h, padY * 2 + totalHeight);
     }
     return h;
   });
 
+  // Draw a thin horizontal rule at absolute y without consuming space
+  function drawH(yTopDown: number, thickness = 0.5) {
+    const before = ctx.canvas.cursorY;
+    ctx.canvas.withRegion({ x: xL, y: yTopDown, width: contentW, height: thickness + 1 }, () => {
+      ctx.canvas.cursorY = yTopDown;
+      ctx.canvas.drawRule({
+        thickness,
+        color: strokeColor,
+        width: contentW,
+        align: "left",
+        spacingBefore: 0,
+        spacingAfter: 0,
+      });
+    });
+    ctx.canvas.cursorY = before;
+  }
+
+  // Draw a thin vertical separator for a single row using a filled skinny box
+  function drawV(x: number, y: number, h: number, thickness = 0.5) {
+    const before = ctx.canvas.cursorY;
+    ctx.canvas.withRegion({ x, y, width: thickness, height: h }, () => {
+      ctx.canvas.cursorY = y;
+      ctx.canvas.drawBox(thickness, h, {
+        fill: strokeColor,
+        padding: 0,
+        strokeWidth: 0,
+      });
+    });
+    ctx.canvas.cursorY = before;
+  }
+
+  // Render rows
   for (let r = 0; r < rows.length; r++) {
     const row = rows[r];
     const rowH = rowHeights[r];
 
-    ctx.canvas.ensureSpace(rowH);
-    const rowTop = ctx.canvas.getY();
+    // Keep whole row on the current page
+    ctx.canvas.ensureSpace({ minHeight: rowH });
+    const rowTop = ctx.canvas.cursorY;
 
+    // --- Background fills first (no borders here) ---
     for (let c = 0; c < cols; c++) {
       const cell = row[c];
-      const x = margin + c * colW;
+      const x = xL + c * colW;
 
       const header = isHeaderCell(r, c, cell);
       const corner = isMatrixCorner(r, c);
+      const fill = (corner && cornerFill) || (header && headerFill) || undefined;
 
-      const bg = (corner && cornerFill) || (header && headerFill);
-
-      if (bg) {
-        ctx.canvas.drawRect({
-          x,
-          y: rowTop,
-          width: colW,
-          height: rowH,
-          fill: bg,
-          advanceCursor: false,
+      if (fill) {
+        const before = ctx.canvas.cursorY;
+        ctx.canvas.withRegion({ x, y: rowTop, width: colW, height: rowH }, () => {
+          ctx.canvas.cursorY = rowTop;
+          ctx.canvas.drawBox(colW, rowH, {
+            fill,
+            padding: 0,
+            strokeWidth: 0, // no per-cell borders
+          });
         });
+        ctx.canvas.cursorY = before;
       }
+    }
 
-      // Border
-      ctx.canvas.drawRect({
-        x,
-        y: rowTop,
-        width: colW,
-        height: rowH,
-        stroke: strokeColor,
-        lineWidth: 0.5,
-        advanceCursor: false,
-      });
+    // --- Text on top of fills ---
+    for (let c = 0; c < cols; c++) {
+      const cell = row[c];
+      const x = xL + c * colW;
+      const header = isHeaderCell(r, c, cell);
 
-      // Text
-      ctx.canvas.drawTextBlock({
-        text: cell?.content ?? "",
+      const font = header ? fontHeader : fontRow;
+      const textColor = header ? headerTextColor : bodyTextColor;
+
+      const inner = {
         x: x + padX,
         y: rowTop + padY,
-        width: colW - padX * 2,
-        font: header ? fontHeader : fontRow,
-        size,
-        color: header ? headerTextColor : Config.COLORS.text,
-        lineGap,
-        align: "left",
-        advanceCursor: false,
+        width: Math.max(0, colW - padX * 2),
+        height: Math.max(0, rowH - padY * 2),
+      };
+
+      ctx.canvas.withRegion(inner, () => {
+        ctx.canvas.cursorY = inner.y;
+        ctx.canvas.drawText(cell?.content ?? "", {
+          font,
+          size,
+          color: textColor,
+          align: "left",
+          maxWidth: inner.width,
+          spacingBefore: 0,
+          spacingAfter: 0,
+          lineHeight,
+        });
       });
     }
 
-    ctx.canvas.setY(rowTop + rowH);
+    // --- Grid lines for this row (single stroke per boundary) ---
+    // horizontal top for the row (or will redraw same line each row; harmless)
+    drawH(rowTop, 0.5);
+
+    // vertical separators for each col boundary in this row
+    for (let c = 0; c <= cols; c++) {
+      const vx = xL + c * colW;
+      drawV(vx, rowTop, rowH, 0.5);
+    }
+
+    // advance baseline to next row
+    ctx.canvas.cursorY = rowTop + rowH;
+
+    // bottom border for the last row only
+    if (r === rows.length - 1) {
+      drawH(ctx.canvas.cursorY, 0.5);
+    }
   }
 
-  ctx.canvas.setY(ctx.canvas.getY() + Config.SPACING.tableBottom);
+  // spacing after table
+  ctx.canvas.moveY(Config.SPACING.tableBottom);
 }

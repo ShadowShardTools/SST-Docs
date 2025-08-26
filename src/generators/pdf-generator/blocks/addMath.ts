@@ -1,3 +1,4 @@
+// src/generators/pdf-generator/blocks/addMath.ts
 import { Config } from "../../../configs/pdf-config";
 import type { MathData } from "../../../layouts/blocks/types";
 import type { RenderContext } from "../types/RenderContext";
@@ -10,51 +11,37 @@ import { RegisterHTMLHandler } from "mathjax-full/js/handlers/html.js";
 import { AllPackages } from "mathjax-full/js/input/tex/AllPackages.js";
 import { Resvg } from "@resvg/resvg-js";
 
-// -------------------------------
-// MathJax singletons
-// -------------------------------
+/* ------------------------------- MathJax setup ----------------------------- */
 const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 const tex = new TeX({ packages: AllPackages });
-const svg = new SVG({ fontCache: "none" }); // embed glyphs into the SVG
+const svg = new SVG({ fontCache: "none" }); // embed glyphs in SVG
 const mjDoc = mathjax.document("", { InputJax: tex, OutputJax: svg });
 
-type PngRender = {
-  png: Uint8Array;
-  width: number;
-  height: number;
-  scale: number;
-};
+type PngRender = { png: Uint8Array; width: number; height: number; scale: number };
 
-// Extract just the <svg>...</svg> from MathJax's <mjx-container>
+/* Extract <svg>…</svg> from MathJax output */
 function extractSvgMarkup(node: any): string {
-  // Fast path: MathJax puts the <svg> as the only child
   const inner = adaptor.innerHTML(node) || "";
   if (inner.includes("<svg")) {
     const start = inner.indexOf("<svg");
     const end = inner.indexOf("</svg>");
-    if (start >= 0 && end > start)
-      return inner.slice(start, end + "</svg>".length);
+    if (start >= 0 && end > start) return inner.slice(start, end + "</svg>".length);
   }
-
-  // Robust path: walk children to find the first <svg> element
   const queue = [node];
   while (queue.length) {
     const cur = queue.shift();
     const name = (adaptor as any).nodeName?.(cur);
-    if (name && String(name).toLowerCase() === "svg") {
-      return adaptor.outerHTML(cur);
-    }
+    if (name && String(name).toLowerCase() === "svg") return adaptor.outerHTML(cur);
     const kids = adaptor.childNodes?.(cur) ?? [];
     for (const k of kids) queue.push(k);
   }
-
-  return ""; // not found
+  return "";
 }
 
 async function renderMathToPng(
   latex: string,
-  opts?: { display?: boolean; scale?: number },
+  opts?: { display?: boolean; scale?: number }
 ): Promise<PngRender> {
   const node = mjDoc.convert(latex, {
     display: opts?.display ?? true,
@@ -63,15 +50,11 @@ async function renderMathToPng(
   });
 
   const svgMarkup = extractSvgMarkup(node);
-
   if (!svgMarkup || !svgMarkup.trim().startsWith("<svg")) {
-    throw new Error(
-      "MathJax did not produce a valid <svg> root for the given LaTeX.",
-    );
+    throw new Error("MathJax did not produce a valid <svg> root for the given LaTeX.");
   }
 
   const scale = Math.max(1, Math.floor(opts?.scale ?? 3));
-
   const r = new Resvg(svgMarkup, {
     fitTo: { mode: "zoom", value: scale },
     background: "rgba(255,255,255,0)", // transparent
@@ -81,119 +64,53 @@ async function renderMathToPng(
   return { png: out.asPng(), width: out.width, height: out.height, scale };
 }
 
-async function embedPngMath(
-  ctx: RenderContext,
-  img: PngRender,
-  alignment: "left" | "center" | "right",
-) {
-  const { canvas } = ctx as any;
-  const contentW = canvas.pageWidth - 2 * canvas.margin;
-
-  const naturalW = img.width / img.scale;
-  const naturalH = img.height / img.scale;
-
-  const drawW = Math.min(naturalW, contentW);
-  const drawH = (naturalH * drawW) / naturalW;
-
-  const topY = canvas.getY() + Config.SPACING.textBottom;
-  const bottomLimit = canvas.pageHeight - canvas.margin;
-  if (topY + drawH > bottomLimit) {
-    if (typeof canvas.addPage === "function") {
-      canvas.addPage();
-    } else {
-      const { doc } = getPdfHandles(ctx, canvas);
-      const newPage = doc.addPage([canvas.pageWidth, canvas.pageHeight]);
-      if (typeof canvas.setPage === "function") canvas.setPage(newPage);
-      if (typeof canvas.setY === "function") canvas.setY(canvas.margin);
-    }
-  }
-
-  let x = canvas.margin;
-  if (alignment === "center") x = (canvas.pageWidth - drawW) / 2;
-  else if (alignment === "right") x = canvas.pageWidth - canvas.margin - drawW;
-
-  const { doc, page } = getPdfHandles(ctx, canvas);
-  const pngRef = await doc.embedPng(img.png);
-
-  const finalTopY = canvas.getY() + Config.SPACING.textBottom;
-  const pdfY = canvas.pageHeight - finalTopY - drawH;
-
-  page.drawImage(pngRef, { x, y: pdfY, width: drawW, height: drawH });
-
-  canvas.setY(finalTopY + drawH + Config.SPACING.textBottom);
-}
-
-function getPdfHandles(ctx: RenderContext, canvas: any) {
-  const doc =
-    (ctx as any).doc ??
-    (ctx as any).pdf ??
-    (ctx as any).pdfDoc ??
-    (ctx as any).document ??
-    canvas?.getDoc?.() ??
-    undefined;
-  const page =
-    (ctx as any).page ??
-    (canvas as any)?.page ??
-    canvas?.getPage?.() ??
-    undefined;
-
-  if (!doc || !page) {
-    throw new Error(
-      "RenderContext must expose a pdf-lib document and current page (e.g., ctx.doc/ctx.page or canvas.getDoc()/canvas.getPage()).",
-    );
-  }
-  return { doc, page };
-}
-
-export async function addMath(
-  ctx: RenderContext,
-  mathData: MathData,
-): Promise<void> {
+/* ------------------------------- Public API -------------------------------- */
+export async function addMath(ctx: RenderContext, mathData: MathData): Promise<void> {
   const expression = mathData.expression?.trim();
   if (!expression) return;
 
-  const alignment: "left" | "center" | "right" =
-    (mathData.alignment as any) ?? "center";
+  const align = (mathData.alignment as "left" | "center" | "right") ?? "center";
+  const spacing = Config.SPACING.textBottom;
 
   try {
-    const rendered = await renderMathToPng(expression, {
-      display: true,
-      scale: 3,
-    });
-    await embedPngMath(ctx, rendered, alignment);
-  } catch (err) {
-    // Fallback: render the raw TeX as monospace text so the document still builds
-    const { canvas, fonts } = ctx as any;
-    console.warn(`⚠️ Math render failed: ${(err as Error).message}`);
-    const text = expression.replace(/\s+/g, " ");
-    const size = 12;
-    const contentW = canvas.pageWidth - 2 * canvas.margin;
+    // Render LaTeX → SVG → PNG
+    const rendered = await renderMathToPng(expression, { display: true, scale: 3 });
 
-    if (typeof canvas.drawTextBlock === "function") {
-      canvas.drawTextBlock({
-        text,
-        x: canvas.margin,
-        width: contentW,
-        font: fonts?.mono ?? fonts?.regular,
-        size,
-        color: Config.COLORS.text,
-        align: alignment,
-        lineGap: 2,
-        advanceCursor: true,
-      });
-    } else {
-      // Minimal fallback
-      const y = canvas.getY() + Config.SPACING.textBottom;
-      const pdfY = canvas.pageHeight - y - size;
-      const { page } = getPdfHandles(ctx, canvas);
-      page.drawText(text, {
-        x: canvas.margin,
-        y: pdfY,
-        size,
-        font: (ctx as any).fonts?.mono ?? (ctx as any).fonts?.regular,
-        color: Config.COLORS.text,
-      });
-      canvas.setY(y + size + Config.SPACING.textBottom);
-    }
+    // Natural size independent of oversampling scale
+    const naturalW = rendered.width / rendered.scale;
+    const naturalH = rendered.height / rendered.scale;
+
+    const maxW = ctx.canvas.contentWidth;
+    const drawW = Math.min(naturalW, maxW);
+    const drawH = (naturalH * drawW) / naturalW;
+
+    // Keep the whole formula together (prevents awkward splits)
+    ctx.canvas.ensureBlock({ minHeight: drawH + spacing * 2, keepTogether: true });
+
+    // Embed once, then draw via PdfCanvas (handles pagination & coords)
+    const image = await ctx.doc.embedPng(rendered.png);
+
+    // Top spacing, draw, bottom spacing
+    ctx.canvas.moveY(spacing);
+    ctx.canvas.drawImage(image as any, {
+      width: drawW,
+      height: drawH,
+      align: align,
+    });
+    ctx.canvas.moveY(spacing);
+  } catch (err) {
+    // Fallback: show raw TeX as monospaced text so the doc still builds
+    const mono = ctx.fonts.mono ?? ctx.fonts.regular;
+    const text = expression.replace(/\s+/g, " ");
+    ctx.canvas.drawText(text, {
+      font: mono,
+      size: Config.FONT_SIZES.body,
+      color: Config.COLORS.text,
+      align: align,
+      maxWidth: ctx.canvas.contentWidth,
+      spacingBefore: spacing,
+      spacingAfter: spacing,
+      lineHeight: 1.4,
+    });
   }
 }

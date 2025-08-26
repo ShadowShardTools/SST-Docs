@@ -19,7 +19,7 @@ import {
   type ChartConfiguration,
 } from "chart.js";
 
-// It's good practice to register all components at the top level.
+// Register Chart.js components once.
 ChartJS.register(
   BarElement,
   LineElement,
@@ -34,27 +34,10 @@ ChartJS.register(
   Legend,
 );
 
-// Define a dedicated type for chart options to improve readability.
 type ChartOptions = ChartConfiguration;
-
 type CacheEntry = { image: any; width: number; height: number };
 
-function getDoc(ctx: RenderContext) {
-  const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.getDoc === "function") return anyCanvas.getDoc();
-  if ((ctx as any).doc) return (ctx as any).doc;
-  throw new Error("PDFDocument handle not found");
-}
-
-function getCache(ctx: RenderContext): Map<string, CacheEntry> {
-  const anyCtx = ctx as any;
-  anyCtx._chartCache ||= new Map<string, CacheEntry>();
-  return anyCtx._chartCache;
-}
-
-const clamp = (n: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, n));
-
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 const pickType = (type?: string) =>
   ([
     "bar",
@@ -69,9 +52,13 @@ const pickType = (type?: string) =>
     ? type
     : "bar") as any;
 
-/**
- * Renders a chart as a PNG and caches the result.
- */
+function getCache(ctx: RenderContext): Map<string, CacheEntry> {
+  const anyCtx = ctx as any;
+  anyCtx._chartCache ||= new Map<string, CacheEntry>();
+  return anyCtx._chartCache;
+}
+
+/** Render a chart to PNG, embed it, and cache the embedded image. */
 async function renderAndCacheChart(
   ctx: RenderContext,
   key: string,
@@ -79,9 +66,8 @@ async function renderAndCacheChart(
   width: number,
   height: number,
 ): Promise<CacheEntry> {
-  const chartCache = getCache(ctx);
-  let entry = chartCache.get(key);
-
+  const cache = getCache(ctx);
+  let entry = cache.get(key);
   if (!entry) {
     const png = await renderChartPng({
       width,
@@ -90,12 +76,10 @@ async function renderAndCacheChart(
       config,
       dpr: 2, // crisp
     });
-    const doc = getDoc(ctx);
-    const image = await doc.embedPng(png);
+    const image = await ctx.doc.embedPng(png);
     entry = { image, width, height };
-    chartCache.set(key, entry);
+    cache.set(key, entry);
   }
-
   return entry;
 }
 
@@ -107,31 +91,19 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
     alignment = "center",
     title,
   } = data;
-  if (!type || !datasets?.length) {
-    return;
-  }
 
-  // Content box
-  const contentX = Config.MARGIN;
-  const contentW = Config.PAGE.width - 2 * Config.MARGIN;
+  if (!type || !datasets?.length) return;
+
+  // Layout box (use PdfCanvas geometry)
+  const contentW = ctx.canvas.contentWidth;
 
   // Scale and placement
   const scale = clamp(chartScale * 1.25, 0.5, 1);
   const drawW = Math.round(contentW * scale);
   const baseH = Math.max(180, Math.round(drawW * 0.56));
-  const drawH = ["radar", "polarArea"].includes(type)
-    ? Math.max(220, baseH)
-    : baseH;
+  const drawH = ["radar", "polarArea"].includes(type) ? Math.max(220, baseH) : baseH;
 
-  const x =
-    alignment === "left"
-      ? contentX
-      : alignment === "right"
-        ? contentX + (contentW - drawW)
-        : contentX + Math.round((contentW - drawW) / 2);
-
-  // Chart.js config
-  // inside config: ChartConfiguration
+  // Chart.js configuration
   const config: ChartConfiguration = {
     type: pickType(type),
     data: { labels: data.labels ?? [], datasets },
@@ -143,7 +115,7 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
           display: true,
           labels: {
             color: "#1f2937",
-            font: { size: 14, family: "sans-serif" }, // bigger legend text
+            font: { size: 14, family: "sans-serif" },
           },
         },
         tooltip: {
@@ -153,8 +125,8 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
           bodyColor: "#1f2937",
           borderColor: "#d1d5db",
           borderWidth: 1,
-          titleFont: { size: 14, family: "sans-serif" }, // bigger tooltip title
-          bodyFont: { size: 14, family: "sans-serif" }, // bigger tooltip body
+          titleFont: { size: 14, family: "sans-serif" },
+          bodyFont: { size: 14, family: "sans-serif" },
         },
       },
       scales: ["radar", "polarArea"].includes(type)
@@ -162,24 +134,24 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
             r: {
               grid: { color: "rgba(0,0,0,0.05)", lineWidth: 3 },
               angleLines: { color: "rgba(0,0,0,0.05)" },
-              pointLabels: { color: "#4b5563", font: { size: 14 } }, // bigger radar labels
-              ticks: { color: "#4b5563", font: { size: 14 } }, // bigger radar ticks
+              pointLabels: { color: "#4b5563", font: { size: 14 } },
+              ticks: { color: "#4b5563", font: { size: 14 } },
             },
           }
         : {
             x: {
               grid: { color: "rgba(0,0,0,0.05)", lineWidth: 3 },
-              ticks: { color: "#4b5563", font: { size: 14 } }, // bigger x-axis labels
+              ticks: { color: "#4b5563", font: { size: 14 } },
             },
             y: {
               grid: { color: "rgba(0,0,0,0.05)", lineWidth: 3 },
-              ticks: { color: "#4b5563", font: { size: 14 } }, // bigger y-axis labels
+              ticks: { color: "#4b5563", font: { size: 14 } },
             },
           },
     },
   };
 
-  // Cache by data + draw size (not by internal px size)
+  // Cache key based on data and final draw size
   const key = JSON.stringify({
     t: type,
     labels: data.labels,
@@ -193,44 +165,38 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
     h: drawH,
   });
 
-  // reserve space even before rendering the PNG (prevents overlap if callers forget await)
   const gapBelow = Config.SPACING.medium;
-  ctx.canvas.ensureSpace(drawH + gapBelow);
-  const preTop = ctx.canvas.getY();
+
+  // Reserve space (keep chart together on a page)
+  ctx.canvas.ensureBlock({ minHeight: drawH + gapBelow, keepTogether: true });
+  const top = ctx.canvas.cursorY;
 
   try {
     const entry = await renderAndCacheChart(ctx, key, config, drawW, drawH);
 
-    // draw at the reserved location
-    const page = ctx.canvas.getPage();
-    const topY = preTop;
-    const pdfY = page.getHeight() - (topY + entry.height);
-
-    page.drawImage(entry.image, {
-      x,
-      y: pdfY,
+    ctx.canvas.drawImage(entry.image, {
+      y: top,
       width: entry.width,
       height: entry.height,
+      align: alignment as "left" | "center" | "right",
     });
 
-    // advance cursor to after chart
-    ctx.canvas.setY(topY + entry.height + gapBelow);
-  } catch (err) {
-    console.warn("addChart(): render/embed failed; falling back to text", err);
-
-    const fallbackY = preTop;
-    ctx.canvas.setY(fallbackY);
-    ctx.canvas.drawTextBlock({
-      text: title ? `[Chart: ${title}]` : "[Chart could not be rendered]",
-      x: contentX,
-      y: ctx.canvas.getY(),
-      width: contentW,
+    ctx.canvas.cursorY = top + entry.height;
+    ctx.canvas.moveY(gapBelow);
+  } catch {
+    // Fallback: simple text placeholder (still consumes reserved space)
+    ctx.canvas.cursorY = top;
+    const placeholder = title ? `[Chart: ${title}]` : "[Chart could not be rendered]";
+    ctx.canvas.drawText(placeholder, {
       font: ctx.fonts.regular,
       size: Config.FONT_SIZES.body,
       color: Config.COLORS.text,
-      advanceCursor: false,
+      align: "left",
+      maxWidth: ctx.canvas.contentWidth,
+      spacingBefore: 0,
+      spacingAfter: 0,
     });
-    // move past reserved area
-    ctx.canvas.setY(fallbackY + drawH + gapBelow);
+    ctx.canvas.cursorY = top + drawH;
+    ctx.canvas.moveY(gapBelow);
   }
 }

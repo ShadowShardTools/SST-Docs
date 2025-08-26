@@ -2,98 +2,83 @@ import { Config } from "../../../configs/pdf-config";
 import type { RenderContext } from "../types/RenderContext";
 import type { DividerData } from "../../../layouts/blocks/types";
 
-type PdfColor = Parameters<RenderContext["canvas"]["drawLine"]>[0]["color"];
-
-// ---- spacing like your React block -----------------------------------------
+/* ------------------------------- spacing ---------------------------------- */
 function spacingFor(data: DividerData) {
   const S = Config.SPACING;
   switch (data?.spacing) {
-    case "small":
-      return { top: 0, bottom: S.small };
-    case "medium":
-      return { top: 0, bottom: S.medium };
-    case "large":
-      return { top: 0, bottom: S.large };
-    default:
-      return { top: 0, bottom: S.dividerBottom };
+    case "small":  return { top: 0, bottom: S.small };
+    case "medium": return { top: 0, bottom: S.medium };
+    case "large":  return { top: 0, bottom: S.large };
+    default:       return { top: 0, bottom: S.dividerBottom };
   }
 }
 
-// Prefer PdfCanvas helpers, fallback heuristics
-function textWidth(
+/* ------------------------------- helpers ---------------------------------- */
+function textWidth(font: RenderContext["fonts"]["regular"], size: number, text: string) {
+  return font.widthOfTextAtSize(text, size);
+}
+
+/** shrink font until label fits maxWidth (down to minSize) */
+function fitLabelWidth(
   ctx: RenderContext,
-  text: string,
-  fontSize: number,
-  bold = false,
+  label: string,
+  desiredSize: number,
+  maxWidth: number,
+  minSize = 8,
 ) {
-  const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.widthOf === "function") {
-    return anyCanvas.widthOf(
-      text,
-      bold ? ctx.fonts.bold : ctx.fonts.regular,
-      fontSize,
-    );
+  let size = desiredSize;
+  let width = textWidth(ctx.fonts.regular, size, label);
+  while (width > maxWidth && size > minSize) {
+    size = Math.max(minSize, Math.floor(size - 1));
+    width = textWidth(ctx.fonts.regular, size, label);
   }
-  if (typeof anyCanvas.textWidth === "function") {
-    return anyCanvas.textWidth(
-      bold ? ctx.fonts.bold : ctx.fonts.regular,
-      fontSize,
-      text,
-    );
-  }
-  // reasonable sans fallback
-  return text.length * fontSize * 0.55 * (bold ? 1.03 : 1);
+  return { size, width };
 }
 
-function lineHt(ctx: RenderContext, fontSize: number) {
-  const anyCanvas = ctx.canvas as any;
-  if (typeof anyCanvas.lineHeight === "function") {
-    return anyCanvas.lineHeight(ctx.fonts.regular, fontSize);
-  }
-  return Math.max(fontSize, Math.round(fontSize * 1.2));
-}
-
-// Draw a rule segment with style
-function drawRuleSegment(
+/** draw one horizontal segment using PdfCanvas.drawRule without moving the cursor */
+function drawSegment(
   ctx: RenderContext,
   x1: number,
   x2: number,
-  y: number,
-  color: PdfColor,
-  type: DividerData["type"] | undefined,
-  baseWidth: number,
+  yTop: number, // top-down y
+  thickness: number,
+  color: ReturnType<typeof ctx.canvas["drawRule"]> extends any ? any : never, // keep loose
 ) {
   const w = Math.max(0, x2 - x1);
   if (w <= 0) return;
 
-  const drawSolid = (yy: number, lw = baseWidth) =>
-    ctx.canvas.drawLine({
-      x1,
-      x2,
-      y: yy,
+  const before = ctx.canvas.cursorY;
+  ctx.canvas.withRegion({ x: x1, y: yTop, width: w, height: thickness + 1 }, () => {
+    ctx.canvas.cursorY = yTop;
+    ctx.canvas.drawRule({
+      thickness,
       color,
-      lineWidth: lw,
-      advanceCursor: false,
+      width: w,
+      align: "left",
+      spacingBefore: 0,
+      spacingAfter: 0, // drawRule will advance by thickness; we restore next line
     });
+  });
+  ctx.canvas.cursorY = before; // restore so multiple segments share the same baseline
+}
 
-  const drawDashedRange = (
-    dash: number,
-    gap: number,
-    yy: number,
-    lw = baseWidth,
-  ) => {
+/** draw a styled line (dashed/dotted/double/thick) via repeated segments */
+function drawStyledLine(
+  ctx: RenderContext,
+  x1: number,
+  x2: number,
+  y: number,
+  type: DividerData["type"] | undefined,
+  baseThickness: number,
+  color: any,
+) {
+  const drawSolid = (yy: number, lw = baseThickness) => drawSegment(ctx, x1, x2, yy, lw, color);
+  const drawPattern = (dash: number, gap: number, yy: number, lw = baseThickness) => {
     let x = x1;
     while (x < x2) {
-      const segEnd = Math.min(x + dash, x2);
-      ctx.canvas.drawLine({
-        x1: x,
-        x2: segEnd,
-        y: yy,
-        color,
-        lineWidth: lw,
-        advanceCursor: false,
-      });
-      x = segEnd + gap;
+      const end = Math.min(x + dash, x2);
+      drawSegment(ctx, x, end, yy, lw, color);
+      x = end + gap;
     }
   };
 
@@ -106,103 +91,88 @@ function drawRuleSegment(
       drawSolid(y, 2);
       break;
     case "dashed":
-      drawDashedRange(6, 4, y, baseWidth);
+      drawPattern(6, 4, y, baseThickness);
       break;
     case "dotted":
-      drawDashedRange(2, 3, y, baseWidth);
+      drawPattern(2, 3, y, baseThickness);
       break;
-    case "gradient": {
-      const anyCtx = ctx as any;
-      if (typeof anyCtx.drawHorizontalGradient === "function") {
-        anyCtx.drawHorizontalGradient(x1, y, w, color);
-      } else {
-        drawSolid(y, baseWidth);
-      }
-      break;
-    }
     default:
-      drawSolid(y, baseWidth);
+      drawSolid(y, baseThickness);
   }
 }
 
+/* --------------------------------- main ----------------------------------- */
 export async function addDivider(ctx: RenderContext, data: DividerData) {
   const { top, bottom } = spacingFor(data);
-  const pageW = Config.PAGE.width;
-  const xL = Config.MARGIN;
-  const xR = pageW - Config.MARGIN;
-  const contentW = xR - xL;
-
   const color = Config.COLORS.divider;
-  const lineWidthBase = 1;
+  const baseThickness = 1;
 
-  // Space planning
+  // Prefer PdfCanvas content bounds
+  const xL = ctx.canvas.contentLeft;
+  const xR = ctx.canvas.contentRight;
+  const contentW = ctx.canvas.contentWidth;
+
   const hasLabel = !!data?.text?.trim();
-  const labelSize = Config.FONT_SIZES.body;
-  const lh = lineHt(ctx, labelSize);
-  const needed = top + (hasLabel ? lh + 6 : 1) + bottom;
-  ctx.canvas.ensureSpace(needed);
-
-  // Advance to top spacing
-  ctx.canvas.setY(ctx.canvas.getY() + top);
 
   if (hasLabel) {
-    const label = data!.text!.trim();
-    const pad = 12;
+    const labelRaw = data!.text!.trim();
+    const desiredSize = Config.FONT_SIZES.body;
 
-    // Measure label and place as single line centered (avoid wrapping)
-    const tW = Math.min(textWidth(ctx, label, labelSize, false), contentW); // use REGULAR
-    const centerX = xL + contentW / 2;
-    const textX = Math.max(xL, Math.min(centerX - tW / 2, xR - tW));
-    const textY = ctx.canvas.getY();
+    // Fit label to width (keep a little side slack for side lines)
+    const { size: labelSize, width: labelW } = fitLabelWidth(
+      ctx,
+      labelRaw,
+      desiredSize,
+      Math.max(8, Math.floor(contentW * 0.92)),
+      8,
+    );
 
-    // Draw the label (REGULAR font)
-    ctx.canvas.drawTextBlock({
-      text: label,
-      x: textX,
-      y: textY,
-      width: tW,
-      font: ctx.fonts.regular, // <- not bold
-      size: labelSize,
-      color: Config.COLORS.divider,
-      align: "center",
-      lineGap: 0,
-      advanceCursor: false,
+    // Use tight vertical budget (≈ cap-height) to avoid big spaces
+    const labelH = Math.max( labelSize, Math.round(labelSize * 1.1) );
+    const needed = top + labelH + bottom;
+
+    ctx.canvas.ensureSpace({ minHeight: needed });
+    ctx.canvas.moveY(top);
+
+    const baseY = ctx.canvas.cursorY;
+
+    // Draw label in a narrow region so drawText won't wrap
+    const textX = xL + (contentW - labelW) / 2;
+    ctx.canvas.withRegion({ x: textX, y: baseY, width: labelW, height: labelH }, () => {
+      ctx.canvas.drawText(labelRaw, {
+        font: ctx.fonts.regular,
+        size: labelSize,
+        color,
+        align: "center",
+        maxWidth: labelW,
+        spacingBefore: 0,
+        spacingAfter: 0,
+        lineHeight: 1.0, // tight
+      });
     });
 
-    // Lines on sides, vertically centered to label block
-    const lineY = textY + lh / 2;
-    const leftStop = Math.max(xL, textX - pad);
-    const rightStart = Math.min(xR, textX + tW + pad);
+    // Side lines centered to label block
+    const lineY = baseY + Math.round(labelH / 2);
+    const pad = 8;
+    const leftStop   = Math.max(xL, textX - pad);
+    const rightStart = Math.min(xR, textX + labelW + pad);
 
-    if (leftStop - xL >= 2) {
-      drawRuleSegment(
-        ctx,
-        xL,
-        leftStop,
-        lineY,
-        color,
-        data?.type,
-        lineWidthBase,
-      );
-    }
-    if (xR - rightStart >= 2) {
-      drawRuleSegment(
-        ctx,
-        rightStart,
-        xR,
-        lineY,
-        color,
-        data?.type,
-        lineWidthBase,
-      );
-    }
+    if (leftStop - xL >= 2)     drawStyledLine(ctx, xL, leftStop,  lineY, data?.type, baseThickness, color);
+    if (xR - rightStart >= 2)   drawStyledLine(ctx, rightStart, xR, lineY, data?.type, baseThickness, color);
 
-    ctx.canvas.setY(textY + lh + bottom);
+    // Advance minimally
+    ctx.canvas.cursorY = baseY + labelH;
+    if (bottom) ctx.canvas.moveY(bottom);
     return;
   }
 
-  // No label: full-width rule
-  const y = ctx.canvas.getY();
-  drawRuleSegment(ctx, xL, xR, y, color, data?.type, lineWidthBase);
-  ctx.canvas.setY(y + bottom);
+  // Unlabeled: ultra-compact single rule
+  const needed = top + baseThickness + bottom;
+  ctx.canvas.ensureSpace({ minHeight: needed });
+  if (top) ctx.canvas.moveY(top);
+  const y = ctx.canvas.cursorY;
+
+  drawStyledLine(ctx, xL, xR, y, data?.type, baseThickness, color);
+
+  if (bottom) ctx.canvas.moveY(bottom);
 }

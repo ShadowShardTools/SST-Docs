@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import path from "node:path";
+import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { DocumentationPDFGenerator } from "./DocumentationPDFGenerator.js"; // keep extension if ESM
+import appRoot from "app-root-path";
+import { DocumentationPDFGenerator } from "./core/DocumentationPDFGenerator"; // keep extension if ESM
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -31,6 +33,17 @@ function getArgValue(flag: string): string | undefined {
     : undefined;
 }
 
+function normalizeDir(p: string): string {
+  // unify slashes, remove trailing slashes
+  return p.replace(/\\/g, "/").replace(/\/+$/, "");
+}
+
+function resolveAgainstProjectRoot(candidate: string): string {
+  return path.isAbsolute(candidate)
+    ? candidate
+    : path.join(appRoot.path, candidate);
+}
+
 function resolveDataPath(): string {
   // Priority: --fsDataPath → positional (argv[2]) → env → fallback
   const fromFlag = getArgValue("--fsDataPath");
@@ -38,19 +51,38 @@ function resolveDataPath(): string {
     process.argv[2] && !process.argv[2].startsWith("-")
       ? process.argv[2]
       : undefined;
+
   const candidate =
     fromFlag ??
     positional ??
     process.env.FS_DATA_PATH ??
     "./public/SST-Docs/data";
-  return path.isAbsolute(candidate) ? candidate : path.resolve(candidate);
+
+  // IMPORTANT: resolve RELATIVE values against the project root, not CWD
+  const abs = resolveAgainstProjectRoot(candidate);
+  return normalizeDir(path.resolve(abs));
+}
+
+async function ensureDirExists(dir: string): Promise<void> {
+  try {
+    const st = await fs.stat(dir);
+    if (!st.isDirectory()) {
+      throw new Error(`Path exists but is not a directory: ${dir}`);
+    }
+  } catch (e: any) {
+    if (e?.code === "ENOENT") {
+      throw new Error(`Data path does not exist: ${dir}`);
+    }
+    throw e;
+  }
 }
 
 async function main(): Promise<void> {
   if (process.argv.includes("--help") || process.argv.includes("-h")) usage();
 
   const dataPath = resolveDataPath();
-  console.log("📁 Data path:", dataPath);
+
+  await ensureDirExists(dataPath);
 
   const generator = new DocumentationPDFGenerator(dataPath);
   try {
@@ -64,14 +96,11 @@ async function main(): Promise<void> {
 
 /**
  * Only run when this file is the entrypoint.
- * Works for `node path/to/cli.js` and `node --import ...` in Node 20/22 ESM.
  */
 const isDirectRun =
-  // when invoked directly, Node sets argv[1] to the resolved path of this script
   process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename);
 
 if (isDirectRun) {
-  // no top-level await errors on older Node: wrap in an IIFE
   (async () => {
     await main();
   })();

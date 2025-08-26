@@ -2,8 +2,8 @@ import React from "react";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { ImageData } from "../types";
 import { validateScale, getResponsiveWidth } from "../utilities";
-import { useMobileDevice } from "../hooks";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import { useMobileDevice } from "../hooks";
 
 interface Props {
   index: number;
