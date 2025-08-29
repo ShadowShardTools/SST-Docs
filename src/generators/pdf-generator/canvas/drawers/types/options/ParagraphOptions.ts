@@ -5,7 +5,7 @@ export type ParagraphOptions = {
   size?: number; // default 12
   color?: ReturnType<typeof rgb> | null;
   lineHeight?: number; // multiplier, default 1.4
-  align?: "left" | "center" | "right";
+  align?: "left" | "center" | "right" | "justify";
   maxWidth?: number; // default: contentWidth
   indent?: number; // px to indent first line
   spacingBefore?: number; // extra space before

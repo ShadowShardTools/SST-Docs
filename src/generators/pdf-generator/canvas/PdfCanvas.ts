@@ -14,51 +14,16 @@ import {
   PDFDocument,
   type PDFPage,
   rgb,
-  PDFName,
-  PDFString,
 } from "pdf-lib";
-import type {
-  Fonts,
-  PageConfig,
-  EnsureSpaceOptions,
-  RuleOptions,
-  BoxOptions,
-  ParagraphOptions,
-} from "./types";
 import { clamp } from "./utilities";
+import { drawImage, drawImageContained, estimateImagePhysicalSizePts } from "./drawers/drawImage";
+import { drawLinkRect, drawLinkText } from "./drawers";
+import type { ParagraphOptions, EnsureSpaceOptions, RuleOptions, Rect, BoxOptions, LinkRectContext, LinkTextContext, ImageObject, DrawImageOptions, ImageDrawingContext, LinkRectOptions, RuleDrawingContext, TextDrawingContext, BoxDrawingContext } from "./drawers/types";
+import type { Fonts, PageConfig, Region, CanvasState } from "./types";
+import { drawBox } from "./drawers/drawBox";
+import { drawRule } from "./drawers/drawRule";
+import { drawText, measureAndWrap } from "./drawers/drawText";
 
-/* -------------------------------------------------------------------------- */
-/* Local helpers & light extras                                                */
-/* -------------------------------------------------------------------------- */
-function toColor(c: ReturnType<typeof rgb> | undefined) {
-  return c ?? undefined;
-}
-
-type Rect = { x: number; y: number; width: number; height: number };
-
-type Region = { x: number; y: number; width: number; height: number };
-
-type CanvasState = {
-  font?: ParagraphOptions["font"];
-  size?: number;
-  color?: ParagraphOptions["color"];
-  align?: ParagraphOptions["align"];
-  lineHeight?: number; // multiplier
-  region?: Region;
-};
-
-type LinkRectOptions = {
-  x: number;
-  y: number; // top‑down
-  width: number;
-  height: number;
-  url: string;
-  underline?: boolean;
-};
-
-/* -------------------------------------------------------------------------- */
-/* PdfCanvas                                                                   */
-/* -------------------------------------------------------------------------- */
 export class PdfCanvas {
   private doc: PDFDocument;
   private page: PDFPage;
@@ -70,6 +35,7 @@ export class PdfCanvas {
   // region & state stacks
   private regionStack: Region[] = [];
   private stateStack: CanvasState[] = [];
+  private baseRegion: Region | null = null;
 
   // header/footer hooks
   private newPageCallbacks: Array<(pageIndex: number, page: PDFPage, canvas: PdfCanvas) => void> = [];
@@ -90,6 +56,7 @@ export class PdfCanvas {
     this.fonts = fonts;
     this.cfg = pageConfig;
     this.y = this.cfg.margin; // first content line below top margin
+    this.setBaseRegionFromPage();
   }
 
   /* -------------------------------- geometry ------------------------------ */
@@ -141,9 +108,19 @@ export class PdfCanvas {
   }
 
   /* -------------------------------- pages --------------------------------- */
+  private setBaseRegionFromPage() {
+    this.baseRegion = {
+      x: this.cfg.margin,
+      y: this.cfg.margin,
+      width: this.cfg.width - this.cfg.margin * 2,
+      height: this.cfg.height - this.cfg.margin * 2
+    };
+  }
+
   addPage(): void {
     this.page = this.doc.addPage([this.cfg.width, this.cfg.height]);
     this.resetRegion(); // region should reset per page
+    this.setBaseRegionFromPage();
     this.y = this.top;
 
     // columns reset
@@ -151,8 +128,8 @@ export class PdfCanvas {
       this.applyColumnsRegion(0);
     }
 
-    // call hooks
-    const pageIndex = (this.doc as any).getPageIndices ? (this.doc as any).getPageIndices().length - 1 : 0;
+    // call hooks with stable page index
+    const pageIndex = this.doc.getPages().length - 1;
     for (const cb of this.newPageCallbacks) cb(pageIndex, this.page, this);
   }
 
@@ -169,17 +146,15 @@ export class PdfCanvas {
   }
 
   /** Block-aware space check with keepTogether/keepWithNext semantics */
-  ensureBlock(opts: { minHeight?: number; keepTogether?: boolean; keepWithNext?: boolean; pageBreakBefore?: boolean } = {}) {
-    const { minHeight = 0, keepTogether = false, pageBreakBefore = false } = opts;
-    if (pageBreakBefore) {
-      this.addPage();
-      return;
-    }
+  ensureBlock(opts: { minHeight?: number; keepTogether?: boolean; keepWithNext?: number; pageBreakBefore?: boolean } = {}) {
+    const { minHeight = 0, keepTogether = false, keepWithNext = 0, pageBreakBefore = false } = opts;
+    if (pageBreakBefore) { this.addPage(); return; }
+    const reserve = minHeight + keepWithNext;
     if (keepTogether) {
-      if (this.cursorY + minHeight > this.bottom) this.addPage();
+      if (this.cursorY + reserve > this.bottom) this.addPage();
       return;
     }
-    this.ensureSpace({ minHeight });
+    this.ensureSpace({ minHeight: reserve });
   }
 
   onNewPage(cb: (pageIndex: number, page: PDFPage, canvas: PdfCanvas) => void) {
@@ -201,6 +176,17 @@ export class PdfCanvas {
     return this.stateStack.length ? this.stateStack[this.stateStack.length - 1] : undefined;
   }
 
+  /** Convenience method for setting paragraph defaults temporarily */
+  withParagraphDefaults(p: ParagraphOptions, fn: () => void) {
+    this.withState({
+      font: p.font,
+      size: p.size,
+      color: p.color,
+      align: p.align,
+      lineHeight: p.lineHeight,
+    }, fn);
+  }
+
   /* ------------------------------- regions -------------------------------- */
   setRegion(r: Region) {
     this.regionStack.push(r);
@@ -215,7 +201,7 @@ export class PdfCanvas {
     try { fn(); } finally { this.regionStack.pop(); }
   }
 
-  /** Columns API */
+  /** Columns API with improved region safety */
   setColumns(opts: { count: number; gap: number }) {
     this.columns = { count: Math.max(1, Math.floor(opts.count)), gap: Math.max(0, opts.gap) };
     this.applyColumnsRegion(0);
@@ -223,14 +209,13 @@ export class PdfCanvas {
   private applyColumnsRegion(index: number) {
     if (!this.columns) return;
     const { count, gap } = this.columns;
+    const br = this.baseRegion!;
     const totalGap = gap * (count - 1);
-    const colW = (this.cfg.width - this.cfg.margin * 2 - totalGap) / count;
-    const x = this.cfg.margin + (colW + gap) * index;
-    const y = this.cfg.margin;
-    const width = colW;
-    const height = this.cfg.height - this.cfg.margin * 2;
+    const colW = (br.width - totalGap) / count;
+    const x = br.x + (colW + gap) * index;
+    const region = { x, y: br.y, width: colW, height: br.height };
     this.resetRegion();
-    this.setRegion({ x, y, width, height });
+    this.setRegion(region);
     this.columnIndex = index;
     this.cursorY = this.top;
   }
@@ -247,105 +232,23 @@ export class PdfCanvas {
 
   /* -------------------------------- rules --------------------------------- */
   drawRule(opts?: RuleOptions): Rect {
-    const thickness = opts?.thickness ?? 1;
-    const color = opts?.color ?? rgb(0.8, 0.85, 0.9);
-    const width = opts?.width ?? this.contentWidth;
-    const align = opts?.align ?? "left";
-    const x =
-      align === "left" ? this.contentLeft :
-      align === "right" ? this.contentRight - width :
-      this.contentLeft + (this.contentWidth - width) / 2;
-
-    const spacingBefore = opts?.spacingBefore ?? 8;
-    const spacingAfter = opts?.spacingAfter ?? 8;
-
-    this.ensureSpace({ minHeight: spacingBefore + thickness + spacingAfter });
-
-    this.moveY(spacingBefore);
-    const yTop = this.y;
-    const yPdf = this.toPdfY(this.y);
-
-    this.page.drawLine({
-      start: { x, y: yPdf },
-      end:   { x: x + width, y: yPdf },
-      thickness,
-      color,
-    });
-
-    this.moveY(thickness + spacingAfter);
-    return { x, y: yTop, width, height: thickness };
+    return drawRule(this.getRuleContext(), opts);
   }
 
   /* -------------------------------- boxes --------------------------------- */
   drawBox(width: number, height: number, opts?: BoxOptions): Rect {
-    const pad = opts?.padding ?? 12;
-    const stroke = toColor(opts?.stroke ?? rgb(0.88, 0.9, 0.93));
-    const strokeWidth = opts?.strokeWidth ?? 1;
-    const fill = toColor(opts?.fill ?? undefined);
-
-    this.ensureSpace({ minHeight: height });
-
-    const x = this.contentLeft;
-    const yTop = this.y;
-
-    this.page.drawRectangle({
-      x,
-      y: this.toPdfY(yTop + height),
-      width,
-      height,
-      borderColor: stroke ?? undefined,
-      borderWidth: stroke ? strokeWidth : 0,
-      color: fill,
-    });
-
-    this.moveY(height);
-
-    return {
-      x: x + pad,
-      y: yTop + pad,
-      width: Math.max(0, width - pad * 2),
-      height: Math.max(0, height - pad * 2),
-    };
+    return drawBox(this.getBoxContext(), width, height, opts);
   }
 
   /* ----------------------------- text layout ------------------------------ */
   /**
-   * Splits text into wrapped lines that fit maxWidth using the provided font.
-   * Returns lines and total height.
+   * Improved text wrapping with better newline handling and caching
    */
   measureAndWrap(
     text: string,
     opts?: ParagraphOptions,
   ): { lines: string[]; lineHeightPx: number; totalHeight: number } {
-    const font = opts?.font ?? this.fonts.regular;
-    const size = opts?.size ?? 12;
-    const lineH = (opts?.lineHeight ?? 1.4) * size;
-    const maxWidth = opts?.maxWidth ?? this.contentWidth;
-
-    const words = text.replace(/\r\n?/g, "\n").split(/(\s+)/);
-    const lines: string[] = [];
-    let current = "";
-
-    for (const token of words) {
-      if (token === "\n") {
-        lines.push(current.trimEnd());
-        current = "";
-        continue;
-      }
-      const tentative = current + token;
-      const w = font.widthOfTextAtSize(tentative, size);
-      if (w <= maxWidth || current.length === 0) {
-        current = tentative;
-      } else {
-        lines.push(current.trimEnd());
-        // remove leading space if token is whitespace
-        current = /\s+/.test(token) ? "" : token;
-      }
-    }
-    if (current) lines.push(current.trimEnd());
-
-    const totalHeight = lines.length * lineH;
-    return { lines, lineHeightPx: lineH, totalHeight };
+    return measureAndWrap(this.getTextContext(), text, opts);
   }
 
   /** Alias for parity */
@@ -353,139 +256,20 @@ export class PdfCanvas {
     return this.measureAndWrap(text, options);
   }
 
-  /** Draw a paragraph and advance the cursor. Returns height + lines. */
+  /** Draw a paragraph with orphan/widow control and advance the cursor. Returns height + lines. */
   drawText(text: string, options?: ParagraphOptions): { height: number; lines: string[] } {
-    const font = options?.font ?? this.fonts.regular;
-    const size = options?.size ?? 12;
-    const color = options?.color ?? rgb(0.22, 0.25, 0.32); // gray-700 default
-    const align = options?.align ?? "left";
-    const indent = options?.indent ?? 0;
-    const spacingBefore = options?.spacingBefore ?? 0;
-    const spacingAfter = options?.spacingAfter ?? 8;
-    const maxWidth = options?.maxWidth ?? this.contentWidth;
-
-    const { lines, lineHeightPx, totalHeight } = this.measureAndWrap(text, {
-      ...options,
-      maxWidth,
-    });
-
-    this.ensureSpace({ minHeight: spacingBefore + totalHeight + spacingAfter });
-    this.moveY(spacingBefore);
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      let x = this.contentLeft;
-      const yBase = this.toPdfY(this.y + size); // baseline
-
-      let dx = 0;
-      if (i === 0 && indent) dx += indent;
-
-      const lineWidth = font.widthOfTextAtSize(line, size);
-      if (align === "center") {
-        x = this.contentLeft + (maxWidth - lineWidth) / 2;
-      } else if (align === "right") {
-        x = this.contentLeft + (maxWidth - lineWidth);
-      } // justify intentionally skipped for simplicity
-
-      this.page.drawText(line, {
-        x: x + dx,
-        y: yBase,
-        font,
-        size,
-        color,
-        maxWidth,
-      });
-      this.moveY(lineHeightPx);
-    }
-
-    // add spacing after
-    this.moveY(spacingAfter);
-
-    return { height: totalHeight + spacingBefore + spacingAfter, lines };
+    return drawText(this.getTextContext(), text, this.bottom, options);
   }
 
   /* --------------------------- links & annotations ------------------------ */
-  /** Draw a clickable link rect (best‑effort; falls back silently if pdf-lib internals change) */
+  /** Draw a clickable link rect with safer annotation handling */
   drawLinkRect(opts: LinkRectOptions): Rect {
-    const { x, y, width, height, url, underline } = opts;
-    const yBottom = this.toPdfY(y + height);
-    const yTop = this.toPdfY(y);
-
-    // optional underline at the bottom of the rect (top‑down y)
-    if (underline) {
-      this.page.drawLine({
-        start: { x, y: yBottom },
-        end: { x: x + width, y: yBottom },
-        thickness: 1,
-        color: rgb(0, 0, 0),
-      });
-    }
-
-    // low‑level annotation creation (unsafe types → any)
-    try {
-      const context = (this.doc as any).context;
-      const pageNode = (this.page as any).node;
-      const rect = (context as any).obj([x, yBottom, x + width, yTop]);
-      const action = (context as any).obj({
-        Type: PDFName.of("Action"),
-        S: PDFName.of("URI"),
-        URI: PDFString.of(url),
-      });
-      const annot = (context as any).obj({
-        Type: PDFName.of("Annot"),
-        Subtype: PDFName.of("Link"),
-        Rect: rect,
-        Border: (context as any).obj([0, 0, 0]),
-        A: action,
-      });
-
-      const AnnotsName = PDFName.of("Annots");
-      const existing = pageNode.lookup(AnnotsName);
-      if (existing) {
-        existing.push(annot);
-      } else {
-        pageNode.set(AnnotsName, (context as any).obj([annot]));
-      }
-    } catch {
-      // ignore if pdf-lib internals differ
-    }
-
-    return { x, y, width, height };
+    return drawLinkRect(this.getLinkRectContext(), opts);
   }
 
   /** Draw a URL as text and place a link annotation over each rendered line */
   drawLinkText(url: string, opts?: ParagraphOptions & { underline?: boolean }): { rects: Rect[]; height: number } {
-    const font = opts?.font ?? this.fonts.regular;
-    const size = opts?.size ?? 12;
-    const color = opts?.color ?? rgb(0, 0, 1);
-    const align = opts?.align ?? "left";
-    const lineHeight = opts?.lineHeight;
-    const maxWidth = opts?.maxWidth ?? this.contentWidth;
-
-    const { lines } = this.measureAndWrap(url, { font, size, lineHeight, maxWidth });
-
-    const rects: Rect[] = [];
-
-    // render and annotate line by line
-    const beforeY = this.cursorY;
-    const { height } = this.drawText(url, { ...opts, color, align, maxWidth });
-
-    // Recompute rects by measuring each line separately
-    // (approximation: assume left/center/right alignment positions)
-    let yCursor = beforeY;
-    for (const line of lines) {
-      const lineWidth = font.widthOfTextAtSize(line, size);
-      let x = this.contentLeft;
-      if (align === "center") x = this.contentLeft + (maxWidth - lineWidth) / 2;
-      else if (align === "right") x = this.contentLeft + (maxWidth - lineWidth);
-
-      const rect: Rect = { x, y: yCursor, width: lineWidth, height: (lineHeight ?? 1.4) * size };
-      this.drawLinkRect({ ...rect, url, underline: opts?.underline });
-      rects.push(rect);
-      yCursor += (lineHeight ?? 1.4) * size;
-    }
-
-    return { rects, height };
+    return drawLinkText(this.getLinkTextContext(), url, opts);
   }
 
   /* ------------------------------ images api ------------------------------ */
@@ -494,68 +278,108 @@ export class PdfCanvas {
    * x,y,width,height are in top‑down coordinates; if width/height omitted it
    * preserves aspect. Returns the drawn {x,y,w,h} in top‑down coords.
    */
-  drawImage(
-    image: {
-      width: number;
-      height: number;
-      scale: (n: number) => { width: number; height: number };
-      bytesPerRow?: number;
-    },
-    opts: { x?: number; y?: number; width?: number; height?: number; fit?: "contain" | "cover" | "scale-down" | "none"; maxWidth?: number; maxHeight?: number; align?: "left" | "center" | "right" } = {},
+  drawImage(image: ImageObject, opts: DrawImageOptions = {}): Rect {
+    return drawImage(this.getImageContext(), image, opts);
+  }
+
+  /** Convenience method for contained image drawing */
+  drawImageContained(
+    image: ImageObject,
+    maxWidth = this.contentWidth,
+    maxHeight = this.bottom - this.cursorY,
+    align: "left" | "center" | "right" = "left"
   ): Rect {
-    const naturalW = image.width;
-    const naturalH = image.height;
+    return drawImageContained(this.getImageContext(), image, maxWidth, maxHeight, align);
+  }
 
-    const maxW = opts.maxWidth ?? this.contentWidth;
-    const maxH = opts.maxHeight ?? (this.bottom - this.cursorY);
-    const fit = opts.fit ?? "scale-down";
+  /** DPI helper for estimating image physical size */
+  estimateImagePhysicalSizePts(pxW: number, pxH: number, dpi = 72) {
+    return estimateImagePhysicalSizePts(pxW, pxH, dpi);
+  }
+  
+  /* ---------------------------- context helpers --------------------------- */
+  private getRuleContext(): RuleDrawingContext {
+    return {
+      page: this.page,
+      contentLeft: this.contentLeft,
+      contentRight: this.contentRight,
+      contentWidth: this.contentWidth,
+      cursorY: this.cursorY,
+      toPdfY: (yTopDown: number) => this.toPdfY(yTopDown),
+      ensureSpace: (opts: { minHeight: number }) => this.ensureSpace(opts),
+      moveY: (dy: number) => this.moveY(dy),
+    };
+  }
 
-    let w = opts.width ?? Math.min(naturalW, maxW);
-    let h = opts.height ?? (naturalH * w) / naturalW;
+  private getBoxContext(): BoxDrawingContext {
+    return {
+      page: this.page,
+      contentLeft: this.contentLeft,
+      cursorY: this.cursorY,
+      toPdfY: (yTopDown: number) => this.toPdfY(yTopDown),
+      ensureSpace: (opts: { minHeight: number }) => this.ensureSpace(opts),
+      moveY: (dy: number) => this.moveY(dy),
+    };
+  }
 
-    // object-fit like behavior
-    if (fit === "contain") {
-      const scale = Math.min(maxW / w, maxH / h, 1);
-      w *= scale; h *= scale;
-    } else if (fit === "cover") {
-      const scale = Math.max(maxW / w, maxH / h);
-      w *= scale; h *= scale;
-    } else if (fit === "scale-down") {
-      const scale = Math.min(1, Math.min(maxW / w, maxH / h));
-      w *= scale; h *= scale;
-    }
+  private getTextContext(): TextDrawingContext {
+    return {
+      page: this.page,
+      fonts: this.fonts,
+      contentLeft: this.contentLeft,
+      contentWidth: this.contentWidth,
+      cursorY: this.cursorY,
+      toPdfY: (yTopDown: number) => this.toPdfY(yTopDown),
+      ensureSpace: (opts: { minHeight: number }) => this.ensureSpace(opts),
+      moveY: (dy: number) => this.moveY(dy),
+      addPage: () => this.addPage(),
+    };
+  }
 
-    let x = opts.x ?? this.contentLeft;
-    const yTop = opts.y ?? this.y;
+  private getLinkRectContext(): LinkRectContext {
+    return {
+      doc: this.doc,
+      page: this.page,
+      toPdfY: (yTopDown: number) => this.toPdfY(yTopDown),
+    };
+  }
 
-    const align = opts.align ?? "left";
-    if (align === "center") x = this.contentLeft + (this.contentWidth - w) / 2;
-    else if (align === "right") x = this.contentRight - w;
+  private getLinkTextContext(): LinkTextContext {
+    return {
+      doc: this.doc,
+      page: this.page,
+      toPdfY: (yTopDown: number) => this.toPdfY(yTopDown),
+      contentLeft: this.contentLeft,
+      contentWidth: this.contentWidth,
+      cursorY: this.cursorY,
+      fonts: this.fonts,
+      measureAndWrap: (text: string, opts?: ParagraphOptions) => this.measureAndWrap(text, opts),
+      drawText: (text: string, opts?: ParagraphOptions) => this.drawText(text, opts),
+    };
+  }
 
-    this.ensureSpace({ minHeight: h });
-
-    this.page.drawImage(image as any, {
-      x,
-      y: this.toPdfY(yTop + h),
-      width: w,
-      height: h,
-    });
-
-    // advance cursor only if we drew at current cursor position
-    if (opts.y === undefined) this.moveY(h);
-
-    return { x, y: yTop, width: w, height: h };
+  private getImageContext(): ImageDrawingContext {
+    return {
+      page: this.page,
+      contentLeft: this.contentLeft,
+      contentRight: this.contentRight,
+      contentWidth: this.contentWidth,
+      bottom: this.bottom,
+      cursorY: this.cursorY,
+      toPdfY: (yTopDown: number) => this.toPdfY(yTopDown),
+      ensureSpace: (opts: { minHeight: number }) => this.ensureSpace(opts),
+      moveY: (dy: number) => this.moveY(dy),
+    };
   }
 
   /* ------------------------------ debug utils ----------------------------- */
-  debugGrid(step = 8, color = rgb(0.9, 0.9, 0.9)) {
-    // vertical lines
-    for (let x = this.contentLeft; x <= this.contentRight; x += step) {
-      this.page.drawLine({ start: { x, y: this.toPdfY(this.top) }, end: { x, y: this.toPdfY(this.bottom) }, thickness: 0.5, color });
+  debugGrid(step = 8, color = rgb(0.9, 0.9, 0.9), region?: Region) {
+    const r = region ?? { x: this.contentLeft, y: this.top, width: this.contentWidth, height: this.bottom - this.top };
+    for (let x = r.x; x <= r.x + r.width; x += step) {
+      this.page.drawLine({ start: { x, y: this.toPdfY(r.y) }, end: { x, y: this.toPdfY(r.y + r.height) }, thickness: 0.5, color });
     }
-    // horizontal lines
-    for (let y = this.top; y <= this.bottom; y += step) {
-      this.page.drawLine({ start: { x: this.contentLeft, y: this.toPdfY(y) }, end: { x: this.contentRight, y: this.toPdfY(y) }, thickness: 0.5, color });
+    for (let y = r.y; y <= r.y + r.height; y += step) {
+      this.page.drawLine({ start: { x: r.x, y: this.toPdfY(y) }, end: { x: r.x + r.width, y: this.toPdfY(y) }, thickness: 0.5, color });
     }
   }
 
