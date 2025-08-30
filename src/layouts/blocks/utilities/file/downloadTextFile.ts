@@ -1,4 +1,4 @@
-import sanitizeFilename from "../../../blocks/utilities/string/sanitizeFilename";
+import sanitizeFilename from "../string/sanitizeFilename";
 
 export const downloadTextFile = (
   content: string,

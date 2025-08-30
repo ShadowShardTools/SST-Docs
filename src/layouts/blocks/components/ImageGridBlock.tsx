@@ -4,6 +4,7 @@ import type { ImageGridData } from "../types";
 import { validateScale } from "../utilities";
 import { useMobileDevice } from "../hooks";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import { withBasePath } from "../utilities";
 
 interface Props {
   index: number;
@@ -17,9 +18,7 @@ const ImageGridBlock: React.FC<Props> = ({ index, styles, imageGridData }) => {
   const alignment = imageGridData.alignment ?? "center";
 
   const baseClasses = `${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`;
-  const containerAlignment = isMobile
-    ? "w-full"
-    : ALIGNMENT_CLASSES[alignment].container;
+  const containerAlignment = isMobile ? "w-full" : ALIGNMENT_CLASSES[alignment].container;
 
   if (!imageGridData.images?.length) return null;
 
@@ -27,33 +26,24 @@ const ImageGridBlock: React.FC<Props> = ({ index, styles, imageGridData }) => {
 
   return (
     <div key={index} className={baseClasses}>
-      <div
-        className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignment}`}
-      >
-        {imageGridData.images.map((img, i) => (
-          <div
-            key={i}
-            className="flex flex-col items-center"
-            style={{
-              transform: cellScale !== 1 ? `scale(${cellScale})` : undefined,
-              transformOrigin:
-                alignment === "left"
-                  ? "left"
-                  : alignment === "right"
-                    ? "right"
-                    : "center",
-            }}
-          >
-            <img
-              src={img.src}
-              alt={img.alt || `Image ${i + 1}`}
-              className="w-full h-auto"
-            />
-            {img.alt && (
-              <p className={`mt-2 ${styles.text.alternative}`}>{img.alt}</p>
-            )}
-          </div>
-        ))}
+      <div className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignment}`}>
+        {imageGridData.images.map((img, i) => {
+          const src = img?.src ? withBasePath(img.src) : "";
+          return (
+            <div
+              key={i}
+              className="flex flex-col items-center"
+              style={{
+                transform: cellScale !== 1 ? `scale(${cellScale})` : undefined,
+                transformOrigin:
+                  alignment === "left" ? "left" : alignment === "right" ? "right" : "center",
+              }}
+            >
+              <img src={src} alt={img.alt || `Image ${i + 1}`} className="w-full h-auto" />
+              {img.alt && <p className={`mt-2 ${styles.text.alternative}`}>{img.alt}</p>}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

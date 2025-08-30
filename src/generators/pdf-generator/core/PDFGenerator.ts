@@ -2,7 +2,7 @@ import { PDFDocument, StandardFonts } from "pdf-lib";
 import type { Category, Version, DocItem } from "../../../layouts/render/types";
 import { Config } from "../../../configs/pdf-config";
 import { PdfCanvas } from "../canvas";
-import { loadLucideIcons } from "../icons";
+import { loadLucideIcons } from "../utilities/loadLucideIcons";
 import type { RenderContext } from "../types/RenderContext";
 import { addDivider } from "../blocks/addDivider";
 import { addText } from "../blocks/addText";

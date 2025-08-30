@@ -1,0 +1,1 @@
+export { loadLucideIcons } from "./loadLucideIcons";

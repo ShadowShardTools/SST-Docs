@@ -2,7 +2,7 @@ import React from "react";
 import { Play, Pause } from "lucide-react";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
-import { formatTime } from "../utilities";
+import { formatTime, withBasePath } from "../utilities";
 import type { AudioData } from "../types";
 
 interface Props {
@@ -11,13 +11,15 @@ interface Props {
 }
 
 const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
+  const src = audioData ? withBasePath(audioData.src) : "";
+
   const { audioRef, isPlaying, duration, current, togglePlay, handleSeek } =
-    useAudioPlayer(audioData.src);
+    useAudioPlayer(src);
 
   return (
     <div className="mb-6">
-      <audio ref={audioRef} src={audioData.src} preload="metadata">
-        <source src={audioData.src} type={audioData.mimeType} />
+      <audio ref={audioRef} src={src} preload="metadata">
+        <source src={src} type={audioData.mimeType} />
         Your browser does not support the audio element.
       </audio>
 

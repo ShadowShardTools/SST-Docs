@@ -8,6 +8,7 @@ import {
   SPACING_CLASSES,
   DEFAULT_CAROUSEL_OPTIONS,
 } from "../constants";
+import { withBasePath } from "../utilities";
 
 const Splide = lazy(() =>
   import("@splidejs/react-splide").then((m) => ({ default: m.Splide })),
@@ -47,26 +48,19 @@ const ImageCarouselBlock: React.FC<Props> = ({
   return (
     <div key={index} className={baseClasses}>
       <div className={containerAlignment} style={{ width }}>
-        <Suspense
-          fallback={<div className="h-64 bg-gray-200 animate-pulse rounded" />}
-        >
+        <Suspense fallback={<div className="h-64 bg-gray-200 animate-pulse rounded" />}>
           <Splide options={carouselOptions}>
-            {imageCarouselData.images.map((img, i) => (
-              <SplideSlide key={i}>
-                <div className="flex flex-col items-center">
-                  <img
-                    src={img.src}
-                    alt={img.alt || `Image ${i + 1}`}
-                    className="w-full h-auto"
-                  />
-                  {img.alt && (
-                    <p className={`mt-2 ${styles.text.alternative}`}>
-                      {img.alt}
-                    </p>
-                  )}
-                </div>
-              </SplideSlide>
-            ))}
+            {imageCarouselData.images.map((img, i) => {
+              const src = img?.src ? withBasePath(img.src) : "";
+              return (
+                <SplideSlide key={i}>
+                  <div className="flex flex-col items-center">
+                    <img src={src} alt={img.alt || `Image ${i + 1}`} className="w-full h-auto" />
+                    {img.alt && <p className={`mt-2 ${styles.text.alternative}`}>{img.alt}</p>}
+                  </div>
+                </SplideSlide>
+              );
+            })}
           </Splide>
         </Suspense>
       </div>

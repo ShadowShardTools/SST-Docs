@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import type { Version } from "../types/Version";
-import type { Category } from "../types/Category";
+import type { Version } from "../layouts/render/types/Version";
+import type { Category } from "../layouts/render/types/Category";
 import { documentationLoader } from "./documentationLoader";
-import type { DocItem } from "../types/DocItem";
+import type { DocItem } from "../layouts/render/types/DocItem";
 
 interface LoadingState {
   versions: boolean;

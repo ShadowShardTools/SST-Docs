@@ -1,186 +1,63 @@
+// src/generators/pdf-generator/DocumentationPDFGenerator.ts
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import appRoot from "app-root-path";
 
-import type { Category, DocItem, Version } from "../../../layouts/render/types";
-import type { IndexJson, RawCategory } from "../types";
 import { PDFGenerator } from "./PDFGenerator";
 
+import {
+  loadVersions as coreLoadVersions,
+  loadVersionData as coreLoadVersionData,
+} from "../../../services/docsData";
+import type { DataProvider } from "../../../services/types";
+
+/* ------------------------------- FS Provider ------------------------------ */
+class FsProvider implements DataProvider {
+  async readJson<T>(absPath: string): Promise<T> {
+    const text = await fs.readFile(absPath, "utf-8");
+    return JSON.parse(text) as T;
+  }
+  async fileExists(absPath: string): Promise<boolean> {
+    try {
+      await fs.access(absPath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+}
+
+/* ------------------------------ path helpers ------------------------------ */
 function normalizeDir(p: string): string {
   return p.replace(/\\/g, "/").replace(/\/+$/, "");
 }
 
 function resolveAgainstProjectRoot(candidate: string): string {
-  // If absolute, keep as-is; if relative, resolve from project root (not CWD)
   return path.isAbsolute(candidate)
     ? candidate
     : path.join(appRoot.path, candidate);
 }
 
 function resolveDataPath(input?: string): string {
-  // 1) CLI flag: --fsDataPath <path>
   const argv = process.argv.slice(2);
   const i = argv.indexOf("--fsDataPath");
   const fromCli = i !== -1 && argv[i + 1] ? argv[i + 1] : undefined;
 
-  // 2) Env var
   const fromEnv = process.env.FS_DATA_PATH;
-
-  // 3) Provided arg (constructor) has highest priority
   const candidate = input ?? fromCli ?? fromEnv ?? "./public/SST-Docs/data";
 
-  // Resolve RELATIVE paths from project root; then normalize & absolutize
   const abs = resolveAgainstProjectRoot(String(candidate));
   return normalizeDir(path.resolve(abs));
 }
+
+/* ---------------------------- Generator wrapper --------------------------- */
 export class DocumentationPDFGenerator {
   private dataPath: string;
+  private provider: DataProvider;
 
   constructor(dataPath?: string) {
     this.dataPath = resolveDataPath(dataPath);
-  }
-
-  private async fileExists(filePath: string): Promise<boolean> {
-    try {
-      await fs.access(filePath);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  private async readJsonFile<T>(filePath: string): Promise<T> {
-    const content = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(content);
-  }
-
-  private async loadVersions(): Promise<Version[]> {
-    const versionsPath = path.join(this.dataPath, "versions.json");
-    if (!(await this.fileExists(versionsPath))) {
-      throw new Error(`Versions file not found at: ${versionsPath}`);
-    }
-    return this.readJsonFile<Version[]>(versionsPath);
-  }
-
-  private async loadAllCategories(
-    basePath: string,
-    ids: string[],
-  ): Promise<Record<string, RawCategory>> {
-    const map: Record<string, RawCategory> = {};
-    for (const id of ids) {
-      try {
-        const categoryPath = path.join(basePath, "categories", `${id}.json`);
-        if (await this.fileExists(categoryPath)) {
-          map[id] = await this.readJsonFile<RawCategory>(categoryPath);
-        }
-      } catch (error) {
-        console.warn(
-          `⚠️  Failed to load category ${id}:`,
-          (error as Error).message,
-        );
-      }
-    }
-    return map;
-  }
-
-  private async loadAllItems(
-    basePath: string,
-    ids: string[],
-  ): Promise<DocItem[]> {
-    const items: DocItem[] = [];
-    for (const id of ids) {
-      try {
-        const itemPath = path.join(basePath, "items", `${id}.json`);
-        if (await this.fileExists(itemPath)) {
-          const item = await this.readJsonFile<DocItem>(itemPath);
-          items.push(item);
-        }
-      } catch (error) {
-        console.warn(
-          `⚠️  Failed to load item ${id}:`,
-          (error as Error).message,
-        );
-      }
-    }
-    return items;
-  }
-
-  private buildTree(
-    rawMap: Record<string, RawCategory>,
-    allDocs: DocItem[],
-  ): { tree: Category[]; usedDocIds: Set<string> } {
-    const docLookup = new Map(allDocs.map((d) => [d.id, d]));
-    const used = new Set<string>();
-
-    const convert = (raw: RawCategory): Category => {
-      let docs: DocItem[] | undefined;
-      if (raw.docs?.length) {
-        docs = raw.docs
-          .map((id) => {
-            const doc = docLookup.get(id);
-            if (doc) {
-              used.add(id);
-              return doc;
-            }
-            return null;
-          })
-          .filter((d): d is DocItem => !!d);
-        if (docs.length === 0) docs = undefined;
-      }
-
-      let children: Category[] | undefined;
-      if (raw.children?.length) {
-        children = raw.children
-          .map((cid) => (rawMap[cid] ? convert(rawMap[cid]) : null))
-          .filter((c): c is Category => !!c);
-        if (children.length === 0) children = undefined;
-      }
-
-      return {
-        id: raw.id,
-        title: raw.title,
-        description: raw.description,
-        content: raw.content ?? [],
-        docs,
-        children,
-      };
-    };
-
-    const childIds = new Set<string>();
-    Object.values(rawMap).forEach((c) =>
-      c.children?.forEach((id) => childIds.add(id)),
-    );
-
-    const tree = Object.values(rawMap)
-      .filter((c) => c?.id && !childIds.has(c.id))
-      .map(convert);
-
-    return { tree, usedDocIds: used };
-  }
-
-  private async loadVersionData(version: string): Promise<{
-    items: DocItem[];
-    tree: Category[];
-    standaloneDocs: DocItem[];
-  }> {
-    const basePath = path.join(this.dataPath, version);
-    const indexPath = path.join(basePath, "index.json");
-
-    if (!(await this.fileExists(indexPath))) {
-      throw new Error(
-        `Index file not found for version '${version}' at: ${indexPath}`,
-      );
-    }
-    const index = await this.readJsonFile<IndexJson>(indexPath);
-
-    const [rawCats, items] = await Promise.all([
-      this.loadAllCategories(basePath, index.categories),
-      this.loadAllItems(basePath, index.items),
-    ]);
-
-    const { tree, usedDocIds } = this.buildTree(rawCats, items);
-    const standaloneDocs = items.filter((d) => !usedDocIds.has(d.id));
-    return { items, tree, standaloneDocs };
+    this.provider = new FsProvider();
   }
 
   async generateAllPDFs(): Promise<void> {
@@ -189,7 +66,7 @@ export class DocumentationPDFGenerator {
       console.log(`📁 Data path: ${this.dataPath}`);
 
       console.log("\n📖 Loading documentation versions...");
-      const versions = await this.loadVersions();
+      const versions = await coreLoadVersions(this.provider, this.dataPath);
       console.log(
         "📚 Found %d versions: %s",
         versions.length,
@@ -201,18 +78,16 @@ export class DocumentationPDFGenerator {
           console.log(
             `\n📄 Generating PDF for ${version.label} (${version.version})...`,
           );
-          const data = await this.loadVersionData(version.version);
+          const versionRoot = path.join(this.dataPath, version.version);
+
+          const data = await coreLoadVersionData(this.provider, versionRoot);
           console.log(
             `📊 Loaded: ${data.items.length} items, ${data.tree.length} categories, ${data.standaloneDocs.length} standalone docs`,
           );
 
-          // Fonts are embedded per-document inside PDFGenerator.init()
           const generator = new PDFGenerator();
-          const outputPath = path.join(
-            this.dataPath,
-            version.version,
-            `${version.version}.pdf`,
-          );
+          const outputPath = path.join(versionRoot, `${version.version}.pdf`);
+
           await generator.generatePDF(
             version,
             data.tree,

@@ -1,9 +1,8 @@
-// utilities/index.ts
-
 // string
-export { slugify } from "../../blocks/utilities/string/slugify";
-export { sanitizeFilename } from "../../blocks/utilities/string/sanitizeFilename";
-export { extractYouTubeId } from "../../blocks/utilities/string/extractYouTubeId";
+export { slugify } from "./string/slugify";
+export { sanitizeFilename } from "./string/sanitizeFilename";
+export { extractYouTubeId } from "./string/extractYouTubeId";
+export { withBasePath } from "./string/withBasePath";
 
 // file
 export { copyToClipboard } from "./file/copyToClipboard";
@@ -12,7 +11,6 @@ export { getFileExtension } from "./file/getFileExtension";
 
 // system
 export { createTimeout } from "./system/createTimeout";
-export { debounce } from "./system/debounce";
 export { formatTime } from "./system/formatTime";
 
 // validation
