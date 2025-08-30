@@ -13,9 +13,9 @@ export function addUnknown(ctx: RenderContext, type: string) {
   const text = `Unknown content type: ${type}`;
 
   // Theme (same as your warning/message box)
-  const fill = rgb(1, 0.973, 0.863);         // bg-yellow-100
-  const stroke = rgb(0.992, 0.925, 0.682);   // border-yellow-300
-  const textColor = rgb(0.322, 0.255, 0.051);// text-yellow-800
+  const fill = rgb(1, 0.973, 0.863); // bg-yellow-100
+  const stroke = rgb(0.992, 0.925, 0.682); // border-yellow-300
+  const textColor = rgb(0.322, 0.255, 0.051); // text-yellow-800
 
   // Wrap to fit inside padded box
   const lineHeight = 1 + 2 / size;
@@ -53,9 +53,9 @@ export function addUnknown(ctx: RenderContext, type: string) {
       align: "left",
       maxWidth: width - pad * 2,
       spacingBefore: 0,
-      spacingAfter: 0,  // lineHeight already advances the cursor
+      spacingAfter: 0, // lineHeight already advances the cursor
       lineHeight,
-      indent: pad,      // applies to this (single) line → uniform padding
+      indent: pad, // applies to this (single) line → uniform padding
     });
   }
 

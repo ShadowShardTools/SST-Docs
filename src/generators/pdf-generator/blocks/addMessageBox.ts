@@ -13,11 +13,31 @@ const themes: Record<
     text: [number, number, number];
   }
 > = {
-  info:    { fill: [0.878, 0.949, 1],     stroke: [0.761, 0.863, 0.976], text: [0.031, 0.188, 0.388] },
-  warning: { fill: [1, 0.973, 0.863],     stroke: [0.992, 0.925, 0.682], text: [0.322, 0.255, 0.051] },
-  error:   { fill: [0.992, 0.871, 0.871], stroke: [0.937, 0.631, 0.631], text: [0.451, 0.051, 0.051] },
-  success: { fill: [0.863, 0.945, 0.882], stroke: [0.678, 0.855, 0.737], text: [0.031, 0.251, 0.118] },
-  neutral: { fill: [0.961, 0.961, 0.961], stroke: [0.827, 0.827, 0.827], text: [0.106, 0.122, 0.137] },
+  info: {
+    fill: [0.878, 0.949, 1],
+    stroke: [0.761, 0.863, 0.976],
+    text: [0.031, 0.188, 0.388],
+  },
+  warning: {
+    fill: [1, 0.973, 0.863],
+    stroke: [0.992, 0.925, 0.682],
+    text: [0.322, 0.255, 0.051],
+  },
+  error: {
+    fill: [0.992, 0.871, 0.871],
+    stroke: [0.937, 0.631, 0.631],
+    text: [0.451, 0.051, 0.051],
+  },
+  success: {
+    fill: [0.863, 0.945, 0.882],
+    stroke: [0.678, 0.855, 0.737],
+    text: [0.031, 0.251, 0.118],
+  },
+  neutral: {
+    fill: [0.961, 0.961, 0.961],
+    stroke: [0.827, 0.827, 0.827],
+    text: [0.106, 0.122, 0.137],
+  },
 };
 
 export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
@@ -68,7 +88,12 @@ export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
     // Reset cursor and draw text
     ctx.canvas.cursorY = top + padY;
     ctx.canvas.withRegion(
-      { x: left + ruleW + padX, y: top + padY, width: textMaxW, height: Math.max(0, boxH - padY * 2) },
+      {
+        x: left + ruleW + padX,
+        y: top + padY,
+        width: textMaxW,
+        height: Math.max(0, boxH - padY * 2),
+      },
       () => {
         ctx.canvas.drawText(text, {
           font: italicFont,
@@ -80,7 +105,7 @@ export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
           spacingAfter: 0,
           lineHeight,
         });
-      }
+      },
     );
 
     ctx.canvas.cursorY = top + boxH;
@@ -96,9 +121,9 @@ export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
   const showIcon = data.showIcon ?? true;
 
   const sizeMap = {
-    small:  { pad: 8,  font: Config.FONT_SIZES.messageBox - 1, iconSize: 14 },
-    medium: { pad: 12, font: Config.FONT_SIZES.messageBox,     iconSize: 14 },
-    large:  { pad: 16, font: Config.FONT_SIZES.messageBox + 1, iconSize: 14 },
+    small: { pad: 8, font: Config.FONT_SIZES.messageBox - 1, iconSize: 14 },
+    medium: { pad: 12, font: Config.FONT_SIZES.messageBox, iconSize: 14 },
+    large: { pad: 16, font: Config.FONT_SIZES.messageBox + 1, iconSize: 14 },
   } as const;
   const S = sizeMap[sizeKey];
 
@@ -129,7 +154,7 @@ export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
     fill: rgb(...theme.fill),
     stroke: rgb(...theme.stroke),
     strokeWidth: 1.5,
-    padding: 0
+    padding: 0,
   });
 
   // Reset cursor after drawing box
@@ -141,11 +166,11 @@ export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
     if (icon) {
       const iconX = left + S.pad;
       const iconY = top + S.pad + (minContentH - iconSize) / 2;
-      ctx.canvas.drawImage(icon, { 
-        x: iconX, 
-        y: iconY, 
-        width: iconSize, 
-        height: iconSize 
+      ctx.canvas.drawImage(icon, {
+        x: iconX,
+        y: iconY,
+        width: iconSize,
+        height: iconSize,
       });
     }
   }
@@ -170,7 +195,7 @@ export async function addMessageBox(ctx: RenderContext, data: MessageBoxData) {
         spacingAfter: 0,
         lineHeight,
       });
-    }
+    },
   );
 
   // Move cursor to end of box and add spacing

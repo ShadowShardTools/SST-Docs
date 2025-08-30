@@ -18,7 +18,12 @@ const tex = new TeX({ packages: AllPackages });
 const svg = new SVG({ fontCache: "none" }); // embed glyphs in SVG
 const mjDoc = mathjax.document("", { InputJax: tex, OutputJax: svg });
 
-type PngRender = { png: Uint8Array; width: number; height: number; scale: number };
+type PngRender = {
+  png: Uint8Array;
+  width: number;
+  height: number;
+  scale: number;
+};
 
 /* Extract <svg>…</svg> from MathJax output */
 function extractSvgMarkup(node: any): string {
@@ -26,13 +31,15 @@ function extractSvgMarkup(node: any): string {
   if (inner.includes("<svg")) {
     const start = inner.indexOf("<svg");
     const end = inner.indexOf("</svg>");
-    if (start >= 0 && end > start) return inner.slice(start, end + "</svg>".length);
+    if (start >= 0 && end > start)
+      return inner.slice(start, end + "</svg>".length);
   }
   const queue = [node];
   while (queue.length) {
     const cur = queue.shift();
     const name = (adaptor as any).nodeName?.(cur);
-    if (name && String(name).toLowerCase() === "svg") return adaptor.outerHTML(cur);
+    if (name && String(name).toLowerCase() === "svg")
+      return adaptor.outerHTML(cur);
     const kids = adaptor.childNodes?.(cur) ?? [];
     for (const k of kids) queue.push(k);
   }
@@ -41,7 +48,7 @@ function extractSvgMarkup(node: any): string {
 
 async function renderMathToPng(
   latex: string,
-  opts?: { display?: boolean; scale?: number }
+  opts?: { display?: boolean; scale?: number },
 ): Promise<PngRender> {
   const node = mjDoc.convert(latex, {
     display: opts?.display ?? true,
@@ -51,7 +58,9 @@ async function renderMathToPng(
 
   const svgMarkup = extractSvgMarkup(node);
   if (!svgMarkup || !svgMarkup.trim().startsWith("<svg")) {
-    throw new Error("MathJax did not produce a valid <svg> root for the given LaTeX.");
+    throw new Error(
+      "MathJax did not produce a valid <svg> root for the given LaTeX.",
+    );
   }
 
   const scale = Math.max(1, Math.floor(opts?.scale ?? 3));
@@ -65,7 +74,10 @@ async function renderMathToPng(
 }
 
 /* ------------------------------- Public API -------------------------------- */
-export async function addMath(ctx: RenderContext, mathData: MathData): Promise<void> {
+export async function addMath(
+  ctx: RenderContext,
+  mathData: MathData,
+): Promise<void> {
   const expression = mathData.expression?.trim();
   if (!expression) return;
 
@@ -74,7 +86,10 @@ export async function addMath(ctx: RenderContext, mathData: MathData): Promise<v
 
   try {
     // Render LaTeX → SVG → PNG
-    const rendered = await renderMathToPng(expression, { display: true, scale: 3 });
+    const rendered = await renderMathToPng(expression, {
+      display: true,
+      scale: 3,
+    });
 
     // Natural size independent of oversampling scale
     const naturalW = rendered.width / rendered.scale;
@@ -85,7 +100,10 @@ export async function addMath(ctx: RenderContext, mathData: MathData): Promise<v
     const drawH = (naturalH * drawW) / naturalW;
 
     // Keep the whole formula together (prevents awkward splits)
-    ctx.canvas.ensureBlock({ minHeight: drawH + spacing * 2, keepTogether: true });
+    ctx.canvas.ensureBlock({
+      minHeight: drawH + spacing * 2,
+      keepTogether: true,
+    });
 
     // Embed once, then draw via PdfCanvas (handles pagination & coords)
     const image = await ctx.doc.embedPng(rendered.png);

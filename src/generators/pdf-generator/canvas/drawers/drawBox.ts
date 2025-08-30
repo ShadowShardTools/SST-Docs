@@ -12,7 +12,7 @@ export function drawBox(
   context: BoxDrawingContext,
   width: number,
   height: number,
-  opts?: BoxOptions
+  opts?: BoxOptions,
 ): Rect {
   const pad = opts?.padding ?? 12;
   const stroke = toColor(opts?.stroke ?? rgb(0.88, 0.9, 0.93));

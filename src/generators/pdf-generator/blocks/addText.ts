@@ -21,10 +21,10 @@ export async function addText(ctx: RenderContext, data: TextData) {
     spacingKey === "small"
       ? Math.max(2, Math.floor(Config.SPACING.textBottom / 2))
       : spacingKey === "large"
-      ? Math.floor(Config.SPACING.textBottom * 1.5)
-      : spacingKey === "medium"
-      ? Config.SPACING.textBottom
-      : 0;
+        ? Math.floor(Config.SPACING.textBottom * 1.5)
+        : spacingKey === "medium"
+          ? Config.SPACING.textBottom
+          : 0;
 
   const intraLineGap = 2;
   const lineHeight = 1 + intraLineGap / size;

@@ -1,2 +1,8 @@
 export { clamp } from "./clamp";
-export { textMetricsCache } from "./textMetricsCache";
+export {
+  measureHeight,
+  measureSpace,
+  measureString,
+  measureToken,
+  type WidthMeasurableFont,
+} from "./textMetricsCache";

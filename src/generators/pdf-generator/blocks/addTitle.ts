@@ -6,10 +6,16 @@ const SPACING_MAP: Record<
   NonNullable<TitleData["spacing"]>,
   { top: number; bottom: number }
 > = {
-  none:   { top: Config.SPACING.titleTop, bottom: 0 },
-  small:  { top: Config.SPACING.titleTop, bottom: Math.round(Config.SPACING.titleBottom * 0.5) },
+  none: { top: Config.SPACING.titleTop, bottom: 0 },
+  small: {
+    top: Config.SPACING.titleTop,
+    bottom: Math.round(Config.SPACING.titleBottom * 0.5),
+  },
   medium: { top: Config.SPACING.titleTop, bottom: Config.SPACING.titleBottom },
-  large:  { top: Config.SPACING.titleTop, bottom: Math.round(Config.SPACING.titleBottom * 1.5) },
+  large: {
+    top: Config.SPACING.titleTop,
+    bottom: Math.round(Config.SPACING.titleBottom * 1.5),
+  },
 };
 
 function titleColor(level: 1 | 2 | 3) {
@@ -22,8 +28,7 @@ export async function addTitle(ctx: RenderContext, data: TitleData) {
   if (!data?.text) return;
 
   const level = (data.level ?? 1) as 1 | 2 | 3;
-  const size =
-    (Config.FONT_SIZES as any)[`h${level}`] ?? Config.FONT_SIZES.h3;
+  const size = (Config.FONT_SIZES as any)[`h${level}`] ?? Config.FONT_SIZES.h3;
 
   const spacingKey = data.spacing ?? "medium";
   const { top, bottom } = SPACING_MAP[spacingKey];

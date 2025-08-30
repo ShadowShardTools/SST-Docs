@@ -6,15 +6,23 @@ import type { DividerData } from "../../../layouts/blocks/types";
 function spacingFor(data: DividerData) {
   const S = Config.SPACING;
   switch (data?.spacing) {
-    case "small":  return { top: 0, bottom: S.small };
-    case "medium": return { top: 0, bottom: S.medium };
-    case "large":  return { top: 0, bottom: S.large };
-    default:       return { top: 0, bottom: S.dividerBottom };
+    case "small":
+      return { top: 0, bottom: S.small };
+    case "medium":
+      return { top: 0, bottom: S.medium };
+    case "large":
+      return { top: 0, bottom: S.large };
+    default:
+      return { top: 0, bottom: S.dividerBottom };
   }
 }
 
 /* ------------------------------- helpers ---------------------------------- */
-function textWidth(font: RenderContext["fonts"]["regular"], size: number, text: string) {
+function textWidth(
+  font: RenderContext["fonts"]["regular"],
+  size: number,
+  text: string,
+) {
   return font.widthOfTextAtSize(text, size);
 }
 
@@ -42,23 +50,26 @@ function drawSegment(
   x2: number,
   yTop: number, // top-down y
   thickness: number,
-  color: ReturnType<typeof ctx.canvas["drawRule"]> extends any ? any : never, // keep loose
+  color: ReturnType<(typeof ctx.canvas)["drawRule"]> extends any ? any : never, // keep loose
 ) {
   const w = Math.max(0, x2 - x1);
   if (w <= 0) return;
 
   const before = ctx.canvas.cursorY;
-  ctx.canvas.withRegion({ x: x1, y: yTop, width: w, height: thickness + 1 }, () => {
-    ctx.canvas.cursorY = yTop;
-    ctx.canvas.drawRule({
-      thickness,
-      color,
-      width: w,
-      align: "left",
-      spacingBefore: 0,
-      spacingAfter: 0, // drawRule will advance by thickness; we restore next line
-    });
-  });
+  ctx.canvas.withRegion(
+    { x: x1, y: yTop, width: w, height: thickness + 1 },
+    () => {
+      ctx.canvas.cursorY = yTop;
+      ctx.canvas.drawRule({
+        thickness,
+        color,
+        width: w,
+        align: "left",
+        spacingBefore: 0,
+        spacingAfter: 0, // drawRule will advance by thickness; we restore next line
+      });
+    },
+  );
   ctx.canvas.cursorY = before; // restore so multiple segments share the same baseline
 }
 
@@ -72,8 +83,14 @@ function drawStyledLine(
   baseThickness: number,
   color: any,
 ) {
-  const drawSolid = (yy: number, lw = baseThickness) => drawSegment(ctx, x1, x2, yy, lw, color);
-  const drawPattern = (dash: number, gap: number, yy: number, lw = baseThickness) => {
+  const drawSolid = (yy: number, lw = baseThickness) =>
+    drawSegment(ctx, x1, x2, yy, lw, color);
+  const drawPattern = (
+    dash: number,
+    gap: number,
+    yy: number,
+    lw = baseThickness,
+  ) => {
     let x = x1;
     while (x < x2) {
       const end = Math.min(x + dash, x2);
@@ -128,7 +145,7 @@ export async function addDivider(ctx: RenderContext, data: DividerData) {
     );
 
     // Use tight vertical budget (≈ cap-height) to avoid big spaces
-    const labelH = Math.max( labelSize, Math.round(labelSize * 1.1) );
+    const labelH = Math.max(labelSize, Math.round(labelSize * 1.1));
     const needed = top + labelH + bottom;
 
     ctx.canvas.ensureSpace({ minHeight: needed });
@@ -138,27 +155,48 @@ export async function addDivider(ctx: RenderContext, data: DividerData) {
 
     // Draw label in a narrow region so drawText won't wrap
     const textX = xL + (contentW - labelW) / 2;
-    ctx.canvas.withRegion({ x: textX, y: baseY, width: labelW, height: labelH }, () => {
-      ctx.canvas.drawText(labelRaw, {
-        font: ctx.fonts.regular,
-        size: labelSize,
-        color,
-        align: "center",
-        maxWidth: labelW,
-        spacingBefore: 0,
-        spacingAfter: 0,
-        lineHeight: 1.0, // tight
-      });
-    });
+    ctx.canvas.withRegion(
+      { x: textX, y: baseY, width: labelW, height: labelH },
+      () => {
+        ctx.canvas.drawText(labelRaw, {
+          font: ctx.fonts.regular,
+          size: labelSize,
+          color,
+          align: "center",
+          maxWidth: labelW,
+          spacingBefore: 0,
+          spacingAfter: 0,
+          lineHeight: 1.0, // tight
+        });
+      },
+    );
 
     // Side lines centered to label block
     const lineY = baseY + Math.round(labelH / 2);
     const pad = 8;
-    const leftStop   = Math.max(xL, textX - pad);
+    const leftStop = Math.max(xL, textX - pad);
     const rightStart = Math.min(xR, textX + labelW + pad);
 
-    if (leftStop - xL >= 2)     drawStyledLine(ctx, xL, leftStop,  lineY, data?.type, baseThickness, color);
-    if (xR - rightStart >= 2)   drawStyledLine(ctx, rightStart, xR, lineY, data?.type, baseThickness, color);
+    if (leftStop - xL >= 2)
+      drawStyledLine(
+        ctx,
+        xL,
+        leftStop,
+        lineY,
+        data?.type,
+        baseThickness,
+        color,
+      );
+    if (xR - rightStart >= 2)
+      drawStyledLine(
+        ctx,
+        rightStart,
+        xR,
+        lineY,
+        data?.type,
+        baseThickness,
+        color,
+      );
 
     // Advance minimally
     ctx.canvas.cursorY = baseY + labelH;

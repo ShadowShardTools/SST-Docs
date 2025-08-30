@@ -56,9 +56,12 @@ async function embedImageFromFile(ctx: RenderContext, absPath: string) {
 
 /* --------------------------------- API ----------------------------------- */
 
-export async function addImage(ctx: RenderContext, data: ImageData): Promise<void> {
+export async function addImage(
+  ctx: RenderContext,
+  data: ImageData,
+): Promise<void> {
   const image = data.image;
-  if (!image?.src) return;                    // ← narrow once
+  if (!image?.src) return; // ← narrow once
   const src = image.src;
 
   const alignment: "left" | "center" | "right" =

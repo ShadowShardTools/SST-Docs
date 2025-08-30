@@ -1,7 +1,7 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import type { Category, Version, DocItem } from "../../../layouts/render/types";
 import { Config } from "../../../configs/pdf-config";
-import { PdfCanvas } from "../canvas/PdfCanvas";
+import { PdfCanvas } from "../canvas";
 import { loadLucideIcons } from "../icons";
 import type { RenderContext } from "../types/RenderContext";
 import { addDivider } from "../blocks/addDivider";
@@ -33,7 +33,10 @@ export class PDFGenerator {
       margin: Config.MARGIN,
     };
 
-    const page = this.doc.addPage([this.pageConfig.width, this.pageConfig.height]);
+    const page = this.doc.addPage([
+      this.pageConfig.width,
+      this.pageConfig.height,
+    ]);
 
     this.canvas = new PdfCanvas({
       doc: this.doc,
@@ -46,7 +49,7 @@ export class PDFGenerator {
     this.ctx = { doc: this.doc, canvas: this.canvas, fonts: this.fonts, icons };
   }
 
- async generatePDF(
+  async generatePDF(
     version: Version,
     tree: Category[],
     standaloneDocs: DocItem[],

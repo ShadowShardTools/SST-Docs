@@ -22,20 +22,26 @@ export async function addAudio(ctx: RenderContext, data: AudioData) {
   const line2 = `Audio name to find: ${filename}`;
 
   // Tailwind-like "info" theme (kept from previous impl)
-  const fill = rgb(0.878, 0.949, 1);          // bg-blue-100 (#DBEAFE)
-  const stroke = rgb(0.769, 0.867, 0.933);    // border-blue-300
+  const fill = rgb(0.878, 0.949, 1); // bg-blue-100 (#DBEAFE)
+  const stroke = rgb(0.769, 0.867, 0.933); // border-blue-300
   const textColor = rgb(0.031, 0.188, 0.388); // text-blue-800
 
   const innerW = Math.max(0, width - pad * 2);
-  const interGap = 2;                          // small gap between two lines
-  const lineHeight = 1 + interGap / fontSize;  // emulate old lineGap=2px
+  const interGap = 2; // small gap between two lines
+  const lineHeight = 1 + interGap / fontSize; // emulate old lineGap=2px
 
   // Measure both text blocks
   const m1 = ctx.canvas.measureAndWrap(line1, {
-    font, size: fontSize, maxWidth: innerW, lineHeight,
+    font,
+    size: fontSize,
+    maxWidth: innerW,
+    lineHeight,
   });
   const m2 = ctx.canvas.measureAndWrap(line2, {
-    font, size: fontSize, maxWidth: innerW, lineHeight,
+    font,
+    size: fontSize,
+    maxWidth: innerW,
+    lineHeight,
   });
 
   const textH = m1.totalHeight + interGap + m2.totalHeight;
@@ -52,7 +58,7 @@ export async function addAudio(ctx: RenderContext, data: AudioData) {
     fill,
     stroke,
     strokeWidth: 1.5,
-    padding: pad
+    padding: pad,
   });
 
   // Draw both lines inside the padded inner rect

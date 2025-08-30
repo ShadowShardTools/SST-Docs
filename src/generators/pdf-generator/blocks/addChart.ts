@@ -37,7 +37,8 @@ ChartJS.register(
 type ChartOptions = ChartConfiguration;
 type CacheEntry = { image: any; width: number; height: number };
 
-const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+const clamp = (n: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, n));
 const pickType = (type?: string) =>
   ([
     "bar",
@@ -101,7 +102,9 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
   const scale = clamp(chartScale * 1.25, 0.5, 1);
   const drawW = Math.round(contentW * scale);
   const baseH = Math.max(180, Math.round(drawW * 0.56));
-  const drawH = ["radar", "polarArea"].includes(type) ? Math.max(220, baseH) : baseH;
+  const drawH = ["radar", "polarArea"].includes(type)
+    ? Math.max(220, baseH)
+    : baseH;
 
   // Chart.js configuration
   const config: ChartConfiguration = {
@@ -186,7 +189,9 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
   } catch {
     // Fallback: simple text placeholder (still consumes reserved space)
     ctx.canvas.cursorY = top;
-    const placeholder = title ? `[Chart: ${title}]` : "[Chart could not be rendered]";
+    const placeholder = title
+      ? `[Chart: ${title}]`
+      : "[Chart could not be rendered]";
     ctx.canvas.drawText(placeholder, {
       font: ctx.fonts.regular,
       size: Config.FONT_SIZES.body,

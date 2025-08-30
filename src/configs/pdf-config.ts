@@ -6,7 +6,7 @@ export const Config = {
   MARGIN: 40,
   COLORS: {
     text: rgb(0x37 / 255, 0x41 / 255, 0x51 / 255),
-    alternativeText: rgb(0x9C / 255, 0xA3 / 255, 0xAF / 255),
+    alternativeText: rgb(0x9c / 255, 0xa3 / 255, 0xaf / 255),
     divider: rgb(0xa8 / 255, 0xa2 / 255, 0x9e / 255),
     codeBackground: rgb(0.973, 0.976, 0.98),
     codeBorder: rgb(0.914, 0.925, 0.937),

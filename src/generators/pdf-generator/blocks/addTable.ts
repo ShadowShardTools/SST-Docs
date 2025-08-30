@@ -65,17 +65,20 @@ export async function addTable(ctx: RenderContext, table: TableData) {
   // Draw a thin horizontal rule at absolute y without consuming space
   function drawH(yTopDown: number, thickness = 0.5) {
     const before = ctx.canvas.cursorY;
-    ctx.canvas.withRegion({ x: xL, y: yTopDown, width: contentW, height: thickness + 1 }, () => {
-      ctx.canvas.cursorY = yTopDown;
-      ctx.canvas.drawRule({
-        thickness,
-        color: strokeColor,
-        width: contentW,
-        align: "left",
-        spacingBefore: 0,
-        spacingAfter: 0,
-      });
-    });
+    ctx.canvas.withRegion(
+      { x: xL, y: yTopDown, width: contentW, height: thickness + 1 },
+      () => {
+        ctx.canvas.cursorY = yTopDown;
+        ctx.canvas.drawRule({
+          thickness,
+          color: strokeColor,
+          width: contentW,
+          align: "left",
+          spacingBefore: 0,
+          spacingAfter: 0,
+        });
+      },
+    );
     ctx.canvas.cursorY = before;
   }
 
@@ -109,18 +112,22 @@ export async function addTable(ctx: RenderContext, table: TableData) {
 
       const header = isHeaderCell(r, c, cell);
       const corner = isMatrixCorner(r, c);
-      const fill = (corner && cornerFill) || (header && headerFill) || undefined;
+      const fill =
+        (corner && cornerFill) || (header && headerFill) || undefined;
 
       if (fill) {
         const before = ctx.canvas.cursorY;
-        ctx.canvas.withRegion({ x, y: rowTop, width: colW, height: rowH }, () => {
-          ctx.canvas.cursorY = rowTop;
-          ctx.canvas.drawBox(colW, rowH, {
-            fill,
-            padding: 0,
-            strokeWidth: 0, // no per-cell borders
-          });
-        });
+        ctx.canvas.withRegion(
+          { x, y: rowTop, width: colW, height: rowH },
+          () => {
+            ctx.canvas.cursorY = rowTop;
+            ctx.canvas.drawBox(colW, rowH, {
+              fill,
+              padding: 0,
+              strokeWidth: 0, // no per-cell borders
+            });
+          },
+        );
         ctx.canvas.cursorY = before;
       }
     }

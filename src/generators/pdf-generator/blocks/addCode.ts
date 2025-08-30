@@ -202,10 +202,7 @@ export async function addCode(ctx: RenderContext, data: CodeData) {
     const innerWidth = width - paddingX * 2 - numW;
 
     // Block height (min 40)
-    const codeHeight = Math.max(
-      40,
-      headerHeight + paddingY * 2 + totalHeight,
-    );
+    const codeHeight = Math.max(40, headerHeight + paddingY * 2 + totalHeight);
 
     // Keep block together for readability
     ctx.canvas.ensureBlock({

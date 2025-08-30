@@ -1,7 +1,7 @@
 export type { DrawImageOptions } from "./options/DrawImageOptions";
 export type { ParagraphOptions } from "./options/ParagraphOptions";
 export type { RuleOptions } from "./options/RuleOptions";
-export type { LinkRectOptions  } from "./options/LinkRectOptions";
+export type { LinkRectOptions } from "./options/LinkRectOptions";
 export type { Rect } from "./Rect";
 export type { ImageObject } from "./ImageObject";
 export type { LinkRectContext } from "./context/LinkRectContext";
@@ -12,3 +12,4 @@ export type { EnsureSpaceOptions } from "./options/EnsureSpaceOptions";
 export type { RuleDrawingContext } from "./context/RuleDrawingContext";
 export type { TextDrawingContext } from "./context/TextDrawingContext";
 export type { BoxDrawingContext } from "./context/BoxDrawingContext";
+export type { Region } from "./Region";

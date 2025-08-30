@@ -1,7 +1,10 @@
 import { rgb, PDFName, PDFString } from "pdf-lib";
 import type { LinkRectContext, LinkRectOptions, Rect } from "./types";
 
-export function drawLinkRect(context: LinkRectContext, opts: LinkRectOptions): Rect {
+export function drawLinkRect(
+  context: LinkRectContext,
+  opts: LinkRectOptions,
+): Rect {
   const { x, y, width, height, url, underline } = opts;
   const yBottom = context.toPdfY(y + height);
   const yTop = context.toPdfY(y);

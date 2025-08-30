@@ -6,13 +6,19 @@ export interface LinkTextContext extends LinkRectContext {
   contentWidth: number;
   cursorY: number;
   fonts: Fonts;
-  measureAndWrap: (text: string, opts?: ParagraphOptions) => { 
-    lines: string[]; 
-    lineHeightPx: number; 
-    totalHeight: number; 
+  measureAndWrap: (
+    text: string,
+    opts?: ParagraphOptions,
+  ) => {
+    lines: string[];
+    lineHeightPx: number;
+    totalHeight: number;
   };
-  drawText: (text: string, opts?: ParagraphOptions) => { 
-    height: number; 
-    lines: string[]; 
+  drawText: (
+    text: string,
+    opts?: ParagraphOptions,
+  ) => {
+    height: number;
+    lines: string[];
   };
 }

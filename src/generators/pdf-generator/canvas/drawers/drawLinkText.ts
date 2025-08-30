@@ -5,7 +5,7 @@ import type { LinkTextContext, ParagraphOptions, Rect } from "./types";
 export function drawLinkText(
   context: LinkTextContext,
   url: string,
-  opts?: ParagraphOptions & { underline?: boolean }
+  opts?: ParagraphOptions & { underline?: boolean },
 ): { rects: Rect[]; height: number } {
   const font = opts?.font ?? context.fonts.regular;
   const size = opts?.size ?? 12;
@@ -14,7 +14,12 @@ export function drawLinkText(
   const lineHeight = opts?.lineHeight;
   const maxWidth = opts?.maxWidth ?? context.contentWidth;
 
-  const { lines } = context.measureAndWrap(url, { font, size, lineHeight, maxWidth });
+  const { lines } = context.measureAndWrap(url, {
+    font,
+    size,
+    lineHeight,
+    maxWidth,
+  });
 
   const rects: Rect[] = [];
 
@@ -28,10 +33,17 @@ export function drawLinkText(
   for (const line of lines) {
     const lineWidth = font.widthOfTextAtSize(line, size);
     let x = context.contentLeft;
-    if (align === "center") x = context.contentLeft + (maxWidth - lineWidth) / 2;
-    else if (align === "right") x = context.contentLeft + (maxWidth - lineWidth);
+    if (align === "center")
+      x = context.contentLeft + (maxWidth - lineWidth) / 2;
+    else if (align === "right")
+      x = context.contentLeft + (maxWidth - lineWidth);
 
-    const rect: Rect = { x, y: yCursor, width: lineWidth, height: (lineHeight ?? 1.4) * size };
+    const rect: Rect = {
+      x,
+      y: yCursor,
+      width: lineWidth,
+      height: (lineHeight ?? 1.4) * size,
+    };
     drawLinkRect(context, { ...rect, url, underline: opts?.underline });
     rects.push(rect);
     yCursor += (lineHeight ?? 1.4) * size;

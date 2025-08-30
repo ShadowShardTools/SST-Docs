@@ -1,4 +1,9 @@
-import type { ImageDrawingContext, ImageObject, DrawImageOptions, Rect } from "./types";
+import type {
+  ImageDrawingContext,
+  ImageObject,
+  DrawImageOptions,
+  Rect,
+} from "./types";
 
 export function drawImage(
   context: ImageDrawingContext,
@@ -9,7 +14,7 @@ export function drawImage(
   const naturalH = image.height;
 
   const maxW = opts.maxWidth ?? context.contentWidth;
-  const maxH = opts.maxHeight ?? (context.bottom - context.cursorY);
+  const maxH = opts.maxHeight ?? context.bottom - context.cursorY;
   const fit = opts.fit ?? "scale-down";
 
   let w = opts.width ?? Math.min(naturalW, maxW);
@@ -18,20 +23,24 @@ export function drawImage(
   // object-fit like behavior
   if (fit === "contain") {
     const scale = Math.min(maxW / w, maxH / h, 1);
-    w *= scale; h *= scale;
+    w *= scale;
+    h *= scale;
   } else if (fit === "cover") {
     const scale = Math.max(maxW / w, maxH / h);
-    w *= scale; h *= scale;
+    w *= scale;
+    h *= scale;
   } else if (fit === "scale-down") {
     const scale = Math.min(1, Math.min(maxW / w, maxH / h));
-    w *= scale; h *= scale;
+    w *= scale;
+    h *= scale;
   }
 
   let x = opts.x ?? context.contentLeft;
   const yTop = opts.y ?? context.cursorY;
 
   const align = opts.align ?? "left";
-  if (align === "center") x = context.contentLeft + (context.contentWidth - w) / 2;
+  if (align === "center")
+    x = context.contentLeft + (context.contentWidth - w) / 2;
   else if (align === "right") x = context.contentRight - w;
 
   context.ensureSpace({ minHeight: h });
@@ -57,14 +66,23 @@ export function drawImageContained(
   image: ImageObject,
   maxWidth = context.contentWidth,
   maxHeight = context.bottom - context.cursorY,
-  align: "left" | "center" | "right" = "left"
+  align: "left" | "center" | "right" = "left",
 ): Rect {
-  return drawImage(context, image, { maxWidth, maxHeight, fit: "contain", align });
+  return drawImage(context, image, {
+    maxWidth,
+    maxHeight,
+    fit: "contain",
+    align,
+  });
 }
 
 /**
  * DPI helper for estimating image physical size
  */
-export function estimateImagePhysicalSizePts(pxW: number, pxH: number, dpi = 72) {
+export function estimateImagePhysicalSizePts(
+  pxW: number,
+  pxH: number,
+  dpi = 72,
+) {
   return { width: (pxW / dpi) * 72, height: (pxH / dpi) * 72 };
 }
