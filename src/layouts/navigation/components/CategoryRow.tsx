@@ -15,7 +15,7 @@ export interface Props {
   select: (c: Category) => void;
 }
 
-const CategoryRowBase = (
+export const CategoryRowBase = (
   { styles, node, depth, active, expanded, focused, toggle, select }: Props,
   ref: React.Ref<HTMLButtonElement>,
 ) => {

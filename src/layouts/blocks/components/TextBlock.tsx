@@ -9,7 +9,7 @@ interface Props {
   textData: TextData;
 }
 
-const TextBlock: React.FC<Props> = ({ index, styles, textData }) => {
+export const TextBlock: React.FC<Props> = ({ index, styles, textData }) => {
   // Determine spacing
   const spacingKey = (textData.spacing ??
     "medium") as keyof typeof SPACING_CLASSES;

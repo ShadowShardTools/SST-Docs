@@ -25,7 +25,7 @@ export interface Props {
   isSearchOpen?: boolean;
 }
 
-const Navigation: React.FC<Props> = ({
+export const Navigation: React.FC<Props> = ({
   styles,
   tree,
   standaloneDocs = [],

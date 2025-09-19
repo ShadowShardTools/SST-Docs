@@ -3,7 +3,18 @@
  * (public API; delegates internals to helpers)
  * -------------------------------------------------------------------------- */
 
-import { PDFDocument, type PDFPage, rgb } from "pdf-lib";
+import {
+  PDFDocument,
+  type PDFPage,
+  rgb,
+  pushGraphicsState,
+  popGraphicsState,
+  clip,
+  endPath,
+  moveTo,
+  lineTo,
+} from "pdf-lib";
+
 import { clamp } from "./utilities";
 import {
   drawImage,
@@ -265,6 +276,38 @@ export class PdfCanvas {
       fn();
     } finally {
       this.regionStack.pop();
+    }
+  }
+
+  public withClipRect(
+    rect: { x: number; yTop: number; width: number; height: number },
+    fn: () => void,
+  ) {
+    const page = this.page; // current PDFPage
+    const { x, yTop, width, height } = rect;
+
+    // Convert to page coords: our canvas Y is top-down; PDF is bottom-up
+    const pageX = x;
+    const pageY = this.page.getHeight() - (yTop + height); // invert Y
+
+    page.pushOperators(pushGraphicsState());
+
+    // Define clipping path (rectangle)
+    // Build path clockwise: (x,y), (x+w,y), (x+w, y+h), (x, y+h), then clip
+    page.pushOperators(
+      moveTo(pageX, pageY),
+      lineTo(pageX + width, pageY),
+      lineTo(pageX + width, pageY + height),
+      lineTo(pageX, pageY + height),
+      lineTo(pageX, pageY),
+      clip(), // set clipping path
+      endPath(),
+    );
+
+    try {
+      fn();
+    } finally {
+      page.pushOperators(popGraphicsState());
     }
   }
 

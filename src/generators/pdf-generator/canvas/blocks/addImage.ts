@@ -2,9 +2,9 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import appRoot from "app-root-path";
-import type { RenderContext } from "../types/RenderContext";
-import type { ImageData } from "../../../layouts/blocks/types";
-import { Config } from "../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
+import type { ImageData } from "../../../../layouts/blocks/types";
+import { Config } from "../../../../configs/pdf-config";
 
 /* ------------------------------ helpers ---------------------------------- */
 
@@ -61,9 +61,9 @@ export async function addImage(
   data: ImageData,
 ): Promise<void> {
   const image = data.image;
-  if (!image?.src) return; // ← narrow once
-  const src = image.src;
+  if (!image?.src) return;
 
+  const src = image.src;
   const alignment: "left" | "center" | "right" =
     (data.alignment as any) ?? "center";
   const scale = clampScale(data.scale);
@@ -76,12 +76,21 @@ export async function addImage(
     const pdfImg = await embedImageFromFile(ctx, absPath);
 
     const contentW = ctx.canvas.contentWidth;
+    const contentLeft = ctx.canvas.contentLeft; // ← need the left edge of the text column
     const drawW = Math.max(1, Math.min(contentW, Math.round(contentW * scale)));
-
     const aspect = (pdfImg as any).height / (pdfImg as any).width;
     const drawH = drawW * aspect;
 
-    const caption = (image.alt ?? "").trim(); // ← use `image`, not `data.image`
+    // Compute the image/caption box X to match image alignment
+    const boxX =
+      alignment === "left"
+        ? contentLeft
+        : alignment === "center"
+          ? contentLeft + (contentW - drawW) / 2
+          : contentLeft + (contentW - drawW);
+
+    // Caption metrics
+    const caption = (image.alt ?? "").trim();
     const capSize = Config.FONT_SIZES.alternative ?? 10;
     const capColor = Config.COLORS.alternativeText ?? Config.COLORS.text;
     const capGap = caption ? 6 : 0;
@@ -91,12 +100,13 @@ export async function addImage(
       const m = ctx.canvas.measureAndWrap(caption, {
         font: ctx.fonts.regular,
         size: capSize,
-        maxWidth: drawW,
+        maxWidth: drawW, // measure within the image box width
         lineHeight: 1 + 2 / capSize,
       });
       capH = m.totalHeight;
     }
 
+    // Reserve block space (image + optional caption)
     ctx.canvas.ensureBlock({
       minHeight: spacingTop + drawH + capGap + capH + spacingBottom,
       keepTogether: true,
@@ -104,20 +114,30 @@ export async function addImage(
 
     ctx.canvas.moveY(spacingTop);
 
+    // Draw image aligned via explicit x so it matches our computed box
     ctx.canvas.drawImage(pdfImg as any, {
+      x: boxX, // <— anchor to left of image box
       width: drawW,
       height: undefined, // preserve aspect
-      align: alignment,
+      // omit align when using explicit x
     });
 
     if (caption) {
       ctx.canvas.moveY(capGap);
+
+      // Render caption inside the same box:
+      // - shift text start with indent = boxX - contentLeft
+      // - maxWidth = drawW (box width)
+      // - align center inside that box
+      const indent = Math.max(0, Math.round(boxX - contentLeft));
+
       ctx.canvas.drawText(caption, {
         font: ctx.fonts.regular,
         size: capSize,
         color: capColor,
-        align: alignment === "center" ? "center" : "left",
+        align: "center",
         maxWidth: drawW,
+        indent, // <— position under image box
         spacingBefore: 0,
         spacingAfter: 0,
         lineHeight: 1 + 2 / capSize,

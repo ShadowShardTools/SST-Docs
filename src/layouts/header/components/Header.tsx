@@ -3,11 +3,13 @@ import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import type { Version } from "../../render/types/Version";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
-import GithubButtonLink from "../../cta/components/GithubLink";
 import MobileMenu from "./MobileMenu";
-import SearchBar from "../../cta/components/SearchBar";
-import ThemeButton from "../../cta/components/ThemeButton";
-import VersionSelector from "../../cta/components/VersionSelector";
+import {
+  SearchBar,
+  VersionSelector,
+  ThemeButton,
+  GithubButtonLink,
+} from "../../cta/components";
 
 interface HeaderProps {
   styles: StyleTheme;
@@ -20,7 +22,7 @@ interface HeaderProps {
   onMobileNavToggle: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
+export const Header: React.FC<HeaderProps> = ({
   styles,
   versions,
   currentVersion,

@@ -14,7 +14,7 @@ export interface Props {
 }
 
 // forwardRef + memo  ➔ rerenders only when props really change
-const DocRowBase = (
+export const DocRowBase = (
   { styles, doc, depth, active, focused, select }: Props,
   ref: React.Ref<HTMLLIElement>,
 ) => {

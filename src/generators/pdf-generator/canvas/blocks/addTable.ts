@@ -1,7 +1,7 @@
-import { Config } from "../../../configs/pdf-config";
-import type { TableData } from "../../../layouts/blocks/types";
-import type { TableCell } from "../../../layouts/blocks/types/TableData";
-import type { RenderContext } from "../types/RenderContext";
+import { Config } from "../../../../configs/pdf-config";
+import type { TableData } from "../../../../layouts/blocks/types";
+import type { TableCell } from "../../../../layouts/blocks/types/TableData";
+import type { RenderContext } from "../../types/RenderContext";
 
 export async function addTable(ctx: RenderContext, table: TableData) {
   const rows = table?.data ?? [];

@@ -5,7 +5,7 @@ interface Props {
   styles: StyleTheme;
 }
 
-const Logo: React.FC<Props> = ({ styles }) => (
+export const Logo: React.FC<Props> = ({ styles }) => (
   <div className="flex items-center space-x-2 ml-4 select-none">
     {stylesConfig.logo.image && (
       <img

@@ -12,13 +12,19 @@ interface Props {
   imageGridData: ImageGridData;
 }
 
-const ImageGridBlock: React.FC<Props> = ({ index, styles, imageGridData }) => {
+export const ImageGridBlock: React.FC<Props> = ({
+  index,
+  styles,
+  imageGridData,
+}) => {
   const isMobile = useMobileDevice();
   const scale = validateScale(imageGridData.scale);
   const alignment = imageGridData.alignment ?? "center";
 
   const baseClasses = `${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`;
-  const containerAlignment = isMobile ? "w-full" : ALIGNMENT_CLASSES[alignment].container;
+  const containerAlignment = isMobile
+    ? "w-full"
+    : ALIGNMENT_CLASSES[alignment].container;
 
   if (!imageGridData.images?.length) return null;
 
@@ -26,7 +32,9 @@ const ImageGridBlock: React.FC<Props> = ({ index, styles, imageGridData }) => {
 
   return (
     <div key={index} className={baseClasses}>
-      <div className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignment}`}>
+      <div
+        className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignment}`}
+      >
         {imageGridData.images.map((img, i) => {
           const src = img?.src ? withBasePath(img.src) : "";
           return (
@@ -36,11 +44,21 @@ const ImageGridBlock: React.FC<Props> = ({ index, styles, imageGridData }) => {
               style={{
                 transform: cellScale !== 1 ? `scale(${cellScale})` : undefined,
                 transformOrigin:
-                  alignment === "left" ? "left" : alignment === "right" ? "right" : "center",
+                  alignment === "left"
+                    ? "left"
+                    : alignment === "right"
+                      ? "right"
+                      : "center",
               }}
             >
-              <img src={src} alt={img.alt || `Image ${i + 1}`} className="w-full h-auto" />
-              {img.alt && <p className={`mt-2 ${styles.text.alternative}`}>{img.alt}</p>}
+              <img
+                src={src}
+                alt={img.alt || `Image ${i + 1}`}
+                className="w-full h-auto"
+              />
+              {img.alt && (
+                <p className={`mt-2 ${styles.text.alternative}`}>{img.alt}</p>
+              )}
             </div>
           );
         })}

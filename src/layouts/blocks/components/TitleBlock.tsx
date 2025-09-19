@@ -12,7 +12,7 @@ interface Props {
   currentPath?: string;
 }
 
-const TitleBlock: React.FC<Props> = ({
+export const TitleBlock: React.FC<Props> = ({
   index,
   styles,
   titleData,

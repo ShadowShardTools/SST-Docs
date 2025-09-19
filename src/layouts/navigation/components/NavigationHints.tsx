@@ -5,7 +5,7 @@ export interface Props {
   styles: StyleTheme;
 }
 
-const NavigationHints: React.FC<Props> = ({ styles }) => {
+export const NavigationHints: React.FC<Props> = ({ styles }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (

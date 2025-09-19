@@ -61,7 +61,7 @@ interface Props {
   chartData?: ChartData;
 }
 
-const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
+export const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
   if (!chartData || !chartData.type || !(chartData.type in chartMap))
     return null;
 

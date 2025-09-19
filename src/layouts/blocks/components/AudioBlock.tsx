@@ -1,16 +1,16 @@
 import React from "react";
 import { Play, Pause } from "lucide-react";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
-import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { formatTime, withBasePath } from "../utilities";
 import type { AudioData } from "../types";
+import { useAudioPlayer } from "../hooks";
 
 interface Props {
   styles: StyleTheme;
   audioData: AudioData;
 }
 
-const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
+export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
   const src = audioData ? withBasePath(audioData.src) : "";
 
   const { audioRef, isPlaying, duration, current, togglePlay, handleSeek } =

@@ -1,11 +1,11 @@
 import { rgb } from "pdf-lib";
-import { Config } from "../../../configs/pdf-config";
-import type { RenderContext } from "../types/RenderContext";
-import type { CodeData, CodeSection } from "../../../layouts/blocks/types";
+import { Config } from "../../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
+import type { CodeData, CodeSection } from "../../../../layouts/blocks/types";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
-} from "../../../configs/code-languages-config";
+} from "../../../../configs/code-languages-config";
 
 /* ------------------------------- helpers ---------------------------------- */
 

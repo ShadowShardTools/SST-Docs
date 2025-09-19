@@ -13,7 +13,7 @@ interface VersionSelectorProps {
   loading: boolean;
 }
 
-const VersionSelector = memo<VersionSelectorProps>(
+export const VersionSelector = memo<VersionSelectorProps>(
   ({ styles, versions, currentVersion, onVersionChange, loading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);

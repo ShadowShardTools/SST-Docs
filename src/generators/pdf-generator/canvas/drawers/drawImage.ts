@@ -20,7 +20,13 @@ export function drawImage(
   let w = opts.width ?? Math.min(naturalW, maxW);
   let h = opts.height ?? (naturalH * w) / naturalW;
 
-  // object-fit like behavior
+  // Apply scaling if specified
+  if (opts.scale) {
+    w *= opts.scale;
+    h *= opts.scale;
+  }
+
+  // Apply fit behavior
   if (fit === "contain") {
     const scale = Math.min(maxW / w, maxH / h, 1);
     w *= scale;
@@ -35,27 +41,48 @@ export function drawImage(
     h *= scale;
   }
 
+  // Position calculation
   let x = opts.x ?? context.contentLeft;
-  const yTop = opts.y ?? context.cursorY;
 
-  const align = opts.align ?? "left";
-  if (align === "center")
-    x = context.contentLeft + (context.contentWidth - w) / 2;
-  else if (align === "right") x = context.contentRight - w;
+  // Apply alignment if no explicit x position given
+  if (opts.x === undefined) {
+    const align = opts.align ?? "left";
+    if (align === "center") {
+      x = context.contentLeft + (context.contentWidth - w) / 2;
+    } else if (align === "right") {
+      x = context.contentRight - w;
+    }
+  }
 
+  // Add spacing before if specified and using current cursor position
+  if (opts.spacingBefore && opts.y === undefined) {
+    context.moveY(opts.spacingBefore);
+  }
+
+  // Ensure we have enough space for the image
+  const finalY = opts.y ?? context.cursorY;
   context.ensureSpace({ minHeight: h });
 
+  // Draw the image
   context.page.drawImage(image as any, {
     x,
-    y: context.toPdfY(yTop + h),
+    y: context.toPdfY(finalY + h), // Convert to PDF coordinates
     width: w,
     height: h,
   });
 
-  // advance cursor only if we drew at current cursor position
-  if (opts.y === undefined) context.moveY(h);
+  // Handle caption if provided
+  if (opts.y === undefined) {
+    // Advance cursor only if we drew at current cursor position
+    context.moveY(h);
+  }
 
-  return { x, y: yTop, width: w, height: h };
+  // Add spacing after if specified and using current cursor position
+  if (opts.spacingAfter && opts.y === undefined) {
+    context.moveY(opts.spacingAfter);
+  }
+
+  return { x, y: finalY, width: w, height: h };
 }
 
 /**
@@ -71,7 +98,6 @@ export function drawImageContained(
   return drawImage(context, image, {
     maxWidth,
     maxHeight,
-    fit: "contain",
     align,
   });
 }

@@ -23,7 +23,7 @@ interface Props {
   imageCarouselData: ImageCarouselData;
 }
 
-const ImageCarouselBlock: React.FC<Props> = ({
+export const ImageCarouselBlock: React.FC<Props> = ({
   index,
   styles,
   imageCarouselData,
@@ -48,15 +48,25 @@ const ImageCarouselBlock: React.FC<Props> = ({
   return (
     <div key={index} className={baseClasses}>
       <div className={containerAlignment} style={{ width }}>
-        <Suspense fallback={<div className="h-64 bg-gray-200 animate-pulse rounded" />}>
+        <Suspense
+          fallback={<div className="h-64 bg-gray-200 animate-pulse rounded" />}
+        >
           <Splide options={carouselOptions}>
             {imageCarouselData.images.map((img, i) => {
               const src = img?.src ? withBasePath(img.src) : "";
               return (
                 <SplideSlide key={i}>
                   <div className="flex flex-col items-center">
-                    <img src={src} alt={img.alt || `Image ${i + 1}`} className="w-full h-auto" />
-                    {img.alt && <p className={`mt-2 ${styles.text.alternative}`}>{img.alt}</p>}
+                    <img
+                      src={src}
+                      alt={img.alt || `Image ${i + 1}`}
+                      className="w-full h-auto"
+                    />
+                    {img.alt && (
+                      <p className={`mt-2 ${styles.text.alternative}`}>
+                        {img.alt}
+                      </p>
+                    )}
                   </div>
                 </SplideSlide>
               );

@@ -1,17 +1,20 @@
 import type { Content } from "../../../layouts/render/types";
-import { addAudio } from "../blocks/addAudio";
-import { addChart } from "../blocks/addChart";
-import { addCode } from "../blocks/addCode";
-import { addDivider } from "../blocks/addDivider";
-import { addImage } from "../blocks/addImage";
-import { addList } from "../blocks/addList";
-import { addMath } from "../blocks/addMath";
-import { addMessageBox } from "../blocks/addMessageBox";
-import { addTable } from "../blocks/addTable";
-import { addText } from "../blocks/addText";
-import { addTitle } from "../blocks/addTitle";
-import { addUnknown } from "../blocks/addUnknown";
-import { addYoutube } from "../blocks/addYoutube";
+import {
+  addTitle,
+  addText,
+  addList,
+  addTable,
+  addDivider,
+  addImage,
+  addYoutube,
+  addMath,
+  addAudio,
+  addChart,
+  addUnknown,
+} from "../canvas/blocks";
+import { addCode } from "../canvas/blocks/addCode";
+import { addImageCompare } from "../canvas/blocks/addImageCompare";
+import { addMessageBox } from "../canvas/blocks/addMessageBox";
 import type { RenderContext } from "../types/RenderContext";
 
 export async function processContent(ctx: RenderContext, content: Content[]) {
@@ -43,6 +46,10 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
           break;
         case "image":
           if (item.imageData) await addImage(ctx, item.imageData);
+          break;
+        case "imageCompare":
+          if (item.imageCompareData)
+            await addImageCompare(ctx, item.imageCompareData);
           break;
         case "youtube":
           if (item.youtubeData) await addYoutube(ctx, item.youtubeData);

@@ -1,10 +1,14 @@
 export interface DrawImageOptions {
   x?: number;
   y?: number;
+  scale?: number;
   width?: number;
   height?: number;
-  fit?: "contain" | "cover" | "scale-down" | "none";
   maxWidth?: number;
   maxHeight?: number;
+  fit?: "contain" | "cover" | "scale-down" | "none";
   align?: "left" | "center" | "right";
+  spacingBefore?: number;
+  spacingAfter?: number;
+  keepTogether?: boolean;
 }

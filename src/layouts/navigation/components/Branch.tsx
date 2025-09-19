@@ -17,7 +17,7 @@ export interface Props {
   styles: StyleTheme;
 }
 
-const Branch: React.FC<Props> = ({
+export const Branch: React.FC<Props> = ({
   node,
   depth,
   open,

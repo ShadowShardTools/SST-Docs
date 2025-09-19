@@ -48,7 +48,7 @@ interface Props {
   onLanguageChange?: (language: string) => void;
 }
 
-const CodeBlock: React.FC<Props> = ({
+export const CodeBlock: React.FC<Props> = ({
   index,
   styles,
   codeData,

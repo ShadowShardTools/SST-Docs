@@ -6,7 +6,7 @@ interface ErrorMessageProps {
   onRetry?: () => void;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = memo(
+export const ErrorMessage: React.FC<ErrorMessageProps> = memo(
   ({ message, onRetry }) => (
     <div
       className="flex items-center justify-center p-8"

@@ -12,14 +12,16 @@ interface Props {
   imageData: ImageData;
 }
 
-const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
+export const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
   const isMobile = useMobileDevice();
   const scale = validateScale(imageData.scale);
   const alignment = imageData.alignment ?? "center";
   const width = getResponsiveWidth(scale, isMobile);
 
   const baseClasses = `${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`;
-  const containerAlignment = isMobile ? "w-full" : ALIGNMENT_CLASSES[alignment].container;
+  const containerAlignment = isMobile
+    ? "w-full"
+    : ALIGNMENT_CLASSES[alignment].container;
 
   const src = imageData.image ? withBasePath(imageData.image.src) : "";
 
@@ -28,9 +30,15 @@ const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
       <div className={containerAlignment} style={{ width }}>
         {imageData.image && (
           <>
-            <img src={src} alt={imageData.image.alt || "Image"} className="w-full h-auto" />
+            <img
+              src={src}
+              alt={imageData.image.alt || "Image"}
+              className="w-full h-auto"
+            />
             {imageData.image.alt && (
-              <p className={`mt-2 ${styles.text.alternative}`}>{imageData.image.alt}</p>
+              <p className={`mt-2 ${styles.text.alternative}`}>
+                {imageData.image.alt}
+              </p>
             )}
           </>
         )}

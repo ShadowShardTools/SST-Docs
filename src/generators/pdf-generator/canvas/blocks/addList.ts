@@ -1,6 +1,6 @@
-import { Config } from "../../../configs/pdf-config";
-import type { RenderContext } from "../../../generators/pdf-generator/types/RenderContext";
-import type { ListData } from "../../../layouts/blocks/types";
+import { Config } from "../../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
+import type { ListData } from "../../../../layouts/blocks/types";
 
 export async function addList(ctx: RenderContext, data: ListData) {
   const items = data.items ?? [];

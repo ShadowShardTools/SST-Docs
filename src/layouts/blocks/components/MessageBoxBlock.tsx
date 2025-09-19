@@ -15,7 +15,7 @@ interface Props {
   messageBoxData: MessageBoxData;
 }
 
-const MessageBoxBlock: React.FC<Props> = ({
+export const MessageBoxBlock: React.FC<Props> = ({
   index,
   styles,
   messageBoxData,

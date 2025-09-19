@@ -1,11 +1,11 @@
-import React, { lazy, useMemo } from "react";
+import React, { useMemo } from "react";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { findPath } from "../../navigation/utilities";
 import { useHashScroll } from "../hooks";
 import ContentBlockRenderer from "./ContentBlockRenderer";
 import type { Category } from "../types";
 import type { TitleData } from "../../blocks/types";
-const TitleBlock = lazy(() => import("../../blocks/components/TitleBlock"));
+import { TitleBlock } from "../../blocks/components";
 
 interface Props {
   styles: StyleTheme;
@@ -15,7 +15,7 @@ interface Props {
   tree: Category[];
 }
 
-const ContentRendererBase: React.FC<Props> = ({
+export const ContentRendererBase: React.FC<Props> = ({
   styles,
   content,
   title,

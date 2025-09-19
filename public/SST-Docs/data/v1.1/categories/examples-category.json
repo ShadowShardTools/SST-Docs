@@ -7,7 +7,8 @@
       "type": "text",
       "textData": {
         "text": "Categories are separate pages in their own right and can have all the content that you have in regular documentation pages. This category contains a set of examples with different types of content blocks."
-      }
+      },
+      "spacing": "small"
     }
   ],
   "docs": [

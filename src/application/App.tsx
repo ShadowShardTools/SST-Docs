@@ -1,7 +1,7 @@
 // src/App.tsx
 import { Routes, Route, HashRouter } from "react-router-dom";
-import MainRenderer from "../layouts/render/components/MainRenderer";
 import { useThemeStyles } from "./hooks";
+import { MainRenderer } from "../layouts/render/components";
 
 function App() {
   const styles = useThemeStyles();

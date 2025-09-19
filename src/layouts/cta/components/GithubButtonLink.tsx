@@ -1,6 +1,8 @@
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 
-const GithubButtonLink: React.FC<{ styles: StyleTheme }> = ({ styles }) => (
+export const GithubButtonLink: React.FC<{ styles: StyleTheme }> = ({
+  styles,
+}) => (
   <a
     href="https://github.com/ShadowShardTools/SST-Docs"
     target="_blank"

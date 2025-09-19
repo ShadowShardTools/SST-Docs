@@ -1,8 +1,8 @@
 // src/generators/pdf-generator/blocks/addChart.ts
-import { Config } from "../../../configs/pdf-config";
-import type { RenderContext } from "../types/RenderContext";
-import type { ChartData } from "../../../layouts/blocks/types";
-import { renderChartPng } from "../graphics/renderChartPng";
+import { Config } from "../../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
+import type { ChartData } from "../../../../layouts/blocks/types";
+import { renderChartPng } from "../../utilities";
 import {
   Chart as ChartJS,
   BarElement,
@@ -18,6 +18,7 @@ import {
   Legend,
   type ChartConfiguration,
 } from "chart.js";
+import { clamp } from "../utilities";
 
 // Register Chart.js components once.
 ChartJS.register(
@@ -37,8 +38,6 @@ ChartJS.register(
 type ChartOptions = ChartConfiguration;
 type CacheEntry = { image: any; width: number; height: number };
 
-const clamp = (n: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, n));
 const pickType = (type?: string) =>
   ([
     "bar",
@@ -95,10 +94,10 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
 
   if (!type || !datasets?.length) return;
 
-  // Layout box (use PdfCanvas geometry)
   const contentW = ctx.canvas.contentWidth;
+  const spacingAfter = Config.SPACING.medium;
 
-  // Scale and placement
+  // Scale and sizing
   const scale = clamp(chartScale * 1.25, 0.5, 1);
   const drawW = Math.round(contentW * scale);
   const baseH = Math.max(180, Math.round(drawW * 0.56));
@@ -168,40 +167,32 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
     h: drawH,
   });
 
-  const gapBelow = Config.SPACING.medium;
-
-  // Reserve space (keep chart together on a page)
-  ctx.canvas.ensureBlock({ minHeight: drawH + gapBelow, keepTogether: true });
-  const top = ctx.canvas.cursorY;
-
   try {
     const entry = await renderAndCacheChart(ctx, key, config, drawW, drawH);
 
+    // Use drawImage with proper options
     ctx.canvas.drawImage(entry.image, {
-      y: top,
       width: entry.width,
       height: entry.height,
       align: alignment as "left" | "center" | "right",
+      spacingAfter,
+      keepTogether: true,
     });
-
-    ctx.canvas.cursorY = top + entry.height;
-    ctx.canvas.moveY(gapBelow);
-  } catch {
-    // Fallback: simple text placeholder (still consumes reserved space)
-    ctx.canvas.cursorY = top;
+  } catch (error) {
+    // Fallback: simple text placeholder
     const placeholder = title
       ? `[Chart: ${title}]`
       : "[Chart could not be rendered]";
+
     ctx.canvas.drawText(placeholder, {
       font: ctx.fonts.regular,
       size: Config.FONT_SIZES.body,
       color: Config.COLORS.text,
       align: "left",
       maxWidth: ctx.canvas.contentWidth,
-      spacingBefore: 0,
-      spacingAfter: 0,
+      spacingAfter,
     });
-    ctx.canvas.cursorY = top + drawH;
-    ctx.canvas.moveY(gapBelow);
+
+    console.error("Chart rendering error:", error);
   }
 }

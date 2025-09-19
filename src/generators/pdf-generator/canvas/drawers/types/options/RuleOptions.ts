@@ -1,3 +1,4 @@
+// types.ts (or wherever RuleOptions lives)
 import type { rgb } from "pdf-lib";
 
 export type RuleOptions = {
@@ -7,4 +8,10 @@ export type RuleOptions = {
   spacingAfter?: number;
   width?: number; // default contentWidth
   align?: "left" | "center" | "right";
+  orientation?: "horizontal" | "vertical"; // horizontal = default
+  length?: number; // required for vertical
+  x?: number; // optional override for vertical
+  yTop?: number; // optional override for vertical
+  /** If true, draw rule but do not advance cursor or reserve space */
+  inline?: boolean;
 };

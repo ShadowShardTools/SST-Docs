@@ -27,7 +27,7 @@ interface Props {
   onSelect: (item: DocItem) => void;
 }
 
-const SearchModal: React.FC<Props> = ({
+export const SearchModal: React.FC<Props> = ({
   styles,
   isOpen,
   onClose,

@@ -8,7 +8,11 @@ interface Props {
   dividerData: DividerData;
 }
 
-const DividerBlock: React.FC<Props> = ({ index, styles, dividerData }) => {
+export const DividerBlock: React.FC<Props> = ({
+  index,
+  styles,
+  dividerData,
+}) => {
   const getSpacingClass = (): string => {
     switch (dividerData.spacing) {
       case "small":

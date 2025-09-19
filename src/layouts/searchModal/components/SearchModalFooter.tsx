@@ -5,7 +5,9 @@ interface SearchModalFooterProps {
   styles: StyleTheme;
 }
 
-const SearchModalFooter: React.FC<SearchModalFooterProps> = ({ styles }) => {
+export const SearchModalFooter: React.FC<SearchModalFooterProps> = ({
+  styles,
+}) => {
   return (
     <div
       className={`border-t px-4 py-2 flex justify-between items-center ${styles.searchModal.footer} ${styles.searchModal.borders}`}

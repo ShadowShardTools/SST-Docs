@@ -1,6 +1,6 @@
-import type { TextData } from "../../../layouts/blocks/types";
-import { Config } from "../../../configs/pdf-config";
-import type { RenderContext } from "../types/RenderContext";
+import type { TextData } from "../../../../layouts/blocks/types";
+import { Config } from "../../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
 
 export async function addText(ctx: RenderContext, data: TextData) {
   if (!data?.text) return;

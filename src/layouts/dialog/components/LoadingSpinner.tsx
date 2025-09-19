@@ -7,7 +7,7 @@ interface LoadingSpinnerProps {
   colorClass?: string;
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = memo(
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = memo(
   ({ message = "Loading...", size = 5, colorClass = "text-blue-500" }) => (
     <div
       className="flex items-center justify-center p-8"

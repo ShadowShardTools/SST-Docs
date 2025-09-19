@@ -1,6 +1,6 @@
-import { Config } from "../../../configs/pdf-config";
-import type { RenderContext } from "../types/RenderContext";
-import type { DividerData } from "../../../layouts/blocks/types";
+import { Config } from "../../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
+import type { DividerData } from "../../../../layouts/blocks/types";
 
 /* ------------------------------- spacing ---------------------------------- */
 function spacingFor(data: DividerData) {

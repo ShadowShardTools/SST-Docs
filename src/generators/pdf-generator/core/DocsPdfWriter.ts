@@ -1,23 +1,22 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
-import type { Category, Version, DocItem } from "../../../layouts/render/types";
 import { Config } from "../../../configs/pdf-config";
+import type { Version, Category, DocItem } from "../../../layouts/render/types";
+import { addTitle, addDivider, addText } from "../canvas/blocks";
 import { PdfCanvas } from "../canvas";
-import { loadLucideIcons } from "../utilities/loadLucideIcons";
-import type { RenderContext } from "../types/RenderContext";
-import { addDivider } from "../blocks/addDivider";
-import { addText } from "../blocks/addText";
-import { addTitle } from "../blocks/addTitle";
-import { processCategory } from "./processCategory";
 import type { Fonts, PageConfig } from "../canvas/types";
+import type { RenderContext } from "../types/RenderContext";
+import { loadLucideIcons } from "../utilities";
+import { processCategory } from "./processCategory";
+import { processContent } from "./processContent";
 
-export class PDFGenerator {
+export class DocsPdfWriter {
   private doc!: PDFDocument;
   private canvas!: PdfCanvas;
   private fonts!: Fonts;
   private ctx!: RenderContext;
   private pageConfig!: PageConfig;
 
-  private async initContext() {
+  async init(): Promise<void> {
     this.doc = await PDFDocument.create();
 
     // Embed standard fonts
@@ -49,58 +48,38 @@ export class PDFGenerator {
     this.ctx = { doc: this.doc, canvas: this.canvas, fonts: this.fonts, icons };
   }
 
-  async generatePDF(
+  async generate(
     version: Version,
     tree: Category[],
     standaloneDocs: DocItem[],
     outputPath: string,
   ): Promise<void> {
-    await this.initContext();
+    // Cover / header
+    addTitle(this.ctx, {
+      text: `${version.label} — ${version.version}`,
+      level: 1,
+      spacing: "small",
+    });
+    addDivider(this.ctx, { type: "line", spacing: "medium" });
 
-    // Title page
-    await addTitle(this.ctx, { text: "SST Documentation", level: 1 });
-    await addText(this.ctx, { text: `Version: ${version.version}` });
-    await addDivider(this.ctx, { type: "line", spacing: "medium" });
-
-    // Simple TOC
-    await addTitle(this.ctx, { text: "Table of Contents", level: 2 });
-    for (const category of tree) {
-      await addText(this.ctx, { text: `- ${category.title}` });
-      if (category.children?.length) {
-        for (const child of category.children) {
-          await addText(this.ctx, { text: `  - ${child.title}` });
-        }
-      }
-    }
-    if (standaloneDocs.length > 0) {
-      await addText(this.ctx, { text: "- Additional Documentation" });
-      for (const d of standaloneDocs) {
-        await addText(this.ctx, { text: `  - ${d.title}` });
-      }
-    }
-    await addDivider(this.ctx, { type: "line", spacing: "medium" });
-
-    // Body
+    // Render categories
     for (const category of tree) {
       await processCategory(this.ctx, category);
     }
 
     // Standalone docs
-    if (standaloneDocs.length > 0) {
-      await addTitle(this.ctx, { text: "Additional Documentation", level: 1 });
-      const { processContent } = await import("./processContent");
+    if (standaloneDocs?.length) {
+      addTitle(this.ctx, { text: "Standalone Documents", level: 1 });
       for (const doc of standaloneDocs) {
-        await addTitle(this.ctx, { text: doc.title, level: 2 });
-        if (doc.description) {
-          await addText(this.ctx, { text: doc.description });
-        }
+        addTitle(this.ctx, { text: doc.title, level: 2 });
+        if (doc.description) addText(this.ctx, { text: doc.description });
         await processContent(this.ctx, doc.content);
       }
     }
 
     // Save
     const bytes = await this.doc.save();
-    const { default: fs } = await import("node:fs/promises");
+    const fs = await import("node:fs/promises");
     const path = await import("node:path");
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
     await fs.writeFile(outputPath, bytes);

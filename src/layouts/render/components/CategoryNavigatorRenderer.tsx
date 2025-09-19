@@ -9,7 +9,7 @@ interface Props {
   onSelect: (entry: DocItem | Category) => void;
 }
 
-const CategoryNavigatorRenderer: React.FC<Props> = ({
+export const CategoryNavigatorRenderer: React.FC<Props> = ({
   styles,
   category,
   onSelect,

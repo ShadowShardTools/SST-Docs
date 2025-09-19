@@ -13,7 +13,7 @@ interface Props {
   styles: StyleTheme; // <- to style caption like ImageBlock does
 }
 
-const YoutubeBlock: React.FC<Props> = ({ youtubeData, styles }) => {
+export const YoutubeBlock: React.FC<Props> = ({ youtubeData, styles }) => {
   const validatedScale = validateScale(youtubeData.scale);
   const widthPercent = `${Math.min(1, Math.max(0, validatedScale)) * 100}%`;
 

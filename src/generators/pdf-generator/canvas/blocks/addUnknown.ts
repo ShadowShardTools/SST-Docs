@@ -1,7 +1,7 @@
 // src/generators/pdf-generator/blocks/addUnknown.ts
 import { rgb } from "pdf-lib";
-import type { RenderContext } from "../types/RenderContext";
-import { Config } from "../../../configs/pdf-config";
+import type { RenderContext } from "../../types/RenderContext";
+import { Config } from "../../../../configs/pdf-config";
 
 export function addUnknown(ctx: RenderContext, type: string) {
   const pad = 12;

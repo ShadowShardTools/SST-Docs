@@ -8,7 +8,10 @@ interface SearchBarProps {
 }
 
 // Split the definition so we can attach a displayName
-const SearchBarComponent: React.FC<SearchBarProps> = ({ styles, onClick }) => (
+export const SearchBarComponent: React.FC<SearchBarProps> = ({
+  styles,
+  onClick,
+}) => (
   <button
     type="button"
     onClick={onClick}

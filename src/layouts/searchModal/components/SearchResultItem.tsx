@@ -12,7 +12,7 @@ interface Props {
   onClose: () => void;
 }
 
-const SearchResultItem: React.FC<Props> = ({
+export const SearchResultItem: React.FC<Props> = ({
   item,
   snippet,
   searchTerm,

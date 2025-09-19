@@ -26,6 +26,9 @@ export function createRuleContext(self: PdfCanvas): RuleDrawingContext {
     get cursorY() {
       return self.cursorY;
     },
+    get bottom() {
+      return self.bottom; // ← added
+    },
     toPdfY: (y: number) => self["_toPdfY"](y),
     ensureSpace: (opts: { minHeight: number }) => self.ensureSpace(opts),
     moveY: (dy: number) => self.moveY(dy),

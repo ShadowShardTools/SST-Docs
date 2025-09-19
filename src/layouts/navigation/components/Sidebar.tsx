@@ -13,7 +13,7 @@ export interface Props {
   isSearchOpen?: boolean;
 }
 
-const Sidebar: React.FC<Props> = ({
+export const Sidebar: React.FC<Props> = ({
   styles,
   tree,
   standaloneDocs = [],

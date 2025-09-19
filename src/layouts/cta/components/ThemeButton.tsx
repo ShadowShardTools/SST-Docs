@@ -1,14 +1,14 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
-import { useCurrentTheme } from "../../../application/hooks";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { useThemeToggle } from "../hooks/useThemeToggle";
+import { useCurrentTheme } from "../../../application/hooks";
 
 interface Props {
   styles: StyleTheme;
 }
 
-const ThemeButton: React.FC<Props> = ({ styles }) => {
+export const ThemeButton: React.FC<Props> = ({ styles }) => {
   const theme = useCurrentTheme();
   const toggleTheme = useThemeToggle();
 

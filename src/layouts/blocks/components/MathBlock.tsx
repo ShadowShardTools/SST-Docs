@@ -10,7 +10,7 @@ interface Props {
   mathData: MathData;
 }
 
-const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
+export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
   const expression = mathData.expression ?? "";
   const trimmedExpression = useMemo(() => expression.trim(), [expression]);
   const { html, isLoading, error } = useKaTeX(trimmedExpression);

@@ -1,23 +1,23 @@
 import { useCallback, useState, lazy, Suspense } from "react";
-import Header from "../../header/components/Header";
-import Sidebar from "../../navigation/components/Sidebar";
-import Navigation from "../../navigation/components/Navigation";
-import CategoryNavigatorRenderer from "./CategoryNavigatorRenderer";
-import SearchModal from "../../searchModal/components/SearchModal";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { useDocumentationData } from "../../../services/useDocumentationData";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
-import useDocNavigation from "../hooks/useDocNavigation";
-import useSearchLogic from "../hooks/useSearchLogic";
 import type { DocItem, Category } from "../types";
-import isCategory from "../utilities/isCategory";
-import useSearchOpener from "../hooks/useSearchOpener";
-import ErrorMessage from "../../dialog/components/ErrorMessage";
-import LoadingSpinner from "../../dialog/components/LoadingSpinner";
+import { useDocumentationData } from "../../../services";
+import {
+  useDocNavigation,
+  useMediaQuery,
+  useSearchLogic,
+  useSearchOpener,
+} from "../hooks";
+import { ErrorMessage, LoadingSpinner } from "../../dialog/components";
+import { Navigation, Sidebar } from "../../navigation/components";
+import { isCategory } from "../utilities";
+import { CategoryNavigatorRenderer } from ".";
+import { Header } from "../../header/components";
+import { SearchModal } from "../../searchModal/components";
 
 const ContentRenderer = lazy(() => import("./ContentRendererBase"));
 
-const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
+export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
