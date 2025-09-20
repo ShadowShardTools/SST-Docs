@@ -6,8 +6,8 @@ import type {
   LinkTextContext,
   ParagraphOptions,
   ImageDrawingContext,
-} from "./drawers/types";
-import type { PdfCanvas } from ".";
+} from "../drawers/types";
+import type { PdfCanvas } from "..";
 
 export function createRuleContext(self: PdfCanvas): RuleDrawingContext {
   return {

@@ -10,5 +10,4 @@ export interface DrawImageOptions {
   align?: "left" | "center" | "right";
   spacingBefore?: number;
   spacingAfter?: number;
-  keepTogether?: boolean;
 }

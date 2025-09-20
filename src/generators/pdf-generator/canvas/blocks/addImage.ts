@@ -1,60 +1,17 @@
 // src/generators/pdf-generator/blocks/addImage.ts
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
-import appRoot from "app-root-path";
 import type { RenderContext } from "../../types/RenderContext";
 import type { ImageData } from "../../../../layouts/blocks/types";
 import { Config } from "../../../../configs/pdf-config";
-
-/* ------------------------------ helpers ---------------------------------- */
-
-function clampScale(scale?: number): number {
-  if (typeof scale !== "number" || !Number.isFinite(scale)) return 1;
-  return Math.min(Math.max(scale, 0.1), 1);
-}
-
-function isHttpUrl(p: string) {
-  return /^https?:\/\//i.test(p);
-}
-
-function toAbs(raw: string): string {
-  const cleaned = String(raw).replace(/\\/g, "/").replace(/\/+$/, "");
-  return path.isAbsolute(cleaned)
-    ? cleaned
-    : path.resolve(cleaned.replace(/^\.\//, ""));
-}
-
-function getFsDataPathSync(): string {
-  return toAbs(path.join(appRoot.path, "public"));
-}
-
-function resolveImagePath(src: string): string {
-  if (isHttpUrl(src)) {
-    throw new Error("Remote URLs are not supported in PDF generation.");
-  }
-  let s = src.replace(/\\/g, "/");
-  if (s.startsWith("/")) s = s.slice(1); // keep path.join from discarding the root
-  const dataRootAbs = getFsDataPathSync();
-  return path.join(dataRootAbs, s);
-}
-
-async function embedImageFromFile(ctx: RenderContext, absPath: string) {
-  const buf = await fs.readFile(absPath);
-  const ext = path.extname(absPath).toLowerCase();
-
-  if (ext === ".png") return ctx.doc.embedPng(buf);
-  if (ext === ".jpg" || ext === ".jpeg") return ctx.doc.embedJpg(buf);
-
-  // Auto-detect by magic
-  if (buf.length > 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e)
-    return ctx.doc.embedPng(buf);
-  if (buf.length > 2 && buf[0] === 0xff && buf[1] === 0xd8)
-    return ctx.doc.embedJpg(buf);
-
-  throw new Error(`Unsupported image format: ${absPath}. Use PNG or JPG.`);
-}
-
-/* --------------------------------- API ----------------------------------- */
+import {
+  clampScale,
+  resolveImagePath,
+  embedImageFromFile,
+  getImageDimensions,
+  getImageBoxPosition,
+  measureCaptionHeight,
+  drawCenteredCaption,
+  handleImageError,
+} from "../utilities";
 
 export async function addImage(
   ctx: RenderContext,
@@ -72,22 +29,14 @@ export async function addImage(
   const spacingBottom = Config.SPACING.medium;
 
   try {
-    const absPath = resolveImagePath(src);
+    const absPath = resolveImagePath(src, ctx.fsDataPath);
     const pdfImg = await embedImageFromFile(ctx, absPath);
 
     const contentW = ctx.canvas.contentWidth;
-    const contentLeft = ctx.canvas.contentLeft; // ← need the left edge of the text column
-    const drawW = Math.max(1, Math.min(contentW, Math.round(contentW * scale)));
-    const aspect = (pdfImg as any).height / (pdfImg as any).width;
-    const drawH = drawW * aspect;
+    const contentLeft = ctx.canvas.contentLeft;
 
-    // Compute the image/caption box X to match image alignment
-    const boxX =
-      alignment === "left"
-        ? contentLeft
-        : alignment === "center"
-          ? contentLeft + (contentW - drawW) / 2
-          : contentLeft + (contentW - drawW);
+    const { drawW, drawH } = getImageDimensions(pdfImg, contentW, scale);
+    const boxX = getImageBoxPosition(contentLeft, contentW, drawW, alignment);
 
     // Caption metrics
     const caption = (image.alt ?? "").trim();
@@ -95,16 +44,7 @@ export async function addImage(
     const capColor = Config.COLORS.alternativeText ?? Config.COLORS.text;
     const capGap = caption ? 6 : 0;
 
-    let capH = 0;
-    if (caption) {
-      const m = ctx.canvas.measureAndWrap(caption, {
-        font: ctx.fonts.regular,
-        size: capSize,
-        maxWidth: drawW, // measure within the image box width
-        lineHeight: 1 + 2 / capSize,
-      });
-      capH = m.totalHeight;
-    }
+    const capH = measureCaptionHeight(ctx, caption, capSize, drawW);
 
     // Reserve block space (image + optional caption)
     ctx.canvas.ensureBlock({
@@ -116,45 +56,30 @@ export async function addImage(
 
     // Draw image aligned via explicit x so it matches our computed box
     ctx.canvas.drawImage(pdfImg as any, {
-      x: boxX, // <— anchor to left of image box
+      x: boxX,
       width: drawW,
       height: undefined, // preserve aspect
-      // omit align when using explicit x
     });
 
     if (caption) {
       ctx.canvas.moveY(capGap);
-
-      // Render caption inside the same box:
-      // - shift text start with indent = boxX - contentLeft
-      // - maxWidth = drawW (box width)
-      // - align center inside that box
-      const indent = Math.max(0, Math.round(boxX - contentLeft));
-
-      ctx.canvas.drawText(caption, {
-        font: ctx.fonts.regular,
+      drawCenteredCaption({
+        ctx,
+        text: caption,
+        boxX,
+        boxW: drawW,
         size: capSize,
         color: capColor,
-        align: "center",
-        maxWidth: drawW,
-        indent, // <— position under image box
-        spacingBefore: 0,
-        spacingAfter: 0,
-        lineHeight: 1 + 2 / capSize,
       });
     }
 
     ctx.canvas.moveY(spacingBottom);
   } catch (err) {
-    const msg = `[Image could not be embedded: ${src}]`;
-    ctx.canvas.drawText(msg, {
-      font: ctx.fonts.mono ?? ctx.fonts.regular,
-      size: Config.FONT_SIZES.body,
-      color: Config.COLORS.text,
-      align: "left",
-      maxWidth: ctx.canvas.contentWidth,
-      spacingBefore: spacingTop,
-      spacingAfter: spacingBottom,
-    });
+    handleImageError(
+      ctx,
+      `[Image could not be embedded: ${src}]`,
+      spacingTop,
+      spacingBottom,
+    );
   }
 }

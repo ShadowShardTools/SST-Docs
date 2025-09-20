@@ -1,20 +1,21 @@
 import type { Content } from "../../../layouts/render/types";
 import {
-  addTitle,
-  addText,
-  addList,
-  addTable,
-  addDivider,
-  addImage,
-  addYoutube,
-  addMath,
   addAudio,
   addChart,
+  addCode,
+  addDivider,
+  addImage,
+  addImageCompare,
+  addImageGrid,
+  addList,
+  addMath,
+  addMessageBox,
+  addTable,
+  addText,
+  addTitle,
   addUnknown,
+  addYoutube,
 } from "../canvas/blocks";
-import { addCode } from "../canvas/blocks/addCode";
-import { addImageCompare } from "../canvas/blocks/addImageCompare";
-import { addMessageBox } from "../canvas/blocks/addMessageBox";
 import type { RenderContext } from "../types/RenderContext";
 
 export async function processContent(ctx: RenderContext, content: Content[]) {
@@ -50,6 +51,13 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
         case "imageCompare":
           if (item.imageCompareData)
             await addImageCompare(ctx, item.imageCompareData);
+          break;
+        case "imageCarousel":
+          if (item.imageCarouselData)
+            await addImageGrid(ctx, item.imageCarouselData);
+          break;
+        case "imageGrid":
+          if (item.imageGridData) await addImageGrid(ctx, item.imageGridData);
           break;
         case "youtube":
           if (item.youtubeData) await addYoutube(ctx, item.youtubeData);

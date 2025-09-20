@@ -36,7 +36,8 @@ export class DocsPdfBuildOrchestrator {
           `📊 Loaded: ${data.items.length} items, ${data.tree.length} categories, ${data.standaloneDocs.length} standalone docs`,
         );
 
-        const writer = new DocsPdfWriter();
+        // Pass the data path to the writer
+        const writer = new DocsPdfWriter(this.dataPath);
         await writer.init();
         const outputPath = path.join(versionRoot, `${version.version}.pdf`);
         await writer.generate(

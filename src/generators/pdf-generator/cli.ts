@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import appRoot from "app-root-path";
 import { DocsPdfBuildOrchestrator } from "./core/DocsPdfBuildOrchestrator";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,7 +9,12 @@ const __filename = fileURLToPath(import.meta.url);
 function usage(): never {
   const me = path.relative(process.cwd(), __filename);
   console.log(
-    `SST Docs PDF\n\nUsage:\n node ${me} --fsDataPath <path> [--strict]\n node ${me} <positionalPath>\n\nOptions:\n --fsDataPath <path> Root data folder (defaults to ./public/SST-Docs/data)\n --strict Fail-fast on first error\n -h, --help Show help\n`,
+    `SST Docs PDF\n\nUsage:\n node ${me} --fsDataPath <path> [--strict]\n node ${me} <positionalPath>\n\nOptions:\n --fsDataPath <path> Root data folder (defaults to ${path.join(
+      appRoot.path,
+      "public",
+      "SST-Docs",
+      "data",
+    )})\n --strict Fail-fast on first error\n -h, --help Show help\n`,
   );
   process.exit(1);
 }
@@ -19,7 +25,15 @@ async function main() {
 
   const i = argv.indexOf("--fsDataPath");
   const positional = argv.find((a) => !a.startsWith("--"));
-  const fsDataPath = i !== -1 && argv[i + 1] ? argv[i + 1] : positional;
+
+  const defaultFsDataPath = path.join(
+    appRoot.path,
+    "public",
+    "SST-Docs",
+    "data",
+  );
+  const fsDataPath =
+    i !== -1 && argv[i + 1] ? argv[i + 1] : positional || defaultFsDataPath;
 
   const orchestrator = new DocsPdfBuildOrchestrator(fsDataPath);
   await orchestrator.generateAll();

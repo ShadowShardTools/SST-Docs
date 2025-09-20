@@ -15,6 +15,11 @@ export class DocsPdfWriter {
   private fonts!: Fonts;
   private ctx!: RenderContext;
   private pageConfig!: PageConfig;
+  private fsDataPath: string;
+
+  constructor(fsDataPath: string) {
+    this.fsDataPath = fsDataPath;
+  }
 
   async init(): Promise<void> {
     this.doc = await PDFDocument.create();
@@ -45,7 +50,13 @@ export class DocsPdfWriter {
     });
 
     const icons = await loadLucideIcons(this.doc);
-    this.ctx = { doc: this.doc, canvas: this.canvas, fonts: this.fonts, icons };
+    this.ctx = {
+      doc: this.doc,
+      canvas: this.canvas,
+      fonts: this.fonts,
+      icons,
+      fsDataPath: this.fsDataPath,
+    };
   }
 
   async generate(

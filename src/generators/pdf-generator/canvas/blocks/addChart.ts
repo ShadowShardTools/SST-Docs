@@ -176,7 +176,6 @@ export async function addChart(ctx: RenderContext, data: ChartData) {
       height: entry.height,
       align: alignment as "left" | "center" | "right",
       spacingAfter,
-      keepTogether: true,
     });
   } catch (error) {
     // Fallback: simple text placeholder

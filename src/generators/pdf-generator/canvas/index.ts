@@ -56,7 +56,7 @@ import {
   createLinkRectContext,
   createLinkTextContext,
   createImageContext,
-} from "./contexts";
+} from "./utilities/contextsCreator";
 import { applyColumnsRegion, computeColumnsRegion } from "./columns";
 import {
   debugGrid as _debugGrid,

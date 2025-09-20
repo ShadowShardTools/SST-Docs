@@ -8,4 +8,5 @@ export type RenderContext = {
   canvas: PdfCanvas;
   fonts: Fonts;
   icons: IconMap;
+  fsDataPath: string;
 };

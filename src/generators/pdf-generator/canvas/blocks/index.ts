@@ -1,8 +1,10 @@
 export { addAudio } from "./addAudio";
 export { addChart } from "./addChart";
+export { addCode } from "./addCode";
 export { addDivider } from "./addDivider";
 export { addImage } from "./addImage";
 export { addImageCompare } from "./addImageCompare";
+export { addImageGrid } from "./addImageGrid";
 export { addList } from "./addList";
 export { addMath } from "./addMath";
 export { addMessageBox } from "./addMessageBox";
