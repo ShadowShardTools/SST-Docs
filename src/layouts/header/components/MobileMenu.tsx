@@ -5,6 +5,7 @@ import {
   VersionSelector,
   ThemeButton,
   GithubButtonLink,
+  PrintPdfButton,
 } from "../../cta/components";
 interface Props {
   styles: StyleTheme;
@@ -34,6 +35,7 @@ export const MobileMenu: React.FC<Props> = ({
       onVersionChange={onVersionChange}
       loading={loading}
     />
+    <PrintPdfButton styles={styles} showText={true}  />
     <ThemeButton styles={styles} />
     <GithubButtonLink styles={styles} />
   </div>

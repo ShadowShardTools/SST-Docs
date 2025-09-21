@@ -5,6 +5,7 @@ import type { Version } from "../../render/types/Version";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import MobileMenu from "./MobileMenu";
 import {
+  PrintPdfButton,
   SearchBar,
   VersionSelector,
   ThemeButton,
@@ -85,6 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
               onVersionChange={onVersionChange}
               loading={loading}
             />
+            <PrintPdfButton styles={styles} showText={false} currentVersion={currentVersion} />
             <ThemeButton styles={styles} />
             <GithubButtonLink styles={styles} />
           </div>

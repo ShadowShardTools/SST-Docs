@@ -39,7 +39,7 @@ export class DocsPdfBuildOrchestrator {
         // Pass the data path to the writer
         const writer = new DocsPdfWriter(this.dataPath);
         await writer.init();
-        const outputPath = path.join(versionRoot, `${version.version}.pdf`);
+        const outputPath = path.join(versionRoot, `index.pdf`);
         await writer.generate(
           version,
           data.tree,

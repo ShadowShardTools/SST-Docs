@@ -7,7 +7,7 @@ export const GithubButtonLink: React.FC<{ styles: StyleTheme }> = ({
     href="https://github.com/ShadowShardTools/SST-Docs"
     target="_blank"
     rel="noopener noreferrer"
-    className={`flex justify-center items-center gap-2 p-2 cursor-pointer ${styles.buttons.common}`}
+    className={`flex justify-center w-full items-center gap-2 p-2 cursor-pointer ${styles.buttons.common}`}
     aria-label="View project on GitHub"
     title="View on GitHub"
   >
