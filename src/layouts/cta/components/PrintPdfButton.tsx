@@ -8,7 +8,11 @@ interface Props {
   currentVersion: string;
 }
 
-export const PrintPdfButton: React.FC<Props> = ({ styles, showText, currentVersion }) => {
+export const PrintPdfButton: React.FC<Props> = ({
+  styles,
+  showText,
+  currentVersion,
+}) => {
   if (!currentVersion) return null;
 
   // Use Vite's BASE_URL and append the folder structure

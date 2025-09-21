@@ -35,7 +35,11 @@ export const MobileMenu: React.FC<Props> = ({
       onVersionChange={onVersionChange}
       loading={loading}
     />
-    <PrintPdfButton styles={styles} showText={true}  />
+    <PrintPdfButton
+      styles={styles}
+      showText={true}
+      currentVersion={currentVersion}
+    />
     <ThemeButton styles={styles} />
     <GithubButtonLink styles={styles} />
   </div>

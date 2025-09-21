@@ -86,7 +86,11 @@ export const Header: React.FC<HeaderProps> = ({
               onVersionChange={onVersionChange}
               loading={loading}
             />
-            <PrintPdfButton styles={styles} showText={false} currentVersion={currentVersion} />
+            <PrintPdfButton
+              styles={styles}
+              showText={false}
+              currentVersion={currentVersion}
+            />
             <ThemeButton styles={styles} />
             <GithubButtonLink styles={styles} />
           </div>
