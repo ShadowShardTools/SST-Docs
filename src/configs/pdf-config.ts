@@ -1,9 +1,12 @@
-// src/generator/configs.ts
+// src/configs/pdf-config.ts
 import { rgb } from "pdf-lib";
 
 export const Config = {
   PAGE: { width: 595.28, height: 841.89 },
   MARGIN: 40,
+  SPLIT_BY_CATEGORY: true,
+  SPLIT_NESTED_CATEGORIES: true,
+  SPLIT_BY_DOCUMENT: true,
   COLORS: {
     text: rgb(0x37 / 255, 0x41 / 255, 0x51 / 255),
     alternativeText: rgb(0x9c / 255, 0xa3 / 255, 0xaf / 255),
@@ -31,6 +34,7 @@ export const Config = {
   },
   LINE_HEIGHT_SCALE: 1.2,
   FONT_SIZES: {
+    category: 18,
     h1: 24,
     h2: 16,
     h3: 14,
@@ -48,7 +52,7 @@ export const Config = {
     large: 16,
 
     titleTop: 4,
-    titleBottom: 10,
+    titleBottom: 6,
     textBottom: 4,
     listBottom: 10,
     tableBottom: 12,

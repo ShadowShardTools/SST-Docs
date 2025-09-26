@@ -1,4 +1,5 @@
 export { addAudio } from "./addAudio";
+export { addDocumentTitle } from "./addDocumentTitle";
 export { addChart } from "./addChart";
 export { addCode } from "./addCode";
 export { addDivider } from "./addDivider";

@@ -9,12 +9,12 @@ const SPACING_MAP: Record<
   none: { top: Config.SPACING.titleTop, bottom: 0 },
   small: {
     top: Config.SPACING.titleTop,
-    bottom: Math.round(Config.SPACING.titleBottom * 0.5),
+    bottom: Math.round(Config.SPACING.titleBottom * 0.35),
   },
   medium: { top: Config.SPACING.titleTop, bottom: Config.SPACING.titleBottom },
   large: {
     top: Config.SPACING.titleTop,
-    bottom: Math.round(Config.SPACING.titleBottom * 1.5),
+    bottom: Math.round(Config.SPACING.titleBottom * 3),
   },
 };
 

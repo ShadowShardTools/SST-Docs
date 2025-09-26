@@ -1,4 +1,4 @@
-import { useCallback, useState, lazy, Suspense } from "react";
+import { useCallback, useMemo, useState, Suspense } from "react";
 import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DocItem, Category } from "../types";
 import { useDocumentationData } from "../../../services";
@@ -7,6 +7,7 @@ import {
   useMediaQuery,
   useSearchLogic,
   useSearchOpener,
+  useHashScroll,
 } from "../hooks";
 import { ErrorMessage, LoadingSpinner } from "../../dialog/components";
 import { Navigation, Sidebar } from "../../navigation/components";
@@ -14,8 +15,9 @@ import { isCategory } from "../utilities";
 import { CategoryNavigatorRenderer } from ".";
 import { Header } from "../../header/components";
 import { SearchModal } from "../../searchModal/components";
-
-const ContentRenderer = lazy(() => import("./ContentRendererBase"));
+import { findPath } from "../../navigation/utilities";
+import ContentBlockRenderer from "./ContentBlockRenderer";
+import DocumentHeader from "./DocumentHeader";
 
 export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -67,6 +69,24 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     );
   }
 
+  // === Inlined ContentRendererBase logic ===
+  const selected = selectedItem ?? selectedCategory;
+  const selectedContent = selected?.content ?? [];
+
+  // keep hook call order stable; pass current content (empty array if none)
+  useHashScroll(selectedContent);
+
+  const currentPath =
+    (typeof location !== "undefined" &&
+      (location.hash.split("#")[1] || location.pathname.slice(1))) ||
+    "";
+
+  const breadcrumb = useMemo(() => {
+    if (!selected) return "";
+    const arr = findPath(tree, selected.id);
+    return arr.length ? `${arr.join(" > ")} > ${selected.title}` : "";
+  }, [tree, selected]);
+
   const renderContent = () => {
     if (isMobile && isMobileNavOpen) {
       return (
@@ -84,7 +104,6 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     if (loading.content) return <LoadingSpinner />;
     if (error.content) return <ErrorMessage message={error.content} />;
 
-    const selected = selectedItem ?? selectedCategory;
     if (!selected) {
       return (
         <div className="text-gray-500 text-center mt-16">
@@ -96,24 +115,28 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     const isSelectedCategory = isCategory(selected);
 
     return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <ContentRenderer
+      <>
+        <DocumentHeader
           styles={styles}
           title={selected.title}
-          content={selected.content ?? []}
-          docId={selected.id}
-          tree={tree}
+          breadcrumb={breadcrumb}
+          isSelectedCategory={isSelectedCategory}
         />
-        {isSelectedCategory && (
-          <div className="mt-8">
+        <div className="px-2 md:px-6">
+          <ContentBlockRenderer
+            styles={styles}
+            content={selectedContent}
+            currentPath={currentPath}
+          />
+          {isSelectedCategory && (
             <CategoryNavigatorRenderer
               category={selected as Category}
               styles={styles}
               onSelect={navigateToEntry}
             />
-          </div>
-        )}
-      </Suspense>
+          )}
+        </div>
+      </>
     );
   };
 
@@ -146,7 +169,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           </Suspense>
         )}
         <div
-          className={`flex-1 p-2 md:p-6 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
+          className={`flex-1 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
         >
           {renderContent()}
         </div>

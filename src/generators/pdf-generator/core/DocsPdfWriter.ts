@@ -1,13 +1,14 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { Config } from "../../../configs/pdf-config";
 import type { Version, Category, DocItem } from "../../../layouts/render/types";
-import { addTitle, addDivider, addText } from "../canvas/blocks";
+import { addTitle, addDivider } from "../canvas/blocks";
 import { PdfCanvas } from "../canvas";
 import type { Fonts, PageConfig } from "../canvas/types";
 import type { RenderContext } from "../types/RenderContext";
 import { loadLucideIcons } from "../utilities";
 import { processCategory } from "./processCategory";
 import { processContent } from "./processContent";
+import { stylesConfig } from "../../../configs/site-config";
 
 export class DocsPdfWriter {
   private doc!: PDFDocument;
@@ -67,25 +68,35 @@ export class DocsPdfWriter {
   ): Promise<void> {
     // Cover / header
     addTitle(this.ctx, {
-      text: `${version.label} — ${version.version}`,
+      text: `${stylesConfig.logo.text} — ${version.label}`,
       level: 1,
       spacing: "small",
     });
     addDivider(this.ctx, { type: "line", spacing: "medium" });
 
-    // Render categories
-    for (const category of tree) {
-      await processCategory(this.ctx, category);
-    }
-
     // Standalone docs
     if (standaloneDocs?.length) {
-      addTitle(this.ctx, { text: "Standalone Documents", level: 1 });
-      for (const doc of standaloneDocs) {
-        addTitle(this.ctx, { text: doc.title, level: 2 });
-        if (doc.description) addText(this.ctx, { text: doc.description });
+      for (let i = 0; i < standaloneDocs.length; i++) {
+        const doc = standaloneDocs[i];
+
+        if (Config.SPLIT_BY_DOCUMENT && i > 0) {
+          this.canvas.ensureSpace({ forcePageBreakBefore: true });
+        }
+
+        addTitle(this.ctx, { text: doc.title, level: 1 });
         await processContent(this.ctx, doc.content);
       }
+    }
+
+    // Render categories
+    for (let i = 0; i < tree.length; i++) {
+      const category = tree[i];
+
+      if (Config.SPLIT_BY_CATEGORY && i > 0) {
+        this.canvas.ensureSpace({ forcePageBreakBefore: true });
+      }
+
+      await processCategory(this.ctx, category);
     }
 
     // Save

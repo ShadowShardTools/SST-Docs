@@ -5,13 +5,14 @@ export const darkTheme: StyleTheme = {
     "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   text: {
     logoText: "text-xl font-semibold text-gray-50",
+    documentTitle: "text-2xl font-bold text-gray-300 leading-tight",
+    breadcrumb: "text-sm text-gray-400",
     titleLevel1: "text-4xl font-bold text-indigo-400 mb-3 mt-8 first:mt-0",
     titleLevel2: "text-2xl font-semibold text-gray-100 mb-4 mt-8 first:mt-0",
     titleLevel3: "text-xl font-medium text-gray-200 mb-3 mt-6 first:mt-0",
     titleAnchor: "text-gray-400 hover:text-blue-500",
-    breadcrumb: "text-sm text-gray-400",
     general: "text-base text-gray-300 mb-2 leading-relaxed",
-    alternative: "text-sm text-gray-400 mt-2 text-center italic",
+    alternative: "text-sm text-center italic text-gray-400 mt-2",
     list: "list-inside text-gray-300 mb-2 space-y-1",
     math: "text-gray-200 text-lg",
   },
@@ -94,7 +95,7 @@ export const darkTheme: StyleTheme = {
     cardDescriptionText: "text-sm text-indigo-400 line-clamp-3",
   },
   navigation: {
-    row: "text-gray-50 focus:outline-none",
+    row: "text-gray-50 focus:outline-none leading-tight",
     rowActive:
       "font-semibold text-gray-50 bg-indigo-900/60 border-l-2 border-white transition-colors",
     rowFocused: "ring-2 ring-indigo-600",
@@ -124,6 +125,7 @@ export const darkTheme: StyleTheme = {
     headerBackground: "bg-zinc-900 shadow-sm border-b border-gray-700",
     headerMobileBackground: "bg-zinc-900 border-b border-gray-200 shadow-md",
     sidebarBackground: "bg-zinc-900 border-r border-gray-700",
+    documentHeaderBackground: "bg-indigo-900/60 border-b border-gray-700",
     contentBackground: "bg-zinc-850",
   },
 };
