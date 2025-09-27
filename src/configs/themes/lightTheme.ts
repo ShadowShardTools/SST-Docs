@@ -1,6 +1,52 @@
 import type { StyleTheme } from "../../application/types/StyleTheme";
 
 export const lightTheme: StyleTheme = {
+  header: {
+    mobileNavigationToggle: "text-stone-500 hover:text-stone-700",
+    mobileMenuToggle: "text-stone-500 hover:text-stone-700",
+  },
+  category: {
+    empty: "text-gray-500 text-center",
+    cardBody:
+      "bg-stone-200 border border-stone-400 rounded-xl text-left transition-colors hover:bg-stone-300",
+    cardHeaderText: "text-stone-700 text-lg font-semibold mb-1",
+    cardDescriptionText: "text-sm text-gray-600 line-clamp-3",
+  },
+  navigation: {
+    row: "focus:outline-none leading-tight",
+    rowActive:
+      "font-semibold text-stone-700 bg-stone-200 border-l-2 border-stone-500 transition-colors",
+    rowFocused: "ring-2 ring-stone-500",
+    rowHover: "hover:text-stone-500 transition-colors",
+    hideOrShowHintsText: "text-stone-600 hover:underline focus:outline-none",
+  },
+  searchModal: {
+    resultBackground: "bg-stone-100",
+    resultEmptyInputText: "text-gray-400 text-sm text-center",
+    resultNoResultText: "text-gray-400 text-sm text-center",
+
+    header: "bg-white",
+    footer: "bg-white",
+    borders: "border-gray-800",
+
+    item: "hover:bg-stone-300/70 border-b border-stone-300",
+    selectedItem:
+      "bg-stone-300 hover:bg-stone-300/70 border-b border-stone-300",
+    itemHeaderText: "font-bold text-stone-600",
+    itemFoundSectionText: "text-xs text-gray-700 mt-1 line-clamp-2",
+    itemTags:
+      "bg-stone-400 rounded-full text-[11px] text-gray-50 mt-0.5 italic truncate",
+  },
+  sections: {
+    siteBackground: "bg-stone-400",
+    siteBorders: "border-x border-stone-600",
+    headerBackground: "bg-stone-50 shadow-sm border-b border-stone-400",
+    headerMobileBackground: "bg-stone-50 border-b border-stone-400 shadow-md",
+    sidebarBackground: "bg-stone-50 border-r border-stone-400",
+    documentHeaderBackground: "bg-stone-200 border-b border-stone-400",
+    contentBackground: "bg-gray-100",
+  },
+  
   input:
     "text-sm text-stone-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   text: {
@@ -18,7 +64,7 @@ export const lightTheme: StyleTheme = {
   },
   hints: {
     text: "text-xs text-stone-500",
-    key: "text-xs text-stone-500 border border-stone-300 rounded bg-white",
+    key: "text-xs text-stone-500 border border-stone-400 rounded",
   },
   divider: {
     border: "border-stone-400",
@@ -27,18 +73,18 @@ export const lightTheme: StyleTheme = {
   },
   buttons: {
     common:
-      "font-bold text-stone-700 bg-stone-100 border border-stone-300 rounded-md transition-colors hover:bg-stone-200",
+      "font-bold text-stone-700 bg-stone-200 border border-stone-400 rounded-md transition-colors hover:bg-stone-300",
     small:
-      "text-xs font-semibold text-stone-700 bg-stone-100 border border-stone-300 rounded-md transition-colors hover:bg-stone-200",
+      "text-xs font-semibold text-stone-700 bg-stone-200 border border-stone-400 rounded-md transition-colors hover:bg-stone-300",
     tabSmall:
-      "text-xs font-semibold text-stone-300 bg-stone-700 border border-stone-300 rounded-md transition-colors hover:bg-stone-200",
+      "text-xs font-semibold text-stone-300 bg-stone-700 border border-stone-300 rounded-md transition-colors hover:bg-stone-500",
     tabSmallActive:
       "text-xs font-semibold text-stone-800 bg-lime-500 border border-lime-300 rounded-md transition-colors",
   },
   dropdown: {
     container: "bg-white border border-stone-300 rounded-md shadow-lg",
     item: "text-left hover:bg-stone-200/50 transition-colors whitespace-nowrap",
-    itemActive: "border-l-2 'text-stone-700' bg-stone-200 font-bold",
+    itemActive: "border-l-2 text-stone-700 bg-stone-200 font-bold",
   },
   messageBox: {
     info: "bg-blue-100 text-blue-800 border-blue-300",
@@ -81,50 +127,5 @@ export const lightTheme: StyleTheme = {
   graph: {
     background: "#e7e5e4",
     defaultCurve: "#0a88ffff",
-  },
-  header: {
-    mobileNavigationToggle: "text-stone-500 hover:text-stone-700",
-    mobileMenuToggle: "text-stone-500 hover:text-stone-700",
-  },
-  category: {
-    empty: "text-gray-500 text-center",
-    cardBody:
-      "bg-gray-200 border border-gray-300 rounded-xl text-left transition-colors hover:bg-stone-300",
-    cardHeaderText: "text-stone-700 text-lg font-semibold mb-1",
-    cardDescriptionText: "text-sm text-gray-600 line-clamp-3",
-  },
-  navigation: {
-    row: "focus:outline-none leading-tight",
-    rowActive:
-      "font-semibold text-stone-700 bg-stone-200 border-l-2 border-stone-500 transition-colors",
-    rowFocused: "ring-2 ring-stone-500",
-    rowHover: "hover:text-stone-500 transition-colors",
-    hideOrShowHintsText: "text-stone-600 hover:underline focus:outline-none",
-  },
-  searchModal: {
-    resultBackground: "bg-stone-100",
-    resultEmptyInputText: "text-gray-400 text-sm text-center",
-    resultNoResultText: "text-gray-400 text-sm text-center",
-
-    header: "bg-white",
-    footer: "bg-white",
-    borders: "border-gray-800",
-
-    item: "hover:bg-stone-300/70 border-b border-stone-300",
-    selectedItem:
-      "bg-stone-300 hover:bg-stone-300/70 border-b border-stone-300",
-    itemHeaderText: "font-bold text-stone-600",
-    itemFoundSectionText: "text-xs text-gray-700 mt-1 line-clamp-2",
-    itemTags:
-      "bg-stone-400 rounded-full text-[11px] text-gray-50 mt-0.5 italic truncate",
-  },
-  sections: {
-    siteBackground: "bg-stone-400",
-    siteBorders: "border-x border-stone-600",
-    headerBackground: "bg-stone-50 shadow-sm border-b border-stone-400",
-    headerMobileBackground: "bg-stone-50 border-b border-stone-400 shadow-md",
-    sidebarBackground: "bg-stone-50 border-r border-stone-400",
-    documentHeaderBackground: "bg-stone-200 border-b border-stone-400",
-    contentBackground: "bg-gray-100",
   },
 };

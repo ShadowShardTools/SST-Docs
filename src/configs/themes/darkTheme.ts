@@ -1,6 +1,51 @@
 import type { StyleTheme } from "../../application/types/StyleTheme";
 
 export const darkTheme: StyleTheme = {
+  header: {
+    mobileNavigationToggle: "text-gray-500 hover:text-gray-700",
+    mobileMenuToggle: "text-gray-500 hover:text-gray-700",
+  },
+  category: {
+    empty: "text-gray-500 text-center",
+    cardBody:
+      "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
+    cardHeaderText: "text-gray-50 text-lg font-semibold mb-1",
+    cardDescriptionText: "text-sm text-indigo-400 line-clamp-3",
+  },
+  navigation: {
+    row: "text-gray-50 focus:outline-none leading-tight",
+    rowActive:
+      "font-semibold text-gray-50 bg-indigo-900/60 border-l-2 border-white transition-colors",
+    rowFocused: "ring-2 ring-indigo-600",
+    rowHover: "hover:text-indigo-500 transition-colors",
+    hideOrShowHintsText: "text-indigo-500 hover:underline focus:outline-none",
+  },
+  searchModal: {
+    resultBackground: "bg-zinc-900",
+    resultEmptyInputText: "text-gray-400 text-sm text-center",
+    resultNoResultText: "text-gray-400 text-sm text-center",
+
+    header: "bg-zinc-850 text-gray-400",
+    footer: "bg-zinc-850",
+    borders: "border-gray-500",
+
+    item: "hover:bg-indigo-900/80 border-b border-indigo-400/30",
+    selectedItem:
+      "bg-indigo-900/60 hover:bg-indigo-900/80 border-y border-indigo-400/30",
+    itemHeaderText: "font-bold text-indigo-400",
+    itemFoundSectionText: "text-xs text-gray-300 mt-1 line-clamp-2",
+    itemTags:
+      "bg-indigo-400/40 rounded-full text-[11px] text-gray-100 mt-0.5 italic truncate",
+  },
+  sections: {
+    siteBackground: "bg-slate-950",
+    siteBorders: "border-x border-gray-700",
+    headerBackground: "bg-zinc-900 shadow-sm border-b border-gray-700",
+    headerMobileBackground: "bg-zinc-900 border-b border-gray-200 shadow-md",
+    sidebarBackground: "bg-zinc-900 border-r border-gray-700",
+    documentHeaderBackground: "bg-indigo-900/60 border-b border-gray-700",
+    contentBackground: "bg-zinc-850",
+  },
   input:
     "text-sm text-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   text: {
@@ -82,50 +127,5 @@ export const darkTheme: StyleTheme = {
   graph: {
     background: "#d5d5e7ff",
     defaultCurve: "#2529ffff",
-  },
-  header: {
-    mobileNavigationToggle: "text-gray-500 hover:text-gray-700",
-    mobileMenuToggle: "text-gray-500 hover:text-gray-700",
-  },
-  category: {
-    empty: "text-gray-500 text-center",
-    cardBody:
-      "bg-indigo-900/50 border border-indigo-800 rounded-xl text-left transition-colors hover:bg-indigo-700/70",
-    cardHeaderText: "text-gray-50 text-lg font-semibold mb-1",
-    cardDescriptionText: "text-sm text-indigo-400 line-clamp-3",
-  },
-  navigation: {
-    row: "text-gray-50 focus:outline-none leading-tight",
-    rowActive:
-      "font-semibold text-gray-50 bg-indigo-900/60 border-l-2 border-white transition-colors",
-    rowFocused: "ring-2 ring-indigo-600",
-    rowHover: "hover:text-indigo-500 transition-colors",
-    hideOrShowHintsText: "text-indigo-500 hover:underline focus:outline-none",
-  },
-  searchModal: {
-    resultBackground: "bg-zinc-900",
-    resultEmptyInputText: "text-gray-400 text-sm text-center",
-    resultNoResultText: "text-gray-400 text-sm text-center",
-
-    header: "bg-zinc-850 text-gray-400",
-    footer: "bg-zinc-850",
-    borders: "border-gray-500",
-
-    item: "hover:bg-indigo-900/80 border-b border-indigo-400/30",
-    selectedItem:
-      "bg-indigo-900/60 hover:bg-indigo-900/80 border-y border-indigo-400/30",
-    itemHeaderText: "font-bold text-indigo-400",
-    itemFoundSectionText: "text-xs text-gray-300 mt-1 line-clamp-2",
-    itemTags:
-      "bg-indigo-400/40 rounded-full text-[11px] text-gray-100 mt-0.5 italic truncate",
-  },
-  sections: {
-    siteBackground: "bg-slate-950",
-    siteBorders: "border-x border-gray-700",
-    headerBackground: "bg-zinc-900 shadow-sm border-b border-gray-700",
-    headerMobileBackground: "bg-zinc-900 border-b border-gray-200 shadow-md",
-    sidebarBackground: "bg-zinc-900 border-r border-gray-700",
-    documentHeaderBackground: "bg-indigo-900/60 border-b border-gray-700",
-    contentBackground: "bg-zinc-850",
   },
 };
