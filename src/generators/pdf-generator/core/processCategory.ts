@@ -1,7 +1,6 @@
-// processCategory.ts
 import { Config } from "../../../configs/pdf-config";
 import type { Category } from "../../../layouts/render/types";
-import { addTitle } from "../canvas/blocks";
+import { addDocumentHeader } from "../canvas/blocks";
 import type { RenderContext } from "../types";
 import { processContent } from "./processContent";
 
@@ -24,31 +23,35 @@ export async function processCategory(
     if (!category.title) continue;
 
     // Page breaks for nested categories if enabled
-    if (Config.SPLIT_NESTED_CATEGORIES && depth > 0) {
+    if (Config.ENABLE_SPLIT_NESTED_CATEGORIES && depth > 0) {
       ctx.canvas.ensureSpace({ forcePageBreakBefore: true });
     }
 
-    // Build breadcrumb title for nested categories:
-    // Top-level => "Category"
-    // Nested    => "Parent/Child[/...] / Current"
-    const breadcrumb =
-      ancestors.length > 0
-        ? `${ancestors.join("/")}/${category.title}`
-        : category.title;
+    const categoryBreadcrumb = [...ancestors, category.title].join(" > ");
 
-    // Render category title and optional description
-    addTitle(ctx, { text: breadcrumb, level: 1 });
+    await addDocumentHeader(ctx, {
+      title: category.title,
+      breadcrumb: categoryBreadcrumb,
+      isSelectedCategory: true,
+    });
 
     // Documents in this category
     if (category.docs?.length) {
       for (let i = 0; i < category.docs.length; i++) {
         const doc = category.docs[i];
 
-        if (Config.SPLIT_BY_DOCUMENT && i > 0) {
+        if (Config.ENABLE_SPLIT_BY_DOCUMENT && i > 0) {
           ctx.canvas.ensureSpace({ forcePageBreakBefore: true });
         }
 
-        addTitle(ctx, { text: doc.title, level: 1 });
+        const docBreadcrumb = [...ancestors, category.title, doc.title].join(" > ");
+
+        await addDocumentHeader(ctx, {
+          title: doc.title,
+          breadcrumb: docBreadcrumb,
+          isSelectedCategory: false,
+        });
+
         await processContent(ctx, doc.content);
       }
     }

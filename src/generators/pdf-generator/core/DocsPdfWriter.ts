@@ -1,7 +1,7 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { Config } from "../../../configs/pdf-config";
 import type { Version, Category, DocItem } from "../../../layouts/render/types";
-import { addTitle, addDivider } from "../canvas/blocks";
+import { addTitle, addDivider, addDocumentHeader } from "../canvas/blocks";
 import { PdfCanvas } from "../canvas";
 import type { Fonts, PageConfig } from "../canvas/types";
 import type { RenderContext } from "../types/RenderContext";
@@ -79,11 +79,15 @@ export class DocsPdfWriter {
       for (let i = 0; i < standaloneDocs.length; i++) {
         const doc = standaloneDocs[i];
 
-        if (Config.SPLIT_BY_DOCUMENT && i > 0) {
+        if (Config.ENABLE_SPLIT_BY_DOCUMENT && i > 0) {
           this.canvas.ensureSpace({ forcePageBreakBefore: true });
         }
 
-        addTitle(this.ctx, { text: doc.title, level: 1 });
+        await addDocumentHeader(this.ctx, {
+          title: doc.title,
+          breadcrumb: doc.title,
+          isSelectedCategory: false,
+        });
         await processContent(this.ctx, doc.content);
       }
     }
@@ -92,7 +96,7 @@ export class DocsPdfWriter {
     for (let i = 0; i < tree.length; i++) {
       const category = tree[i];
 
-      if (Config.SPLIT_BY_CATEGORY && i > 0) {
+      if (Config.ENABLE_SPLIT_BY_CATEGORY && i > 0) {
         this.canvas.ensureSpace({ forcePageBreakBefore: true });
       }
 
@@ -107,3 +111,4 @@ export class DocsPdfWriter {
     await fs.writeFile(outputPath, bytes);
   }
 }
+

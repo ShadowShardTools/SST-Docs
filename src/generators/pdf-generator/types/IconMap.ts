@@ -4,4 +4,6 @@ export type IconMap = {
   error?: any;
   success?: any;
   neutral?: any;
+  document?: any;
+  category?: any;
 };

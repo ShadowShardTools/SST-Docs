@@ -52,7 +52,7 @@ export const darkTheme: StyleTheme = {
     logoText: "text-xl font-semibold text-gray-50",
     documentTitle: "text-2xl font-bold text-gray-300 leading-tight",
     breadcrumb: "text-sm text-gray-400",
-    titleLevel1: "text-4xl font-bold text-indigo-400 mb-3 mt-8 first:mt-0",
+    titleLevel1: "text-3xl font-bold text-indigo-400 mb-3 mt-8 first:mt-0",
     titleLevel2: "text-2xl font-semibold text-gray-100 mb-4 mt-8 first:mt-0",
     titleLevel3: "text-xl font-medium text-gray-200 mb-3 mt-6 first:mt-0",
     titleAnchor: "text-gray-400 hover:text-blue-500",

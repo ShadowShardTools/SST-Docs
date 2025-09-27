@@ -53,7 +53,7 @@ export const lightTheme: StyleTheme = {
     logoText: "text-xl font-semibold text-gray-900",
     documentTitle: "text-2xl font-bold text-stone-600 leading-tight",
     breadcrumb: "text-sm text-stone-500",
-    titleLevel1: "text-4xl font-bold text-stone-600 mb-3 mt-8 first:mt-0",
+    titleLevel1: "text-3xl font-bold text-stone-600 mb-3 mt-8 first:mt-0",
     titleLevel2: "text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0",
     titleLevel3: "text-xl font-medium text-gray-700 mb-3 mt-6 first:mt-0",
     titleAnchor: "text-stone-400 hover:text-blue-500",
