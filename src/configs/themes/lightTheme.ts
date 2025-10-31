@@ -13,7 +13,7 @@ export const lightTheme: StyleTheme = {
     cardDescriptionText: "text-sm text-gray-600 line-clamp-3",
   },
   navigation: {
-    row: "focus:outline-none leading-tight",
+    row: "text-gray-900 focus:outline-none leading-tight",
     rowActive:
       "font-semibold text-stone-700 bg-stone-200 border-l-2 border-stone-500 transition-colors",
     rowFocused: "ring-2 ring-stone-500",
@@ -46,7 +46,7 @@ export const lightTheme: StyleTheme = {
     documentHeaderBackground: "bg-stone-200 border-b border-stone-400",
     contentBackground: "bg-gray-100",
   },
-  
+
   input:
     "text-sm text-stone-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
   text: {
@@ -110,10 +110,11 @@ export const lightTheme: StyleTheme = {
   audioPlayer: {
     container: "bg-gray-300",
     playButton: "bg-stone-700 hover:bg-stone-600 text-white transition-colors",
-    time: "text-gray-700 text-xs tabular-nums text-right",
-    slider: "bg-gray-700",
-    sliderThumb:
-      "[&::-webkit-slider-thumb]:bg-stone-600 [&::-moz-range-thumb]:bg-stone-600",
+    time: "text-gray-700 text-xs tabular-nums text-center",
+    slider: "bg-transparent",
+    sliderThumb: `[&::-webkit-slider-thumb]:bg-stone-600 [&::-webkit-slider-thumb]:shadow-[0_0_0_3px_rgba(0,0,0,0.1)] [&::-moz-range-thumb]:bg-stone-600 [&::-moz-range-thumb]:border-none`,
+    sliderTrackColor: "#b8afa0ff",
+    sliderFillColor: "#524d37ff",
   },
   chart: {
     legendLabelColor: "#1f2937",

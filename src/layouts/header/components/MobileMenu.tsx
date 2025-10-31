@@ -6,6 +6,7 @@ import {
   ThemeButton,
   GithubButtonLink,
   PrintPdfButton,
+  DownloadStaticButton,
 } from "../../cta/components";
 interface Props {
   styles: StyleTheme;
@@ -36,6 +37,11 @@ export const MobileMenu: React.FC<Props> = ({
       loading={loading}
     />
     <PrintPdfButton
+      styles={styles}
+      showText={true}
+      currentVersion={currentVersion}
+    />
+    <DownloadStaticButton
       styles={styles}
       showText={true}
       currentVersion={currentVersion}

@@ -1,0 +1,11 @@
+{
+  "version": "v1.0",
+  "generatedAt": "2025-10-31T18:23:24.539Z",
+  "index": "index.html",
+  "categories": [],
+  "docs": [],
+  "charts": [],
+  "media": [],
+  "staticStylesPath": "../../static-styles",
+  "assetsManifest": "../../static-styles/assets-manifest.json"
+}

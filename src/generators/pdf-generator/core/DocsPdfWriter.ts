@@ -111,4 +111,3 @@ export class DocsPdfWriter {
     await fs.writeFile(outputPath, bytes);
   }
 }
-

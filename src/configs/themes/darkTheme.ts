@@ -110,10 +110,11 @@ export const darkTheme: StyleTheme = {
     container: "bg-indigo-900/50",
     playButton:
       "bg-indigo-700 hover:bg-indigo-600 text-white transition-colors",
-    time: "text-gray-400 text-xs tabular-nums text-right",
-    slider: "bg-gray-300",
-    sliderThumb:
-      "[&::-webkit-slider-thumb]:bg-indigo-600 [&::-moz-range-thumb]:bg-indigo-600",
+    time: "text-gray-400 text-xs tabular-nums text-center",
+    slider: "bg-transparent",
+    sliderThumb: `[&::-webkit-slider-thumb]:bg-indigo-400 [&::-webkit-slider-thumb]:shadow-[0_0_0_3px_rgba(37,99,235,0.35)] [&::-moz-range-thumb]:bg-indigo-400 [&::-moz-range-thumb]:border-none`,
+    sliderTrackColor: "rgba(99, 102, 241, 0.2)",
+    sliderFillColor: "rgba(129, 140, 248, 1)",
   },
   chart: {
     legendLabelColor: "#e5e7eb", // text-gray-200

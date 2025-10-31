@@ -44,7 +44,9 @@ export async function processCategory(
           ctx.canvas.ensureSpace({ forcePageBreakBefore: true });
         }
 
-        const docBreadcrumb = [...ancestors, category.title, doc.title].join(" > ");
+        const docBreadcrumb = [...ancestors, category.title, doc.title].join(
+          " > ",
+        );
 
         await addDocumentHeader(ctx, {
           title: doc.title,

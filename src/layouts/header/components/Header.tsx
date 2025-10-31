@@ -6,6 +6,7 @@ import type { StyleTheme } from "../../../application/types/StyleTheme";
 import MobileMenu from "./MobileMenu";
 import {
   PrintPdfButton,
+  DownloadStaticButton,
   SearchBar,
   VersionSelector,
   ThemeButton,
@@ -87,6 +88,11 @@ export const Header: React.FC<HeaderProps> = ({
               loading={loading}
             />
             <PrintPdfButton
+              styles={styles}
+              showText={false}
+              currentVersion={currentVersion}
+            />
+            <DownloadStaticButton
               styles={styles}
               showText={false}
               currentVersion={currentVersion}

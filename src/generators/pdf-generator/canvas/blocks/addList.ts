@@ -26,7 +26,8 @@ export async function addList(ctx: RenderContext, data: ListData) {
   const contentLeft = ctx.canvas.contentLeft;
 
   const bullet = "\u2022";
-  const markerForIndex = (index: number) => (type === "ol" ? `${startNumber + index}.` : bullet);
+  const markerForIndex = (index: number) =>
+    type === "ol" ? `${startNumber + index}.` : bullet;
 
   const lastIndex = startNumber + items.length - 1;
   const widestMarker = markerForIndex(lastIndex - startNumber);
@@ -58,13 +59,18 @@ export async function addList(ctx: RenderContext, data: ListData) {
   }
 
   const spacingBottom = Config.SPACING.listBottom;
-  const usedBlockW = Math.min(effectiveWidth, bulletColW + Math.max(1, maxLineW));
+  const usedBlockW = Math.min(
+    effectiveWidth,
+    bulletColW + Math.max(1, maxLineW),
+  );
 
   ctx.canvas.ensureBlock({ minHeight: totalH + spacingBottom, keepTogether });
 
   let baseX = contentLeft + insideIndent;
-  if (align === "center") baseX = contentLeft + insideIndent + (effectiveWidth - usedBlockW) / 2;
-  else if (align === "right") baseX = contentLeft + insideIndent + (effectiveWidth - usedBlockW);
+  if (align === "center")
+    baseX = contentLeft + insideIndent + (effectiveWidth - usedBlockW) / 2;
+  else if (align === "right")
+    baseX = contentLeft + insideIndent + (effectiveWidth - usedBlockW);
 
   const startY = ctx.canvas.cursorY;
   const regionHeight = ctx.canvas.bottom - startY;

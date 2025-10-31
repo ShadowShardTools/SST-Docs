@@ -39,8 +39,13 @@ export async function loadLucideIcons(
     error: await toPngEmbed("x-circle", opts),
     success: await toPngEmbed("check-circle", opts),
     neutral: await toPngEmbed("help-circle", opts),
-    document: await toPngEmbed("file-text", { size: opts?.size ?? 72, stroke: "#57534e" }),
-    category: await toPngEmbed("folder", { size: opts?.size ?? 72, stroke: "#57534e" }),
+    document: await toPngEmbed("file-text", {
+      size: opts?.size ?? 72,
+      stroke: "#57534e",
+    }),
+    category: await toPngEmbed("folder", {
+      size: opts?.size ?? 72,
+      stroke: "#57534e",
+    }),
   } as const;
 }
-

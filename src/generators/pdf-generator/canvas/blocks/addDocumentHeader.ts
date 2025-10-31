@@ -19,7 +19,8 @@ function measureLinesWidth(
   size: number,
 ) {
   let width = 0;
-  for (const line of lines) width = Math.max(width, font.widthOfTextAtSize(line, size));
+  for (const line of lines)
+    width = Math.max(width, font.widthOfTextAtSize(line, size));
   return width;
 }
 
@@ -38,8 +39,11 @@ export async function addDocumentHeader(
   const spacingBottom = Config.SPACING.medium;
 
   const breadcrumb = (data.breadcrumb ?? "").trim();
-  const iconKey = (data.isSelectedCategory ? "category" : "document") as keyof RenderContext["icons"];
-  const icon = ctx.icons?.[iconKey] ?? ctx.icons?.document ?? ctx.icons?.neutral;
+  const iconKey = (
+    data.isSelectedCategory ? "category" : "document"
+  ) as keyof RenderContext["icons"];
+  const icon =
+    ctx.icons?.[iconKey] ?? ctx.icons?.document ?? ctx.icons?.neutral;
 
   const titleFont = ctx.fonts.bold;
   const titleSize = Config.FONT_SIZES.category;
@@ -48,7 +52,10 @@ export async function addDocumentHeader(
   const iconWidth = icon ? ICON_SIZE : 0;
   const iconGap = icon ? ICON_GAP : 0;
 
-  const textMaxWidth = Math.max(1, innerWidth - PADDING_X * 2 - iconWidth - iconGap);
+  const textMaxWidth = Math.max(
+    1,
+    innerWidth - PADDING_X * 2 - iconWidth - iconGap,
+  );
 
   const titleMetrics = ctx.canvas.measureAndWrap(data.title, {
     font: titleFont,
@@ -57,8 +64,15 @@ export async function addDocumentHeader(
     lineHeight,
   });
 
-  const titleHeight = Math.max(titleMetrics.totalHeight, iconWidth ? ICON_SIZE : titleMetrics.totalHeight);
-  const rawTitleWidth = measureLinesWidth(titleMetrics.lines, titleFont, titleSize);
+  const titleHeight = Math.max(
+    titleMetrics.totalHeight,
+    iconWidth ? ICON_SIZE : titleMetrics.totalHeight,
+  );
+  const rawTitleWidth = measureLinesWidth(
+    titleMetrics.lines,
+    titleFont,
+    titleSize,
+  );
   const titleContentWidth = Math.max(1, Math.min(rawTitleWidth, textMaxWidth));
 
   const breadcrumbSize = Math.max(10, Config.FONT_SIZES.alternative ?? 10);
@@ -80,7 +94,8 @@ export async function addDocumentHeader(
   const startCursor = ctx.canvas.cursorY;
   const atPageStart = Math.abs(startCursor - ctx.canvas.top) < 0.5;
 
-  const requiredHeight = blockHeight + spacingBottom + (atPageStart ? 0 : spacingTop);
+  const requiredHeight =
+    blockHeight + spacingBottom + (atPageStart ? 0 : spacingTop);
   ctx.canvas.ensureBlock({ minHeight: requiredHeight, keepTogether: true });
 
   if (!atPageStart) {
@@ -107,14 +122,21 @@ export async function addDocumentHeader(
   );
 
   ctx.canvas.withRegion(
-    { x: marginLeft, y: innerRegionTop, width: innerWidth, height: blockHeight },
+    {
+      x: marginLeft,
+      y: innerRegionTop,
+      width: innerWidth,
+      height: blockHeight,
+    },
     () => {
       const rowTop = innerRegionTop + PADDING_Y;
       const contentRegionLeft = marginLeft + PADDING_X;
       const contentRegionWidth = innerWidth - PADDING_X * 2;
 
       const contentWidth = iconWidth + iconGap + titleContentWidth;
-      const groupStart = contentRegionLeft + Math.max(0, (contentRegionWidth - contentWidth) / 2);
+      const groupStart =
+        contentRegionLeft +
+        Math.max(0, (contentRegionWidth - contentWidth) / 2);
 
       const iconX = groupStart;
       const textStartX = iconX + iconWidth + iconGap;
@@ -150,7 +172,12 @@ export async function addDocumentHeader(
         const crumbY = rowTop + titleHeight + BREADCRUMB_GAP;
         const crumbWidth = innerWidth - PADDING_X * 2;
         ctx.canvas.withRegion(
-          { x: contentRegionLeft, y: crumbY, width: crumbWidth, height: breadcrumbHeight },
+          {
+            x: contentRegionLeft,
+            y: crumbY,
+            width: crumbWidth,
+            height: breadcrumbHeight,
+          },
           () => {
             ctx.canvas.cursorY = crumbY;
             ctx.canvas.drawText(breadcrumb, {

@@ -10,6 +10,12 @@ interface Props {
   mathData: MathData;
 }
 
+const JUSTIFY_MAP = {
+  left: "flex-start",
+  center: "center",
+  right: "flex-end",
+} as const;
+
 export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
   const expression = mathData.expression ?? "";
   const trimmedExpression = useMemo(() => expression.trim(), [expression]);
@@ -17,7 +23,20 @@ export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
 
   if (!trimmedExpression) return null;
 
-  const alignment = mathData.alignment ?? "center";
+  const rawAlignment = (mathData.alignment ?? "center").toLowerCase();
+  const alignment = (
+    ["left", "right"].includes(rawAlignment) ? rawAlignment : "center"
+  ) as keyof typeof ALIGNMENT_CLASSES;
+
+  const containerStyle = useMemo<React.CSSProperties>(
+    () => ({
+      display: "flex",
+      justifyContent: JUSTIFY_MAP[alignment] ?? JUSTIFY_MAP.center,
+      width: "100%",
+      textAlign: alignment,
+    }),
+    [alignment],
+  );
 
   if (isLoading) {
     return (
@@ -25,7 +44,9 @@ export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
         key={index}
         className={`${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`}
       >
-        <div className="animate-pulse bg-gray-200 h-8 rounded" />
+        <div style={containerStyle}>
+          <div className="animate-pulse bg-gray-200 h-8 rounded w-24" />
+        </div>
       </div>
     );
   }
@@ -36,7 +57,8 @@ export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
       className={`${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`}
     >
       <div
-        className={styles.text.math}
+        className={`${styles.text.math} math-block`}
+        style={containerStyle}
         dangerouslySetInnerHTML={{ __html: html }}
       />
       {error && (

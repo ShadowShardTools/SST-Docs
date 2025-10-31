@@ -15,9 +15,51 @@ import { isCategory } from "../utilities";
 import { CategoryNavigatorRenderer } from ".";
 import { Header } from "../../header/components";
 import { SearchModal } from "../../searchModal/components";
-import { findPath } from "../../navigation/utilities";
 import ContentBlockRenderer from "./ContentBlockRenderer";
+import type { BreadcrumbSegment } from "../types/BreadcrumbSegment";
 import DocumentHeader from "./DocumentHeader";
+
+type DocBreadcrumbTrail = {
+  categories: Category[];
+  doc: DocItem;
+} | null;
+
+const findCategoryTrail = (
+  nodes: Category[],
+  targetId: string,
+  trail: Category[] = [],
+): Category[] | null => {
+  for (const node of nodes) {
+    const nextTrail = [...trail, node];
+    if (node.id === targetId) {
+      return nextTrail;
+    }
+    if (node.children) {
+      const childTrail = findCategoryTrail(node.children, targetId, nextTrail);
+      if (childTrail) return childTrail;
+    }
+  }
+  return null;
+};
+
+const findDocTrail = (
+  nodes: Category[],
+  docId: string,
+  trail: Category[] = [],
+): DocBreadcrumbTrail => {
+  for (const node of nodes) {
+    const nextTrail = [...trail, node];
+    const docMatch = node.docs?.find((doc) => doc.id === docId);
+    if (docMatch) {
+      return { categories: nextTrail, doc: docMatch };
+    }
+    if (node.children) {
+      const childTrail = findDocTrail(node.children, docId, nextTrail);
+      if (childTrail) return childTrail;
+    }
+  }
+  return null;
+};
 
 export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -81,11 +123,36 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       (location.hash.split("#")[1] || location.pathname.slice(1))) ||
     "";
 
-  const breadcrumb = useMemo(() => {
-    if (!selected) return "";
-    const arr = findPath(tree, selected.id);
-    return arr.length ? `${arr.join(" > ")} > ${selected.title}` : "";
-  }, [tree, selected]);
+  const breadcrumbSegments = useMemo<BreadcrumbSegment[]>(() => {
+    if (!selected) return [];
+
+    if (isCategory(selected)) {
+      const trail = findCategoryTrail(tree, selected.id) ?? [selected];
+      return trail.map((category, index) => ({
+        label: category.title,
+        onSelect:
+          index === trail.length - 1
+            ? undefined
+            : () => navigateToEntry(category),
+      }));
+    }
+
+    const docTrail = findDocTrail(tree, selected.id);
+    if (docTrail) {
+      const categorySegments = docTrail.categories.map((category) => ({
+        label: category.title,
+        onSelect: () => navigateToEntry(category),
+      }));
+      return [...categorySegments, { label: docTrail.doc.title }];
+    }
+
+    const standalone = standaloneDocs.find((doc) => doc.id === selected.id);
+    if (standalone) {
+      return [{ label: standalone.title }];
+    }
+
+    return [{ label: selected.title }];
+  }, [selected, tree, navigateToEntry, standaloneDocs]);
 
   const renderContent = () => {
     if (isMobile && isMobileNavOpen) {
@@ -119,7 +186,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
         <DocumentHeader
           styles={styles}
           title={selected.title}
-          breadcrumb={breadcrumb}
+          breadcrumbSegments={breadcrumbSegments}
           isSelectedCategory={isSelectedCategory}
         />
         <div className="px-2 md:px-6">
