@@ -19,7 +19,7 @@
     "generate:index": "node -r dotenv/config src/generators/GenerateIndex.mjs",
     "generate:prism": "node -r dotenv/config src/generators/GeneratePrismLanguages.mjs",
     "generate:pdf": "tsx -r dotenv/config src/generators/pdf-generator/cli.ts",
-    "static:html": "tsx -r dotenv/config src/generators/html-generator/index.ts",
+    "generate:html": "tsx -r dotenv/config src/generators/html-generator/index.ts",
     "static:validate": "tsx src/generators/html-generator/validateOutput.ts --out dist-static",
     "dev": "npm run generate && vite",
     "build": "npm run generate && tsc -b && vite build",
