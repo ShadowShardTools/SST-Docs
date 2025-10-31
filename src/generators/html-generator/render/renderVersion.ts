@@ -224,10 +224,7 @@ export async function renderVersion(
     logger,
     assetsDir,
   );
-  const staticStylesPath = relative(siteOutDir, assetsDir).replace(
-    /\\/g,
-    "/",
-  );
+  const staticStylesPath = relative(siteOutDir, assetsDir).replace(/\\/g, "/");
   const manifest = {
     version: entry.version.version,
     generatedAt: new Date().toISOString(),
