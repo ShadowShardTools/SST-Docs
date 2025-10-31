@@ -21,6 +21,7 @@
 ## ⚒️ Installation / Contribution
 
 All information is available on the website - [SST Docs](https://shadowshardtools.github.io/SST-Docs/)
+Need a JavaScript-free export? See [docs/static-html-generator.md](docs/static-html-generator.md) for the static generator workflow and limitations.
 
 ## 📦 Dependencies
 

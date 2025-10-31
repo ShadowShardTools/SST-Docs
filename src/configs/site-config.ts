@@ -1,8 +1,8 @@
-import { type StyleTheme } from "../types/StyleTheme";
-import { darkTheme } from "./darkTheme";
-import { lightTheme } from "./lightTheme";
+import { type StyleTheme } from "../application/types/StyleTheme";
+import { darkTheme } from "./themes/darkTheme";
+import { lightTheme } from "./themes/lightTheme";
 
-export type SiteConfig = {
+export type StylesConfig = {
   logo: {
     image: string;
     text: string;
@@ -13,7 +13,7 @@ export type SiteConfig = {
   };
 };
 
-export const siteConfig: SiteConfig = {
+export const stylesConfig: StylesConfig = {
   logo: {
     image: "https://avatars.githubusercontent.com/u/107807003",
     text: "SST Docs",

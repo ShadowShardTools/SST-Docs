@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Folder, ChevronDown, ChevronRight } from "lucide-react";
 import type { Category } from "../../render/types/Category";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { rowClasses } from "../utilities";
 
 export interface Props {
@@ -15,7 +15,7 @@ export interface Props {
   select: (c: Category) => void;
 }
 
-const CategoryRowBase = (
+export const CategoryRowBase = (
   { styles, node, depth, active, expanded, focused, toggle, select }: Props,
   ref: React.Ref<HTMLButtonElement>,
 ) => {

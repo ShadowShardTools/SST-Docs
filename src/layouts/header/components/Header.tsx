@@ -2,12 +2,16 @@ import { useState } from "react";
 import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import type { Version } from "../../render/types/Version";
-import type { StyleTheme } from "../../../types/StyleTheme";
-import GithubButtonLink from "../../cta/components/GithubLink";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import MobileMenu from "./MobileMenu";
-import SearchBar from "../../cta/components/SearchBar";
-import ThemeButton from "../../cta/components/ThemeButton";
-import VersionSelector from "../../cta/components/VersionSelector";
+import {
+  PrintPdfButton,
+  DownloadStaticButton,
+  SearchBar,
+  VersionSelector,
+  ThemeButton,
+  GithubButtonLink,
+} from "../../cta/components";
 
 interface HeaderProps {
   styles: StyleTheme;
@@ -20,7 +24,7 @@ interface HeaderProps {
   onMobileNavToggle: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
+export const Header: React.FC<HeaderProps> = ({
   styles,
   versions,
   currentVersion,
@@ -82,6 +86,16 @@ const Header: React.FC<HeaderProps> = ({
               currentVersion={currentVersion}
               onVersionChange={onVersionChange}
               loading={loading}
+            />
+            <PrintPdfButton
+              styles={styles}
+              showText={false}
+              currentVersion={currentVersion}
+            />
+            <DownloadStaticButton
+              styles={styles}
+              showText={false}
+              currentVersion={currentVersion}
             />
             <ThemeButton styles={styles} />
             <GithubButtonLink styles={styles} />

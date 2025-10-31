@@ -24,7 +24,7 @@ import {
   Scatter,
 } from "react-chartjs-2";
 import type { ChartData } from "../types";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { ALIGNMENT_CLASSES } from "../constants";
 import { validateScale, getResponsiveWidth } from "../utilities";
 
@@ -61,7 +61,7 @@ interface Props {
   chartData?: ChartData;
 }
 
-const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
+export const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
   if (!chartData || !chartData.type || !(chartData.type in chartMap))
     return null;
 

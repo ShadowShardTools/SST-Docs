@@ -1,6 +1,6 @@
 import React from "react";
 import type { Category } from "../../render/types/Category";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import CategoryRow from "./CategoryRow";
 import DocRow from "./DocRow";
 import type { DocItem } from "../../render/types/DocItem";
@@ -17,7 +17,7 @@ export interface Props {
   styles: StyleTheme;
 }
 
-const Branch: React.FC<Props> = ({
+export const Branch: React.FC<Props> = ({
   node,
   depth,
   open,

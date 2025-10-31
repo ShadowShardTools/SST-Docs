@@ -14,7 +14,7 @@ import {
 } from "../hooks";
 import SearchModalFooter from "./SearchModalFooter";
 import SearchResultItem from "./SearchResultItem";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DocItem } from "../../render/types";
 
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
   onSelect: (item: DocItem) => void;
 }
 
-const SearchModal: React.FC<Props> = ({
+export const SearchModal: React.FC<Props> = ({
   styles,
   isOpen,
   onClose,

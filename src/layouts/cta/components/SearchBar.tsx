@@ -1,6 +1,6 @@
 import { Search } from "lucide-react";
 import { memo } from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 interface SearchBarProps {
   styles: StyleTheme;
@@ -8,7 +8,10 @@ interface SearchBarProps {
 }
 
 // Split the definition so we can attach a displayName
-const SearchBarComponent: React.FC<SearchBarProps> = ({ styles, onClick }) => (
+export const SearchBarComponent: React.FC<SearchBarProps> = ({
+  styles,
+  onClick,
+}) => (
   <button
     type="button"
     onClick={onClick}

@@ -1,5 +1,5 @@
 import React from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DividerData } from "../types";
 
 interface Props {
@@ -8,7 +8,11 @@ interface Props {
   dividerData: DividerData;
 }
 
-const DividerBlock: React.FC<Props> = ({ index, styles, dividerData }) => {
+export const DividerBlock: React.FC<Props> = ({
+  index,
+  styles,
+  dividerData,
+}) => {
   const getSpacingClass = (): string => {
     switch (dividerData.spacing) {
       case "small":

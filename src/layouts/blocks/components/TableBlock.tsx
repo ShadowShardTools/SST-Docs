@@ -1,5 +1,5 @@
 import React from "react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { TableData } from "../types";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   tableData: TableData;
 }
 
-const TableBlock: React.FC<Props> = ({ tableData, styles, index }) => {
+export const TableBlock: React.FC<Props> = ({ tableData, styles, index }) => {
   if (!tableData.data?.length) {
     return (
       <div key={index} className={`mb-6 p-4 ${styles.table.empty}`}>

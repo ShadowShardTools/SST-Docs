@@ -8,20 +8,37 @@ import React, {
   useEffect,
 } from "react";
 import { Copy, Check, Download, ChevronDown, ChevronUp } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
 } from "../../../configs/code-languages-config";
 import type { CodeData, CodeSection } from "../types";
 import { usePrismHighlighting } from "../hooks";
-import { LineNumbers } from "./LineNumbers";
 import {
   copyToClipboard,
   createTimeout,
   downloadTextFile,
   sanitizeFilename,
 } from "../utilities";
+
+interface LineNumbersProps {
+  styles: StyleTheme;
+  content: string;
+}
+
+const LineNumbers = memo(({ styles, content }: LineNumbersProps) => {
+  const lines = content.split("\n");
+  return (
+    <div className={`select-none pr-4 flex-shrink-0 ${styles.code.lines}`}>
+      {lines.map((_, i) => (
+        <div key={i} className="text-right leading-6 min-h-[1.5rem]">
+          {i + 1}
+        </div>
+      ))}
+    </div>
+  );
+});
 
 interface Props {
   index: number;
@@ -31,7 +48,7 @@ interface Props {
   onLanguageChange?: (language: string) => void;
 }
 
-const CodeBlock: React.FC<Props> = ({
+export const CodeBlock: React.FC<Props> = ({
   index,
   styles,
   codeData,

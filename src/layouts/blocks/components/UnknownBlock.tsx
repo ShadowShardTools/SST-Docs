@@ -3,7 +3,7 @@ interface Props {
   type: string;
 }
 
-const UnknownBlock: React.FC<Props> = ({ index, type }) => {
+export const UnknownBlock: React.FC<Props> = ({ index, type }) => {
   return (
     <div
       key={index}

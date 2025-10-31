@@ -1,23 +1,67 @@
-import { useCallback, useState, lazy, Suspense } from "react";
-import ErrorMessage from "../../dialog/ErrorMessage";
-import Header from "../../header/components/Header";
-import Sidebar from "../../navigation/components/Sidebar";
-import Navigation from "../../navigation/components/Navigation";
-import LoadingSpinner from "../../dialog/LoadingSpinner";
-import CategoryNavigatorRenderer from "./CategoryNavigatorRenderer";
-import SearchModal from "../../searchModal/components/SearchModal";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { UseDocumentationData } from "../services/useDocumentationData";
-import type { StyleTheme } from "../../../types/StyleTheme";
-import useDocNavigation from "../hooks/useDocNavigation";
-import useSearchLogic from "../hooks/useSearchLogic";
+import { useCallback, useMemo, useState, Suspense } from "react";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DocItem, Category } from "../types";
-import isCategory from "../utilities/isCategory";
-import useSearchOpener from "../hooks/useSearchOpener";
+import { useDocumentationData } from "../../../services";
+import {
+  useDocNavigation,
+  useMediaQuery,
+  useSearchLogic,
+  useSearchOpener,
+  useHashScroll,
+} from "../hooks";
+import { ErrorMessage, LoadingSpinner } from "../../dialog/components";
+import { Navigation, Sidebar } from "../../navigation/components";
+import { isCategory } from "../utilities";
+import { CategoryNavigatorRenderer } from ".";
+import { Header } from "../../header/components";
+import { SearchModal } from "../../searchModal/components";
+import ContentBlockRenderer from "./ContentBlockRenderer";
+import type { BreadcrumbSegment } from "../types/BreadcrumbSegment";
+import DocumentHeader from "./DocumentHeader";
 
-const ContentRenderer = lazy(() => import("./ContentRendererBase"));
+type DocBreadcrumbTrail = {
+  categories: Category[];
+  doc: DocItem;
+} | null;
 
-const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
+const findCategoryTrail = (
+  nodes: Category[],
+  targetId: string,
+  trail: Category[] = [],
+): Category[] | null => {
+  for (const node of nodes) {
+    const nextTrail = [...trail, node];
+    if (node.id === targetId) {
+      return nextTrail;
+    }
+    if (node.children) {
+      const childTrail = findCategoryTrail(node.children, targetId, nextTrail);
+      if (childTrail) return childTrail;
+    }
+  }
+  return null;
+};
+
+const findDocTrail = (
+  nodes: Category[],
+  docId: string,
+  trail: Category[] = [],
+): DocBreadcrumbTrail => {
+  for (const node of nodes) {
+    const nextTrail = [...trail, node];
+    const docMatch = node.docs?.find((doc) => doc.id === docId);
+    if (docMatch) {
+      return { categories: nextTrail, doc: docMatch };
+    }
+    if (node.children) {
+      const childTrail = findDocTrail(node.children, docId, nextTrail);
+      if (childTrail) return childTrail;
+    }
+  }
+  return null;
+};
+
+export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -31,7 +75,7 @@ const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     standaloneDocs,
     loading,
     error,
-  } = UseDocumentationData();
+  } = useDocumentationData();
 
   const { selectedItem, selectedCategory, navigateToEntry } = useDocNavigation(
     items,
@@ -67,6 +111,49 @@ const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     );
   }
 
+  // === Inlined ContentRendererBase logic ===
+  const selected = selectedItem ?? selectedCategory;
+  const selectedContent = selected?.content ?? [];
+
+  // keep hook call order stable; pass current content (empty array if none)
+  useHashScroll(selectedContent);
+
+  const currentPath =
+    (typeof location !== "undefined" &&
+      (location.hash.split("#")[1] || location.pathname.slice(1))) ||
+    "";
+
+  const breadcrumbSegments = useMemo<BreadcrumbSegment[]>(() => {
+    if (!selected) return [];
+
+    if (isCategory(selected)) {
+      const trail = findCategoryTrail(tree, selected.id) ?? [selected];
+      return trail.map((category, index) => ({
+        label: category.title,
+        onSelect:
+          index === trail.length - 1
+            ? undefined
+            : () => navigateToEntry(category),
+      }));
+    }
+
+    const docTrail = findDocTrail(tree, selected.id);
+    if (docTrail) {
+      const categorySegments = docTrail.categories.map((category) => ({
+        label: category.title,
+        onSelect: () => navigateToEntry(category),
+      }));
+      return [...categorySegments, { label: docTrail.doc.title }];
+    }
+
+    const standalone = standaloneDocs.find((doc) => doc.id === selected.id);
+    if (standalone) {
+      return [{ label: standalone.title }];
+    }
+
+    return [{ label: selected.title }];
+  }, [selected, tree, navigateToEntry, standaloneDocs]);
+
   const renderContent = () => {
     if (isMobile && isMobileNavOpen) {
       return (
@@ -84,7 +171,6 @@ const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     if (loading.content) return <LoadingSpinner />;
     if (error.content) return <ErrorMessage message={error.content} />;
 
-    const selected = selectedItem ?? selectedCategory;
     if (!selected) {
       return (
         <div className="text-gray-500 text-center mt-16">
@@ -96,24 +182,28 @@ const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     const isSelectedCategory = isCategory(selected);
 
     return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <ContentRenderer
+      <>
+        <DocumentHeader
           styles={styles}
           title={selected.title}
-          content={selected.content ?? []}
-          docId={selected.id}
-          tree={tree}
+          breadcrumbSegments={breadcrumbSegments}
+          isSelectedCategory={isSelectedCategory}
         />
-        {isSelectedCategory && (
-          <div className="mt-8">
+        <div className="px-2 md:px-6">
+          <ContentBlockRenderer
+            styles={styles}
+            content={selectedContent}
+            currentPath={currentPath}
+          />
+          {isSelectedCategory && (
             <CategoryNavigatorRenderer
               category={selected as Category}
               styles={styles}
               onSelect={navigateToEntry}
             />
-          </div>
-        )}
-      </Suspense>
+          )}
+        </div>
+      </>
     );
   };
 
@@ -146,7 +236,7 @@ const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           </Suspense>
         )}
         <div
-          className={`flex-1 p-2 md:p-6 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
+          className={`flex-1 overflow-x-auto ${styles.sections.contentBackground} transition-colors`}
         >
           {renderContent()}
         </div>

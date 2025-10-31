@@ -5,10 +5,12 @@ export type MessageBoxType =
   | "success"
   | "neutral"
   | "quote";
+
 export type MessageBoxSize = "small" | "medium" | "large";
+
 export interface MessageBoxData {
   type?: MessageBoxType;
   text?: string;
-  size?: "small" | "medium" | "large";
+  size?: MessageBoxSize;
   showIcon?: boolean;
 }

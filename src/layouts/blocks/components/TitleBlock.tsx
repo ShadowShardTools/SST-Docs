@@ -1,6 +1,6 @@
 import React from "react";
 import { LinkIcon } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { TitleData } from "../types";
 import { slugify } from "../utilities";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
@@ -12,7 +12,7 @@ interface Props {
   currentPath?: string;
 }
 
-const TitleBlock: React.FC<Props> = ({
+export const TitleBlock: React.FC<Props> = ({
   index,
   styles,
   titleData,
@@ -20,7 +20,7 @@ const TitleBlock: React.FC<Props> = ({
 }) => {
   const level = titleData.level ?? 1;
   const spacingKey = (titleData.spacing ??
-    "medium") as keyof typeof SPACING_CLASSES;
+    "none") as keyof typeof SPACING_CLASSES;
   const spacingClass = SPACING_CLASSES[spacingKey];
   const alignmentClass = ALIGNMENT_CLASSES[titleData.alignment ?? "left"].text;
 

@@ -9,3 +9,7 @@ html {
 .bg-zinc-850 {
   background-color: #1c1c1f;
 }
+
+.function-plot text {
+  font-size: 14px !important;
+}

@@ -1,13 +1,20 @@
-import type { ChartData } from "../../blocks/types/ChartData";
-import type { CodeData } from "../../blocks/types/CodeData";
-import type { DividerData } from "../../blocks/types/DividerData";
-import type { GraphData } from "../../blocks/types/GraphData";
-import type { ListData } from "../../blocks/types/ListData";
-import type { MathData } from "../../blocks/types/MathData";
-import type { MessageBoxData } from "../../blocks/types/MessageBoxData";
-import type { TableData } from "../../blocks/types/TableData";
-import type { TextData } from "../../blocks/types/TextData";
-import type { TitleData } from "../../blocks/types/TitleData";
+import type {
+  AudioData,
+  ChartData,
+  CodeData,
+  DividerData,
+  ImageData,
+  ImageCarouselData,
+  ImageCompareData,
+  ImageGridData,
+  ListData,
+  MathData,
+  MessageBoxData,
+  TableData,
+  TextData,
+  TitleData,
+  YoutubeData,
+} from "../../blocks/types";
 
 export interface Content {
   type?:
@@ -15,9 +22,12 @@ export interface Content {
     | "text"
     | "list"
     | "table"
-    | "message-box"
+    | "messageBox"
     | "divider"
     | "image"
+    | "imageCompare"
+    | "imageCarousel"
+    | "imageGrid"
     | "audio"
     | "youtube"
     | "math"
@@ -32,9 +42,12 @@ export interface Content {
   messageBoxData?: MessageBoxData;
   dividerData?: DividerData;
   imageData?: ImageData;
+  imageCompareData?: ImageCompareData;
+  imageCarouselData?: ImageCarouselData;
+  imageGridData?: ImageGridData;
   audioData?: AudioData;
+  youtubeData?: YoutubeData;
   mathData?: MathData;
   codeData?: CodeData;
   chartData?: ChartData;
-  graphData?: GraphData;
 }

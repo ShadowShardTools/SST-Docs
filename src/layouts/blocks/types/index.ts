@@ -2,8 +2,10 @@ export type { AudioData } from "./AudioData";
 export type { ChartData } from "./ChartData";
 export type { CodeData, CodeSection } from "./CodeData";
 export type { DividerData } from "./DividerData";
-export type { GraphData } from "./GraphData";
 export type { ImageData } from "./ImageData";
+export type { ImageCompareData } from "./ImageCompareData";
+export type { ImageCarouselData } from "./ImageCarouselData";
+export type { ImageGridData } from "./ImageGridData";
 export type { ListData } from "./ListData";
 export type { MathData } from "./MathData";
 export type {
@@ -14,3 +16,4 @@ export type {
 export type { TableData } from "./TableData";
 export type { TextData } from "./TextData";
 export type { TitleData } from "./TitleData";
+export type { YoutubeData } from "./YoutubeData";

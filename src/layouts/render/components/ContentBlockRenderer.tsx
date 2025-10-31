@@ -3,8 +3,8 @@ import {
   blockImports,
   type BlockType,
 } from "../../blocks/generatedImports/blockImports.generated";
-import LoadingSpinner from "../../dialog/LoadingSpinner";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
+import { LoadingSpinner } from "../../dialog/components";
 
 interface Props {
   styles: StyleTheme;
@@ -12,7 +12,7 @@ interface Props {
   currentPath: string;
 }
 
-const ContentBlockRenderer: React.FC<Props> = memo(
+export const ContentBlockRenderer: React.FC<Props> = memo(
   ({ styles, content, currentPath }) => {
     return (
       <>

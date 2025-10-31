@@ -1,10 +1,13 @@
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { Version } from "../../render/types/Version";
-import GithubButtonLink from "../../cta/components/GithubLink";
-import SearchBar from "../../cta/components/SearchBar";
-import ThemeButton from "../../cta/components/ThemeButton";
-import VersionSelector from "../../cta/components/VersionSelector";
-
+import {
+  SearchBar,
+  VersionSelector,
+  ThemeButton,
+  GithubButtonLink,
+  PrintPdfButton,
+  DownloadStaticButton,
+} from "../../cta/components";
 interface Props {
   styles: StyleTheme;
   versions: Version[];
@@ -14,7 +17,7 @@ interface Props {
   onSearchOpen: () => void;
 }
 
-const MobileMenu: React.FC<Props> = ({
+export const MobileMenu: React.FC<Props> = ({
   styles,
   versions,
   currentVersion,
@@ -32,6 +35,16 @@ const MobileMenu: React.FC<Props> = ({
       currentVersion={currentVersion}
       onVersionChange={onVersionChange}
       loading={loading}
+    />
+    <PrintPdfButton
+      styles={styles}
+      showText={true}
+      currentVersion={currentVersion}
+    />
+    <DownloadStaticButton
+      styles={styles}
+      showText={true}
+      currentVersion={currentVersion}
     />
     <ThemeButton styles={styles} />
     <GithubButtonLink styles={styles} />

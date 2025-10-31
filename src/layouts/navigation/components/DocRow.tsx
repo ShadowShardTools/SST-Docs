@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { FileText } from "lucide-react";
 import { rowClasses } from "../utilities";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { DocItem } from "../../render/types/DocItem";
 
 export interface Props {
@@ -14,7 +14,7 @@ export interface Props {
 }
 
 // forwardRef + memo  ➔ rerenders only when props really change
-const DocRowBase = (
+export const DocRowBase = (
   { styles, doc, depth, active, focused, select }: Props,
   ref: React.Ref<HTMLLIElement>,
 ) => {

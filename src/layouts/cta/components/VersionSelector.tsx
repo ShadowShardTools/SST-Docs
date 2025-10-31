@@ -1,7 +1,7 @@
 import { memo, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
-import LoadingSpinner from "../../dialog/LoadingSpinner";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
+import LoadingSpinner from "../../dialog/components/LoadingSpinner";
 import type { Version } from "../../render/types";
 import { useClickOutside, useEscapeKey } from "../utilities";
 
@@ -13,7 +13,7 @@ interface VersionSelectorProps {
   loading: boolean;
 }
 
-const VersionSelector = memo<VersionSelectorProps>(
+export const VersionSelector = memo<VersionSelectorProps>(
   ({ styles, versions, currentVersion, onVersionChange, loading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);

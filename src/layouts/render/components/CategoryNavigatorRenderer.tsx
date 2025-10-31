@@ -1,6 +1,6 @@
 import React from "react";
 import { FileText, Folder } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 import type { Category, DocItem } from "../types";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   onSelect: (entry: DocItem | Category) => void;
 }
 
-const CategoryNavigatorRenderer: React.FC<Props> = ({
+export const CategoryNavigatorRenderer: React.FC<Props> = ({
   styles,
   category,
   onSelect,

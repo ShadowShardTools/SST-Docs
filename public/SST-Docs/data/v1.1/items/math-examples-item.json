@@ -1,0 +1,20 @@
+{
+  "id": "math-examples-item",
+  "title": "Math",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Katex Math Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "math",
+      "mathData": {
+        "expression": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}"
+      }
+    }
+  ]
+}

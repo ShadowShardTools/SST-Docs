@@ -14,6 +14,7 @@ export const ALIGNMENT_CLASSES = {
 } as const;
 
 export const SPACING_CLASSES = {
+  none: "",
   small: "mb-4",
   medium: "mb-6",
   large: "mb-8",

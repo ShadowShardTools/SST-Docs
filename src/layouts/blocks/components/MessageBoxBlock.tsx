@@ -6,8 +6,8 @@ import {
   CheckCircle,
   HelpCircle,
 } from "lucide-react";
-import type { StyleTheme } from "../../../types/StyleTheme";
 import type { MessageBoxData } from "../types";
+import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 interface Props {
   index: number;
@@ -15,7 +15,7 @@ interface Props {
   messageBoxData: MessageBoxData;
 }
 
-const MessageBoxBlock: React.FC<Props> = ({
+export const MessageBoxBlock: React.FC<Props> = ({
   index,
   styles,
   messageBoxData,

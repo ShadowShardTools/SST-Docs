@@ -5,6 +5,7 @@ export function useAudioPlayer(src: string) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [current, setCurrent] = useState(0);
+  const [volume, setVolume] = useState(1);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -26,6 +27,19 @@ export function useAudioPlayer(src: string) {
   }, []);
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleVolumeUpdate = () => setVolume(audio.volume);
+    setVolume(audio.volume);
+
+    audio.addEventListener("volumechange", handleVolumeUpdate);
+    return () => {
+      audio.removeEventListener("volumechange", handleVolumeUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
     if (audioRef.current) {
       audioRef.current.load();
       setIsPlaying(false);
@@ -33,6 +47,12 @@ export function useAudioPlayer(src: string) {
       setDuration(0);
     }
   }, [src]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   const togglePlay = useCallback(async () => {
     const audio = audioRef.current;
@@ -60,6 +80,18 @@ export function useAudioPlayer(src: string) {
     setCurrent(t);
   }, []);
 
+  const handleVolumeChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      const value = Number(e.target.value);
+      const clamped = Math.min(1, Math.max(0, value));
+      audio.volume = clamped;
+      setVolume(clamped);
+    },
+    [],
+  );
+
   return {
     audioRef,
     isPlaying,
@@ -67,5 +99,7 @@ export function useAudioPlayer(src: string) {
     current,
     togglePlay,
     handleSeek,
+    volume,
+    handleVolumeChange,
   };
 }
