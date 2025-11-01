@@ -1,1 +1,0 @@
-import{r as i}from"./index-B377ZACG.js";const o=()=>typeof window<"u"&&window.innerWidth<768,r=()=>{const[t,n]=i.useState(!1);return i.useEffect(()=>{const e=()=>{n(o())};return e(),window.addEventListener("resize",e),()=>window.removeEventListener("resize",e)},[]),t};export{r as u};
