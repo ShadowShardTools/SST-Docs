@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
 import { useKaTeX } from "../hooks";
-import type { MathData } from "../types";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import type { MathData } from "@shadow-shard-tools/docs-core/types/MathData";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 
 interface Props {
   index: number;
@@ -24,9 +24,10 @@ export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
   if (!trimmedExpression) return null;
 
   const rawAlignment = (mathData.alignment ?? "center").toLowerCase();
-  const alignment = (
-    ["left", "right"].includes(rawAlignment) ? rawAlignment : "center"
-  ) as keyof typeof ALIGNMENT_CLASSES;
+  const alignment: keyof typeof ALIGNMENT_CLASSES =
+    rawAlignment === "left" || rawAlignment === "right"
+      ? rawAlignment
+      : "center";
 
   const containerStyle = useMemo<React.CSSProperties>(
     () => ({
@@ -45,7 +46,9 @@ export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
         className={`${SPACING_CLASSES.medium} ${ALIGNMENT_CLASSES[alignment].text}`}
       >
         <div style={containerStyle}>
-          <div className="animate-pulse bg-gray-200 h-8 rounded w-24" />
+          <div
+            className={`animate-pulse h-8 rounded w-24 ${styles.sections.contentBackground || "sst-content-bg"}`}
+          />
         </div>
       </div>
     );
@@ -62,7 +65,10 @@ export const MathBlock: React.FC<Props> = ({ index, styles, mathData }) => {
         dangerouslySetInnerHTML={{ __html: html }}
       />
       {error && (
-        <div className="mt-2 text-sm text-red-500" role="alert">
+        <div
+          className={`mt-2 text-sm rounded p-2 ${styles.messageBox.error || "sst-msg-error"}`}
+          role="alert"
+        >
           {error}
         </div>
       )}

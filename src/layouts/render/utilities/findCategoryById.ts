@@ -1,4 +1,4 @@
-import type { Category } from "../types";
+import type { Category } from "@shadow-shard-tools/docs-core";
 
 export const findCategoryById = (
   nodes: Category[],

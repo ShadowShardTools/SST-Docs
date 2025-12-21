@@ -6,6 +6,6 @@ export const highlightSearchTerm = (text: string, term: string): string => {
 
   return text.replace(
     new RegExp(`(${escapedTerm})`, "gi"),
-    '<mark class="bg-yellow-200">$1</mark>',
+    '<mark class="sst-highlight">$1</mark>',
   );
 };

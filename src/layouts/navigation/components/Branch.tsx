@@ -1,9 +1,11 @@
 import React from "react";
-import type { Category } from "../../render/types/Category";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 import CategoryRow from "./CategoryRow";
 import DocRow from "./DocRow";
-import type { DocItem } from "../../render/types/DocItem";
+import type {
+  Category,
+  DocItem,
+  StyleTheme,
+} from "@shadow-shard-tools/docs-core";
 
 export interface Props {
   node: Category;
@@ -33,7 +35,7 @@ export const Branch: React.FC<Props> = ({
   const catFocused = focusedKey === catKey;
 
   const isCurrentCategory =
-    current && "children" in current && current.id === node.id;
+    current && "docs" in current && current.id === node.id;
 
   return (
     <div className={depth ? "ml-4 space-y-1" : "space-y-1"}>

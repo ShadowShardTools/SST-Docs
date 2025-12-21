@@ -1,7 +1,7 @@
 // src/generators/pdf-generator/blocks/addImageGrid.ts
 import type { RenderContext } from "../../types/RenderContext";
-import { Config } from "../../../../configs/pdf-config";
-import type { ImageGridData } from "../../../../layouts/blocks/types";
+import { Config } from "../../pdf-config";
+
 import {
   clampScale,
   resolveImagePath,
@@ -11,6 +11,7 @@ import {
   drawCenteredCaption,
   handleImageError,
 } from "../utilities";
+import type { ImageGridData } from "@shadow-shard-tools/docs-core";
 
 interface GridCell {
   image: any; // PDF embedded image

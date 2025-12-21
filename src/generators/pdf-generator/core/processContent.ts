@@ -1,4 +1,4 @@
-import type { Content } from "../../../layouts/render/types";
+import type { Content } from "@shadow-shard-tools/docs-core";
 import {
   addAudio,
   addChart,
@@ -13,17 +13,14 @@ import {
   addTable,
   addText,
   addTitle,
-  addUnknown,
   addYoutube,
 } from "../canvas/blocks";
 import type { RenderContext } from "../types/RenderContext";
 
 export async function processContent(ctx: RenderContext, content: Content[]) {
-  for (const [index, item] of (content ?? []).entries()) {
-    if (!item.type) {
-      console.warn(`⚠️  Skipping content item #${index} with no 'type'.`);
-      continue;
-    }
+  const items: Content[] = content ?? [];
+
+  for (const [index, item] of items.entries()) {
     try {
       switch (item.type) {
         case "title":
@@ -73,9 +70,6 @@ export async function processContent(ctx: RenderContext, content: Content[]) {
           break;
         case "chart":
           if (item.chartData) await addChart(ctx, item.chartData);
-          break;
-        default:
-          addUnknown(ctx, item.type);
           break;
       }
     } catch (e) {

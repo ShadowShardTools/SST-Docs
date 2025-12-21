@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { Download } from "lucide-react";
 import JSZip from "jszip";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
+import { resolvePublicDataPath } from "@shadow-shard-tools/docs-core/configs/sstDocsConfigShared";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { clientConfig } from "../../../application/config/clientConfig";
 
 interface StaticManifest {
   version: string;
@@ -57,11 +59,7 @@ export const DownloadStaticButton: React.FC<Props> = ({
       setIsDownloading(true);
 
       const trimmedBase = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
-      const dataPath =
-        (import.meta.env.VITE_PUBLIC_DATA_PATH as string | undefined) ?? "";
-      const trimmedDataPath = trimTrailingSlash(dataPath);
-
-      const dataRoot = `${trimmedBase}${trimmedDataPath}`;
+      const dataRoot = resolvePublicDataPath(trimmedBase, clientConfig);
       const versionId = encodeURIComponent(currentVersion);
       const versionRoot = `${dataRoot}/${versionId}`;
 
@@ -189,7 +187,7 @@ export const DownloadStaticButton: React.FC<Props> = ({
     >
       <Download className={`w-6 h-6 ${isDownloading ? "animate-pulse" : ""}`} />
       {showText && (
-        <span>{isDownloading ? "Preparing…" : "Download static"}</span>
+        <span>{isDownloading ? "Preparing..." : "Download static"}</span>
       )}
     </button>
   );

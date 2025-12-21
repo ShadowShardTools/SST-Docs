@@ -1,4 +1,4 @@
-import type { DocItem } from "../types";
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 
 export const searchInDocItem = (item: DocItem, searchTerm: string): boolean => {
   const lower = searchTerm.toLowerCase();
@@ -15,37 +15,30 @@ export const searchInDocItem = (item: DocItem, searchTerm: string): boolean => {
 
   // Search in content blocks
   return item.content.some((block) => {
-    // Check textData
-    if (block.textData?.text?.toLowerCase().includes(lower)) {
-      return true;
+    switch (block.type) {
+      case "text":
+        return block.textData.text?.toLowerCase().includes(lower) ?? false;
+      case "title":
+        return block.titleData.text?.toLowerCase().includes(lower) ?? false;
+      case "messageBox":
+        return (
+          block.messageBoxData.text?.toLowerCase().includes(lower) ?? false
+        );
+      case "list":
+        return (
+          block.listData.items?.some((li) =>
+            li.toLowerCase().includes(lower),
+          ) ?? false
+        );
+      case "code":
+        return (
+          block.codeData.content?.toLowerCase().includes(lower) ||
+          block.codeData.name?.toLowerCase().includes(lower) ||
+          false
+        );
+      default:
+        return false;
     }
-
-    // Check titleData
-    if (block.titleData?.text?.toLowerCase().includes(lower)) {
-      return true;
-    }
-
-    // Check messageBoxData
-    if (block.messageBoxData?.text?.toLowerCase().includes(lower)) {
-      return true;
-    }
-
-    // Check list items
-    if (block.listData?.items?.some((li) => li.toLowerCase().includes(lower))) {
-      return true;
-    }
-
-    // Check code content
-    if (block.codeData?.content?.toLowerCase().includes(lower)) {
-      return true;
-    }
-
-    // Check code name/filename
-    if (block.codeData?.name?.toLowerCase().includes(lower)) {
-      return true;
-    }
-
-    return false;
   });
 };
 

@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { ListData } from "../types";
 import { ALIGNMENT_CLASSES } from "../constants";
-import { processListItems } from "../utilities";
+import { processListItems } from "@shadow-shard-tools/docs-core/utilities/string/processListItems";
+import type { ListData } from "@shadow-shard-tools/docs-core/types/ListData";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 
 interface Props {
   index: number;
@@ -32,7 +32,7 @@ export const ListBlock: React.FC<Props> = ({ index, styles, listData }) => {
   return (
     <ListComponent
       key={index}
-      className={listClass}
+      className={`mb-2 ${listClass}`}
       {...(listData.type === "ol" && listData.startNumber !== undefined
         ? { start: listData.startNumber }
         : {})}

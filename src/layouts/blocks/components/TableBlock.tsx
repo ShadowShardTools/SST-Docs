@@ -1,6 +1,5 @@
 import React from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { TableData } from "../types";
+import type { StyleTheme, TableData } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   index: number;

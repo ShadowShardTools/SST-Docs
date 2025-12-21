@@ -29,7 +29,7 @@ export const useKaTeX = (expression: string) => {
             setHtml(rendered);
           } catch (e) {
             setError("Invalid LaTeX");
-            setHtml(`<span class="text-red-500">Invalid LaTeX</span>`);
+            setHtml(`<span class="sst-msg-error">Invalid LaTeX</span>`);
           } finally {
             setIsLoading(false);
           }
@@ -38,7 +38,7 @@ export const useKaTeX = (expression: string) => {
       .catch(() => {
         if (isMounted) {
           setError("Failed to load KaTeX");
-          setHtml(`<span class="text-red-500">Failed to load KaTeX</span>`);
+          setHtml(`<span class="sst-msg-error">Failed to load KaTeX</span>`);
           setIsLoading(false);
         }
       });

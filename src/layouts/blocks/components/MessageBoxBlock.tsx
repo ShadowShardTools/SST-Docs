@@ -6,8 +6,7 @@ import {
   CheckCircle,
   HelpCircle,
 } from "lucide-react";
-import type { MessageBoxData } from "../types";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
+import type { MessageBoxData, StyleTheme } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   index: number;
@@ -76,7 +75,7 @@ export const MessageBoxBlock: React.FC<Props> = ({
     return (
       <blockquote
         key={index}
-        className={`pl-4 py-2 mb-4 ${styles.messageBox.quote}`}
+        className={`pl-4 py-2 my-4 ${styles.messageBox.quote}`}
       >
         {messageBoxData.text && <p>{messageBoxData.text}</p>}
       </blockquote>

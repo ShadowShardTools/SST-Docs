@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { processSearchResults } from "../utilities/processSearchResults";
 import type { SearchMatch } from "../types";
-import type { DocItem } from "../../render/types";
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 
 export const useSearchResults = (
   results: DocItem[],

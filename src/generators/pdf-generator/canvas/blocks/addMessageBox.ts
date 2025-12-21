@@ -1,8 +1,8 @@
 // src/generators/pdf-generator/blocks/addMessageBox.ts
 import { rgb } from "pdf-lib";
-import { Config } from "../../../../configs/pdf-config";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
-import type { MessageBoxData } from "../../../../layouts/blocks/types";
+import type { MessageBoxData } from "@shadow-shard-tools/docs-core";
 
 // Tailwind-matched theme colors (0–1)
 const themes: Record<

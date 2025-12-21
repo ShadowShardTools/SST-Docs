@@ -1,5 +1,5 @@
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 import React from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 interface SearchModalFooterProps {
   styles: StyleTheme;

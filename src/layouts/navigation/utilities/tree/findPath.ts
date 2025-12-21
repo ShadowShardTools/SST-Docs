@@ -1,4 +1,4 @@
-import type { Category } from "../../../render/types";
+import type { Category } from "@shadow-shard-tools/docs-core";
 
 export const findPath = (tree: Category[], docId: string): string[] => {
   const out: string[] = [];

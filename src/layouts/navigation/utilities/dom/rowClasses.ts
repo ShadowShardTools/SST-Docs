@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../../../../application/types/StyleTheme";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 
 export const rowClasses = (
   styles: StyleTheme,

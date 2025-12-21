@@ -1,9 +1,9 @@
-import type { Category, DocItem } from "../../../render/types";
 import type { FlatEntry } from "../../types";
 import branchMatches from "./branchMatches";
 import createCategoryKey from "./createCategoryKey";
 import createDocumentKey from "./createDocumentKey";
 import testString from "../string/testString";
+import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
 
 export const buildEntries = (
   tree: Category[],

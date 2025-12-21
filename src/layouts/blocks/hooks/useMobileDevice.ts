@@ -1,5 +1,5 @@
+import { isMobileDevice } from "@shadow-shard-tools/docs-core/utilities/validation/isMobileDevice";
 import { useState, useEffect } from "react";
-import { isMobileDevice } from "../utilities";
 
 export const useMobileDevice = () => {
   const [isMobile, setIsMobile] = useState(false);

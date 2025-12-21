@@ -1,4 +1,4 @@
-import type { DocItem } from "../../render/types/DocItem";
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 
 export const generateSnippet = (item: DocItem, term: string): string => {
   const termLower = term.toLowerCase();
@@ -12,16 +12,24 @@ export const generateSnippet = (item: DocItem, term: string): string => {
   for (const content of item.content) {
     let text = "";
 
-    if (content.textData?.text) {
-      text = content.textData.text;
-    } else if (content.titleData?.text) {
-      text = content.titleData.text;
-    } else if (content.messageBoxData?.text) {
-      text = content.messageBoxData.text;
-    } else if (content.codeData?.content) {
-      text = content.codeData.content;
-    } else if (content.listData?.items) {
-      text = content.listData.items.join(" ");
+    switch (content.type) {
+      case "text":
+        text = content.textData.text ?? "";
+        break;
+      case "title":
+        text = content.titleData.text ?? "";
+        break;
+      case "messageBox":
+        text = content.messageBoxData.text ?? "";
+        break;
+      case "code":
+        text = content.codeData.content ?? "";
+        break;
+      case "list":
+        text = content.listData.items?.join(" ") ?? "";
+        break;
+      default:
+        text = "";
     }
 
     if (text && text.toLowerCase().includes(termLower)) {

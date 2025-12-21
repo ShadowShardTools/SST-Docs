@@ -1,7 +1,6 @@
 import React from "react";
 import { highlightSearchTerm } from "../utilities";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { DocItem } from "../../render/types";
+import type { DocItem, StyleTheme } from "@shadow-shard-tools/docs-core";
 interface Props {
   item: DocItem;
   snippet: string;

@@ -1,0 +1,13 @@
+{
+  "FS_DATA_PATH": "/public/SST-Docs/data",
+  "HEADER_BRANDING": {
+    "logoSrc": "https://avatars.githubusercontent.com/u/107807003",
+    "logoAlt": "SST Docs",
+    "logoText": "SST Docs"
+  },
+  "HTML_GENERATOR_SETTINGS": {
+    "OUTPUT_DIRECTORY": "./public/SST-Docs/data",
+    "SEPARATE_BUILD_FOR_HTML_GENERATOR": false,
+    "THEME": "default"
+  }
+}

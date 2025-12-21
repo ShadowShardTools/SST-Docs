@@ -1,6 +1,6 @@
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 import { Search } from "lucide-react";
 import { memo } from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 interface SearchBarProps {
   styles: StyleTheme;

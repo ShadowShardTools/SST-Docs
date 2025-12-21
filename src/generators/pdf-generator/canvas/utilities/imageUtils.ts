@@ -2,10 +2,10 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import type { RenderContext } from "../../types/RenderContext";
-import { Config } from "../../../../configs/pdf-config";
-import type { BaseImage } from "../../../../layouts/blocks/types/BaseImage";
+import { Config } from "../../pdf-config";
 import type { RGB } from "pdf-lib";
 import { clamp } from ".";
+import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
 
 /* ------------------------------ shared helpers ---------------------------------- */
 export function clampScale(scale?: number): number {

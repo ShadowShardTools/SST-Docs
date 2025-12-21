@@ -1,5 +1,5 @@
-import { Config } from "../../../configs/pdf-config";
-import type { Category } from "../../../layouts/render/types";
+import type { Category } from "@shadow-shard-tools/docs-core";
+import { Config } from "../pdf-config";
 import { addDocumentHeader } from "../canvas/blocks";
 import type { RenderContext } from "../types";
 import { processContent } from "./processContent";

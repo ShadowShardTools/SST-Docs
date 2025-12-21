@@ -1,6 +1,5 @@
 // src/generators/pdf-generator/blocks/addMath.ts
-import { Config } from "../../../../configs/pdf-config";
-import type { MathData } from "../../../../layouts/blocks/types";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
 
 import { mathjax } from "mathjax-full/js/mathjax.js";
@@ -10,6 +9,7 @@ import { liteAdaptor } from "mathjax-full/js/adaptors/liteAdaptor.js";
 import { RegisterHTMLHandler } from "mathjax-full/js/handlers/html.js";
 import { AllPackages } from "mathjax-full/js/input/tex/AllPackages.js";
 import { Resvg } from "@resvg/resvg-js";
+import type { MathData } from "@shadow-shard-tools/docs-core";
 
 /* ------------------------------- MathJax setup ----------------------------- */
 const adaptor = liteAdaptor();

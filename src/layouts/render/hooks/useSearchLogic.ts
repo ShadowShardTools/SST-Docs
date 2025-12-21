@@ -1,5 +1,32 @@
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 import { useState, useEffect, useCallback } from "react";
-import type { DocItem } from "../types";
+
+function blockMatches(
+  block: DocItem["content"][number],
+  lower: string,
+): boolean {
+  switch (block.type) {
+    case "text":
+      return block.textData.text?.toLowerCase().includes(lower) ?? false;
+    case "title":
+      return block.titleData.text?.toLowerCase().includes(lower) ?? false;
+    case "messageBox":
+      return block.messageBoxData.text?.toLowerCase().includes(lower) ?? false;
+    case "list":
+      return (
+        block.listData.items?.some((li) => li.toLowerCase().includes(lower)) ??
+        false
+      );
+    case "code":
+      return (
+        block.codeData.content?.toLowerCase().includes(lower) ||
+        block.codeData.name?.toLowerCase().includes(lower) ||
+        false
+      );
+    default:
+      return false;
+  }
+}
 
 export const useSearchLogic = (items: DocItem[], standaloneDocs: DocItem[]) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,22 +44,7 @@ export const useSearchLogic = (items: DocItem[], standaloneDocs: DocItem[]) => {
     const matches = allItems.filter(
       (item) =>
         item.title.toLowerCase().includes(lower) ||
-        item.content.some((block) => {
-          if (block.textData?.text?.toLowerCase().includes(lower)) return true;
-          if (block.titleData?.text?.toLowerCase().includes(lower)) return true;
-          if (block.messageBoxData?.text?.toLowerCase().includes(lower))
-            return true;
-          if (
-            block.listData?.items?.some((li) =>
-              li.toLowerCase().includes(lower),
-            )
-          )
-            return true;
-          if (block.codeData?.content?.toLowerCase().includes(lower))
-            return true;
-          if (block.codeData?.name?.toLowerCase().includes(lower)) return true;
-          return false;
-        }) ||
+        item.content.some((block) => blockMatches(block, lower)) ||
         item.tags?.some((tag) => tag.toLowerCase().includes(lower)),
     );
 

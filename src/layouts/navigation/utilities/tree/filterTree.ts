@@ -1,6 +1,6 @@
-import type { Category } from "../../../render/types";
 import branchMatches from "./branchMatches";
 import testString from "../string/testString";
+import type { Category } from "@shadow-shard-tools/docs-core";
 
 export const filterTree = (tree: Category[], filter: string): Category[] => {
   const lower = filter.toLowerCase();

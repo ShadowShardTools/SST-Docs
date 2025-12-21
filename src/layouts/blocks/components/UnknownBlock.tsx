@@ -1,15 +1,21 @@
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+
 interface Props {
   index: number;
   type: string;
+  styles: StyleTheme;
 }
 
-export const UnknownBlock: React.FC<Props> = ({ index, type }) => {
+export const UnknownBlock: React.FC<Props> = ({ index, type, styles }) => {
+  const warningTone = styles.messageBox.warning || "sst-msg-warning";
+
   return (
     <div
       key={index}
-      className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
+      className={`mb-4 p-3 rounded-md ${warningTone}`}
+      role="status"
     >
-      <p className="text-yellow-800">Unknown content type: {type}</p>
+      <p>Unknown content type: {type}</p>
     </div>
   );
 };

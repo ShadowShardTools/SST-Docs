@@ -1,5 +1,5 @@
-import type { TextData } from "../../../../layouts/blocks/types";
-import { Config } from "../../../../configs/pdf-config";
+import type { TextData } from "@shadow-shard-tools/docs-core";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
 
 export async function addText(ctx: RenderContext, data: TextData) {

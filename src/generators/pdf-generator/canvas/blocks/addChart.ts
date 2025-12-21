@@ -1,7 +1,7 @@
 // src/generators/pdf-generator/blocks/addChart.ts
-import { Config } from "../../../../configs/pdf-config";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
-import type { ChartData } from "../../../../layouts/blocks/types";
+import type { ChartData } from "@shadow-shard-tools/docs-core";
 import { renderChartPng } from "../../utilities";
 import {
   Chart as ChartJS,

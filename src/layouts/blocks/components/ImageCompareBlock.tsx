@@ -1,10 +1,11 @@
 import React, { useState, lazy, Suspense } from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import { validateScale, getResponsiveWidth } from "../utilities";
 import { useMobileDevice } from "../hooks";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
-import type { ImageCompareData } from "../types";
-import { withBasePath } from "../utilities";
+import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
+import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
+import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { withBasePath } from "@shadow-shard-tools/docs-core";
 
 const CompareImage = lazy(() => import("react-compare-image"));
 
@@ -77,7 +78,9 @@ export const ImageCompareBlock: React.FC<Props> = ({
         <div className={containerAlignment} style={{ width }}>
           <Suspense
             fallback={
-              <div className="h-64 bg-gray-200 animate-pulse rounded" />
+              <div
+                className={`h-64 animate-pulse rounded ${styles.sections.contentBackground || "sst-content-bg"}`}
+              />
             }
           >
             <CompareImage

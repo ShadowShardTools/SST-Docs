@@ -1,5 +1,5 @@
+import type { CodeSection } from "@shadow-shard-tools/docs-core";
 import { useEffect, useRef, useState } from "react";
-import type { CodeSection } from "../types";
 
 export const usePrismHighlighting = (
   sections: CodeSection[],

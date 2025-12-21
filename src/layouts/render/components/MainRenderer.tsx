@@ -1,6 +1,4 @@
 import { useCallback, useMemo, useState, Suspense } from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { DocItem, Category } from "../types";
 import { useDocumentationData } from "../../../services";
 import {
   useDocNavigation,
@@ -18,6 +16,11 @@ import { SearchModal } from "../../searchModal/components";
 import ContentBlockRenderer from "./ContentBlockRenderer";
 import type { BreadcrumbSegment } from "../types/BreadcrumbSegment";
 import DocumentHeader from "./DocumentHeader";
+import type {
+  Category,
+  DocItem,
+  StyleTheme,
+} from "@shadow-shard-tools/docs-core";
 
 type DocBreadcrumbTrail = {
   categories: Category[];
@@ -105,6 +108,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   if (error.versions) {
     return (
       <ErrorMessage
+        styles={styles}
         message={error.versions}
         onRetry={() => window.location.reload()}
       />
@@ -168,12 +172,13 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       );
     }
 
-    if (loading.content) return <LoadingSpinner />;
-    if (error.content) return <ErrorMessage message={error.content} />;
+    if (loading.content) return <LoadingSpinner styles={styles} />;
+    if (error.content)
+      return <ErrorMessage styles={styles} message={error.content} />;
 
     if (!selected) {
       return (
-        <div className="text-gray-500 text-center mt-16">
+        <div className={`text-center mt-16 ${styles.category.empty}`}>
           Select a document or category from the sidebar
         </div>
       );
@@ -209,7 +214,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<LoadingSpinner styles={styles} />}>
         <Header
           styles={styles}
           versions={versions}
@@ -224,7 +229,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
 
       <main className="flex flex-1">
         {!isMobile && (
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<LoadingSpinner styles={styles} />}>
             <Sidebar
               styles={styles}
               tree={tree}

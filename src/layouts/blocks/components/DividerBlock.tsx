@@ -1,6 +1,5 @@
 import React from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { DividerData } from "../types";
+import type { DividerData, StyleTheme } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   index: number;
@@ -27,7 +26,7 @@ export const DividerBlock: React.FC<Props> = ({
   };
 
   const getDividerClass = (): string => {
-    const base = `w-full ${styles.divider.border || "border-gray-300"}`;
+    const base = `w-full ${styles.divider.border || "sst-divider-border"}`;
 
     switch (dividerData.type) {
       case "line":
@@ -41,7 +40,7 @@ export const DividerBlock: React.FC<Props> = ({
       case "thick":
         return `${base} border-t-2`;
       case "gradient":
-        return `h-px w-full bg-gradient-to-r ${styles.divider.gradient || "from-transparent via-gray-300 to-transparent"}`;
+        return `h-px w-full ${styles.divider.gradient || "sst-divider-gradient"}`;
       default:
         return `${base} border-t`;
     }
@@ -56,7 +55,7 @@ export const DividerBlock: React.FC<Props> = ({
     return (
       <div key={index} className={`${spacingClass} flex items-center`}>
         <div className={sideDivider} />
-        <span className={`px-4 ${styles.divider.text}`}>
+        <span className={`px-4 ${styles.divider.text || "sst-divider-text"}`}>
           {dividerData.text}
         </span>
         <div className={sideDivider} />

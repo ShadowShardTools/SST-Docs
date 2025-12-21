@@ -1,9 +1,9 @@
 import React from "react";
 import { LinkIcon } from "lucide-react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { TitleData } from "../types";
-import { slugify } from "../utilities";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import { slugify } from "@shadow-shard-tools/docs-core/utilities/string/slugify";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { TitleData } from "@shadow-shard-tools/docs-core/types/TitleData";
 
 interface Props {
   index: number;
@@ -31,8 +31,10 @@ export const TitleBlock: React.FC<Props> = ({
   };
 
   const underlineClass = titleData.underline
-    ? `border-b-2 pb-2 ${styles.text.titleUnderline || "border-gray-300"}`
+    ? `border-b-2 pb-2 ${styles.divider.border || "sst-divider-border"}`
     : "";
+
+  const titleWrapperClass = styles.sections.contentBackground || "";
 
   const id =
     titleData.enableAnchorLink && titleData.text
@@ -90,9 +92,7 @@ export const TitleBlock: React.FC<Props> = ({
 
   return (
     <div key={index} className={spacingClass}>
-      <div className={styles.sections.titleBackground || "border-gray-300"}>
-        {renderTitle()}
-      </div>
+      <div className={titleWrapperClass}>{renderTitle()}</div>
     </div>
   );
 };

@@ -1,16 +1,14 @@
 import React from "react";
-import {
-  extractYouTubeId,
-  isValidYouTubeId,
-  validateScale,
-} from "../utilities";
-import type { YoutubeData } from "../types";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import { extractYouTubeId } from "@shadow-shard-tools/docs-core/utilities/string/extractYouTubeId";
+import { isValidYouTubeId } from "@shadow-shard-tools/docs-core/utilities/validation/isValidYouTubeId";
+import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { YoutubeData } from "@shadow-shard-tools/docs-core/types/YoutubeData";
 
 interface Props {
   youtubeData: YoutubeData;
-  styles: StyleTheme; // <- to style caption like ImageBlock does
+  styles: StyleTheme;
 }
 
 export const YoutubeBlock: React.FC<Props> = ({ youtubeData, styles }) => {

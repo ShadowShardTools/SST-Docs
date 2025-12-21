@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
-import type { Version } from "../../render/types/Version";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 import MobileMenu from "./MobileMenu";
 import {
   PrintPdfButton,
@@ -12,6 +10,7 @@ import {
   ThemeButton,
   GithubButtonLink,
 } from "../../cta/components";
+import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
 
 interface HeaderProps {
   styles: StyleTheme;

@@ -1,8 +1,7 @@
 // src/generators/pdf-generator/blocks/addImageCompare.ts
 import type { RenderContext } from "../../types/RenderContext";
-import { Config } from "../../../../configs/pdf-config";
-import type { BaseImage } from "../../../../layouts/blocks/types/BaseImage";
-import type { ImageCompareData } from "../../../../layouts/blocks/types";
+import { Config } from "../../pdf-config";
+
 import {
   clampScale,
   resolveImagePath,
@@ -15,6 +14,8 @@ import {
   getCaption,
   clampPercent,
 } from "../utilities";
+import type { ImageCompareData } from "@shadow-shard-tools/docs-core";
+import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
 
 /* --------------------------------- API ----------------------------------- */
 

@@ -1,4 +1,4 @@
-import type { StyleTheme } from "../../../application/types/StyleTheme";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 
 export const GithubButtonLink: React.FC<{ styles: StyleTheme }> = ({
   styles,

@@ -1,7 +1,7 @@
 // src/generators/pdf-generator/blocks/addImage.ts
 import type { RenderContext } from "../../types/RenderContext";
-import type { ImageData } from "../../../../layouts/blocks/types";
-import { Config } from "../../../../configs/pdf-config";
+import type { ImageData } from "@shadow-shard-tools/docs-core";
+import { Config } from "../../pdf-config";
 import {
   clampScale,
   resolveImagePath,

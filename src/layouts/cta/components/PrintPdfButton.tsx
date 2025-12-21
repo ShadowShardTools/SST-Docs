@@ -1,6 +1,6 @@
 import React from "react";
 import { Printer } from "lucide-react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   styles: StyleTheme;

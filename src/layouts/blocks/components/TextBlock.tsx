@@ -1,7 +1,7 @@
 import React from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { TextData } from "../types";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { TextData } from "@shadow-shard-tools/docs-core/types/TextData";
 
 interface Props {
   index: number;

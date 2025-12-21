@@ -1,9 +1,8 @@
 import { memo, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 import LoadingSpinner from "../../dialog/components/LoadingSpinner";
-import type { Version } from "../../render/types";
 import { useClickOutside, useEscapeKey } from "../utilities";
+import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
 
 interface VersionSelectorProps {
   styles: StyleTheme;
@@ -31,7 +30,7 @@ export const VersionSelector = memo<VersionSelectorProps>(
       setIsOpen(false);
     };
 
-    if (loading) return <LoadingSpinner />;
+    if (loading) return <LoadingSpinner styles={styles} />;
 
     return (
       <div className="relative" ref={dropdownRef}>

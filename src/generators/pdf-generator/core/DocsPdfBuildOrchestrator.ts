@@ -1,10 +1,11 @@
 import path from "node:path";
 import { DocsPdfWriter } from "./DocsPdfWriter";
 import {
-  loadVersions as coreLoadVersions,
-  loadVersionData as coreLoadVersionData,
-} from "../../../services/docsData";
-import { fsDataProvider, resolveDataPath } from "../utilities";
+  loadVersionData,
+  loadVersions,
+  resolveDataPath,
+} from "@shadow-shard-tools/docs-core";
+import { fsDataProvider } from "@shadow-shard-tools/docs-core";
 
 export class DocsPdfBuildOrchestrator {
   private dataPath: string;
@@ -18,7 +19,7 @@ export class DocsPdfBuildOrchestrator {
     console.log("🚀 SST Documentation PDF Builder");
     console.log(`📁 Data path: ${this.dataPath}`);
 
-    const versions = await coreLoadVersions(this.provider, this.dataPath);
+    const versions = await loadVersions(this.provider, this.dataPath);
     console.log(
       "📚 Found %d versions: %s",
       versions.length,
@@ -31,7 +32,7 @@ export class DocsPdfBuildOrchestrator {
           `\n📄 Generating PDF for ${version.label} (${version.version})...`,
         );
         const versionRoot = path.join(this.dataPath, version.version);
-        const data = await coreLoadVersionData(this.provider, versionRoot);
+        const data = await loadVersionData(this.provider, versionRoot);
         console.log(
           `📊 Loaded: ${data.items.length} items, ${data.tree.length} categories, ${data.standaloneDocs.length} standalone docs`,
         );

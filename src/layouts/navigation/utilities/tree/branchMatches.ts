@@ -1,4 +1,4 @@
-import type { Category } from "../../../render/types";
+import type { Category } from "@shadow-shard-tools/docs-core";
 import testString from "../string/testString";
 
 export const branchMatches = (node: Category, q: string): boolean =>

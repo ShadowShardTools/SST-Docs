@@ -1,4 +1,4 @@
-import type { DocItem } from "../../render/types/DocItem";
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 import type { SearchMatch } from "../types";
 import { itemMatchesSearchTerm } from "./itemMatchesSearchTerm";
 
@@ -23,22 +23,38 @@ export const processSearchResults = (
       // Check content blocks
       item.content.forEach((block, blockIndex) => {
         let text = "";
-        if (block.titleData?.text?.toLowerCase().includes(termLower)) {
-          text = block.titleData.text;
-        } else if (block.textData?.text?.toLowerCase().includes(termLower)) {
-          text = block.textData.text;
-        } else if (
-          block.messageBoxData?.text?.toLowerCase().includes(termLower)
-        ) {
-          text = block.messageBoxData.text;
-        } else if (
-          block.listData?.items?.some((li) =>
-            li.toLowerCase().includes(termLower),
-          )
-        ) {
-          text = block.listData.items.join(" ");
-        } else if (block.codeData?.content?.toLowerCase().includes(termLower)) {
-          text = block.codeData.content;
+        switch (block.type) {
+          case "title":
+            if (block.titleData.text?.toLowerCase().includes(termLower)) {
+              text = block.titleData.text;
+            }
+            break;
+          case "text":
+            if (block.textData.text?.toLowerCase().includes(termLower)) {
+              text = block.textData.text;
+            }
+            break;
+          case "messageBox":
+            if (block.messageBoxData.text?.toLowerCase().includes(termLower)) {
+              text = block.messageBoxData.text;
+            }
+            break;
+          case "list":
+            if (
+              block.listData.items?.some((li) =>
+                li.toLowerCase().includes(termLower),
+              )
+            ) {
+              text = block.listData.items.join(" ");
+            }
+            break;
+          case "code":
+            if (block.codeData.content?.toLowerCase().includes(termLower)) {
+              text = block.codeData.content;
+            }
+            break;
+          default:
+            text = "";
         }
 
         if (text) {

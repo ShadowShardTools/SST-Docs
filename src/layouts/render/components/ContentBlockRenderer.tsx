@@ -3,8 +3,8 @@ import {
   blockImports,
   type BlockType,
 } from "../../blocks/generatedImports/blockImports.generated";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { LoadingSpinner } from "../../dialog/components";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   styles: StyleTheme;
@@ -22,7 +22,7 @@ export const ContentBlockRenderer: React.FC<Props> = memo(
             blockImports["unknown"]) as React.ComponentType<any>;
 
           return (
-            <Suspense key={index} fallback={<LoadingSpinner />}>
+            <Suspense key={index} fallback={<LoadingSpinner styles={styles} />}>
               <LazyBlock
                 index={index}
                 styles={styles}

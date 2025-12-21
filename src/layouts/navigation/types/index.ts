@@ -1,5 +1,5 @@
-import type { Category } from "../../render/types/Category";
-import type { DocItem } from "../../render/types/DocItem";
+import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+
 export interface FlatEntryDoc {
   type: "doc";
   id: string;

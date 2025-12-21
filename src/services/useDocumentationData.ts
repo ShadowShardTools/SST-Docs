@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Version } from "../layouts/render/types/Version";
-import type { Category } from "../layouts/render/types/Category";
 import { documentationLoader } from "./documentationLoader";
-import type { DocItem } from "../layouts/render/types/DocItem";
+import type { Category, DocItem, Version } from "@shadow-shard-tools/docs-core";
 
 interface LoadingState {
   versions: boolean;

@@ -1,11 +1,12 @@
 import { rgb } from "pdf-lib";
-import { Config } from "../../../../configs/pdf-config";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
-import type { CodeData, CodeSection } from "../../../../layouts/blocks/types";
 import {
   CODE_LANGUAGE_CONFIG,
+  type CodeData,
+  type CodeSection,
   type SupportedLanguage,
-} from "../../../../configs/code-languages-config";
+} from "@shadow-shard-tools/docs-core";
 
 /* ------------------------------- helpers ---------------------------------- */
 

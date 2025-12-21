@@ -1,5 +1,5 @@
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 import React, { useState } from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 
 export interface Props {
   styles: StyleTheme;

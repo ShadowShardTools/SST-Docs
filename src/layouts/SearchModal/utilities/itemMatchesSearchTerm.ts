@@ -1,4 +1,4 @@
-import type { DocItem } from "../../render/types/DocItem";
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 
 export const itemMatchesSearchTerm = (item: DocItem, term: string): boolean => {
   const termLower = term.toLowerCase();
@@ -8,20 +8,35 @@ export const itemMatchesSearchTerm = (item: DocItem, term: string): boolean => {
 
   // Search in content blocks
   const hasContentMatch = item.content.some((content) => {
-    if (content.textData?.text?.toLowerCase().includes(termLower)) return true;
-    if (content.titleData?.text?.toLowerCase().includes(termLower)) return true;
-    if (
-      content.listData?.items?.some((item) =>
-        item.toLowerCase().includes(termLower),
-      )
-    )
-      return true;
-    if (content.messageBoxData?.text?.toLowerCase().includes(termLower))
-      return true;
-    if (content.codeData?.content?.toLowerCase().includes(termLower))
-      return true;
-    if (content.codeData?.name?.toLowerCase().includes(termLower)) return true;
-    return false;
+    switch (content.type) {
+      case "text":
+        return (
+          content.textData.text?.toLowerCase().includes(termLower) ?? false
+        );
+      case "title":
+        return (
+          content.titleData.text?.toLowerCase().includes(termLower) ?? false
+        );
+      case "list":
+        return (
+          content.listData.items?.some((item) =>
+            item.toLowerCase().includes(termLower),
+          ) ?? false
+        );
+      case "messageBox":
+        return (
+          content.messageBoxData.text?.toLowerCase().includes(termLower) ??
+          false
+        );
+      case "code":
+        return (
+          content.codeData.content?.toLowerCase().includes(termLower) ||
+          content.codeData.name?.toLowerCase().includes(termLower) ||
+          false
+        );
+      default:
+        return false;
+    }
   });
 
   if (hasContentMatch) return true;

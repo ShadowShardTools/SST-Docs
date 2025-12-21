@@ -1,7 +1,9 @@
 // src/generators/pdf-generator/blocks/addYoutube.ts
-import { Config } from "../../../../configs/pdf-config";
-import type { YoutubeData } from "../../../../layouts/blocks/types";
-import { extractYouTubeId } from "../../../../layouts/blocks/utilities";
+import {
+  extractYouTubeId,
+  type YoutubeData,
+} from "@shadow-shard-tools/docs-core";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
 
 export async function addYoutube(ctx: RenderContext, data: YoutubeData) {

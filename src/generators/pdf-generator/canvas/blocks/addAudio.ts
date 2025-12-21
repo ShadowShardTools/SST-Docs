@@ -1,8 +1,8 @@
 // src/generators/pdf-generator/blocks/addAudio.ts
 import { rgb } from "pdf-lib";
 import type { RenderContext } from "../../types/RenderContext";
-import { Config } from "../../../../configs/pdf-config";
-import type { AudioData } from "../../../../layouts/blocks/types";
+import { Config } from "../../pdf-config";
+import type { AudioData } from "@shadow-shard-tools/docs-core";
 
 /**
  * Info-styled message box:

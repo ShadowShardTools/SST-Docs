@@ -1,6 +1,6 @@
-import { Config } from "../../../../configs/pdf-config";
+import type { ListData } from "@shadow-shard-tools/docs-core";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
-import type { ListData } from "../../../../layouts/blocks/types";
 
 function normalizeItems(items?: string[]): string[] {
   return (items ?? [])

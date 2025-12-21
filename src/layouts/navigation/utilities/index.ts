@@ -1,5 +1,3 @@
-// utilities/index.ts
-
 // tree utilities
 export { default as branchMatches } from "./tree/branchMatches";
 export { default as buildEntries } from "./tree/buildEntries";

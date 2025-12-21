@@ -8,19 +8,20 @@ import React, {
   useEffect,
 } from "react";
 import { Copy, Check, Download, ChevronDown, ChevronUp } from "lucide-react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
+import { usePrismHighlighting } from "../hooks";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
-} from "../../../configs/code-languages-config";
-import type { CodeData, CodeSection } from "../types";
-import { usePrismHighlighting } from "../hooks";
-import {
-  copyToClipboard,
-  createTimeout,
-  downloadTextFile,
-  sanitizeFilename,
-} from "../utilities";
+} from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
+import { copyToClipboard } from "@shadow-shard-tools/docs-core/utilities/dom/copyToClipboard";
+import { createTimeout } from "@shadow-shard-tools/docs-core/utilities/system/createTimeout";
+import { downloadTextFile } from "@shadow-shard-tools/docs-core/utilities/dom/downloadTextFile";
+import { sanitizeFilename } from "@shadow-shard-tools/docs-core/utilities/string/sanitizeFilename";
+import type {
+  CodeData,
+  CodeSection,
+} from "@shadow-shard-tools/docs-core/types/CodeData";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 
 interface LineNumbersProps {
   styles: StyleTheme;

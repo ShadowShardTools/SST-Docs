@@ -1,5 +1,4 @@
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { Version } from "../../render/types/Version";
+import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
 import {
   SearchBar,
   VersionSelector,

@@ -1,10 +1,10 @@
 import React from "react";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
-import type { ImageGridData } from "../types";
-import { validateScale } from "../utilities";
-import { useMobileDevice } from "../hooks";
 import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
-import { withBasePath } from "../utilities";
+import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
+import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { useMobileDevice } from "../hooks";
+import { withBasePath } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   index: number;

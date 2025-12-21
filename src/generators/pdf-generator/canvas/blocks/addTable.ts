@@ -1,6 +1,5 @@
-import { Config } from "../../../../configs/pdf-config";
-import type { TableData } from "../../../../layouts/blocks/types";
-import type { TableCell } from "../../../../layouts/blocks/types/TableData";
+import type { TableCell, TableData } from "@shadow-shard-tools/docs-core";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
 
 export async function addTable(ctx: RenderContext, table: TableData) {

@@ -15,11 +15,9 @@
   },
   "scripts": {
     "generate": "run-p generate:*",
-    "generate:blocks": "node -r dotenv/config src/generators/GenerateBlockImports.mjs",
-    "generate:index": "node -r dotenv/config src/generators/GenerateIndex.mjs",
-    "generate:prism": "node -r dotenv/config src/generators/GeneratePrismLanguages.mjs",
-    "generate:pdf": "tsx -r dotenv/config src/generators/pdf-generator/cli.ts",
-    "generate:html": "tsx -r dotenv/config src/generators/html-generator/index.ts",
+    "generate:blocks": "tsx src/generators/GenerateBlockImports.ts",
+    "generate:index": "tsx src/generators/GenerateIndex.ts",
+    "generate:prism": "tsx src/generators/GeneratePrismLanguages.ts",
     "static:validate": "tsx src/generators/html-generator/validateOutput.ts --out dist-static",
     "dev": "npm run generate && vite",
     "build": "npm run generate && tsc -b && vite build",
@@ -32,9 +30,10 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
+    "@shadow-shard-tools/docs-core": "F:/ShadowShardTools/Projects/SST-Docs-Core/shadow-shard-tools-docs-core-1.0.17.tgz",
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/line-clamp": "^0.4.4",
-    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/typography": "^0.5.19",
     "app-root-path": "^3.1.0",
     "chart.js": "^4.5.0",
     "chartjs-node-canvas": "^5.0.0",
@@ -51,10 +50,10 @@
     "react-router-dom": "^7.6.0",
     "react-window": "^1.8.11",
     "sharp": "^0.34.3",
-    "tailwindcss": "^4.1.6"
+    "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.6",
+    "@tailwindcss/vite": "^4.1.17",
     "@types/jszip": "^3.4.0",
     "@types/node": "^24.2.1",
     "@types/prismjs": "^1.26.5",

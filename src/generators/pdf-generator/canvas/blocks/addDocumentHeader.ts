@@ -1,4 +1,4 @@
-import { Config } from "../../../../configs/pdf-config";
+import { Config } from "../../pdf-config";
 import type { RenderContext } from "../../types/RenderContext";
 
 const PADDING_X = 24;

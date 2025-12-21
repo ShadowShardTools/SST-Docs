@@ -1,4 +1,4 @@
-import type { DocItem } from "../types";
+import type { DocItem } from "@shadow-shard-tools/docs-core";
 
 export const getFirstAvailableItem = (
   standaloneDocs: DocItem[],

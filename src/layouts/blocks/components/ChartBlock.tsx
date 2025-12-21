@@ -23,10 +23,11 @@ import {
   Pie,
   Scatter,
 } from "react-chartjs-2";
-import type { ChartData } from "../types";
-import type { StyleTheme } from "../../../application/types/StyleTheme";
 import { ALIGNMENT_CLASSES } from "../constants";
-import { validateScale, getResponsiveWidth } from "../utilities";
+import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
+import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
+import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 
 ChartJS.register(
   BarElement,

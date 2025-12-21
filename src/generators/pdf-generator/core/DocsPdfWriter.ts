@@ -1,6 +1,5 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
-import { Config } from "../../../configs/pdf-config";
-import type { Version, Category, DocItem } from "../../../layouts/render/types";
+import { Config } from "../pdf-config";
 import { addTitle, addDivider, addDocumentHeader } from "../canvas/blocks";
 import { PdfCanvas } from "../canvas";
 import type { Fonts, PageConfig } from "../canvas/types";
@@ -8,7 +7,23 @@ import type { RenderContext } from "../types/RenderContext";
 import { loadLucideIcons } from "../utilities";
 import { processCategory } from "./processCategory";
 import { processContent } from "./processContent";
-import { stylesConfig } from "../../../configs/site-config";
+import {
+  type Category,
+  type DocItem,
+  type Version,
+  type HeaderBranding,
+} from "@shadow-shard-tools/docs-core";
+import { loadSstDocsConfig } from "@shadow-shard-tools/docs-core/configs";
+
+let cachedBranding: HeaderBranding | undefined;
+
+async function getHeaderBranding(): Promise<HeaderBranding> {
+  if (!cachedBranding) {
+    const config = await loadSstDocsConfig();
+    cachedBranding = config.HEADER_BRANDING ?? {};
+  }
+  return cachedBranding;
+}
 
 export class DocsPdfWriter {
   private doc!: PDFDocument;
@@ -66,9 +81,12 @@ export class DocsPdfWriter {
     standaloneDocs: DocItem[],
     outputPath: string,
   ): Promise<void> {
+    const branding = await getHeaderBranding();
+    const brandLabel = branding.logoText ?? branding.logoAlt ?? "SST Docs";
+
     // Cover / header
     addTitle(this.ctx, {
-      text: `${stylesConfig.logo.text} — ${version.label}`,
+      text: `${brandLabel} — ${version.label}`,
       level: 1,
       spacing: "small",
     });
