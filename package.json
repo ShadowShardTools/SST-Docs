@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "@shadow-shard-tools/docs-core": "F:/ShadowShardTools/Projects/SST-Docs-Core/shadow-shard-tools-docs-core-1.0.17.tgz",
+    "@shadow-shard-tools/docs-core": "^1.0.19",
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.19",
