@@ -2,8 +2,8 @@
 
 A React + Vite template for building fast, searchable, versioned documentation sites from structured JSON. It ships with product/version selectors, keyboard-friendly navigation, a rich block library, light/dark themes, and optional static HTML export for offline or JS-free delivery.
 
-![SST Docs Light Theme](https://github.com/user-attachments/assets/aa06a602-4333-46d1-be1f-a15eddcaeb7e)
-![SST Docs Dark Theme](https://github.com/user-attachments/assets/f002795b-dab4-4b6c-9b26-5e468b5394e0)
+<img width="1912" height="948" alt="msedge_d4EVeYOxYO" src="https://github.com/user-attachments/assets/cfe822a5-b94a-4bb0-a45d-dc1a16fa7c57" />
+<img width="1912" height="948" alt="msedge_wf325mnxVL" src="https://github.com/user-attachments/assets/7af47e44-ed2c-4a3f-b6bb-5aa8a2aaeaf3" />
 
 ## Features
 - JSON-driven multi-product, multi-version docs with per-version assets.
