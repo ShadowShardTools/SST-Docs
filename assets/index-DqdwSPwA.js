@@ -1,0 +1,1 @@
+const t={type:"loop",gap:"1rem",arrows:!0,pagination:!1,autoplay:!1,interval:3e3},e={left:{text:"text-left",container:"mr-auto"},center:{text:"text-center",container:"mx-auto"},right:{text:"text-right",container:"ml-auto"}},a={none:"",small:"mb-4",medium:"mb-6",large:"mb-8"};export{e as A,t as D,a as S};

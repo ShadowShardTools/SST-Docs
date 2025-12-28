@@ -1,0 +1,14 @@
+{
+  "product": "exampleSecondProduct",
+  "version": "v1.0",
+  "generatedAt": "2025-12-28T21:28:15.996Z",
+  "index": "index.html",
+  "categories": [],
+  "docs": [
+    "docs/math-examples-item/index.html"
+  ],
+  "charts": [],
+  "media": [],
+  "staticStylesPath": "../../../static-styles",
+  "assetsManifest": "../../../static-styles/assets-manifest.json"
+}
