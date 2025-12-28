@@ -1,36 +1,31 @@
-import type { DocItem } from "@shadow-shard-tools/docs-core";
-import { useState, useEffect, useCallback } from "react";
+import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { itemMatchesSearchTerm } from "../../searchModal/utilities/itemMatchesSearchTerm";
 
-function blockMatches(
-  block: DocItem["content"][number],
-  lower: string,
-): boolean {
-  switch (block.type) {
-    case "text":
-      return block.textData.text?.toLowerCase().includes(lower) ?? false;
-    case "title":
-      return block.titleData.text?.toLowerCase().includes(lower) ?? false;
-    case "messageBox":
-      return block.messageBoxData.text?.toLowerCase().includes(lower) ?? false;
-    case "list":
-      return (
-        block.listData.items?.some((li) => li.toLowerCase().includes(lower)) ??
-        false
-      );
-    case "code":
-      return (
-        block.codeData.content?.toLowerCase().includes(lower) ||
-        block.codeData.name?.toLowerCase().includes(lower) ||
-        false
-      );
-    default:
-      return false;
+const flattenCategories = (nodes: Category[]): Category[] => {
+  const list: Category[] = [];
+  const stack = [...nodes];
+  while (stack.length) {
+    const current = stack.pop()!;
+    list.push(current);
+    if (current.children?.length) {
+      stack.push(...current.children);
+    }
   }
-}
+  return list;
+};
 
-export const useSearchLogic = (items: DocItem[], standaloneDocs: DocItem[]) => {
+export const useSearchLogic = (
+  items: DocItem[],
+  standaloneDocs: DocItem[],
+  tree: Category[],
+) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<DocItem[]>([]);
+  const [searchResults, setSearchResults] = useState<Array<DocItem | Category>>(
+    [],
+  );
+
+  const categories = useMemo(() => flattenCategories(tree), [tree]);
 
   useEffect(() => {
     if (!searchTerm.trim()) {
@@ -39,17 +34,18 @@ export const useSearchLogic = (items: DocItem[], standaloneDocs: DocItem[]) => {
     }
 
     const lower = searchTerm.toLowerCase();
-    const allItems = [...items, ...standaloneDocs];
+    const allItems: Array<DocItem | Category> = [
+      ...items,
+      ...standaloneDocs,
+      ...categories,
+    ];
 
-    const matches = allItems.filter(
-      (item) =>
-        item.title.toLowerCase().includes(lower) ||
-        item.content.some((block) => blockMatches(block, lower)) ||
-        item.tags?.some((tag) => tag.toLowerCase().includes(lower)),
+    const matches = allItems.filter((item) =>
+      itemMatchesSearchTerm(item, lower),
     );
 
     setSearchResults(matches);
-  }, [searchTerm, items, standaloneDocs]);
+  }, [searchTerm, items, standaloneDocs, categories]);
 
   const resetSearch = useCallback(() => {
     setSearchTerm("");

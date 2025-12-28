@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import type { SearchMatch } from "../types";
 import { KEYBOARD_SHORTCUTS } from "../constants";
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
 
 export const useKeyboardNavigation = (
   isOpen: boolean,
   processedResults: SearchMatch[],
-  onSelect: (item: DocItem) => void,
+  onSelect: (item: DocItem | Category) => void,
   onClose: () => void,
 ) => {
   const [selectedIndex, setSelectedIndex] = useState(0);

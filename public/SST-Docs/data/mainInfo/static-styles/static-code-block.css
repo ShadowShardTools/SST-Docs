@@ -1,0 +1,16 @@
+/* Static code block enhancements */
+.static-code-block { background-color: inherit; border-radius: inherit; position: relative; }
+.static-code-tab-input { position: absolute; opacity: 0; pointer-events: none; }
+.static-code-header { position: relative; z-index: 1; }
+.static-code-tab-labels { display: inline-flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+.static-code-tab-label { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.65rem; font-size: 0.75rem; border-radius: 9999px; cursor: pointer; border: 1px solid rgba(148, 163, 184, 0.35); background-color: rgba(148, 163, 184, 0.12); transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
+.static-code-tab-label:hover { background-color: rgba(148, 163, 184, 0.22); }
+.static-code-tab-panels { position: relative; display: flex; flex-direction: column; gap: 1.25rem; }
+.static-code-panel { position: relative; border-radius: inherit; overflow: hidden; }
+.static-code-panel pre { margin: 0; }
+.static-code-language-badge { position: absolute; top: 0.75rem; right: 0.75rem; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.2rem 0.55rem; border-radius: 9999px; background-color: rgba(15, 23, 42, 0.08); }
+@media (prefers-color-scheme: dark) {
+  .static-code-tab-label { background-color: rgba(148, 163, 184, 0.16); border-color: rgba(148, 163, 184, 0.26); color: #e2e8f0; }
+  .static-code-tab-label:hover { background-color: rgba(148, 163, 184, 0.28); }
+  .static-code-language-badge { background-color: rgba(148, 163, 184, 0.24); color: #e2e8f0; }
+}

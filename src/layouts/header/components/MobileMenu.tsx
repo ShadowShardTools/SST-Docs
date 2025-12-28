@@ -1,14 +1,22 @@
-import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
+import type {
+  Product,
+  StyleTheme,
+  Version,
+} from "@shadow-shard-tools/docs-core";
 import {
   SearchBar,
   VersionSelector,
   ThemeButton,
   GithubButtonLink,
-  PrintPdfButton,
   DownloadStaticButton,
+  ProductSelector,
 } from "../../cta/components";
 interface Props {
   styles: StyleTheme;
+  productVersioning: boolean;
+  products: Product[];
+  currentProduct: string;
+  onProductChange: (product: string) => void;
   versions: Version[];
   currentVersion: string;
   onVersionChange: (version: string) => void;
@@ -18,6 +26,10 @@ interface Props {
 
 export const MobileMenu: React.FC<Props> = ({
   styles,
+  productVersioning,
+  products,
+  currentProduct,
+  onProductChange,
   versions,
   currentVersion,
   onVersionChange,
@@ -27,7 +39,15 @@ export const MobileMenu: React.FC<Props> = ({
   <div
     className={`absolute top-16 left-0 w-full z-40 p-4 md:hidden space-y-4 ${styles.sections.headerMobileBackground}`}
   >
-    <SearchBar styles={styles} onClick={onSearchOpen} />
+    {productVersioning && (
+      <ProductSelector
+        styles={styles}
+        products={products}
+        currentProduct={currentProduct}
+        onProductChange={onProductChange}
+        loading={loading}
+      />
+    )}
     <VersionSelector
       styles={styles}
       versions={versions}
@@ -35,14 +55,12 @@ export const MobileMenu: React.FC<Props> = ({
       onVersionChange={onVersionChange}
       loading={loading}
     />
-    <PrintPdfButton
-      styles={styles}
-      showText={true}
-      currentVersion={currentVersion}
-    />
+    <SearchBar styles={styles} onClick={onSearchOpen} />
     <DownloadStaticButton
       styles={styles}
       showText={true}
+      productVersioning={productVersioning}
+      currentProduct={currentProduct}
       currentVersion={currentVersion}
     />
     <ThemeButton styles={styles} />

@@ -1,13 +1,29 @@
 import React from "react";
+import { FileText, Folder } from "lucide-react";
 import { highlightSearchTerm } from "../utilities";
-import type { DocItem, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type {
+  Category,
+  DocItem,
+  StyleTheme,
+} from "@shadow-shard-tools/docs-core";
+
+const isCategory = (item: DocItem | Category): item is Category =>
+  "docs" in item || "children" in item;
+
+const typeIcon = (item: DocItem | Category) =>
+  isCategory(item) ? (
+    <Folder className="w-4 h-4" aria-hidden />
+  ) : (
+    <FileText className="w-4 h-4" aria-hidden />
+  );
+
 interface Props {
-  item: DocItem;
+  item: DocItem | Category;
   snippet: string;
   searchTerm: string;
   isSelected: boolean;
   styles: StyleTheme;
-  onSelect: (item: DocItem) => void;
+  onSelect: (item: DocItem | Category) => void;
   onClose: () => void;
 }
 
@@ -34,11 +50,15 @@ export const SearchResultItem: React.FC<Props> = ({
     >
       {/* Item Title */}
       <div
-        className={`mb-1 ${styles.searchModal.itemHeaderText}`}
-        dangerouslySetInnerHTML={{
-          __html: highlightSearchTerm(item.title, searchTerm),
-        }}
-      />
+        className={`mb-1 flex items-center gap-2 ${styles.searchModal.itemHeaderText}`}
+      >
+        {typeIcon(item)}
+        <span
+          dangerouslySetInnerHTML={{
+            __html: highlightSearchTerm(item.title, searchTerm),
+          }}
+        />
+      </div>
 
       {/* Snippet Preview */}
       {snippet && (
@@ -51,7 +71,7 @@ export const SearchResultItem: React.FC<Props> = ({
       )}
 
       {/* Tags */}
-      {Array.isArray(item.tags) && item.tags.length > 0 && (
+      {"tags" in item && Array.isArray(item.tags) && item.tags.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {item.tags.map((tag, tagIndex) => (
             <span

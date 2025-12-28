@@ -3,17 +3,25 @@ import { List, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import MobileMenu from "./MobileMenu";
 import {
-  PrintPdfButton,
   DownloadStaticButton,
+  ProductSelector,
   SearchBar,
   VersionSelector,
   ThemeButton,
   GithubButtonLink,
 } from "../../cta/components";
-import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
+import type {
+  Product,
+  StyleTheme,
+  Version,
+} from "@shadow-shard-tools/docs-core";
 
 interface HeaderProps {
   styles: StyleTheme;
+  productVersioning: boolean;
+  products: Product[];
+  currentProduct: string;
+  onProductChange: (product: string) => void;
   versions: Version[];
   currentVersion: string;
   onVersionChange: (version: string) => void;
@@ -25,6 +33,10 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   styles,
+  productVersioning,
+  products,
+  currentProduct,
+  onProductChange,
   versions,
   currentVersion,
   onVersionChange,
@@ -78,7 +90,15 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right side: desktop tools */}
         <div className="flex items-center space-x-4">
           <div className="hidden md:flex items-center space-x-4">
-            <SearchBar styles={styles} onClick={onSearchOpen} />
+            {productVersioning && (
+              <ProductSelector
+                styles={styles}
+                products={products}
+                currentProduct={currentProduct}
+                onProductChange={onProductChange}
+                loading={loading}
+              />
+            )}
             <VersionSelector
               styles={styles}
               versions={versions}
@@ -86,14 +106,12 @@ export const Header: React.FC<HeaderProps> = ({
               onVersionChange={onVersionChange}
               loading={loading}
             />
-            <PrintPdfButton
-              styles={styles}
-              showText={false}
-              currentVersion={currentVersion}
-            />
+            <SearchBar styles={styles} onClick={onSearchOpen} />
             <DownloadStaticButton
               styles={styles}
               showText={false}
+              productVersioning={productVersioning}
+              currentProduct={currentProduct}
               currentVersion={currentVersion}
             />
             <ThemeButton styles={styles} />
@@ -105,6 +123,10 @@ export const Header: React.FC<HeaderProps> = ({
       {isMenuOpen && (
         <MobileMenu
           styles={styles}
+          productVersioning={productVersioning}
+          products={products}
+          currentProduct={currentProduct}
+          onProductChange={onProductChange}
           versions={versions}
           currentVersion={currentVersion}
           onVersionChange={onVersionChange}

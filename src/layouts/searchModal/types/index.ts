@@ -1,7 +1,7 @@
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
 
 export interface SearchMatch {
-  item: DocItem;
+  item: DocItem | Category;
   snippet: string;
   blockIndex?: number;
 }

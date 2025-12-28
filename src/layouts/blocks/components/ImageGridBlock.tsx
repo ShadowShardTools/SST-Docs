@@ -36,7 +36,9 @@ export const ImageGridBlock: React.FC<Props> = ({
         className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 ${containerAlignment}`}
       >
         {imageGridData.images.map((img, i) => {
-          const src = img?.src ? withBasePath(img.src) : "";
+          const src = img?.src
+            ? withBasePath(img.src, import.meta.env.BASE_URL)
+            : "";
           return (
             <div
               key={i}

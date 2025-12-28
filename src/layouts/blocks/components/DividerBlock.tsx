@@ -40,7 +40,7 @@ export const DividerBlock: React.FC<Props> = ({
       case "thick":
         return `${base} border-t-2`;
       case "gradient":
-        return `h-px w-full ${styles.divider.gradient || "sst-divider-gradient"}`;
+        return `bg-gradient-to-r ${styles.divider.gradient} h-px w-full`;
       default:
         return `${base} border-t`;
     }

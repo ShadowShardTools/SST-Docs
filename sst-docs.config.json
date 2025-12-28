@@ -1,5 +1,6 @@
 {
-  "FS_DATA_PATH": "/public/SST-Docs/data",
+  "FS_DATA_PATH": "./public/SST-Docs/data",
+  "PRODUCT_VERSIONING": true,
   "HEADER_BRANDING": {
     "logoSrc": "https://avatars.githubusercontent.com/u/107807003",
     "logoAlt": "SST Docs",

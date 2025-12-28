@@ -12,7 +12,9 @@ interface Props {
 }
 
 export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
-  const src = audioData ? withBasePath(audioData.src) : "";
+  const src = audioData
+    ? withBasePath(audioData.src, import.meta.env.BASE_URL)
+    : "";
 
   const {
     audioRef,

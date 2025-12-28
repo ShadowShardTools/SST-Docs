@@ -1,0 +1,14 @@
+{
+  "id": "math-examples-item",
+  "title": "Welcome Page",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Welcome Page",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    }
+  ]
+}

@@ -43,25 +43,48 @@ const resolveRelativeUrl = (base: string, relative: string) =>
 interface Props {
   styles: StyleTheme;
   currentVersion: string;
+  currentProduct?: string;
+  productVersioning?: boolean;
   showText?: boolean;
 }
 
 export const DownloadStaticButton: React.FC<Props> = ({
   styles,
   currentVersion,
+  currentProduct,
+  productVersioning,
   showText = false,
 }) => {
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const isProductVersioningEnabled =
+    typeof productVersioning === "boolean"
+      ? productVersioning
+      : (clientConfig.PRODUCT_VERSIONING ?? false);
+
+  const selectedProduct =
+    isProductVersioningEnabled && currentProduct ? currentProduct : undefined;
+
   const handleDownload = useCallback(async () => {
     if (!currentVersion) return;
+    if (isProductVersioningEnabled && !selectedProduct) return;
     try {
       setIsDownloading(true);
 
       const trimmedBase = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
       const dataRoot = resolvePublicDataPath(trimmedBase, clientConfig);
       const versionId = encodeURIComponent(currentVersion);
-      const versionRoot = `${dataRoot}/${versionId}`;
+      const normalizedBase = dataRoot.replace(/\/+$/, "");
+      const extraSegments = [
+        selectedProduct ? encodeURIComponent(selectedProduct) : null,
+        versionId,
+      ]
+        .filter(Boolean)
+        .map((part) => (part as string).replace(/^\/+|\/+$/g, ""));
+      const versionRoot =
+        normalizedBase.length > 0
+          ? `${normalizedBase}/${extraSegments.join("/")}`
+          : `/${extraSegments.join("/")}`;
 
       const origin = window.location.origin;
       const versionRootUrl = new URL(
@@ -159,7 +182,9 @@ export const DownloadStaticButton: React.FC<Props> = ({
       const downloadUrl = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
       anchor.href = downloadUrl;
-      anchor.download = `${currentVersion}.zip`;
+      anchor.download = `${
+        selectedProduct ? `${selectedProduct}-` : ""
+      }${currentVersion}.zip`;
       anchor.rel = "noopener";
       anchor.click();
       URL.revokeObjectURL(downloadUrl);
@@ -171,9 +196,10 @@ export const DownloadStaticButton: React.FC<Props> = ({
     } finally {
       setIsDownloading(false);
     }
-  }, [currentVersion]);
+  }, [currentVersion, isProductVersioningEnabled, selectedProduct]);
 
   if (!currentVersion) return null;
+  if (isProductVersioningEnabled && !selectedProduct) return null;
 
   return (
     <button

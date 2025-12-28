@@ -70,6 +70,10 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const {
+    productVersioning,
+    products,
+    currentProduct,
+    setCurrentProduct,
     versions,
     currentVersion,
     setCurrentVersion,
@@ -87,7 +91,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   );
 
   const { searchTerm, setSearchTerm, searchResults, resetSearch } =
-    useSearchLogic(items, standaloneDocs);
+    useSearchLogic(items, standaloneDocs, tree);
 
   const handleSearchOpen = useCallback(() => setIsSearchOpen(true), []);
   const handleSearchClose = useCallback(() => {
@@ -98,7 +102,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   useSearchOpener(handleSearchOpen);
 
   const handleSearchSelect = useCallback(
-    (item: DocItem) => {
+    (item: DocItem | Category) => {
       navigateToEntry(item);
       handleSearchClose();
     },
@@ -217,6 +221,10 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       <Suspense fallback={<LoadingSpinner styles={styles} />}>
         <Header
           styles={styles}
+          productVersioning={productVersioning}
+          products={products}
+          currentProduct={currentProduct}
+          onProductChange={setCurrentProduct}
           versions={versions}
           currentVersion={currentVersion}
           onVersionChange={setCurrentVersion}

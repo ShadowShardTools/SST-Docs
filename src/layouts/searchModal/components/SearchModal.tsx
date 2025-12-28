@@ -1,5 +1,8 @@
 import React from "react";
-import { FixedSizeList as List } from "react-window";
+import {
+  FixedSizeList as List,
+  type ListChildComponentProps,
+} from "react-window";
 import {
   SEARCH_PLACEHOLDER,
   EMPTY_SEARCH_MESSAGE,
@@ -14,7 +17,11 @@ import {
 } from "../hooks";
 import SearchModalFooter from "./SearchModalFooter";
 import SearchResultItem from "./SearchResultItem";
-import type { DocItem, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type {
+  Category,
+  DocItem,
+  StyleTheme,
+} from "@shadow-shard-tools/docs-core";
 
 interface Props {
   styles: StyleTheme;
@@ -22,8 +29,8 @@ interface Props {
   onClose: () => void;
   searchTerm: string;
   onSearchChange: (val: string) => void;
-  results: DocItem[];
-  onSelect: (item: DocItem) => void;
+  results: Array<DocItem | Category>;
+  onSelect: (item: DocItem | Category) => void;
 }
 
 export const SearchModal: React.FC<Props> = ({
@@ -98,7 +105,7 @@ export const SearchModal: React.FC<Props> = ({
               width="100%"
               ref={listRef}
             >
-              {({ index, style }) => {
+              {({ index, style }: ListChildComponentProps) => {
                 const { item, snippet } = processedResults[index];
                 return (
                   <div key={`${item.id}-${index}`} style={style}>

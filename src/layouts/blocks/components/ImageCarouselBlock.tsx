@@ -58,7 +58,9 @@ export const ImageCarouselBlock: React.FC<Props> = ({
         >
           <Splide options={carouselOptions}>
             {imageCarouselData.images.map((img, i) => {
-              const src = img?.src ? withBasePath(img.src) : "";
+              const src = img?.src
+                ? withBasePath(img.src, import.meta.env.BASE_URL)
+                : "";
               return (
                 <SplideSlide key={i}>
                   <div className="flex flex-col items-center">

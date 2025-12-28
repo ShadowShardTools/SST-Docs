@@ -33,10 +33,10 @@ export const ImageCompareBlock: React.FC<Props> = ({
     : ALIGNMENT_CLASSES[alignment].container;
 
   const beforeSrc = imageCompareData.beforeImage?.src
-    ? withBasePath(imageCompareData.beforeImage.src)
+    ? withBasePath(imageCompareData.beforeImage.src, import.meta.env.BASE_URL)
     : "";
   const afterSrc = imageCompareData.afterImage?.src
-    ? withBasePath(imageCompareData.afterImage.src)
+    ? withBasePath(imageCompareData.afterImage.src, import.meta.env.BASE_URL)
     : "";
 
   // Compare side-by-side (individual)
@@ -49,7 +49,9 @@ export const ImageCompareBlock: React.FC<Props> = ({
         >
           {[imageCompareData.beforeImage, imageCompareData.afterImage].map(
             (img, i) => {
-              const src = img?.src ? withBasePath(img.src) : "";
+              const src = img?.src
+                ? withBasePath(img.src, import.meta.env.BASE_URL)
+                : "";
               return (
                 <div key={i} className="w-1/2">
                   <img

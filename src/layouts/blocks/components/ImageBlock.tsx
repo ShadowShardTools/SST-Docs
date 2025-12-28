@@ -24,7 +24,9 @@ export const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
     ? "w-full"
     : ALIGNMENT_CLASSES[alignment].container;
 
-  const src = imageData.image ? withBasePath(imageData.image.src) : "";
+  const src = imageData.image
+    ? withBasePath(imageData.image.src, import.meta.env.BASE_URL)
+    : "";
 
   return (
     <div key={index} className={baseClasses}>
