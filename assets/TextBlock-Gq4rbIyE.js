@@ -1,0 +1,1 @@
+import{j as e}from"./index-CGNS4voM.js";import{A as c,S as r}from"./index-DqdwSPwA.js";const p=({index:n,styles:t,textData:s})=>{const a=s.spacing??"medium",i=r[a],l=c[s.alignment??"left"].text;return e.jsx("div",{className:i,children:e.jsx("p",{className:`${l} ${t.text.general}`,style:{whiteSpace:"pre-line"},children:s.text})},n)};export{p as TextBlock,p as default};
