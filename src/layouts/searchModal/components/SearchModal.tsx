@@ -28,6 +28,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   searchTerm: string;
+  appliedSearchTerm: string;
   onSearchChange: (val: string) => void;
   results: Array<DocItem | Category>;
   onSelect: (item: DocItem | Category) => void;
@@ -38,12 +39,13 @@ export const SearchModal: React.FC<Props> = ({
   isOpen,
   onClose,
   searchTerm,
+  appliedSearchTerm,
   onSearchChange,
   results,
   onSelect,
 }) => {
   // Custom hooks for separation of concerns
-  const processedResults = useSearchResults(results, searchTerm);
+  const processedResults = useSearchResults(results, appliedSearchTerm);
   const { selectedIndex, listRef } = useKeyboardNavigation(
     isOpen,
     processedResults,
@@ -112,7 +114,7 @@ export const SearchModal: React.FC<Props> = ({
                     <SearchResultItem
                       item={item}
                       snippet={snippet}
-                      searchTerm={searchTerm}
+                      searchTerm={appliedSearchTerm}
                       isSelected={selectedIndex === index}
                       styles={styles}
                       onSelect={onSelect}

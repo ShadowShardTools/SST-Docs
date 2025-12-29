@@ -28,6 +28,7 @@ import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { useCurrentTheme } from "../../../application/hooks";
 
 ChartJS.register(
   BarElement,
@@ -63,6 +64,7 @@ interface Props {
 }
 
 export const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
+  const [theme] = useCurrentTheme();
   if (!chartData || !chartData.type || !(chartData.type in chartMap))
     return null;
 
@@ -71,32 +73,33 @@ export const ChartBlock: React.FC<Props> = ({ styles, chartData }) => {
   const scale = validateScale(chartData.scale);
   const widthPercent = getResponsiveWidth(scale, false);
   const alignment = chartData.alignment ?? "center";
+  const chartColors = theme === "dark" ? styles.chartDark : styles.chart;
 
   const baseOptions = {
     responsive: true,
     plugins: {
       legend: {
-        labels: { color: styles.chart.legendLabelColor },
+        labels: { color: chartColors.legendLabelColor },
       },
       tooltip: {
-        backgroundColor: styles.chart.tooltipBg,
-        titleColor: styles.chart.tooltipTitleColor,
-        bodyColor: styles.chart.tooltipBodyColor,
-        borderColor: styles.chart.tooltipBorderColor,
+        backgroundColor: chartColors.tooltipBg,
+        titleColor: chartColors.tooltipTitleColor,
+        bodyColor: chartColors.tooltipBodyColor,
+        borderColor: chartColors.tooltipBorderColor,
         borderWidth: 1,
       },
     },
   } as const;
 
   const makeCartesianAxis = () => ({
-    grid: { color: styles.chart.gridLineColor, borderDash: [] },
-    ticks: { color: styles.chart.axisTickColor },
+    grid: { color: chartColors.gridLineColor, borderDash: [] },
+    ticks: { color: chartColors.axisTickColor },
   });
 
   const makeRadialAxis = () => ({
-    grid: { color: styles.chart.gridLineColor, borderDash: [] },
-    angleLines: { color: styles.chart.gridLineColor, borderDash: [] },
-    pointLabels: { color: styles.chart.axisTickColor },
+    grid: { color: chartColors.gridLineColor, borderDash: [] },
+    angleLines: { color: chartColors.gridLineColor, borderDash: [] },
+    pointLabels: { color: chartColors.axisTickColor },
   });
 
   const options =

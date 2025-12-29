@@ -90,8 +90,13 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     standaloneDocs,
   );
 
-  const { searchTerm, setSearchTerm, searchResults, resetSearch } =
-    useSearchLogic(items, standaloneDocs, tree);
+  const {
+    searchTerm,
+    searchResults,
+    resetSearch,
+    setSearchTerm,
+    debouncedSearchTerm,
+  } = useSearchLogic(items, standaloneDocs, tree);
 
   const handleSearchOpen = useCallback(() => setIsSearchOpen(true), []);
   const handleSearchClose = useCallback(() => {
@@ -260,6 +265,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
         isOpen={isSearchOpen}
         onClose={handleSearchClose}
         searchTerm={searchTerm}
+        appliedSearchTerm={debouncedSearchTerm}
         onSearchChange={setSearchTerm}
         results={searchResults}
         onSelect={handleSearchSelect}

@@ -1,4 +1,39 @@
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { CodeData, DocItem } from "@shadow-shard-tools/docs-core";
+
+const getCodeSnippet = (
+  codeData: CodeData | null | undefined,
+  termLower: string,
+): string => {
+  if (!codeData) return "";
+
+  if (codeData.content?.toLowerCase().includes(termLower)) {
+    return codeData.content;
+  }
+
+  if (codeData.sections?.length) {
+    for (const section of codeData.sections) {
+      if (section.content.toLowerCase().includes(termLower)) {
+        return section.content;
+      }
+      if (section.filename?.toLowerCase().includes(termLower)) {
+        return section.filename;
+      }
+      if (section.language?.toLowerCase().includes(termLower)) {
+        return section.language ?? "";
+      }
+    }
+  }
+
+  if (codeData.name?.toLowerCase().includes(termLower)) {
+    return codeData.name;
+  }
+
+  if (codeData.language?.toLowerCase().includes(termLower)) {
+    return codeData.language;
+  }
+
+  return "";
+};
 
 export const generateSnippet = (item: DocItem, term: string): string => {
   const termLower = term.toLowerCase();
@@ -23,7 +58,7 @@ export const generateSnippet = (item: DocItem, term: string): string => {
         text = content.messageBoxData.text ?? "";
         break;
       case "code":
-        text = content.codeData.content ?? "";
+        text = getCodeSnippet(content.codeData, termLower);
         break;
       case "list":
         text = content.listData.items?.join(" ") ?? "";

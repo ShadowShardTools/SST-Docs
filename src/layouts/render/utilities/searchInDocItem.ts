@@ -1,4 +1,25 @@
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { CodeData, DocItem } from "@shadow-shard-tools/docs-core";
+
+const codeBlockContainsTerm = (
+  codeData: CodeData | null | undefined,
+  lower: string,
+): boolean => {
+  if (!codeData) return false;
+
+  if (codeData.content?.toLowerCase().includes(lower)) return true;
+  if (codeData.name?.toLowerCase().includes(lower)) return true;
+  if (codeData.language?.toLowerCase().includes(lower)) return true;
+
+  if (codeData.sections?.length) {
+    return codeData.sections.some((section) => {
+      if (section.content.toLowerCase().includes(lower)) return true;
+      if (section.filename?.toLowerCase().includes(lower)) return true;
+      return section.language?.toLowerCase().includes(lower) ?? false;
+    });
+  }
+
+  return false;
+};
 
 export const searchInDocItem = (item: DocItem, searchTerm: string): boolean => {
   const lower = searchTerm.toLowerCase();
@@ -31,11 +52,7 @@ export const searchInDocItem = (item: DocItem, searchTerm: string): boolean => {
           ) ?? false
         );
       case "code":
-        return (
-          block.codeData.content?.toLowerCase().includes(lower) ||
-          block.codeData.name?.toLowerCase().includes(lower) ||
-          false
-        );
+        return codeBlockContainsTerm(block.codeData, lower);
       default:
         return false;
     }

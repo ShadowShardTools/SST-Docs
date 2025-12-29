@@ -5,6 +5,7 @@ import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import { useAudioPlayer } from "../hooks";
 import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { useCurrentTheme } from "../../../application/hooks";
 
 interface Props {
   styles: StyleTheme;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
+  const [theme] = useCurrentTheme();
   const src = audioData
     ? withBasePath(audioData.src, import.meta.env.BASE_URL)
     : "";
@@ -27,11 +29,16 @@ export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
     handleVolumeChange,
   } = useAudioPlayer(src);
 
+  const isDarkTheme = theme === "dark";
   const VolumeIcon = volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
   const sliderTrackColor =
-    styles.audioPlayer.sliderTrackColor ?? "rgba(148, 163, 184, 0.35)";
+    (isDarkTheme
+      ? styles.audioPlayer.sliderTrackColorDark ?? styles.audioPlayer.sliderTrackColor
+      : styles.audioPlayer.sliderTrackColor) ?? "rgba(148, 163, 184, 0.35)";
   const sliderFillColor =
-    styles.audioPlayer.sliderFillColor ?? "rgba(41, 37, 36, 0.9)";
+    (isDarkTheme
+      ? styles.audioPlayer.sliderFillColorDark ?? styles.audioPlayer.sliderFillColor
+      : styles.audioPlayer.sliderFillColor) ?? "rgba(41, 37, 36, 0.9)";
   const seekPercent =
     duration > 0 ? Math.min(100, Math.max(0, (current / duration) * 100)) : 0;
   const volumePercent = Math.min(100, Math.max(0, volume * 100));

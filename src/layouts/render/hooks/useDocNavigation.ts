@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import isCategory from "../utilities/isCategory";
 import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
@@ -9,11 +9,18 @@ export const useDocNavigation = (
   standaloneDocs: DocItem[],
 ) => {
   const navigate = useNavigate();
-  const { docId } = useParams();
+  const { docId: rawDocId } = useParams();
   const [selectedItem, setSelectedItem] = useState<DocItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
+
+  const docId = useMemo(() => {
+    if (!rawDocId) return undefined;
+    // Strip any in-document hash fragment (e.g., "/doc#section") so routing still finds the doc.
+    const [idWithoutHash] = rawDocId.split("#");
+    return decodeURIComponent(idWithoutHash);
+  }, [rawDocId]);
 
   const navigateToEntry = useCallback(
     (entry: DocItem | Category) => {

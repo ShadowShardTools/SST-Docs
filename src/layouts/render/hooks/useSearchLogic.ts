@@ -2,6 +2,8 @@ import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { itemMatchesSearchTerm } from "../../searchModal/utilities/itemMatchesSearchTerm";
 
+const SEARCH_DEBOUNCE_MS = 200;
+
 const flattenCategories = (nodes: Category[]): Category[] => {
   const list: Category[] = [];
   const stack = [...nodes];
@@ -24,35 +26,54 @@ export const useSearchLogic = (
   const [searchResults, setSearchResults] = useState<Array<DocItem | Category>>(
     [],
   );
+  const [debouncedTerm, setDebouncedTerm] = useState("");
 
   const categories = useMemo(() => flattenCategories(tree), [tree]);
+  const allItems = useMemo(
+    () => [...items, ...standaloneDocs, ...categories],
+    [items, standaloneDocs, categories],
+  );
 
+  // Delay running expensive search work while the user is typing
   useEffect(() => {
     if (!searchTerm.trim()) {
+      setDebouncedTerm("");
+      return;
+    }
+
+    const handle = setTimeout(
+      () => setDebouncedTerm(searchTerm),
+      SEARCH_DEBOUNCE_MS,
+    );
+    return () => clearTimeout(handle);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (!debouncedTerm.trim()) {
       setSearchResults([]);
       return;
     }
 
-    const lower = searchTerm.toLowerCase();
-    const allItems: Array<DocItem | Category> = [
-      ...items,
-      ...standaloneDocs,
-      ...categories,
-    ];
-
     const matches = allItems.filter((item) =>
-      itemMatchesSearchTerm(item, lower),
+      itemMatchesSearchTerm(item, debouncedTerm),
     );
 
     setSearchResults(matches);
-  }, [searchTerm, items, standaloneDocs, categories]);
+  }, [debouncedTerm, allItems]);
 
   const resetSearch = useCallback(() => {
     setSearchTerm("");
     setSearchResults([]);
+    setDebouncedTerm("");
   }, []);
 
-  return { searchTerm, setSearchTerm, searchResults, resetSearch };
+  return {
+    searchTerm,
+    debouncedSearchTerm: debouncedTerm,
+    setSearchTerm,
+    searchResults,
+    resetSearch,
+  };
 };
 
 export default useSearchLogic;
