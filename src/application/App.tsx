@@ -25,7 +25,7 @@ function App() {
               <div className={`${styles.sections.siteBorders}`}>
                 <Routes>
                 {editorEnabled ? (
-                  <Route path="/editor/:docId?" element={<EditorShell />} />
+                  <Route path="/editor/:docId?" element={<EditorShell styles={styles} />} />
                 ) : null}
                   <Route
                     path="/:docId?"

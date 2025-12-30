@@ -1,10 +1,5 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
-import {
-  DEFAULT_THEME_PRESET,
-  getThemePreset,
-} from "@shadow-shard-tools/docs-core/themes/themeRegistry";
 import type { BreadcrumbSegment } from "../render/types/BreadcrumbSegment";
-import { useCurrentTheme } from "../../application/hooks";
 import { Navigation, Sidebar } from "../navigation/components";
 import ContentBlockRenderer from "../render/components/ContentBlockRenderer";
 import DocumentHeader from "../render/components/DocumentHeader";
@@ -17,7 +12,7 @@ import { useEditorDocNavigation } from "./hooks/useEditorDocNavigation";
 import { useEditorData } from "./state/useEditorData";
 import { read, write, runGenerator } from "./api";
 import BlockListEditor from "./components/BlockListEditor";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "@shadow-shard-tools/docs-core";
 import { Eye, FileCode, SquareStack } from "lucide-react";
 
 const findCategoryTrail = (
@@ -55,9 +50,7 @@ const findDocTrail = (
   return null;
 };
 
-export function EditorShell() {
-  const [theme] = useCurrentTheme();
-  const styles = useMemo(() => getThemePreset(DEFAULT_THEME_PRESET), [theme]);
+export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
 
@@ -351,6 +344,7 @@ export function EditorShell() {
             setDraftContent(updated);
             setDirty(true);
           }}
+          styles={styles}
         />
       </div>
     );

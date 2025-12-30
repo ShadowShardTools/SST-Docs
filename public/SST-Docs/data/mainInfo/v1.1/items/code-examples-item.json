@@ -13,7 +13,7 @@
     {
       "type": "code",
       "codeData": {
-        "content": "console.log('Hello, World!');",
+        "content": "console.log('Hello, World');",
         "language": "javascript",
         "name": "hello.js",
         "showLineNumbers": true,
