@@ -33,11 +33,13 @@ export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
   const VolumeIcon = volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
   const sliderTrackColor =
     (isDarkTheme
-      ? styles.audioPlayer.sliderTrackColorDark ?? styles.audioPlayer.sliderTrackColor
+      ? (styles.audioPlayer.sliderTrackColorDark ??
+        styles.audioPlayer.sliderTrackColor)
       : styles.audioPlayer.sliderTrackColor) ?? "rgba(148, 163, 184, 0.35)";
   const sliderFillColor =
     (isDarkTheme
-      ? styles.audioPlayer.sliderFillColorDark ?? styles.audioPlayer.sliderFillColor
+      ? (styles.audioPlayer.sliderFillColorDark ??
+        styles.audioPlayer.sliderFillColor)
       : styles.audioPlayer.sliderFillColor) ?? "rgba(41, 37, 36, 0.9)";
   const seekPercent =
     duration > 0 ? Math.min(100, Math.max(0, (current / duration) * 100)) : 0;
