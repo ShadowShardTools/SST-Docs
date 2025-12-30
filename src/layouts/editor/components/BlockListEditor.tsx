@@ -65,6 +65,7 @@ const EditableTitle = ({
   underlineClass,
   showAnchor,
   anchorClass,
+  wrapperClass,
   onChange,
 }: {
   value: string;
@@ -75,6 +76,7 @@ const EditableTitle = ({
   underlineClass: string;
   showAnchor?: boolean;
   anchorClass?: string;
+  wrapperClass?: string;
   onChange: (next: string) => void;
 }) => {
   const ref = useRef<HTMLHeadingElement>(null);
@@ -88,20 +90,27 @@ const EditableTitle = ({
   const levelClass = titleClasses[level as 1 | 2 | 3] ?? titleClasses[1];
 
   return (
-    <Heading
-      ref={ref}
-      contentEditable
-      suppressContentEditableWarning
-      className={`${alignmentClass} ${levelClass} ${spacingClass} font-bold leading-tight bg-transparent outline-none border-0 focus:border-0 focus:ring-0 px-0 py-0 ${underlineClass} inline-flex items-center gap-2`}
-      onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-    >
-      {value}
-      {showAnchor && (
-        <span contentEditable={false} className="inline-flex">
-          <LinkIcon className={`w-4 h-4 ${anchorClass ?? ""}`} />
-        </span>
-      )}
-    </Heading>
+    <div className={spacingClass}>
+      <div className={wrapperClass}>
+        <Heading
+          ref={ref}
+          contentEditable
+          suppressContentEditableWarning
+          className={`${alignmentClass} ${levelClass} font-bold leading-tight scroll-mt-20 group relative bg-transparent outline-none border-0 focus:border-0 focus:ring-0 px-0 py-0 ${underlineClass}`}
+          onInput={(e) => onChange((e.target as HTMLElement).innerText)}
+        >
+          {value}
+          {showAnchor && (
+            <span
+              contentEditable={false}
+              className={`ml-2 inline-block ${anchorClass ?? ""}`}
+            >
+              <LinkIcon className="w-4 h-4" />
+            </span>
+          )}
+        </Heading>
+      </div>
+    </div>
   );
 };
 
@@ -555,6 +564,7 @@ export function BlockListEditor({
                           (titleData.spacing ?? "none") as keyof typeof SPACING_CLASSES
                         ]
                       }
+                      wrapperClass={styles.sections.contentBackground || ""}
                       titleClasses={{
                         1: styles.text.titleLevel1 || "text-4xl",
                         2: styles.text.titleLevel2 || "text-3xl",
