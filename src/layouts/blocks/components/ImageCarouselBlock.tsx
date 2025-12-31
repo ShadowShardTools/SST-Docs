@@ -4,11 +4,11 @@ import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validatio
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import { useMobileDevice } from "../hooks";
+import { DEFAULT_CAROUSEL_OPTIONS } from "../constants";
 import {
   ALIGNMENT_CLASSES,
-  DEFAULT_CAROUSEL_OPTIONS,
   SPACING_CLASSES,
-} from "../constants";
+} from "@shadow-shard-tools/docs-core";
 import { withBasePath } from "@shadow-shard-tools/docs-core";
 
 const Splide = lazy(() =>

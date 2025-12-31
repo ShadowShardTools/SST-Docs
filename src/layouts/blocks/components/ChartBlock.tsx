@@ -23,7 +23,7 @@ import {
   Pie,
   Scatter,
 } from "react-chartjs-2";
-import { ALIGNMENT_CLASSES } from "../constants";
+import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
 import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";

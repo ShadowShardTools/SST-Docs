@@ -16,7 +16,10 @@ export function TitleToolbarControls({ data, onChange }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              titleData: { ...(prev as any).titleData, level: Number(e.target.value) },
+              titleData: {
+                ...(prev as any).titleData,
+                level: Number(e.target.value),
+              },
             }))
           }
         >
@@ -35,7 +38,10 @@ export function TitleToolbarControls({ data, onChange }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              titleData: { ...(prev as any).titleData, alignment: e.target.value },
+              titleData: {
+                ...(prev as any).titleData,
+                alignment: e.target.value,
+              },
             }))
           }
         >
@@ -44,29 +50,12 @@ export function TitleToolbarControls({ data, onChange }: Props) {
           <option value="right">Right</option>
         </select>
       </label>
-      <label className="flex items-center gap-1">
-        <span>Spacing</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.spacing ?? "medium"}
-          onChange={(e) =>
-            onChange((prev) => ({
-              ...prev,
-              titleData: { ...(prev as any).titleData, spacing: e.target.value },
-            }))
-          }
-        >
-          {(["none", "small", "medium", "large"] as const).map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </label>
       <button
         type="button"
         className={`px-2 py-1 border rounded ${
-          data.enableAnchorLink ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" : ""
+          data.enableAnchorLink
+            ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
+            : ""
         }`}
         onClick={() =>
           onChange((prev) => ({
@@ -79,20 +68,6 @@ export function TitleToolbarControls({ data, onChange }: Props) {
         }
       >
         Anchor
-      </button>
-      <button
-        type="button"
-        className={`px-2 py-1 border rounded ${
-          data.underline ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" : ""
-        }`}
-        onClick={() =>
-          onChange((prev) => ({
-            ...prev,
-            titleData: { ...(prev as any).titleData, underline: !(data.underline ?? false) },
-          }))
-        }
-      >
-        Underline
       </button>
     </>
   );

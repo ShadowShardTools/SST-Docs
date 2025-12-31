@@ -33,7 +33,10 @@ export function ListToolbarControls({ data, onChange }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              listData: { ...(prev as any).listData, alignment: e.target.value },
+              listData: {
+                ...(prev as any).listData,
+                alignment: e.target.value,
+              },
             }))
           }
         >
@@ -84,7 +87,10 @@ export function ListToolbarControls({ data, onChange }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              listData: { ...(prev as any).listData, ariaLabel: e.target.value },
+              listData: {
+                ...(prev as any).listData,
+                ariaLabel: e.target.value,
+              },
             }))
           }
         />

@@ -1,5 +1,8 @@
 import React from "react";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import {
+  ALIGNMENT_CLASSES,
+  SPACING_CLASSES,
+} from "@shadow-shard-tools/docs-core";
 import { extractYouTubeId } from "@shadow-shard-tools/docs-core/utilities/string/extractYouTubeId";
 import { isValidYouTubeId } from "@shadow-shard-tools/docs-core/utilities/validation/isValidYouTubeId";
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";

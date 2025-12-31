@@ -19,21 +19,8 @@ export const MessageBoxBlock: React.FC<Props> = ({
   styles,
   messageBoxData,
 }) => {
-  const getSizeClasses = () => {
-    switch (messageBoxData.size) {
-      case "small":
-        return "p-3 text-sm";
-      case "medium":
-        return "p-4 text-base";
-      case "large":
-        return "p-6 text-lg";
-      default:
-        return "p-4 text-base";
-    }
-  };
-
   const getMessageClasses = () => {
-    const baseClasses = `rounded-lg border ${getSizeClasses()}`;
+    const baseClasses = `rounded-lg border p-4 text-base`;
     const type = messageBoxData.type ?? "neutral";
 
     const typeStyles = {

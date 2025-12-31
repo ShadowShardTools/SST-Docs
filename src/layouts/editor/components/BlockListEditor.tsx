@@ -2,7 +2,10 @@ import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import { BLOCK_LABELS, DEFAULT_BLOCKS, type BlockType } from "../blocks";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../../blocks/constants";
+import {
+  ALIGNMENT_CLASSES,
+  SPACING_CLASSES,
+} from "@shadow-shard-tools/docs-core";
 import {
   GripVertical,
   Info,
@@ -26,13 +29,11 @@ interface Props {
 const EditableText = ({
   value,
   alignmentClass,
-  spacingClass,
   textClass,
   onChange,
 }: {
   value: string;
   alignmentClass: string;
-  spacingClass: string;
   textClass: string;
   onChange: (next: string) => void;
 }) => {
@@ -49,7 +50,7 @@ const EditableText = ({
       ref={ref}
       contentEditable
       suppressContentEditableWarning
-      className={`${alignmentClass} ${textClass} ${spacingClass} bg-transparent outline-none min-h-[1.5rem] px-1.5 py-1.5 border border-transparent focus:border-sky-400 rounded`}
+      className={`${alignmentClass} ${textClass} ${SPACING_CLASSES.medium} bg-transparent outline-none min-h-[1.5rem] px-1.5 py-1.5 border border-transparent focus:border-sky-400 rounded`}
       style={{ whiteSpace: "pre-wrap" }}
       onInput={(e) => onChange((e.target as HTMLElement).innerText)}
     />
@@ -60,9 +61,7 @@ const EditableTitle = ({
   value,
   level,
   alignmentClass,
-  spacingClass,
   titleClasses,
-  underlineClass,
   showAnchor,
   anchorClass,
   wrapperClass,
@@ -71,9 +70,7 @@ const EditableTitle = ({
   value: string;
   level: number;
   alignmentClass: string;
-  spacingClass: string;
   titleClasses: { 1: string; 2: string; 3: string };
-  underlineClass: string;
   showAnchor?: boolean;
   anchorClass?: string;
   wrapperClass?: string;
@@ -90,13 +87,13 @@ const EditableTitle = ({
   const levelClass = titleClasses[level as 1 | 2 | 3] ?? titleClasses[1];
 
   return (
-    <div className={spacingClass}>
+    <div className={SPACING_CLASSES.none}>
       <div className={wrapperClass}>
         <Heading
           ref={ref}
           contentEditable
           suppressContentEditableWarning
-          className={`${alignmentClass} ${levelClass} font-bold leading-tight scroll-mt-20 group relative bg-transparent outline-none border-0 focus:border-0 focus:ring-0 px-0 py-0 ${underlineClass}`}
+          className={`${alignmentClass} ${levelClass} font-bold leading-tight scroll-mt-20 group relative bg-transparent outline-none border-0 focus:border-0 focus:ring-0 px-0 py-0`}
           onInput={(e) => onChange((e.target as HTMLElement).innerText)}
         >
           {value}
@@ -133,12 +130,7 @@ const EditableMessageBox = ({
   }, [data?.text]);
 
   const type = data?.type ?? "neutral";
-  const sizeClasses =
-    data?.size === "small"
-      ? "p-3 text-sm"
-      : data?.size === "large"
-        ? "p-6 text-lg"
-        : "p-4 text-base";
+  const sizeClasses = "p-4 text-base";
   const typeStyles = {
     info: typeClasses.info,
     warning: typeClasses.warning,
@@ -176,7 +168,9 @@ const EditableMessageBox = ({
         return <CheckCircle className="w-5 h-5 mr-3 flex-shrink-0" />;
       case "neutral":
       default:
-        return type === "neutral" ? <HelpCircle className="w-5 h-5 mr-3 flex-shrink-0" /> : null;
+        return type === "neutral" ? (
+          <HelpCircle className="w-5 h-5 mr-3 flex-shrink-0" />
+        ) : null;
     }
   })();
 
@@ -216,14 +210,7 @@ const EditableDivider = ({
     }
   }, [data?.text]);
 
-  const spacing =
-    data?.spacing === "small"
-      ? "mb-4"
-      : data?.spacing === "large"
-        ? "mb-8"
-        : data?.spacing === "medium"
-          ? "mb-6"
-          : "";
+  const spacing = "mb-6";
   const base = `w-full ${styles.divider.border || "sst-divider-border"}`;
   const dividerClass = (() => {
     switch (data?.type) {
@@ -339,7 +326,11 @@ const EditableList = ({
     const text = target?.innerText ?? items[index] ?? "";
     const selection = window.getSelection();
     let offset = text.length;
-    if (selection && selection.rangeCount > 0 && target?.contains(selection.anchorNode)) {
+    if (
+      selection &&
+      selection.rangeCount > 0 &&
+      target?.contains(selection.anchorNode)
+    ) {
       const range = selection.getRangeAt(0);
       const preRange = range.cloneRange();
       preRange.selectNodeContents(target);
@@ -368,7 +359,10 @@ const EditableList = ({
     focusItem(Math.max(index - 1, 0), true);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLDivElement>,
+    index: number,
+  ) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSplit(index);
@@ -379,7 +373,8 @@ const EditableList = ({
       const content = (e.currentTarget as HTMLElement).innerText;
       const isEmpty = !content || content.trim().length === 0;
       const selection = window.getSelection();
-      const isAtStart = selection?.anchorOffset === 0 && selection?.focusOffset === 0;
+      const isAtStart =
+        selection?.anchorOffset === 0 && selection?.focusOffset === 0;
       if (isEmpty && (isAtStart || selection?.isCollapsed)) {
         e.preventDefault();
         handleRemove(index);
@@ -463,7 +458,9 @@ export function BlockListEditor({
   const handleDrop = (e: React.DragEvent, index: number) => {
     e.preventDefault();
     const from =
-      dragIndex !== null ? dragIndex : Number(e.dataTransfer.getData("text/plain"));
+      dragIndex !== null
+        ? dragIndex
+        : Number(e.dataTransfer.getData("text/plain"));
     if (!Number.isNaN(from)) {
       moveBlock(from, index);
     }
@@ -489,23 +486,29 @@ export function BlockListEditor({
       {blocks.length === 0 ? (
         <p className="text-sm text-slate-500">No blocks yet. Add one above.</p>
       ) : (
-        <div className="space-y-2">
+        <div>
           {blocks.map((block, idx) => {
             const isDragOver = dragOverIndex === idx;
+            const isDragging = dragIndex === idx;
             const textData = (block as any).textData ?? {};
             const titleData = (block as any).titleData ?? {};
             const listData = (block as any).listData ?? {};
             const dividerData = (block as any).dividerData ?? {};
-            const titleAlign = (titleData.alignment ?? "left") as keyof typeof ALIGNMENT_CLASSES;
+            const titleAlign = (titleData.alignment ??
+              "left") as keyof typeof ALIGNMENT_CLASSES;
             return (
               <div
                 key={idx}
-                className={`relative ring-offset-2 ${isDragOver ? "ring-1 ring-sky-400" : ""}`}
+                className={`relative ring-offset-2 transition ${
+                  isDragOver || isDragging ? "ring-1 ring-sky-400 bg-slate-50/40 dark:bg-slate-800/40" : ""
+                }`}
                 onDragOver={(e) => handleDragOver(e, idx)}
                 onDragLeave={() => handleDragLeave(idx)}
                 onDrop={(e) => handleDrop(e, idx)}
                 onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex((prev) => (prev === idx ? null : prev))}
+                onMouseLeave={() =>
+                  setHoveredIndex((prev) => (prev === idx ? null : prev))
+                }
               >
                 <BlockToolbar
                   block={block}
@@ -515,11 +518,16 @@ export function BlockListEditor({
                   onRemove={removeBlock}
                   visible={hoveredIndex === idx}
                 />
-                <div className="flex gap-1 items-stretch">
+                <div className="flex gap-1 items-start">
                   <button
                     type="button"
-                    className="flex items-center justify-center px-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 cursor-grab active:cursor-grabbing"
+                    className={`flex items-center justify-center px-2 h-8 rounded border border-transparent cursor-grab active:cursor-grabbing transition ${
+                      isDragging
+                        ? "bg-sky-100 dark:bg-slate-700 border-sky-300"
+                        : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
                     draggable
+                    aria-grabbed={isDragging}
                     onDragStart={(e) => handleDragStart(e, idx)}
                     onDragEnd={() => {
                       setDragIndex(null);
@@ -536,20 +544,19 @@ export function BlockListEditor({
                         value={textData.text ?? ""}
                         alignmentClass={
                           ALIGNMENT_CLASSES[
-                            (textData.alignment ?? "left") as keyof typeof ALIGNMENT_CLASSES
+                            (textData.alignment ??
+                              "left") as keyof typeof ALIGNMENT_CLASSES
                           ].text
-                        }
-                        spacingClass={
-                          SPACING_CLASSES[
-                            (textData.spacing ?? "medium") as keyof typeof SPACING_CLASSES
-                          ]
                         }
                         textClass={styles.text.general}
                         onChange={(next) =>
                           onChange(
                             updateBlockAt(blocks, idx, (prev) => ({
                               ...prev,
-                              textData: { ...(prev as any).textData, text: next },
+                              textData: {
+                                ...(prev as any).textData,
+                                text: next,
+                              },
                             })),
                           )
                         }
@@ -559,29 +566,22 @@ export function BlockListEditor({
                         value={titleData.text ?? ""}
                         level={titleData.level ?? 1}
                         alignmentClass={ALIGNMENT_CLASSES[titleAlign].text}
-                      spacingClass={
-                        SPACING_CLASSES[
-                          (titleData.spacing ?? "none") as keyof typeof SPACING_CLASSES
-                        ]
-                      }
-                      wrapperClass={styles.sections.contentBackground || ""}
-                      titleClasses={{
-                        1: styles.text.titleLevel1 || "text-4xl",
-                        2: styles.text.titleLevel2 || "text-3xl",
-                        3: styles.text.titleLevel3 || "text-2xl",
-                      }}
-                      underlineClass={
-                        titleData.underline
-                          ? `border-b-2 pb-2 ${styles.divider.border || "sst-divider-border"}`
-                          : ""
-                      }
-                      showAnchor={!!titleData.enableAnchorLink}
-                      anchorClass={styles.text.titleAnchor}
-                      onChange={(next) =>
-                        onChange(
-                          updateBlockAt(blocks, idx, (prev) => ({
-                            ...prev,
-                            titleData: { ...(prev as any).titleData, text: next },
+                        wrapperClass={styles.sections.contentBackground || ""}
+                        titleClasses={{
+                          1: styles.text.titleLevel1 || "text-4xl",
+                          2: styles.text.titleLevel2 || "text-3xl",
+                          3: styles.text.titleLevel3 || "text-2xl",
+                        }}
+                        showAnchor={!!titleData.enableAnchorLink}
+                        anchorClass={styles.text.titleAnchor}
+                        onChange={(next) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              titleData: {
+                                ...(prev as any).titleData,
+                                text: next,
+                              },
                             })),
                           )
                         }
@@ -590,7 +590,9 @@ export function BlockListEditor({
                       <EditableMessageBox
                         data={(block as any).messageBoxData}
                         textClass={styles.text.general}
-                        typeClasses={styles.messageBox as Record<string, string>}
+                        typeClasses={
+                          styles.messageBox as Record<string, string>
+                        }
                         onChange={(next) =>
                           onChange(
                             updateBlockAt(blocks, idx, (prev) => ({
@@ -611,7 +613,10 @@ export function BlockListEditor({
                           onChange(
                             updateBlockAt(blocks, idx, (prev) => ({
                               ...prev,
-                              dividerData: { ...(prev as any).dividerData, text: next },
+                              dividerData: {
+                                ...(prev as any).dividerData,
+                                text: next,
+                              },
                             })),
                           )
                         }
@@ -622,9 +627,10 @@ export function BlockListEditor({
                         listClass={[
                           styles.text.list,
                           listData.type === "ol" ? "list-decimal" : "list-disc",
-                          listData.inside ? "list-inside" : "ml-4",
+                          listData.inside ? "ml-4" : "",
                           ALIGNMENT_CLASSES[
-                            (listData.alignment ?? "left") as keyof typeof ALIGNMENT_CLASSES
+                            (listData.alignment ??
+                              "left") as keyof typeof ALIGNMENT_CLASSES
                           ].text,
                         ]
                           .filter(Boolean)

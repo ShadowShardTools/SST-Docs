@@ -73,7 +73,9 @@ export function BlockToolbar({
   return (
     <div
       className={`absolute -top-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 rounded-full border bg-white/95 dark:bg-slate-900/95 shadow-lg px-3 py-1 text-xs transition-opacity duration-150 ${
-        visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        visible
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
       }`}
     >
       <label className="flex items-center gap-1">
@@ -83,7 +85,9 @@ export function BlockToolbar({
           value={block.type}
           onChange={(e) => handleTransform(e.target.value as BlockType)}
         >
-          {(["title", "text", "divider", "messageBox", "list"] as BlockType[]).map((t) => (
+          {(
+            ["title", "text", "divider", "messageBox", "list"] as BlockType[]
+          ).map((t) => (
             <option key={t} value={t}>
               {BLOCK_LABELS[t] ?? t}
             </option>

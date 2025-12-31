@@ -200,20 +200,20 @@
     <div class="max-w-4xl mx-auto">
       
       <div class="space-y-4"><div class="text-left"><h2 id="image-block-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Image Block Example<a class="text-stone-400 hover:text-blue-500 dark:text-gray-400 ml-2 text-sm" href="#image-block-example" aria-label="Anchor link">#</a></h2></div>
-<figure class="mb-6 text-center">
+<figure class="mb-4 text-center">
     <div class="mx-auto" style="width: 50%;">
       <img src="../../images/Image_Example_1.png" alt="Image Example 1" class="w-full h-auto" />
       <figcaption class="text-sm text-center italic text-gray-400 mt-2 mt-2">Image Example 1</figcaption>
     </div>
   </figure>
 <div class="text-left"><h2 id="image-compare-examples" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Image Compare Examples<a class="text-stone-400 hover:text-blue-500 dark:text-gray-400 ml-2 text-sm" href="#image-compare-examples" aria-label="Anchor link">#</a></h2></div>
-<div class="mb-6 text-center">
+<div class="mb-4 text-center">
       <div class="flex gap-4 justify-center mx-auto" style="width: 100%;">
         <div class="w-1/2"><figure class="flex flex-col items-center"><img src="../../images/Image_Example_1.png" alt="Image Example 1" class="w-full h-auto"/><figcaption class="text-sm text-center italic text-gray-400 mt-2 mt-2">Image Example 1</figcaption></figure></div>
         <div class="w-1/2"><figure class="flex flex-col items-center"><img src="../../images/Image_Example_2.png" alt="Image Example 2" class="w-full h-auto"/><figcaption class="text-sm text-center italic text-gray-400 mt-2 mt-2">Image Example 2</figcaption></figure></div>
       </div>
     </div>
-<div class="mb-6 text-center">
+<div class="mb-4 text-center">
     <div class="mx-auto" style="width: 50%;">
       <div class="static-compare" id="static-compare-0" data-static-compare data-before-label="Image Example 1" data-after-label="Image Example 2" data-initial="50" style="--static-compare-position: 50%;">
     <figure class="static-compare-figure">
@@ -232,7 +232,7 @@
     </div>
   </div><script>(function(){var initContainer=function(container){if(!container)return;var range=container.querySelector('[data-static-compare-range]');var beforeLabel=container.getAttribute('data-before-label')||"";var afterLabel=container.getAttribute('data-after-label')||"";var summary=container.querySelector('[data-static-compare-summary]');var apply=function(value){var numeric=Number(value);if(!isFinite(numeric)){numeric=Number(container.getAttribute('data-initial')||50);}var clamped=Math.max(0,Math.min(100,numeric));container.style.setProperty('--static-compare-position',clamped+'%');if(summary){var beforeText=beforeLabel?Math.round(clamped)+'% '+beforeLabel:'';var afterText=afterLabel?Math.round(100-clamped)+'% '+afterLabel:'';summary.textContent=beforeText&&afterText?beforeText+' / '+afterText:beforeText||afterText;}};if(range){apply(range.value);['input','change'].forEach(function(eventName){range.addEventListener(eventName,function(evt){var target=evt&&evt.target&&typeof evt.target.value!=='undefined'?evt.target:range;apply(target.value);});});}else{apply(container.getAttribute('data-initial')||50);}};var initAll=function(){var containers=document.querySelectorAll('[data-static-compare]');for(var i=0;i<containers.length;i+=1){initContainer(containers[i]);}};if(typeof window!=='undefined'){if(!window.__staticCompareInit){window.__staticCompareInit=initAll;document.addEventListener('DOMContentLoaded',initAll);}else{window.__staticCompareInit();}}})();</script>
 <div class="text-left"><h2 id="image-carousel-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Image Carousel Example<a class="text-stone-400 hover:text-blue-500 dark:text-gray-400 ml-2 text-sm" href="#image-carousel-example" aria-label="Anchor link">#</a></h2></div>
-<div class="mb-6 text-center">
+<div class="mb-4 text-center">
     <div class="mx-auto" style="width: 50%;">
       <div class="static-carousel" id="static-carousel-0">
         <style>#static-carousel-0 .static-carousel-slide { display: none; }
@@ -267,7 +267,7 @@
     </div>
   </div>
 <div class="text-left"><h2 id="image-grid-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Image Grid Example<a class="text-stone-400 hover:text-blue-500 dark:text-gray-400 ml-2 text-sm" href="#image-grid-example" aria-label="Anchor link">#</a></h2></div>
-<div class="mb-6 text-center">
+<div class="mb-4 text-center">
     <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mx-auto">
       <figure class="flex flex-col items-center" style="">
         <img src="../../images/Image_Example_1.png" alt="Image Example 1" class="w-full h-auto"/>
@@ -285,7 +285,7 @@
     </div>
   </div>
 <div class="text-left"><h2 id="audio-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Audio Example<a class="text-stone-400 hover:text-blue-500 dark:text-gray-400 ml-2 text-sm" href="#audio-example" aria-label="Anchor link">#</a></h2></div>
-<figure class="mb-6">
+<figure class="mb-4">
     <audio controls preload="metadata" class="w-full">
       <source src="../../audio/AudioSample.mp3" type="audio/mpeg"/>
       Your browser does not support the audio element.
@@ -293,7 +293,7 @@
     <figcaption class="text-sm text-center italic text-gray-400 mt-2 mt-2">Ambient sample</figcaption>
   </figure>
 <div class="text-left"><h2 id="youtube-video-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Youtube Video Example<a class="text-stone-400 hover:text-blue-500 dark:text-gray-400 ml-2 text-sm" href="#youtube-video-example" aria-label="Anchor link">#</a></h2></div>
-<div class="mb-6 text-center">
+<div class="mb-4 text-center">
     <div class="mx-auto" style="width: 80%;">
       <div class="aspect-video">
         <iframe src="https://www.youtube.com/embed/1bSEHTbrisQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-lg border"></iframe>

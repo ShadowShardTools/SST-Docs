@@ -12,7 +12,11 @@ import { useEditorDocNavigation } from "./hooks/useEditorDocNavigation";
 import { useEditorData } from "./state/useEditorData";
 import { read, write, runGenerator } from "./api";
 import BlockListEditor from "./components/BlockListEditor";
-import type { Category, DocItem, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type {
+  Category,
+  DocItem,
+  StyleTheme,
+} from "@shadow-shard-tools/docs-core";
 import { Eye, FileCode, SquareStack } from "lucide-react";
 
 const findCategoryTrail = (
@@ -50,7 +54,7 @@ const findDocTrail = (
   return null;
 };
 
-export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
+export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
 
@@ -110,7 +114,7 @@ export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     setCurrentFilePath((prev) =>
       defaultFilePath && prev !== defaultFilePath
         ? defaultFilePath
-        : prev ?? defaultFilePath,
+        : (prev ?? defaultFilePath),
     );
   }, [defaultFilePath]);
 
@@ -199,8 +203,7 @@ export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       setGeneratorStatus("success");
       setGeneratorMessage(res.stdout ?? "Completed");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Generator failed";
+      const message = err instanceof Error ? err.message : "Generator failed";
       setGeneratorStatus("error");
       setGeneratorMessage(message);
     }
@@ -449,7 +452,9 @@ export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                       <span className="inline-flex items-center gap-2">
                         {mode === "preview" && <Eye className="w-4 h-4" />}
                         {mode === "json" && <FileCode className="w-4 h-4" />}
-                        {mode === "blocks" && <SquareStack className="w-4 h-4" />}
+                        {mode === "blocks" && (
+                          <SquareStack className="w-4 h-4" />
+                        )}
                         <span className="capitalize">{mode}</span>
                       </span>
                     </button>
@@ -486,7 +491,9 @@ export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                   <button
                     className={`${styles.buttons.common} px-3 py-2 text-sm`}
                     onClick={handleSave}
-                    disabled={!dirty || !currentFilePath || fileStatus === "saving"}
+                    disabled={
+                      !dirty || !currentFilePath || fileStatus === "saving"
+                    }
                   >
                     {fileStatus === "saving" ? "Saving..." : "Save"}
                   </button>
@@ -510,4 +517,4 @@ export const EditorShell : React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       </main>
     </div>
   );
-}
+};

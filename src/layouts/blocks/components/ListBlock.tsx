@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ALIGNMENT_CLASSES } from "../constants";
+import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
 import { processListItems } from "@shadow-shard-tools/docs-core/utilities/string/processListItems";
 import type { ListData } from "@shadow-shard-tools/docs-core/types/ListData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";

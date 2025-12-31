@@ -12,7 +12,9 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     } catch {
       detail = res.statusText;
     }
-    throw new Error(detail || `Request failed: ${res.status} ${res.statusText}`);
+    throw new Error(
+      detail || `Request failed: ${res.status} ${res.statusText}`,
+    );
   }
   return res.json() as Promise<T>;
 }
@@ -68,12 +70,14 @@ export async function upload(filePath: string, data: Blob | ArrayBuffer) {
 }
 
 export async function runGenerator(script: string) {
-  return request<{ ok: boolean; script: string; stdout?: string; stderr?: string }>(
-    `${API_PREFIX}/run-generator`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ script }),
-    },
-  );
+  return request<{
+    ok: boolean;
+    script: string;
+    stdout?: string;
+    stderr?: string;
+  }>(`${API_PREFIX}/run-generator`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ script }),
+  });
 }

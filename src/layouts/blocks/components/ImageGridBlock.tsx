@@ -1,5 +1,8 @@
 import React from "react";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import {
+  ALIGNMENT_CLASSES,
+  SPACING_CLASSES,
+} from "@shadow-shard-tools/docs-core";
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
 import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";

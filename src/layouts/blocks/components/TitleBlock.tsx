@@ -1,6 +1,9 @@
 import React from "react";
 import { LinkIcon } from "lucide-react";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import {
+  ALIGNMENT_CLASSES,
+  SPACING_CLASSES,
+} from "@shadow-shard-tools/docs-core";
 import { slugify } from "@shadow-shard-tools/docs-core/utilities/string/slugify";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { TitleData } from "@shadow-shard-tools/docs-core/types/TitleData";
@@ -19,9 +22,7 @@ export const TitleBlock: React.FC<Props> = ({
   currentPath = "",
 }) => {
   const level = titleData.level ?? 1;
-  const spacingKey = (titleData.spacing ??
-    "none") as keyof typeof SPACING_CLASSES;
-  const spacingClass = SPACING_CLASSES[spacingKey];
+  const spacingClass = SPACING_CLASSES.none;
   const alignmentClass = ALIGNMENT_CLASSES[titleData.alignment ?? "left"].text;
 
   const levelClassMap = {
@@ -30,9 +31,7 @@ export const TitleBlock: React.FC<Props> = ({
     3: styles.text.titleLevel3 || "text-2xl",
   };
 
-  const underlineClass = titleData.underline
-    ? `border-b-2 pb-2 ${styles.divider.border || "sst-divider-border"}`
-    : "";
+  const underlineClass = "";
 
   const titleWrapperClass = styles.sections.contentBackground || "";
 

@@ -32,11 +32,20 @@ export const transformBlockAt = (
   const template = cloneTemplate(to) as any;
 
   if (to === "title") {
-    next[index] = { ...template, titleData: { ...template.titleData, text } } as Content;
+    next[index] = {
+      ...template,
+      titleData: { ...template.titleData, text },
+    } as Content;
   } else if (to === "text") {
-    next[index] = { ...template, textData: { ...template.textData, text } } as Content;
+    next[index] = {
+      ...template,
+      textData: { ...template.textData, text },
+    } as Content;
   } else if (to === "divider") {
-    next[index] = { ...template, dividerData: { ...template.dividerData, text } } as Content;
+    next[index] = {
+      ...template,
+      dividerData: { ...template.dividerData, text },
+    } as Content;
   } else if (to === "messageBox") {
     next[index] = {
       ...template,
@@ -45,7 +54,7 @@ export const transformBlockAt = (
   } else if (to === "list") {
     const items =
       src.type === "list"
-        ? (src as any).listData?.items ?? []
+        ? ((src as any).listData?.items ?? [])
         : text.length > 0
           ? text.split("\n").filter(Boolean)
           : [];

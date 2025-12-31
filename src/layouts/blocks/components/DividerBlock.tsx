@@ -12,19 +12,6 @@ export const DividerBlock: React.FC<Props> = ({
   styles,
   dividerData,
 }) => {
-  const getSpacingClass = (): string => {
-    switch (dividerData.spacing) {
-      case "small":
-        return "my-4";
-      case "medium":
-        return "my-6";
-      case "large":
-        return "my-8";
-      default:
-        return "";
-    }
-  };
-
   const getDividerClass = (): string => {
     const base = `w-full ${styles.divider.border || "sst-divider-border"}`;
 
@@ -46,7 +33,7 @@ export const DividerBlock: React.FC<Props> = ({
     }
   };
 
-  const spacingClass = getSpacingClass();
+  const spacingClass = "mb-6";
   const dividerClass = getDividerClass();
 
   if (dividerData.text) {

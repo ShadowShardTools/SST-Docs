@@ -1,7 +1,10 @@
 import React from "react";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { TextData } from "@shadow-shard-tools/docs-core/types/TextData";
+import {
+  ALIGNMENT_CLASSES,
+  SPACING_CLASSES,
+} from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { TextData } from "@shadow-shard-tools/docs-core";
 
 interface Props {
   index: number;
@@ -10,10 +13,7 @@ interface Props {
 }
 
 export const TextBlock: React.FC<Props> = ({ index, styles, textData }) => {
-  // Determine spacing
-  const spacingKey = (textData.spacing ??
-    "medium") as keyof typeof SPACING_CLASSES;
-  const spacingClass = SPACING_CLASSES[spacingKey];
+  const spacingClass = SPACING_CLASSES.medium;
 
   // Determine alignment
   const alignmentClass = ALIGNMENT_CLASSES[textData.alignment ?? "left"].text;

@@ -1,6 +1,9 @@
 import React, { useState, lazy, Suspense } from "react";
 import { useMobileDevice } from "../hooks";
-import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "../constants";
+import {
+  ALIGNMENT_CLASSES,
+  SPACING_CLASSES,
+} from "@shadow-shard-tools/docs-core";
 import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";

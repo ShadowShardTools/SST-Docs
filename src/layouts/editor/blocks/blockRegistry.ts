@@ -24,7 +24,6 @@ const defaultMessageBox: MessageBoxData = {
   type: "info",
   text: "Message text",
   showIcon: true,
-  size: "medium",
 };
 
 export const DEFAULT_BLOCKS: Record<BlockType, Content> = {
@@ -58,14 +57,8 @@ export const DEFAULT_BLOCKS: Record<BlockType, Content> = {
           { content: "Column 1", isHeader: true, scope: "col" },
           { content: "Column 2", isHeader: true, scope: "col" },
         ],
-        [
-          { content: "Row 1" },
-          { content: "Value" },
-        ],
-        [
-          { content: "Row 2" },
-          { content: "Value" },
-        ],
+        [{ content: "Row 1" }, { content: "Value" }],
+        [{ content: "Row 2" }, { content: "Value" }],
       ],
     },
   },
@@ -77,7 +70,6 @@ export const DEFAULT_BLOCKS: Record<BlockType, Content> = {
     type: "divider",
     dividerData: {
       type: "line",
-      spacing: "medium",
     },
   },
   image: {

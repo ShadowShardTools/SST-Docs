@@ -16,32 +16,16 @@ export function MessageBoxToolbarControls({ data, onChange }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              messageBoxData: { ...(prev as any).messageBoxData, type: e.target.value },
+              messageBoxData: {
+                ...(prev as any).messageBoxData,
+                type: e.target.value,
+              },
             }))
           }
         >
           {(
             ["info", "warning", "error", "success", "neutral", "quote"] as const
           ).map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="flex items-center gap-1">
-        <span>Size</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.size ?? "medium"}
-          onChange={(e) =>
-            onChange((prev) => ({
-              ...prev,
-              messageBoxData: { ...(prev as any).messageBoxData, size: e.target.value },
-            }))
-          }
-        >
-          {(["small", "medium", "large"] as const).map((s) => (
             <option key={s} value={s}>
               {s}
             </option>
@@ -55,7 +39,10 @@ export function MessageBoxToolbarControls({ data, onChange }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              messageBoxData: { ...(prev as any).messageBoxData, showIcon: e.target.checked },
+              messageBoxData: {
+                ...(prev as any).messageBoxData,
+                showIcon: e.target.checked,
+              },
             }))
           }
         />

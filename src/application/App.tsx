@@ -21,16 +21,19 @@ function App() {
     <HashRouter>
       <div className={theme === "dark" ? "dark" : ""}>
         <div className={`${styles.sections.siteBackground} transition-colors`}>
-            <div className="min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
-              <div className={`${styles.sections.siteBorders}`}>
-                <Routes>
+          <div className="min-h-screen max-w-7xl mx-auto px-0 lg:px-8 md:px-6">
+            <div className={`${styles.sections.siteBorders}`}>
+              <Routes>
                 {editorEnabled ? (
-                  <Route path="/editor/:docId?" element={<EditorShell styles={styles} />} />
-                ) : null}
                   <Route
-                    path="/:docId?"
-                    element={<MainRenderer styles={styles} />}
+                    path="/editor/:docId?"
+                    element={<EditorShell styles={styles} />}
                   />
+                ) : null}
+                <Route
+                  path="/:docId?"
+                  element={<MainRenderer styles={styles} />}
+                />
               </Routes>
             </div>
           </div>

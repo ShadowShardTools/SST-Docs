@@ -31,34 +31,33 @@ export function useEditorData() {
     api
       .ping()
       .then((res) => setLastPing({ dataRoot: res.dataRoot }))
-      .catch((err: Error) => setError(`Editor API unavailable: ${err.message}`));
+      .catch((err: Error) =>
+        setError(`Editor API unavailable: ${err.message}`),
+      );
   }, []);
 
-  const loadData = useCallback(
-    async (product?: string, version?: string) => {
-      setStatus("loading");
-      setError(null);
-      try {
-        const data = await documentationLoader.loadVersionData({
-          product,
-          version,
-        });
-        setProducts(data.products ?? []);
-        setVersions(data.versions ?? []);
-        setCurrentProduct(data.product ?? "");
-        setCurrentVersion(data.version ?? "");
-        setItems(data.items);
-        setTree(data.tree);
-        setStandaloneDocs(data.standaloneDocs ?? []);
-        setStatus("idle");
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        setError(message);
-        setStatus("error");
-      }
-    },
-    [],
-  );
+  const loadData = useCallback(async (product?: string, version?: string) => {
+    setStatus("loading");
+    setError(null);
+    try {
+      const data = await documentationLoader.loadVersionData({
+        product,
+        version,
+      });
+      setProducts(data.products ?? []);
+      setVersions(data.versions ?? []);
+      setCurrentProduct(data.product ?? "");
+      setCurrentVersion(data.version ?? "");
+      setItems(data.items);
+      setTree(data.tree);
+      setStandaloneDocs(data.standaloneDocs ?? []);
+      setStatus("idle");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setError(message);
+      setStatus("error");
+    }
+  }, []);
 
   useEffect(() => {
     loadData(undefined, undefined);
@@ -74,7 +73,15 @@ export function useEditorData() {
       tree,
       standaloneDocs,
     }),
-    [products, versions, currentProduct, currentVersion, items, tree, standaloneDocs],
+    [
+      products,
+      versions,
+      currentProduct,
+      currentVersion,
+      items,
+      tree,
+      standaloneDocs,
+    ],
   );
 
   return {
