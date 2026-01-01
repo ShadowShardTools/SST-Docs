@@ -12,6 +12,7 @@ import {
   EditableMessageBox,
   EditableMath,
   EditableCode,
+  EditableChart,
   EditableTable,
   EditableText,
   EditableTitle,
@@ -274,6 +275,22 @@ export function BlockListEditor({
                             updateBlockAt(blocks, idx, (prev) => ({
                               ...prev,
                               listData: { ...(prev as any).listData, items },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "chart" ? (
+                      <EditableChart
+                        data={(block as any).chartData}
+                        styles={styles}
+                        onChange={(nextChart) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              chartData: {
+                                ...(prev as any).chartData,
+                                ...nextChart,
+                              },
                             })),
                           )
                         }

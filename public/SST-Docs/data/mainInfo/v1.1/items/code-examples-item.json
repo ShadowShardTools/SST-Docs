@@ -17,7 +17,18 @@
         "language": "javascript",
         "name": "hello.js",
         "showLineNumbers": true,
-        "allowDownload": true
+        "allowDownload": true,
+        "wrapLines": false,
+        "collapsible": false,
+        "defaultCollapsed": false,
+        "activeSectionIndex": 0,
+        "sections": [
+          {
+            "language": "javascript",
+            "content": "console.log('Hello, World!');",
+            "filename": "hello.js"
+          }
+        ]
       }
     },
     {
