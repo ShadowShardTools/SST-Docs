@@ -10,6 +10,7 @@ import {
   EditableDivider,
   EditableList,
   EditableMessageBox,
+  EditableMath,
   EditableTable,
   EditableText,
   EditableTitle,
@@ -272,6 +273,22 @@ export function BlockListEditor({
                             updateBlockAt(blocks, idx, (prev) => ({
                               ...prev,
                               listData: { ...(prev as any).listData, items },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "math" ? (
+                      <EditableMath
+                        data={(block as any).mathData}
+                        styles={styles}
+                        onChange={(nextMath) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              mathData: {
+                                ...(prev as any).mathData,
+                                ...nextMath,
+                              },
                             })),
                           )
                         }

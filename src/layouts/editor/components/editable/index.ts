@@ -1,4 +1,5 @@
 export { EditableDivider } from "./EditableDivider";
+export { EditableMath } from "./EditableMath";
 export { EditableTable } from "./EditableTable";
 export { EditableList } from "./EditableList";
 export { EditableMessageBox } from "./EditableMessageBox";
