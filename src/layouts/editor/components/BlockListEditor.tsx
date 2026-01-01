@@ -11,6 +11,7 @@ import {
   EditableList,
   EditableMessageBox,
   EditableMath,
+  EditableCode,
   EditableTable,
   EditableText,
   EditableTitle,
@@ -273,6 +274,22 @@ export function BlockListEditor({
                             updateBlockAt(blocks, idx, (prev) => ({
                               ...prev,
                               listData: { ...(prev as any).listData, items },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "code" ? (
+                      <EditableCode
+                        data={(block as any).codeData}
+                        styles={styles}
+                        onChange={(nextCode) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              codeData: {
+                                ...(prev as any).codeData,
+                                ...nextCode,
+                              },
                             })),
                           )
                         }
