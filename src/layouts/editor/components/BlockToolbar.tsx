@@ -15,6 +15,11 @@ import TableToolbarControls from "./toolbars/TableToolbarControls";
 import MathToolbarControls from "./toolbars/MathToolbarControls";
 import CodeToolbarControls from "./toolbars/CodeToolbarControls";
 import ChartToolbarControls from "./toolbars/ChartToolbarControls";
+import ImageToolbarControls from "./toolbars/ImageToolbarControls";
+import ImageCompareToolbarControls from "./toolbars/ImageCompareToolbarControls";
+import ImageCarouselToolbarControls from "./toolbars/ImageCarouselToolbarControls";
+import ImageGridToolbarControls from "./toolbars/ImageGridToolbarControls";
+import YoutubeToolbarControls from "./toolbars/YoutubeToolbarControls";
 
 interface Props {
   block: Content;
@@ -91,6 +96,31 @@ export function BlockToolbar({
       return <ChartToolbarControls data={data} onChange={handleUpdate} />;
     }
 
+    if (block.type === "image") {
+      const data = (block as any).imageData ?? {};
+      return <ImageToolbarControls data={data} onChange={handleUpdate} />;
+    }
+
+    if (block.type === "imageCompare") {
+      const data = (block as any).imageCompareData ?? {};
+      return <ImageCompareToolbarControls data={data} onChange={handleUpdate} />;
+    }
+
+    if (block.type === "imageCarousel") {
+      const data = (block as any).imageCarouselData ?? {};
+      return <ImageCarouselToolbarControls data={data} onChange={handleUpdate} />;
+    }
+
+    if (block.type === "imageGrid") {
+      const data = (block as any).imageGridData ?? {};
+      return <ImageGridToolbarControls data={data} onChange={handleUpdate} />;
+    }
+
+    if (block.type === "youtube") {
+      const data = (block as any).youtubeData ?? {};
+      return <YoutubeToolbarControls data={data} onChange={handleUpdate} />;
+    }
+
     return null;
   };
 
@@ -120,6 +150,12 @@ export function BlockToolbar({
               "math",
               "code",
               "chart",
+              "audio",
+              "image",
+              "imageCompare",
+              "imageCarousel",
+              "imageGrid",
+              "youtube",
             ] as BlockType[]
           ).map((t) => (
             <option key={t} value={t}>

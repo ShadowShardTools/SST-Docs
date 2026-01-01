@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { useMobileDevice } from "../hooks";
 import {
   ALIGNMENT_CLASSES,
@@ -23,7 +23,6 @@ export const ImageCompareBlock: React.FC<Props> = ({
   styles,
   imageCompareData,
 }) => {
-  const [sliderPercentage, setSliderPercentage] = useState(50);
   const isMobile = useMobileDevice();
 
   const scale = validateScale(imageCompareData.scale);
@@ -41,6 +40,7 @@ export const ImageCompareBlock: React.FC<Props> = ({
   const afterSrc = imageCompareData.afterImage?.src
     ? withBasePath(imageCompareData.afterImage.src, import.meta.env.BASE_URL)
     : "";
+  const sliderColor = imageCompareData.sliderColor || "#ffffff";
 
   // Compare side-by-side (individual)
   if (imageCompareData.type === "individual" && beforeSrc && afterSrc) {
@@ -91,27 +91,11 @@ export const ImageCompareBlock: React.FC<Props> = ({
             <CompareImage
               leftImage={beforeSrc}
               rightImage={afterSrc}
-              sliderLineColor={imageCompareData.sliderColor}
-              onSliderPositionChange={(pos: number) =>
-                setSliderPercentage(Math.round(pos * 100))
-              }
+              sliderLineColor={sliderColor}
               leftImageCss={{ maxWidth: "100%", height: "auto" }}
               rightImageCss={{ maxWidth: "100%", height: "auto" }}
             />
           </Suspense>
-          {imageCompareData.showPercentage &&
-            (imageCompareData.beforeImage?.alt ||
-              imageCompareData.afterImage?.alt) && (
-              <p className={`mt-2 ${styles.text.alternative}`}>
-                {imageCompareData.beforeImage?.alt &&
-                  `${sliderPercentage}% ${imageCompareData.beforeImage.alt}`}
-                {imageCompareData.beforeImage?.alt &&
-                  imageCompareData.afterImage?.alt &&
-                  " / "}
-                {imageCompareData.afterImage?.alt &&
-                  `${100 - sliderPercentage}% ${imageCompareData.afterImage.alt}`}
-              </p>
-            )}
         </div>
       </div>
     );

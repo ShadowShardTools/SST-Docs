@@ -12,11 +12,24 @@ interface Props {
   audioData: AudioData;
 }
 
+const detectMimeType = (src?: string, fallback = "audio/mpeg") => {
+  if (!src) return fallback;
+  const lower = src.split("?")[0]?.toLowerCase() ?? "";
+  if (lower.endsWith(".mp3")) return "audio/mpeg";
+  if (lower.endsWith(".ogg")) return "audio/ogg";
+  if (lower.endsWith(".wav")) return "audio/wav";
+  if (lower.endsWith(".m4a")) return "audio/mp4";
+  if (lower.endsWith(".flac")) return "audio/flac";
+  if (lower.endsWith(".webm")) return "audio/webm";
+  return fallback;
+};
+
 export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
   const [theme] = useCurrentTheme();
   const src = audioData
     ? withBasePath(audioData.src, import.meta.env.BASE_URL)
     : "";
+  const mimeType = audioData.mimeType || detectMimeType(audioData.src);
 
   const {
     audioRef,
@@ -56,7 +69,7 @@ export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
   return (
     <div className="mb-6">
       <audio ref={audioRef} src={src} preload="metadata">
-        <source src={src} type={audioData.mimeType} />
+        <source src={src} type={mimeType} />
         Your browser does not support the audio element.
       </audio>
 

@@ -13,6 +13,12 @@ import {
   EditableMath,
   EditableCode,
   EditableChart,
+  EditableAudio,
+  EditableImage,
+  EditableImageCompare,
+  EditableImageCarousel,
+  EditableImageGrid,
+  EditableYoutube,
   EditableTable,
   EditableText,
   EditableTitle,
@@ -290,6 +296,102 @@ export function BlockListEditor({
                               chartData: {
                                 ...(prev as any).chartData,
                                 ...nextChart,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "audio" ? (
+                      <EditableAudio
+                        data={(block as any).audioData}
+                        styles={styles}
+                        onChange={(nextAudio) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              audioData: {
+                                ...(prev as any).audioData,
+                                ...nextAudio,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "image" ? (
+                      <EditableImage
+                        data={(block as any).imageData}
+                        styles={styles}
+                        onChange={(nextImage) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              imageData: {
+                                ...(prev as any).imageData,
+                                ...nextImage,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "imageCompare" ? (
+                      <EditableImageCompare
+                        data={(block as any).imageCompareData}
+                        styles={styles}
+                        onChange={(nextCompare) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              imageCompareData: {
+                                ...(prev as any).imageCompareData,
+                                ...nextCompare,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "imageCarousel" ? (
+                      <EditableImageCarousel
+                        data={(block as any).imageCarouselData}
+                        styles={styles}
+                        onChange={(nextCarousel) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              imageCarouselData: {
+                                ...(prev as any).imageCarouselData,
+                                ...nextCarousel,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "imageGrid" ? (
+                      <EditableImageGrid
+                        data={(block as any).imageGridData}
+                        styles={styles}
+                        onChange={(nextGrid) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              imageGridData: {
+                                ...(prev as any).imageGridData,
+                                ...nextGrid,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "youtube" ? (
+                      <EditableYoutube
+                        data={(block as any).youtubeData}
+                        styles={styles}
+                        onChange={(nextYoutube) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              youtubeData: {
+                                ...(prev as any).youtubeData,
+                                ...nextYoutube,
                               },
                             })),
                           )

@@ -61,21 +61,18 @@ export function ChartToolbarControls({ data, onChange }: Props) {
 
       <label className="flex items-center gap-1">
         <span>Scale</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
+        <input
+          type="number"
+          step={0.01}
+          min={0.01}
+          max={1}
+          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800 w-20"
           value={chartData.scale ?? 1}
-          onChange={(e) => updateScale(Number.parseFloat(e.target.value) || 1)}
-        >
-          <option value={0.5}>0.5x</option>
-          <option value={0.75}>0.75x</option>
-          <option value={1}>1x</option>
-          <option value={1.25}>1.25x</option>
-          <option value={1.5}>1.5x</option>
-        </select>
+          onChange={(e) => updateScale(Math.min(Number.parseFloat(e.target.value) || 1, 1))}
+        />
       </label>
     </div>
   );
 }
 
 export default ChartToolbarControls;
-
