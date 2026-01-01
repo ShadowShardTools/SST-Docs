@@ -2,7 +2,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import CodeBlock from "../../../blocks/components/CodeBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { CodeData } from "@shadow-shard-tools/docs-core/types/CodeData";
-import type { SupportedLanguage } from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
+import {
+  CODE_LANGUAGE_CONFIG,
+  type SupportedLanguage,
+} from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
 
 interface EditableCodeProps {
   data?: CodeData;
@@ -11,7 +14,16 @@ interface EditableCodeProps {
 }
 
 export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
-  const codeData: CodeData = {
+  const SUPPORTED_LANGUAGES = useMemo(
+    () => Object.keys(CODE_LANGUAGE_CONFIG) as SupportedLanguage[],
+    [],
+  );
+  const ensureLanguage = (lang?: string): SupportedLanguage =>
+    SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)
+      ? (lang as SupportedLanguage)
+      : "plaintext";
+
+  const baseData: CodeData = {
     language: "javascript",
     content: "",
     showLineNumbers: true,
@@ -20,6 +32,10 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
     collapsible: false,
     defaultCollapsed: false,
     ...data,
+  };
+  const codeData: CodeData = {
+    ...baseData,
+    language: ensureLanguage(baseData.language),
   };
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -30,19 +46,19 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
   const sections = useMemo(() => {
     if (codeData.sections?.length) {
       return codeData.sections.map((section) => ({
-        language: section.language as SupportedLanguage,
+        language: ensureLanguage(section.language),
         content: section.content ?? "",
         filename: section.filename,
       }));
     }
     return [
       {
-        language: (codeData.language as SupportedLanguage) ?? "plaintext",
+        language: ensureLanguage(codeData.language),
         content: codeData.content ?? "",
         filename: codeData.name,
       },
     ];
-  }, [codeData]);
+  }, [codeData, ensureLanguage, SUPPORTED_LANGUAGES]);
 
   useEffect(() => {
     if (localActive >= sections.length) {
@@ -114,7 +130,11 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           onClick={() => {
             const updated = [
               ...sections,
-              { language: "javascript" as SupportedLanguage, content: "", filename: "" },
+              {
+                language: ensureLanguage("javascript"),
+                content: "",
+                filename: "",
+              },
             ];
             setLocalActive(updated.length - 1);
             onChange({
@@ -135,7 +155,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             className="border rounded px-2 py-1 bg-white dark:bg-slate-900 text-sm"
             value={activeSection?.language ?? "plaintext"}
             onChange={(e) => {
-              const language = e.target.value as SupportedLanguage;
+              const language = ensureLanguage(e.target.value);
               onChange({
                 ...codeData,
                 activeSectionIndex: activeIndex,
@@ -145,15 +165,11 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
               });
             }}
           >
-            {Array.from(new Set(sections.map((s) => s.language))).concat(
-              ["plaintext" as SupportedLanguage],
-            )
-              .filter(Boolean)
-              .map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
+            {SUPPORTED_LANGUAGES.map((lang) => (
+              <option key={lang} value={lang}>
+                {CODE_LANGUAGE_CONFIG[lang]?.name ?? lang}
+              </option>
+            ))}
           </select>
         </label>
         <label className="flex items-center gap-1">

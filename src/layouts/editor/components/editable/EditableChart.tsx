@@ -11,6 +11,9 @@ interface EditableChartProps {
 }
 
 export function EditableChart({ data, styles, onChange }: EditableChartProps) {
+  const COLOR_PER_VALUE_TYPES: ChartData["type"][] = ["pie", "doughnut", "polarArea"];
+  const defaultColor = "#6366f1";
+
   const chartData: ChartData = useMemo(
     () => ({
       type: "bar",
@@ -61,13 +64,21 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
   };
 
   const addDataset = () => {
+    const labels = chartData.labels ?? [];
+    const isColorPerValue = COLOR_PER_VALUE_TYPES.includes(chartData.type ?? "bar");
     const next = [...(chartData.datasets ?? [])];
     next.push({
       label: `Dataset ${next.length + 1}`,
       data:
         chartData.type === "scatter"
           ? [{ x: 0, y: 0 }]
-          : chartData.labels?.map(() => 0) ?? [0],
+          : labels.map(() => 0),
+      ...(isColorPerValue
+        ? {
+            backgroundColor: labels.map(() => defaultColor),
+            borderColor: labels.map(() => defaultColor),
+          }
+        : {}),
     });
     onChange({ ...chartData, datasets: next });
   };
@@ -84,24 +95,46 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
   };
 
   const addLabel = () => {
-    const nextLabels = [...(chartData.labels ?? []), `Label ${chartData.labels?.length ?? 0 + 1}`];
-    const nextDatasets = (chartData.datasets ?? []).map((ds) => ({
-      ...ds,
-      data: [...(ds.data ?? []), 0],
-    }));
+    const isColorPerValue = COLOR_PER_VALUE_TYPES.includes(chartData.type ?? "bar");
+    const nextLabels = [...(chartData.labels ?? []), `Label ${(chartData.labels?.length ?? 0) + 1}`];
+    const nextDatasets = (chartData.datasets ?? []).map((ds) => {
+      const nextData = [...(ds.data ?? []), 0];
+      if (isColorPerValue) {
+        const nextBg = Array.isArray(ds.backgroundColor) ? [...ds.backgroundColor, defaultColor] : [defaultColor];
+        const nextBorder = Array.isArray(ds.borderColor) ? [...ds.borderColor, defaultColor] : [defaultColor];
+        return { ...ds, data: nextData, backgroundColor: nextBg, borderColor: nextBorder };
+      }
+      return { ...ds, data: nextData };
+    });
     onChange({ ...chartData, labels: nextLabels, datasets: nextDatasets });
   };
 
   const removeLabel = (index: number) => {
+    const isColorPerValue = COLOR_PER_VALUE_TYPES.includes(chartData.type ?? "bar");
     const nextLabels = (chartData.labels ?? []).filter((_, i) => i !== index);
     const nextDatasets = (chartData.datasets ?? []).map((ds) => ({
       ...ds,
       data: (ds.data ?? []).filter((_, i) => i !== index),
+      ...(isColorPerValue
+        ? {
+            backgroundColor: Array.isArray(ds.backgroundColor)
+              ? ds.backgroundColor.filter((_, i) => i !== index)
+              : undefined,
+            borderColor: Array.isArray(ds.borderColor) ? ds.borderColor.filter((_, i) => i !== index) : undefined,
+          }
+        : {}),
     }));
     onChange({ ...chartData, labels: nextLabels, datasets: nextDatasets });
   };
 
   const isScatter = chartData.type === "scatter";
+  const isColorPerValue = COLOR_PER_VALUE_TYPES.includes(chartData.type ?? "bar");
+
+  const ensureColorArray = (arr: any[] | undefined, length: number) => {
+    const base = Array.isArray(arr) ? [...arr] : [];
+    const next = Array.from({ length }, (_, i) => base[i] ?? defaultColor);
+    return next.slice(0, length);
+  };
 
   return (
     <div className="space-y-4">
@@ -159,18 +192,22 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                   onChange={(e) => handleDatasetChange(dsIndex, { label: e.target.value })}
                   placeholder="Dataset label"
                 />
-                <input
-                  className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900 w-32"
-                  value={ds.backgroundColor ?? ""}
-                  onChange={(e) => handleDatasetChange(dsIndex, { backgroundColor: e.target.value })}
-                  placeholder="Background color"
-                />
-                <input
-                  className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900 w-32"
-                  value={ds.borderColor ?? ""}
-                  onChange={(e) => handleDatasetChange(dsIndex, { borderColor: e.target.value })}
-                  placeholder="Border color"
-                />
+                {!isColorPerValue && (
+                  <>
+                    <input
+                      className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900 w-32"
+                      value={ds.backgroundColor ?? ""}
+                      onChange={(e) => handleDatasetChange(dsIndex, { backgroundColor: e.target.value })}
+                      placeholder="Background color"
+                    />
+                    <input
+                      className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900 w-32"
+                      value={ds.borderColor ?? ""}
+                      onChange={(e) => handleDatasetChange(dsIndex, { borderColor: e.target.value })}
+                      placeholder="Border color"
+                    />
+                  </>
+                )}
                 <button
                   type="button"
                   className="px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
@@ -200,6 +237,36 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                             handleDatasetChange(dsIndex, { data: nextData });
                           }}
                         />
+                        {isColorPerValue && (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                            <input
+                              className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
+                              value={ensureColorArray(ds.backgroundColor as any[], chartData.labels?.length ?? 0)[valueIdx]}
+                              onChange={(e) => {
+                                const nextColors = ensureColorArray(
+                                  ds.backgroundColor as any[],
+                                  chartData.labels?.length ?? 0,
+                                );
+                                nextColors[valueIdx] = e.target.value || defaultColor;
+                                handleDatasetChange(dsIndex, { backgroundColor: nextColors });
+                              }}
+                              placeholder="Background color"
+                            />
+                            <input
+                              className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
+                              value={ensureColorArray(ds.borderColor as any[], chartData.labels?.length ?? 0)[valueIdx]}
+                              onChange={(e) => {
+                                const nextColors = ensureColorArray(
+                                  ds.borderColor as any[],
+                                  chartData.labels?.length ?? 0,
+                                );
+                                nextColors[valueIdx] = e.target.value || defaultColor;
+                                handleDatasetChange(dsIndex, { borderColor: nextColors });
+                              }}
+                              placeholder="Border color"
+                            />
+                          </div>
+                        )}
                       </label>
                     ))}
                   </div>
