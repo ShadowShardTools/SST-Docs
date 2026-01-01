@@ -11,6 +11,7 @@ import TextToolbarControls from "./toolbars/TextToolbarControls";
 import ListToolbarControls from "./toolbars/ListToolbarControls";
 import DividerToolbarControls from "./toolbars/DividerToolbarControls";
 import MessageBoxToolbarControls from "./toolbars/MessageBoxToolbarControls";
+import TableToolbarControls from "./toolbars/TableToolbarControls";
 
 interface Props {
   block: Content;
@@ -67,6 +68,11 @@ export function BlockToolbar({
       return <MessageBoxToolbarControls data={data} onChange={handleUpdate} />;
     }
 
+    if (block.type === "table") {
+      const data = (block as any).tableData ?? {};
+      return <TableToolbarControls data={data} onChange={handleUpdate} />;
+    }
+
     return null;
   };
 
@@ -86,7 +92,7 @@ export function BlockToolbar({
           onChange={(e) => handleTransform(e.target.value as BlockType)}
         >
           {(
-            ["title", "text", "divider", "messageBox", "list"] as BlockType[]
+            ["title", "text", "divider", "messageBox", "list", "table"] as BlockType[]
           ).map((t) => (
             <option key={t} value={t}>
               {BLOCK_LABELS[t] ?? t}

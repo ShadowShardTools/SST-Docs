@@ -1,22 +1,19 @@
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import { BLOCK_LABELS, DEFAULT_BLOCKS, type BlockType } from "../blocks";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import {
-  GripVertical,
-  Info,
-  AlertTriangle,
-  XCircle,
-  CheckCircle,
-  HelpCircle,
-  LinkIcon,
-} from "lucide-react";
+import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
+import { GripVertical } from "lucide-react";
+import { useMemo, useState } from "react";
 import ContentBlockRenderer from "../../render/components/ContentBlockRenderer";
+import { BLOCK_LABELS, DEFAULT_BLOCKS, type BlockType } from "../blocks";
 import BlockToolbar from "./BlockToolbar";
+import {
+  EditableDivider,
+  EditableList,
+  EditableMessageBox,
+  EditableTable,
+  EditableText,
+  EditableTitle,
+} from "./editable";
 import { updateBlockAt } from "./utils/blockTransforms";
 
 interface Props {
@@ -25,389 +22,6 @@ interface Props {
   styles: StyleTheme;
   currentPath?: string;
 }
-
-const EditableText = ({
-  value,
-  alignmentClass,
-  textClass,
-  onChange,
-}: {
-  value: string;
-  alignmentClass: string;
-  textClass: string;
-  onChange: (next: string) => void;
-}) => {
-  const ref = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    if (ref.current && ref.current.innerText !== value) {
-      ref.current.innerText = value ?? "";
-    }
-  }, [value]);
-
-  return (
-    <p
-      ref={ref}
-      contentEditable
-      suppressContentEditableWarning
-      className={`${alignmentClass} ${textClass} ${SPACING_CLASSES.medium} bg-transparent outline-none min-h-[1.5rem] px-1.5 py-1.5 border border-transparent focus:border-sky-400 rounded`}
-      style={{ whiteSpace: "pre-wrap" }}
-      onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-    />
-  );
-};
-
-const EditableTitle = ({
-  value,
-  level,
-  alignmentClass,
-  titleClasses,
-  showAnchor,
-  anchorClass,
-  wrapperClass,
-  onChange,
-}: {
-  value: string;
-  level: number;
-  alignmentClass: string;
-  titleClasses: { 1: string; 2: string; 3: string };
-  showAnchor?: boolean;
-  anchorClass?: string;
-  wrapperClass?: string;
-  onChange: (next: string) => void;
-}) => {
-  const ref = useRef<HTMLHeadingElement>(null);
-  useEffect(() => {
-    if (ref.current && ref.current.innerText !== value) {
-      ref.current.innerText = value ?? "";
-    }
-  }, [value]);
-
-  const Heading = (["h1", "h2", "h3"] as const)[level - 1 > 0 ? level - 1 : 0];
-  const levelClass = titleClasses[level as 1 | 2 | 3] ?? titleClasses[1];
-
-  return (
-    <div className={SPACING_CLASSES.none}>
-      <div className={wrapperClass}>
-        <Heading
-          ref={ref}
-          contentEditable
-          suppressContentEditableWarning
-          className={`${alignmentClass} ${levelClass} font-bold leading-tight scroll-mt-20 group relative bg-transparent outline-none border-0 focus:border-0 focus:ring-0 px-0 py-0`}
-          onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-        >
-          {value}
-          {showAnchor && (
-            <span
-              contentEditable={false}
-              className={`ml-2 inline-block ${anchorClass ?? ""}`}
-            >
-              <LinkIcon className="w-4 h-4" />
-            </span>
-          )}
-        </Heading>
-      </div>
-    </div>
-  );
-};
-
-const EditableMessageBox = ({
-  data,
-  textClass,
-  onChange,
-  typeClasses,
-}: {
-  data: any;
-  textClass: string;
-  onChange: (next: string) => void;
-  typeClasses: Record<string, string>;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (ref.current && ref.current.innerText !== (data?.text ?? "")) {
-      ref.current.innerText = data?.text ?? "";
-    }
-  }, [data?.text]);
-
-  const type = data?.type ?? "neutral";
-  const sizeClasses = "p-4 text-base";
-  const typeStyles = {
-    info: typeClasses.info,
-    warning: typeClasses.warning,
-    error: typeClasses.error,
-    success: typeClasses.success,
-    neutral: typeClasses.neutral,
-    quote: typeClasses.quote,
-  };
-  const typeClass = typeStyles[type as keyof typeof typeStyles] ?? "";
-  const showIcon = data?.showIcon ?? true;
-
-  if (type === "quote") {
-    return (
-      <blockquote className={`pl-4 py-2 mb-4 ${typeStyles.quote ?? ""}`}>
-        <div
-          ref={ref}
-          contentEditable
-          suppressContentEditableWarning
-          className={`outline-none bg-transparent italic leading-relaxed ${textClass}`}
-          onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-        />
-      </blockquote>
-    );
-  }
-
-  const icon = (() => {
-    switch (type) {
-      case "info":
-        return <Info className="w-5 h-5 mr-3 flex-shrink-0" />;
-      case "warning":
-        return <AlertTriangle className="w-5 h-5 mr-3 flex-shrink-0" />;
-      case "error":
-        return <XCircle className="w-5 h-5 mr-3 flex-shrink-0" />;
-      case "success":
-        return <CheckCircle className="w-5 h-5 mr-3 flex-shrink-0" />;
-      case "neutral":
-      default:
-        return type === "neutral" ? (
-          <HelpCircle className="w-5 h-5 mr-3 flex-shrink-0" />
-        ) : null;
-    }
-  })();
-
-  return (
-    <div className="mb-4">
-      <div className={`rounded-lg border ${sizeClasses} ${typeClass}`}>
-        <div className="flex items-center gap-3">
-          {showIcon && icon}
-          <div className="flex-1">
-            <div
-              ref={ref}
-              contentEditable
-              suppressContentEditableWarning
-              className={`outline-none bg-transparent ${textClass}`}
-              onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const EditableDivider = ({
-  data,
-  styles,
-  onChange,
-}: {
-  data: any;
-  styles: StyleTheme;
-  onChange: (next: string) => void;
-}) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    if (ref.current && ref.current.innerText !== (data?.text ?? "")) {
-      ref.current.innerText = data?.text ?? "";
-    }
-  }, [data?.text]);
-
-  const spacing = "mb-6";
-  const base = `w-full ${styles.divider.border || "sst-divider-border"}`;
-  const dividerClass = (() => {
-    switch (data?.type) {
-      case "line":
-        return `${base} border-t`;
-      case "dashed":
-        return `${base} border-t-2 border-dashed`;
-      case "dotted":
-        return `${base} border-t-2 border-dotted`;
-      case "double":
-        return `${base} border-t-4 border-double`;
-      case "thick":
-        return `${base} border-t-2`;
-      case "gradient":
-        return `bg-gradient-to-r ${styles.divider.gradient} h-px w-full`;
-      default:
-        return `${base} border-t`;
-    }
-  })();
-
-  if (data?.text) {
-    const side = dividerClass.replace("w-full", "flex-1");
-    return (
-      <div className={`${spacing} flex items-center`}>
-        <div className={side} />
-        <span
-          ref={ref}
-          className={`px-4 ${styles.divider.text || "sst-divider-text"}`}
-          contentEditable
-          suppressContentEditableWarning
-          onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-        />
-        <div className={side} />
-      </div>
-    );
-  }
-  return (
-    <div className={spacing}>
-      <div className={dividerClass} />
-    </div>
-  );
-};
-
-const EditableListItem = ({
-  value,
-  onChange,
-  onKeyDown,
-  innerRef,
-}: {
-  value: string;
-  onChange: (next: string) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
-  innerRef: (el: HTMLDivElement | null) => void;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current && ref.current.innerText !== (value ?? "")) {
-      ref.current.innerText = value ?? "";
-    }
-  }, [value]);
-
-  return (
-    <div
-      ref={(el) => {
-        ref.current = el;
-        innerRef(el);
-      }}
-      contentEditable
-      suppressContentEditableWarning
-      className="inline outline-none bg-transparent leading-6 min-h-[1.25rem] align-middle"
-      onInput={(e) => onChange((e.target as HTMLElement).innerText)}
-      onKeyDown={onKeyDown}
-    />
-  );
-};
-
-const EditableList = ({
-  data,
-  listClass,
-  onChange,
-}: {
-  data: any;
-  listClass: string;
-  onChange: (items: string[]) => void;
-}) => {
-  const items: string[] = (data?.items ?? []).length ? data.items : [""];
-  const Tag = (data?.type === "ol" ? "ol" : "ul") as "ol" | "ul";
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const focusItem = (index: number, placeAtEnd = true) => {
-    requestAnimationFrame(() => {
-      const target = itemRefs.current[index];
-      if (!target) return;
-      target.focus();
-      const range = document.createRange();
-      range.selectNodeContents(target);
-      range.collapse(placeAtEnd);
-      const selection = window.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-    });
-  };
-
-  const handleItemChange = (index: number, text: string) => {
-    const next = [...items];
-    next[index] = text;
-    onChange(next);
-  };
-
-  const handleSplit = (index: number) => {
-    const target = itemRefs.current[index];
-    const text = target?.innerText ?? items[index] ?? "";
-    const selection = window.getSelection();
-    let offset = text.length;
-    if (
-      selection &&
-      selection.rangeCount > 0 &&
-      target?.contains(selection.anchorNode)
-    ) {
-      const range = selection.getRangeAt(0);
-      const preRange = range.cloneRange();
-      preRange.selectNodeContents(target);
-      preRange.setEnd(range.endContainer, range.endOffset);
-      offset = preRange.toString().length;
-    }
-    const before = text.slice(0, offset);
-    const after = text.slice(offset);
-
-    const next = [...items];
-    next[index] = before;
-    next.splice(index + 1, 0, after);
-    onChange(next);
-    focusItem(index + 1, false);
-  };
-
-  const handleRemove = (index: number) => {
-    if (items.length <= 1) {
-      onChange([""]);
-      focusItem(0, true);
-      return;
-    }
-    const next = [...items];
-    next.splice(index, 1);
-    onChange(next);
-    focusItem(Math.max(index - 1, 0), true);
-  };
-
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLDivElement>,
-    index: number,
-  ) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSplit(index);
-      return;
-    }
-
-    if (e.key === "Backspace") {
-      const content = (e.currentTarget as HTMLElement).innerText;
-      const isEmpty = !content || content.trim().length === 0;
-      const selection = window.getSelection();
-      const isAtStart =
-        selection?.anchorOffset === 0 && selection?.focusOffset === 0;
-      if (isEmpty && (isAtStart || selection?.isCollapsed)) {
-        e.preventDefault();
-        handleRemove(index);
-      }
-    }
-  };
-
-  return (
-    <div className="bg-transparent border border-transparent focus-within:border-sky-400 rounded px-1.5 py-1.5">
-      <Tag
-        className={`${listClass} space-y-1`}
-        role="list"
-        aria-label={data?.ariaLabel}
-        {...(Tag === "ol" && data?.startNumber !== undefined
-          ? { start: data.startNumber }
-          : {})}
-      >
-        {items.map((item, i) => (
-          <li key={i} role="listitem">
-            <EditableListItem
-              value={item}
-              innerRef={(el) => {
-                itemRefs.current[i] = el;
-              }}
-              onChange={(next) => handleItemChange(i, next)}
-              onKeyDown={(e) => handleKeyDown(e, i)}
-            />
-          </li>
-        ))}
-      </Tag>
-    </div>
-  );
-};
 
 export function BlockListEditor({
   content,
@@ -500,7 +114,9 @@ export function BlockListEditor({
               <div
                 key={idx}
                 className={`relative ring-offset-2 transition ${
-                  isDragOver || isDragging ? "ring-1 ring-sky-400 bg-slate-50/40 dark:bg-slate-800/40" : ""
+                  isDragOver || isDragging
+                    ? "ring-1 ring-sky-400 bg-slate-50/40 dark:bg-slate-800/40"
+                    : ""
                 }`}
                 onDragOver={(e) => handleDragOver(e, idx)}
                 onDragLeave={() => handleDragLeave(idx)}
@@ -600,6 +216,22 @@ export function BlockListEditor({
                               messageBoxData: {
                                 ...(prev as any).messageBoxData,
                                 text: next,
+                              },
+                            })),
+                          )
+                        }
+                      />
+                    ) : block.type === "table" ? (
+                      <EditableTable
+                        data={(block as any).tableData}
+                        styles={styles}
+                        onChange={(nextTableData) =>
+                          onChange(
+                            updateBlockAt(blocks, idx, (prev) => ({
+                              ...prev,
+                              tableData: {
+                                ...(prev as any).tableData,
+                                ...nextTableData,
                               },
                             })),
                           )
