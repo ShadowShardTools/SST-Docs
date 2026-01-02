@@ -41,7 +41,7 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
         <span className="text-xs text-slate-500">Image source URL</span>
         <input
           ref={srcRef}
-          className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+          className={`${styles.input} px-2 py-1`}
           defaultValue={imageData.image?.src ?? ""}
           onChange={(e) =>
             onChange({
@@ -56,7 +56,7 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
         <span className="text-xs text-slate-500">Alt text</span>
         <input
           ref={altRef}
-          className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+          className={`${styles.input} px-2 py-1`}
           defaultValue={imageData.image?.alt ?? ""}
           onChange={(e) =>
             onChange({

@@ -36,7 +36,7 @@ export function EditableYoutube({ data, styles, onChange }: EditableYoutubeProps
         <span className="text-xs text-slate-500">YouTube URL or ID</span>
         <input
           ref={idRef}
-          className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+          className={`${styles.input} px-2 py-1`}
           defaultValue={youtubeData.youtubeVideoId}
           onChange={(e) =>
             onChange({
@@ -51,7 +51,7 @@ export function EditableYoutube({ data, styles, onChange }: EditableYoutubeProps
         <span className="text-xs text-slate-500">Caption (optional)</span>
         <input
           ref={captionRef}
-          className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+          className={`${styles.input} px-2 py-1`}
           defaultValue={youtubeData.caption ?? ""}
           onChange={(e) =>
             onChange({

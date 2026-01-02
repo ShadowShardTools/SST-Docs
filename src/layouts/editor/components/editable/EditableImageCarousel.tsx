@@ -53,14 +53,14 @@ export function EditableImageCarousel({
         {(carouselData.images ?? []).map((img, idx) => (
           <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
             <input
-              className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+              className={`${styles.input} px-2 py-1`}
               value={img.src ?? ""}
               onChange={(e) => updateImage(idx, { src: e.target.value })}
               placeholder={`Image ${idx + 1} URL`}
             />
             <div className="flex gap-2">
               <input
-                className="border rounded px-2 py-1 flex-1 bg-white dark:bg-slate-900"
+                className={`${styles.input} px-2 py-1 flex-1`}
                 value={img.alt ?? ""}
                 onChange={(e) => updateImage(idx, { alt: e.target.value })}
                 placeholder="Alt text"

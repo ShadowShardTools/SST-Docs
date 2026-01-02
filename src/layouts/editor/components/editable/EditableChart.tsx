@@ -163,30 +163,30 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
   };
 
   return (
-    <div className="space-y-4">
-      {!isScatter && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs">
-            <span>Labels</span>
-            <button
-              type="button"
-              className="px-2 py-1 border rounded text-xs hover:bg-slate-100 dark:hover:bg-slate-800"
-              onClick={addLabel}
-            >
-              + Label
-            </button>
-          </div>
+      <div className="space-y-4">
+        {!isScatter && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs">
+              <span>Labels</span>
+              <button
+                type="button"
+                className={`${styles.buttons.small}`}
+                onClick={addLabel}
+              >
+                + Label
+              </button>
+            </div>
           <div className="space-y-2">
             {(chartData.labels ?? []).map((label, idx) => (
               <div key={idx} className="flex items-center gap-2 text-sm">
                 <input
-                  className="border rounded px-2 py-1 flex-1 bg-white dark:bg-slate-900"
+                  className={`${styles.input} px-2 py-1 flex-1`}
                   value={label}
                   onChange={(e) => updateLabel(idx, e.target.value)}
                 />
                 <button
                   type="button"
-                  className="px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
+                  className={`${styles.buttons.small} text-red-600`}
                   onClick={() => removeLabel(idx)}
                 >
                   Delete
@@ -210,38 +210,38 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
         </div>
         <div className="space-y-3">
           {(chartData.datasets ?? []).map((ds, dsIndex) => (
-            <div key={dsIndex} className="border rounded p-3 space-y-2 bg-white/60 dark:bg-slate-900/60">
-              <div className="flex items-center gap-2 text-sm">
-                <input
-                  className="border rounded px-2 py-1 flex-1 bg-white dark:bg-slate-900"
-                  value={ds.label ?? ""}
-                  onChange={(e) => handleDatasetChange(dsIndex, { label: e.target.value })}
-                  placeholder="Dataset label"
-                />
-                {!isColorPerValue && (
-                  <>
-                    <input
-                      className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900 w-32"
-                      value={ds.backgroundColor ?? ""}
-                      onChange={(e) => handleDatasetChange(dsIndex, { backgroundColor: e.target.value })}
-                      placeholder="Background color"
-                    />
-                    <input
-                      className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900 w-32"
-                      value={ds.borderColor ?? ""}
-                      onChange={(e) => handleDatasetChange(dsIndex, { borderColor: e.target.value })}
-                      placeholder="Border color"
-                    />
-                  </>
-                )}
-                <button
-                  type="button"
-                  className="px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
-                  onClick={() => removeDataset(dsIndex)}
-                >
-                  Delete
-                </button>
-              </div>
+              <div key={dsIndex} className="border rounded p-3 space-y-2 bg-white/60 dark:bg-slate-900/60">
+                <div className="flex items-center gap-2 text-sm">
+                  <input
+                    className={`${styles.input} flex-1`}
+                    value={ds.label ?? ""}
+                    onChange={(e) => handleDatasetChange(dsIndex, { label: e.target.value })}
+                    placeholder="Dataset label"
+                  />
+                  {!isColorPerValue && (
+                    <>
+                      <input
+                        className={`${styles.input} px-2 py-1 w-32`}
+                        value={ds.backgroundColor ?? ""}
+                        onChange={(e) => handleDatasetChange(dsIndex, { backgroundColor: e.target.value })}
+                        placeholder="Background color"
+                      />
+                      <input
+                        className={`${styles.input} px-2 py-1 w-32`}
+                        value={ds.borderColor ?? ""}
+                        onChange={(e) => handleDatasetChange(dsIndex, { borderColor: e.target.value })}
+                        placeholder="Border color"
+                      />
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    className={`${styles.buttons.small} text-red-600`}
+                    onClick={() => removeDataset(dsIndex)}
+                  >
+                    Delete
+                  </button>
+                </div>
               {!isScatter ? (
                 <div className="space-y-1">
                   <span className="text-xs text-slate-500">Values (match labels)</span>
@@ -254,7 +254,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                         <span className="truncate">{label || `Label ${valueIdx + 1}`}</span>
                         <input
                           type="number"
-                          className="border rounded px-2 py-1 bg-white dark:bg-slate-900 text-sm"
+                          className={`${styles.input} px-2 py-1`}
                           value={ds.data?.[valueIdx] ?? 0}
                           onChange={(e) => {
                             const val = Number(e.target.value);
@@ -266,7 +266,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                         {isColorPerValue && (
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                             <input
-                              className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
+                              className={`${styles.input} px-2 py-1`}
                               value={ensureColorArray(ds.backgroundColor as any[], chartData.labels?.length ?? 0)[valueIdx]}
                               onChange={(e) => {
                                 updateValueColor(dsIndex, valueIdx, "backgroundColor", e.target.value);
@@ -274,7 +274,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                               placeholder="Background color"
                             />
                             <input
-                              className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
+                              className={`${styles.input} px-2 py-1`}
                               value={ensureColorArray(ds.borderColor as any[], chartData.labels?.length ?? 0)[valueIdx]}
                               onChange={(e) => {
                                 updateValueColor(dsIndex, valueIdx, "borderColor", e.target.value);
@@ -293,7 +293,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                     <span>Points (x,y)</span>
                     <button
                       type="button"
-                      className="px-2 py-1 border rounded text-xs hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className={styles.buttons.small}
                       onClick={() => addPoint(dsIndex)}
                     >
                       + Point
@@ -309,7 +309,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                           <span>X</span>
                           <input
                             type="number"
-                            className="border rounded px-2 py-1 bg-white dark:bg-slate-900 text-sm w-24"
+                            className={`${styles.input} px-2 py-1 w-24`}
                             value={point?.x ?? 0}
                             onChange={(e) =>
                               handlePointChange(
@@ -325,7 +325,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                           <span>Y</span>
                           <input
                             type="number"
-                            className="border rounded px-2 py-1 bg-white dark:bg-slate-900 text-sm w-24"
+                            className={`${styles.input} px-2 py-1 w-24`}
                             value={point?.y ?? 0}
                             onChange={(e) =>
                               handlePointChange(

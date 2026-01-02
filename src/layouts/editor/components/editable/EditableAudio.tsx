@@ -47,7 +47,7 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
         <span className="text-xs text-slate-500">Audio source URL</span>
         <input
           ref={srcRef}
-          className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+          className={`${styles.input} px-2 py-1`}
           defaultValue={audioData.src}
           onChange={(e) =>
             onChange({
@@ -63,7 +63,7 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
         <span className="text-xs text-slate-500">Caption (optional)</span>
         <input
           ref={captionRef}
-          className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+          className={`${styles.input} px-2 py-1`}
           defaultValue={audioData.caption ?? ""}
           onChange={(e) =>
             onChange({

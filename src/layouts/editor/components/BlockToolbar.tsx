@@ -164,13 +164,6 @@ export function BlockToolbar({
       {renderInlineControls()}
       <button
         type="button"
-        className={styles.buttons.small}
-        onClick={() => handleInsert("text")}
-      >
-        + Block
-      </button>
-      <button
-        type="button"
         className={`${styles.buttons.small} text-red-600`}
         onClick={() => onRemove(index)}
       >

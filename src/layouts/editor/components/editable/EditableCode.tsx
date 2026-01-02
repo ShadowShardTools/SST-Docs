@@ -173,7 +173,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
         <label className="flex items-center gap-1">
           <span>Block title</span>
           <input
-            className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
+            className={`${styles.input} px-2 py-1`}
             value={codeData.name ?? ""}
             onChange={(e) =>
               onChange({
@@ -187,7 +187,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
         <label className="flex items-center gap-1">
           <span>Filename</span>
           <input
-            className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
+            className={`${styles.input} px-2 py-1`}
             value={activeSection?.filename ?? ""}
             onChange={(e) =>
               onChange({
@@ -206,7 +206,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
         <span className="text-xs text-slate-500">Code</span>
         <textarea
           ref={textareaRef}
-          className="w-full min-h-[160px] rounded border px-2 py-1 font-mono text-sm bg-white dark:bg-slate-900"
+          className={`${styles.input} w-full min-h-[160px] px-2 py-1 font-mono`}
           value={activeSection?.content ?? ""}
           onChange={(e) =>
             onChange({

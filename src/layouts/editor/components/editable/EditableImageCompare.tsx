@@ -62,7 +62,7 @@ export function EditableImageCompare({
           <span className="text-xs text-slate-500">Before image URL</span>
           <input
             ref={beforeSrcRef}
-            className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+            className={`${styles.input} px-2 py-1`}
             defaultValue={imageCompareData.beforeImage?.src ?? ""}
             onChange={(e) =>
               onChange({
@@ -77,7 +77,7 @@ export function EditableImageCompare({
           <span className="text-xs text-slate-500">After image URL</span>
           <input
             ref={afterSrcRef}
-            className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+            className={`${styles.input} px-2 py-1`}
             defaultValue={imageCompareData.afterImage?.src ?? ""}
             onChange={(e) =>
               onChange({
@@ -95,7 +95,7 @@ export function EditableImageCompare({
           <span className="text-xs text-slate-500">Before alt text</span>
           <input
             ref={beforeAltRef}
-            className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+            className={`${styles.input} px-2 py-1`}
             defaultValue={imageCompareData.beforeImage?.alt ?? ""}
             onChange={(e) =>
               onChange({
@@ -110,7 +110,7 @@ export function EditableImageCompare({
           <span className="text-xs text-slate-500">After alt text</span>
           <input
             ref={afterAltRef}
-            className="border rounded px-2 py-1 bg-white dark:bg-slate-900"
+            className={`${styles.input} px-2 py-1`}
             defaultValue={imageCompareData.afterImage?.alt ?? ""}
             onChange={(e) =>
               onChange({

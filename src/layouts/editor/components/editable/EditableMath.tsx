@@ -38,7 +38,7 @@ export function EditableMath({ data, styles, onChange }: EditableMathProps) {
         <span className="text-xs text-slate-500">Expression</span>
         <textarea
           ref={textareaRef}
-          className="w-full min-h-[90px] rounded border px-2 py-1 font-mono text-sm bg-white dark:bg-slate-900"
+          className={`${styles.input} w-full min-h-[90px] px-2 py-1 font-mono`}
           defaultValue={expression}
           onChange={(e) =>
             onChange({
