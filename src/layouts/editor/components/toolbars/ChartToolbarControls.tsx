@@ -1,12 +1,14 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function ChartToolbarControls({ data, onChange }: Props) {
+export function ChartToolbarControls({ data, onChange, styles }: Props) {
   const chartData: ChartData = data ?? {};
   const toggleAlignment = (next: ChartData["alignment"]) =>
     onChange((prev) => ({
@@ -28,36 +30,40 @@ export function ChartToolbarControls({ data, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Type</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={chartData.type ?? "bar"}
-          onChange={(e) => updateType(e.target.value as ChartData["type"])}
-        >
-          <option value="bar">Bar</option>
-          <option value="line">Line</option>
-          <option value="pie">Pie</option>
-          <option value="doughnut">Doughnut</option>
-          <option value="radar">Radar</option>
-          <option value="polarArea">Polar area</option>
-          <option value="bubble">Bubble</option>
-          <option value="scatter">Scatter</option>
-        </select>
-      </label>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "bar", label: "Bar" },
+            { value: "line", label: "Line" },
+            { value: "pie", label: "Pie" },
+            { value: "doughnut", label: "Doughnut" },
+            { value: "radar", label: "Radar" },
+            { value: "polarArea", label: "Polar area" },
+            { value: "bubble", label: "Bubble" },
+            { value: "scatter", label: "Scatter" },
+          ]}
+          selectedValue={(chartData.type as string) ?? "bar"}
+          onSelect={(val) => updateType(val as ChartData["type"])}
+          className="min-w-[140px]"
+        />
+      </div>
 
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={chartData.alignment ?? "center"}
-          onChange={(e) => toggleAlignment(e.target.value as ChartData["alignment"])}
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={(chartData.alignment as string) ?? "center"}
+          onSelect={(val) => toggleAlignment(val as ChartData["alignment"])}
+          className="min-w-[120px]"
+        />
+      </div>
 
       <label className="flex items-center gap-1">
         <span>Scale</span>

@@ -1,7 +1,7 @@
 import type React from "react";
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
-import { GripVertical } from "lucide-react";
+import { GripVertical, Wrench } from "lucide-react";
 import { useMemo, useState } from "react";
 import ContentBlockRenderer from "../../render/components/ContentBlockRenderer";
 import { BLOCK_LABELS, DEFAULT_BLOCKS, type BlockType } from "../blocks";
@@ -42,6 +42,9 @@ export function BlockListEditor({
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const showToolbar = (idx: number) => hoveredIndex === idx || expandedIndex === idx;
 
   const addBlock = (type: BlockType) => {
     const template = DEFAULT_BLOCKS[type];
@@ -130,23 +133,11 @@ export function BlockListEditor({
                 onDragOver={(e) => handleDragOver(e, idx)}
                 onDragLeave={() => handleDragLeave(idx)}
                 onDrop={(e) => handleDrop(e, idx)}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() =>
-                  setHoveredIndex((prev) => (prev === idx ? null : prev))
-                }
               >
-                <BlockToolbar
-                  block={block}
-                  index={idx}
-                  blocks={blocks}
-                  onChange={onChange}
-                  onRemove={removeBlock}
-                  visible={hoveredIndex === idx}
-                />
                 <div className="flex gap-1 items-start">
                   <button
                     type="button"
-                    className={`flex items-center justify-center px-2 h-8 rounded border border-transparent cursor-grab active:cursor-grabbing transition ${
+                    className={`flex items-center justify-center px-2 h-8 rounded cursor-grab active:cursor-grabbing transition ${
                       isDragging
                         ? "bg-sky-100 dark:bg-slate-700 border-sky-300"
                         : "hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -162,6 +153,36 @@ export function BlockListEditor({
                   >
                     <GripVertical className="w-3 h-3" />
                   </button>
+                  <div className="relative flex flex-col items-start">
+                    <button
+                      type="button"
+                      className={`flex items-center justify-center px-2 h-8 rounded text-xs transition ${
+                        showToolbar(idx)
+                          ? "bg-sky-100 dark:bg-slate-700 border-sky-300"
+                          : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                      }`}
+                      onClick={() =>
+                        setExpandedIndex((prev) => (prev === idx ? null : idx))
+                      }
+                      onMouseEnter={() => setHoveredIndex(idx)}
+                      onMouseLeave={() =>
+                        setHoveredIndex((prev) => (prev === idx ? null : prev))
+                      }
+                      title="Show options"
+                    >
+                      <Wrench className="w-3 h-3" />
+                    </button>
+
+                    <BlockToolbar
+                      block={block}
+                      index={idx}
+                      blocks={blocks}
+                      onChange={onChange}
+                      onRemove={removeBlock}
+                      styles={styles}
+                      visible={showToolbar(idx)}
+                    />
+                  </div>
 
                   <div className="flex-1 space-y-3">
                     {block.type === "text" ? (

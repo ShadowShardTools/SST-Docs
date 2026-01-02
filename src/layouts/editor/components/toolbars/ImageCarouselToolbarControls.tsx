@@ -1,12 +1,14 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function ImageCarouselToolbarControls({ data, onChange }: Props) {
+export function ImageCarouselToolbarControls({ data, onChange, styles }: Props) {
   const carouselData: ImageCarouselData = data ?? {};
   const update = (partial: Partial<ImageCarouselData>) =>
     onChange((prev) => ({
@@ -24,18 +26,20 @@ export function ImageCarouselToolbarControls({ data, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={carouselData.alignment ?? "center"}
-          onChange={(e) => update({ alignment: e.target.value as ImageCarouselData["alignment"] })}
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={carouselData.alignment ?? "center"}
+          onSelect={(val) => update({ alignment: val as ImageCarouselData["alignment"] })}
+          className="min-w-[110px]"
+        />
+      </div>
       <label className="flex items-center gap-1">
         <span>Scale</span>
         <input

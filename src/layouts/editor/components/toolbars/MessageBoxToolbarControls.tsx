@@ -1,37 +1,38 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function MessageBoxToolbarControls({ data, onChange }: Props) {
+export function MessageBoxToolbarControls({ data, onChange, styles }: Props) {
   return (
     <>
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Type</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.type ?? "info"}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={
+            (["info", "warning", "error", "success", "neutral", "quote"] as const).map((s) => ({
+              value: s,
+              label: s,
+            }))
+          }
+          selectedValue={data.type ?? "info"}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
               messageBoxData: {
                 ...(prev as any).messageBoxData,
-                type: e.target.value,
+                type: val,
               },
             }))
           }
-        >
-          {(
-            ["info", "warning", "error", "success", "neutral", "quote"] as const
-          ).map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </label>
+          className="min-w-[140px]"
+        />
+      </div>
       <label className="inline-flex items-center gap-1">
         <input
           type="checkbox"

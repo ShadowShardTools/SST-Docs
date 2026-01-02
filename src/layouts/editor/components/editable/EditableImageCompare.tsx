@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import ImageCompareBlock from "../../../blocks/components/ImageCompareBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
+import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
 
 interface EditableImageCompareProps {
   data?: ImageCompareData;
@@ -14,13 +15,18 @@ export function EditableImageCompare({
   styles,
   onChange,
 }: EditableImageCompareProps) {
+  const ensureImage = (img?: Partial<BaseImage> | null): BaseImage => ({
+    src: img?.src ?? "",
+    alt: img?.alt ?? "",
+  });
+
   const imageCompareData: ImageCompareData = {
     type: "slider",
     alignment: "center",
     scale: 1,
     sliderColor: "#ffffff",
-    beforeImage: { src: "", alt: "" },
-    afterImage: { src: "", alt: "" },
+    beforeImage: ensureImage((data as any)?.beforeImage),
+    afterImage: ensureImage((data as any)?.afterImage),
     ...data,
   };
 
@@ -61,7 +67,7 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                beforeImage: { ...(imageCompareData.beforeImage ?? {}), src: e.target.value },
+                beforeImage: ensureImage({ ...(imageCompareData.beforeImage ?? {}), src: e.target.value }),
               })
             }
             placeholder="https://example.com/before.jpg"
@@ -76,7 +82,7 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                afterImage: { ...(imageCompareData.afterImage ?? {}), src: e.target.value },
+                afterImage: ensureImage({ ...(imageCompareData.afterImage ?? {}), src: e.target.value }),
               })
             }
             placeholder="https://example.com/after.jpg"
@@ -94,7 +100,7 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                beforeImage: { ...(imageCompareData.beforeImage ?? {}), alt: e.target.value },
+                beforeImage: ensureImage({ ...(imageCompareData.beforeImage ?? {}), alt: e.target.value }),
               })
             }
             placeholder="Before description"
@@ -109,7 +115,7 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                afterImage: { ...(imageCompareData.afterImage ?? {}), alt: e.target.value },
+                afterImage: ensureImage({ ...(imageCompareData.afterImage ?? {}), alt: e.target.value }),
               })
             }
             placeholder="After description"

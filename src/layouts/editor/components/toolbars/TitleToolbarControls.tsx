@@ -1,55 +1,55 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function TitleToolbarControls({ data, onChange }: Props) {
+export function TitleToolbarControls({ data, onChange, styles }: Props) {
   return (
     <>
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Level</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.level ?? 2}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={[1, 2, 3].map((lvl) => ({ value: String(lvl), label: `H${lvl}` }))}
+          selectedValue={String(data.level ?? 2)}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
               titleData: {
                 ...(prev as any).titleData,
-                level: Number(e.target.value),
+                level: Number(val),
               },
             }))
           }
-        >
-          {[1, 2, 3].map((lvl) => (
-            <option key={lvl} value={lvl}>
-              H{lvl}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="flex items-center gap-1">
+          className="min-w-[80px]"
+        />
+      </div>
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.alignment ?? "left"}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={data.alignment ?? "left"}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
               titleData: {
                 ...(prev as any).titleData,
-                alignment: e.target.value,
+                alignment: val,
               },
             }))
           }
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+          className="min-w-[110px]"
+        />
+      </div>
       <button
         type="button"
         className={`px-2 py-1 border rounded ${

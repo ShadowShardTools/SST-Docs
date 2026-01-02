@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import ImageGridBlock from "../../../blocks/components/ImageGridBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";

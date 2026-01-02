@@ -1,7 +1,7 @@
 {
   "product": "mainInfo",
   "version": "v1.1",
-  "generatedAt": "2026-01-01T16:02:12.603Z",
+  "generatedAt": "2026-01-02T16:17:41.900Z",
   "index": "index.html",
   "categories": [
     "categories/examples-category/index.html",
@@ -19,9 +19,9 @@
     "docs/standalone-examples-item/index.html"
   ],
   "charts": [
-    "charts/chart-04b9716d337c5d3a44d8031f161cd307e6154e85.png",
     "charts/chart-04ebc48af628cded5a6fa564ea617e0e10b2adba.png",
     "charts/chart-056a185997eba0b88008e666a55ab6951431dfee.png",
+    "charts/chart-38a3d0f54daa540a3079ab1df6217c701e4f0067.png",
     "charts/chart-96e5a734da6fc3c511d69eae19fa8ba9f0f030dd.png",
     "charts/chart-a8f25f90177f2f82f9fb89263dd22f232c04f180.png",
     "charts/chart-df88ba9b3dc0955ffc5f69746f5ec50b8098b788.png",

@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "@shadow-shard-tools/docs-core": "^1.0.26",
-    "@shadow-shard-tools/docs-html-generator": "^0.1.2",
+    "@shadow-shard-tools/docs-core": "file:../SST-Docs-Core/shadow-shard-tools-docs-core-1.0.26.tgz",
+    "@shadow-shard-tools/docs-html-generator": "F:/ShadowShardTools/Projects/SST-Docs-Html-Generator-Module/shadow-shard-tools-docs-html-generator-0.1.2.tgz",
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.19",

@@ -1,50 +1,56 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function ListToolbarControls({ data, onChange }: Props) {
+export function ListToolbarControls({ data, onChange, styles }: Props) {
   const listType = data.type ?? "ul";
   return (
     <>
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Format</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={listType}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "ul", label: "Bullets" },
+            { value: "ol", label: "Numbers" },
+          ]}
+          selectedValue={listType}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
-              listData: { ...(prev as any).listData, type: e.target.value },
+              listData: { ...(prev as any).listData, type: val },
             }))
           }
-        >
-          <option value="ul">Bullets</option>
-          <option value="ol">Numbers</option>
-        </select>
-      </label>
-      <label className="flex items-center gap-1">
+          className="min-w-[120px]"
+        />
+      </div>
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.alignment ?? "left"}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={data.alignment ?? "left"}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
               listData: {
                 ...(prev as any).listData,
-                alignment: e.target.value,
+                alignment: val,
               },
             }))
           }
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+          className="min-w-[110px]"
+        />
+      </div>
       <label className="inline-flex items-center gap-1">
         <input
           type="checkbox"

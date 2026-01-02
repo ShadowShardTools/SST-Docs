@@ -4,6 +4,17 @@ import ChartBlock from "../../../blocks/components/ChartBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
 
+type EditableChartDataset = {
+  label: string;
+  data: any[];
+  backgroundColor?: string | string[];
+  borderColor?: string | string[];
+};
+
+type EditableChartData = Omit<ChartData, "datasets"> & {
+  datasets: EditableChartDataset[];
+};
+
 interface EditableChartProps {
   data?: ChartData;
   styles: StyleTheme;
@@ -12,25 +23,30 @@ interface EditableChartProps {
 
 export function EditableChart({ data, styles, onChange }: EditableChartProps) {
   const COLOR_PER_VALUE_TYPES: ChartData["type"][] = ["pie", "doughnut", "polarArea"];
-  const defaultColor = "#6366f1";
+  const defaultColor = "#ffffff";
 
-  const chartData: ChartData = useMemo(
+  const chartData: EditableChartData = useMemo(
     () => ({
       type: "bar",
       labels: ["Label 1", "Label 2", "Label 3"],
       datasets: [{ label: "Dataset", data: [10, 20, 30] }],
       alignment: "center",
       scale: 1,
-      ...data,
+      ...(data as any),
     }),
     [data],
   );
 
-  const handleDatasetChange = (index: number, updater: any) => {
-    const next = [...(chartData.datasets ?? [])];
-    next[index] = { ...next[index], ...updater };
-    onChange({ ...chartData, datasets: next });
+  const updateChart = (partial: Partial<EditableChartData>) =>
+    onChange({ ...(chartData as any), ...partial } as ChartData);
+  const updateDatasets = (updater: (ds: EditableChartDataset, idx: number) => EditableChartDataset) => {
+    const next = (chartData.datasets ?? []).map((ds, idx) => updater(ds, idx));
+    updateChart({ datasets: next });
   };
+  const updateDatasetAt = (index: number, updater: (ds: EditableChartDataset) => EditableChartDataset) =>
+    updateDatasets((ds, idx) => (idx === index ? { ...ds, ...updater(ds) } : ds));
+
+  const handleDatasetChange = (index: number, updater: any) => updateDatasetAt(index, () => updater);
 
   const handlePointChange = (
     datasetIndex: number,
@@ -38,29 +54,27 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
     key: "x" | "y",
     value: number,
   ) => {
-    const next = [...(chartData.datasets ?? [])];
-    const points = [...((next[datasetIndex]?.data as any[]) ?? [])];
-    const current = points[pointIndex] ?? { x: 0, y: 0 };
-    points[pointIndex] = { ...current, [key]: value };
-    next[datasetIndex] = { ...next[datasetIndex], data: points };
-    onChange({ ...chartData, datasets: next });
+    updateDatasetAt(datasetIndex, (ds) => {
+      const points = [...((ds?.data as any[]) ?? [])];
+      const current = points[pointIndex] ?? { x: 0, y: 0 };
+      points[pointIndex] = { ...current, [key]: value };
+      return { ...ds, data: points };
+    });
   };
 
   const addPoint = (datasetIndex: number) => {
-    const next = [...(chartData.datasets ?? [])];
-    const points = [...((next[datasetIndex]?.data as any[]) ?? [])];
-    points.push({ x: 0, y: 0 });
-    next[datasetIndex] = { ...next[datasetIndex], data: points };
-    onChange({ ...chartData, datasets: next });
+    updateDatasetAt(datasetIndex, (ds) => {
+      const points = [...((ds?.data as any[]) ?? [])];
+      points.push({ x: 0, y: 0 });
+      return { ...ds, data: points };
+    });
   };
 
   const removePoint = (datasetIndex: number, pointIndex: number) => {
-    const next = [...(chartData.datasets ?? [])];
-    const points = [...((next[datasetIndex]?.data as any[]) ?? [])].filter(
-      (_, i) => i !== pointIndex,
-    );
-    next[datasetIndex] = { ...next[datasetIndex], data: points };
-    onChange({ ...chartData, datasets: next });
+    updateDatasetAt(datasetIndex, (ds) => {
+      const points = [...((ds?.data as any[]) ?? [])].filter((_, i) => i !== pointIndex);
+      return { ...ds, data: points };
+    });
   };
 
   const addDataset = () => {
@@ -80,18 +94,18 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
           }
         : {}),
     });
-    onChange({ ...chartData, datasets: next });
+    updateChart({ datasets: next });
   };
 
   const removeDataset = (index: number) => {
     const next = (chartData.datasets ?? []).filter((_, i) => i !== index);
-    onChange({ ...chartData, datasets: next });
+    updateChart({ datasets: next });
   };
 
   const updateLabel = (index: number, value: string) => {
     const next = [...(chartData.labels ?? [])];
     next[index] = value;
-    onChange({ ...chartData, labels: next });
+    updateChart({ labels: next });
   };
 
   const addLabel = () => {
@@ -106,7 +120,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
       }
       return { ...ds, data: nextData };
     });
-    onChange({ ...chartData, labels: nextLabels, datasets: nextDatasets });
+    updateChart({ labels: nextLabels, datasets: nextDatasets });
   };
 
   const removeLabel = (index: number) => {
@@ -124,7 +138,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
           }
         : {}),
     }));
-    onChange({ ...chartData, labels: nextLabels, datasets: nextDatasets });
+    updateChart({ labels: nextLabels, datasets: nextDatasets });
   };
 
   const isScatter = chartData.type === "scatter";
@@ -134,6 +148,18 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
     const base = Array.isArray(arr) ? [...arr] : [];
     const next = Array.from({ length }, (_, i) => base[i] ?? defaultColor);
     return next.slice(0, length);
+  };
+
+  const updateValueColor = (
+    datasetIndex: number,
+    valueIdx: number,
+    key: "backgroundColor" | "borderColor",
+    value: string,
+  ) => {
+    const length = chartData.labels?.length ?? 0;
+    const nextColors = ensureColorArray((chartData.datasets?.[datasetIndex] as any)?.[key], length);
+    nextColors[valueIdx] = value || defaultColor;
+    handleDatasetChange(datasetIndex, { [key]: nextColors });
   };
 
   return (
@@ -243,12 +269,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                               className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
                               value={ensureColorArray(ds.backgroundColor as any[], chartData.labels?.length ?? 0)[valueIdx]}
                               onChange={(e) => {
-                                const nextColors = ensureColorArray(
-                                  ds.backgroundColor as any[],
-                                  chartData.labels?.length ?? 0,
-                                );
-                                nextColors[valueIdx] = e.target.value || defaultColor;
-                                handleDatasetChange(dsIndex, { backgroundColor: nextColors });
+                                updateValueColor(dsIndex, valueIdx, "backgroundColor", e.target.value);
                               }}
                               placeholder="Background color"
                             />
@@ -256,12 +277,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                               className="border rounded px-2 py-1 text-sm bg-white dark:bg-slate-900"
                               value={ensureColorArray(ds.borderColor as any[], chartData.labels?.length ?? 0)[valueIdx]}
                               onChange={(e) => {
-                                const nextColors = ensureColorArray(
-                                  ds.borderColor as any[],
-                                  chartData.labels?.length ?? 0,
-                                );
-                                nextColors[valueIdx] = e.target.value || defaultColor;
-                                handleDatasetChange(dsIndex, { borderColor: nextColors });
+                                updateValueColor(dsIndex, valueIdx, "borderColor", e.target.value);
                               }}
                               placeholder="Border color"
                             />
@@ -341,7 +357,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
       <div
         className={`rounded border px-3 py-2 ${ALIGNMENT_CLASSES[chartData.alignment ?? "center"].container}`}
       >
-        <ChartBlock index={0} styles={styles} chartData={chartData} />
+        <ChartBlock index={0} styles={styles} chartData={chartData as unknown as ChartData} />
       </div>
     </div>
   );

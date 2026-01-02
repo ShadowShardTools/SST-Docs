@@ -1,12 +1,14 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function ImageGridToolbarControls({ data, onChange }: Props) {
+export function ImageGridToolbarControls({ data, onChange, styles }: Props) {
   const gridData: ImageGridData = data ?? {};
   const update = (partial: Partial<ImageGridData>) =>
     onChange((prev) => ({
@@ -16,18 +18,20 @@ export function ImageGridToolbarControls({ data, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={gridData.alignment ?? "center"}
-          onChange={(e) => update({ alignment: e.target.value as ImageGridData["alignment"] })}
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={gridData.alignment ?? "center"}
+          onSelect={(val) => update({ alignment: val as ImageGridData["alignment"] })}
+          className="min-w-[110px]"
+        />
+      </div>
       <label className="flex items-center gap-1">
         <span>Scale</span>
         <input

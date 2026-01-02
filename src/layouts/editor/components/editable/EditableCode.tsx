@@ -6,6 +6,7 @@ import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
 } from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface EditableCodeProps {
   data?: CodeData;
@@ -14,6 +15,7 @@ interface EditableCodeProps {
 }
 
 export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
+  const { activeSectionIndex: initialActiveFromData, ...safeData } = (data as any) ?? {};
   const SUPPORTED_LANGUAGES = useMemo(
     () => Object.keys(CODE_LANGUAGE_CONFIG) as SupportedLanguage[],
     [],
@@ -31,7 +33,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
     allowDownload: false,
     collapsible: false,
     defaultCollapsed: false,
-    ...data,
+    ...safeData,
   };
   const codeData: CodeData = {
     ...baseData,
@@ -40,7 +42,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [localActive, setLocalActive] = useState<number>(
-    (codeData as any).activeSectionIndex ?? 0,
+    typeof initialActiveFromData === "number" ? initialActiveFromData : 0,
   );
 
   const sections = useMemo(() => {
@@ -114,7 +116,6 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
                   onChange({
                     ...codeData,
                     sections: updated,
-                    activeSectionIndex: Math.max(nextActive, 0),
                   });
                 }}
                 aria-label={`Delete tab ${section.filename || section.language}`}
@@ -140,7 +141,6 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             onChange({
               ...codeData,
               sections: updated,
-              activeSectionIndex: updated.length - 1,
             });
           }}
         >
@@ -149,29 +149,27 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
       </div>
 
       <div className="flex flex-wrap gap-3 items-center text-xs text-slate-600">
-        <label className="flex items-center gap-1">
+        <div className="flex items-center gap-1">
           <span>Language</span>
-          <select
-            className="border rounded px-2 py-1 bg-white dark:bg-slate-900 text-sm"
-            value={activeSection?.language ?? "plaintext"}
-            onChange={(e) => {
-              const language = ensureLanguage(e.target.value);
+          <Dropdown
+            styles={styles}
+            items={SUPPORTED_LANGUAGES.map((lang) => ({
+              value: lang,
+              label: CODE_LANGUAGE_CONFIG[lang]?.name ?? lang,
+            }))}
+            selectedValue={activeSection?.language ?? "plaintext"}
+            onSelect={(val) => {
+              const language = ensureLanguage(val);
               onChange({
                 ...codeData,
-                activeSectionIndex: activeIndex,
                 sections: sections.map((section, idx) =>
                   idx === activeIndex ? { ...section, language } : section,
                 ),
               });
             }}
-          >
-            {SUPPORTED_LANGUAGES.map((lang) => (
-              <option key={lang} value={lang}>
-                {CODE_LANGUAGE_CONFIG[lang]?.name ?? lang}
-              </option>
-            ))}
-          </select>
-        </label>
+            className="min-w-[150px]"
+          />
+        </div>
         <label className="flex items-center gap-1">
           <span>Block title</span>
           <input
@@ -194,7 +192,6 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             onChange={(e) =>
               onChange({
                 ...codeData,
-                activeSectionIndex: activeIndex,
                 sections: sections.map((section, idx) =>
                   idx === activeIndex ? { ...section, filename: e.target.value } : section,
                 ),
@@ -214,7 +211,6 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           onChange={(e) =>
             onChange({
               ...codeData,
-              activeSectionIndex: activeIndex,
               sections: sections.map((section, idx) =>
                 idx === activeIndex ? { ...section, content: e.target.value } : section,
               ),

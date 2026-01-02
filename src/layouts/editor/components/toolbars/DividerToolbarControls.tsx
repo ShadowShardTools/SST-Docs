@@ -1,37 +1,38 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function DividerToolbarControls({ data, onChange }: Props) {
+export function DividerToolbarControls({ data, onChange, styles }: Props) {
   return (
     <>
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Style</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.type ?? "line"}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={
+            (["line", "dashed", "dotted", "double", "thick", "gradient"] as const).map((s) => ({
+              value: s,
+              label: s,
+            }))
+          }
+          selectedValue={data.type ?? "line"}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
               dividerData: {
                 ...(prev as any).dividerData,
-                type: e.target.value,
+                type: val,
               },
             }))
           }
-        >
-          {(
-            ["line", "dashed", "dotted", "double", "thick", "gradient"] as const
-          ).map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </label>
+          className="min-w-[130px]"
+        />
+      </div>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import ImageBlock from "../../../blocks/components/ImageBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
+import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
 
 interface EditableImageProps {
   data?: ImageData;
@@ -10,11 +11,16 @@ interface EditableImageProps {
 }
 
 export function EditableImage({ data, styles, onChange }: EditableImageProps) {
+  const ensureImage = (img?: Partial<BaseImage> | null): BaseImage => ({
+    src: img?.src ?? "",
+    alt: img?.alt ?? "",
+  });
+
   const imageData: ImageData = {
-    image: { src: "", alt: "" },
+    image: ensureImage((data as any)?.image),
     alignment: "center",
     scale: 1,
-    ...data,
+    ...data
   };
 
   const srcRef = useRef<HTMLInputElement>(null);
@@ -40,7 +46,7 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
           onChange={(e) =>
             onChange({
               ...imageData,
-              image: { ...(imageData.image ?? {}), src: e.target.value },
+              image: ensureImage({ ...(imageData.image ?? {}), src: e.target.value }),
             })
           }
           placeholder="https://example.com/image.jpg"
@@ -55,7 +61,7 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
           onChange={(e) =>
             onChange({
               ...imageData,
-              image: { ...(imageData.image ?? {}), alt: e.target.value },
+              image: ensureImage({ ...(imageData.image ?? {}), alt: e.target.value }),
             })
           }
           placeholder="Description for accessibility"
@@ -69,4 +75,3 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
 }
 
 export default EditableImage;
-

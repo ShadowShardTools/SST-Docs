@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import ImageCarouselBlock from "../../../blocks/components/ImageCarouselBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";

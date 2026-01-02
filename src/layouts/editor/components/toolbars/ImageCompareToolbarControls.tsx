@@ -1,12 +1,14 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function ImageCompareToolbarControls({ data, onChange }: Props) {
+export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
   const imageCompareData: ImageCompareData = data ?? {};
 
   const update = (partial: Partial<ImageCompareData>) =>
@@ -17,30 +19,34 @@ export function ImageCompareToolbarControls({ data, onChange }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Mode</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={imageCompareData.type ?? "slider"}
-          onChange={(e) => update({ type: e.target.value as ImageCompareData["type"] })}
-        >
-          <option value="slider">Slider</option>
-          <option value="individual">Side by side</option>
-        </select>
-      </label>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "slider", label: "Slider" },
+            { value: "individual", label: "Side by side" },
+          ]}
+          selectedValue={imageCompareData.type ?? "slider"}
+          onSelect={(val) => update({ type: val as ImageCompareData["type"] })}
+          className="min-w-[140px]"
+        />
+      </div>
 
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={imageCompareData.alignment ?? "center"}
-          onChange={(e) => update({ alignment: e.target.value as ImageCompareData["alignment"] })}
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={imageCompareData.alignment ?? "center"}
+          onSelect={(val) => update({ alignment: val as ImageCompareData["alignment"] })}
+          className="min-w-[120px]"
+        />
+      </div>
 
       <label className="flex items-center gap-1">
         <span>Scale</span>

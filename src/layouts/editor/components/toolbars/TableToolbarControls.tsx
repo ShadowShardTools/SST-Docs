@@ -1,8 +1,10 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
 const OPTIONS = [
@@ -12,34 +14,29 @@ const OPTIONS = [
   { value: "matrix", label: "Matrix" },
 ] as const;
 
-export function TableToolbarControls({ data, onChange }: Props) {
+export function TableToolbarControls({ data, onChange, styles }: Props) {
   const layout = data.type ?? "horizontal";
 
   return (
-    <label className="flex items-center gap-1">
+    <div className="flex items-center gap-1">
       <span>Layout</span>
-      <select
-        className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-        value={layout}
-        onChange={(e) =>
+      <Dropdown
+        styles={styles}
+        items={OPTIONS.map((option) => ({ value: option.value, label: option.label }))}
+        selectedValue={layout}
+        onSelect={(val) =>
           onChange((prev) => ({
             ...prev,
             tableData: {
               ...(prev as any).tableData,
-              type: e.target.value,
+              type: val,
             },
           }))
         }
-      >
-        {OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
+        className="min-w-[150px]"
+      />
+    </div>
   );
 }
 
 export default TableToolbarControls;
-

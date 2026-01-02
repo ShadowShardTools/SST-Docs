@@ -1,33 +1,37 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
   data: any;
   onChange: (updater: (prev: Content) => Content) => void;
+  styles: StyleTheme;
 }
 
-export function TextToolbarControls({ data, onChange }: Props) {
+export function TextToolbarControls({ data, onChange, styles }: Props) {
   return (
     <>
-      <label className="flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <span>Align</span>
-        <select
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
-          value={data.alignment ?? "left"}
-          onChange={(e) =>
+        <Dropdown
+          styles={styles}
+          items={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          selectedValue={data.alignment ?? "left"}
+          onSelect={(val) =>
             onChange((prev) => ({
               ...prev,
               textData: {
                 ...(prev as any).textData,
-                alignment: e.target.value,
+                alignment: val,
               },
             }))
           }
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
+          className="min-w-[110px]"
+        />
+      </div>
     </>
   );
 }
