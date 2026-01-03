@@ -22,15 +22,17 @@ A React + Vite template for building fast, searchable, versioned documentation s
 5) Deploy to GitHub Pages: `npm run deploy` (build + `gh-pages -d dist`).
 
 ## Project Scripts
-- `npm run generate` - runs all generators below.
-  - `generate:blocks` builds lazy block import map from the JSON content.
-  - `generate:index` regenerates `index.json` files listing categories/items per version.
-  - `generate:prism` bundles only the Prism languages detected in your code blocks.
+- `npm run generate` - runs content-aware generators (only blocks and Prism languages used in the JSON content).
+  - `generate:blocks` builds the lazy block import map based on block types found in content.
+  - `generate:prism` bundles only the Prism languages referenced by code blocks.
+- `npm run generate:dev` - full-coverage generators for editor/dev mode (all blocks + all supported languages).
+  - `generate:blocks:full` forces the full block library.
+  - `generate:prism:full` bundles every language in `CODE_LANGUAGE_CONFIG`.
 - `npm run generate:static-html` - renders static HTML (plus charts/media) using the settings in `sst-docs.config.json`.
 - `npm run dev` / `npm run build` / `npm run start` / `npm run deploy` - standard Vite workflow with the generators run upfront.
 - `npm run format` - Prettier over `src/**/*.{ts,tsx,md}`.
 
-Re-run `npm run generate` after adding new content types, code languages, or docs so imports and indexes stay in sync.
+Re-run `npm run generate` (or `npm run generate:dev` while developing the editor) after adding new block types or updating supported code languages so imports stay in sync.
 
 ## Content Model
 All documentation data lives under `public/SST-Docs/data` (changeable via `sst-docs.config.json`):

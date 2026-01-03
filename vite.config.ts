@@ -81,9 +81,11 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
   const dataRoot = resolveDataRoot(config);
   const allowedScripts = new Set([
     "generate",
-    "generate:index",
+    "generate:dev",
     "generate:blocks",
+    "generate:blocks:full",
     "generate:prism",
+    "generate:prism:full",
   ]);
 
   return {

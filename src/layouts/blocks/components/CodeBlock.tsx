@@ -17,29 +17,8 @@ import { copyToClipboard } from "@shadow-shard-tools/docs-core/utilities/dom/cop
 import { createTimeout } from "@shadow-shard-tools/docs-core/utilities/system/createTimeout";
 import { downloadTextFile } from "@shadow-shard-tools/docs-core/utilities/dom/downloadTextFile";
 import { sanitizeFilename } from "@shadow-shard-tools/docs-core/utilities/string/sanitizeFilename";
-import type {
-  CodeData,
-  CodeSection,
-} from "@shadow-shard-tools/docs-core/types/CodeData";
+import type { CodeData, CodeSection } from "@shadow-shard-tools/docs-core/types/CodeData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-
-interface LineNumbersProps {
-  styles: StyleTheme;
-  content: string;
-}
-
-const LineNumbers = memo(({ styles, content }: LineNumbersProps) => {
-  const lines = content.split("\n");
-  return (
-    <div className={`select-none pr-4 flex-shrink-0 ${styles.code.lines}`}>
-      {lines.map((_, i) => (
-        <div key={i} className="text-right leading-6 min-h-[1.5rem]">
-          {i + 1}
-        </div>
-      ))}
-    </div>
-  );
-});
 
 interface Props {
   index: number;
@@ -58,7 +37,7 @@ export const CodeBlock: React.FC<Props> = ({
 }) => {
   const [copied, setCopied] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
-  const [collapsed, setCollapsed] = useState(codeData.defaultCollapsed);
+  const [collapsed, setCollapsed] = useState(!!codeData.defaultCollapsed);
   const timeoutRef = useRef<{ clear: () => void } | null>(null);
 
   const normalizedSections = useMemo((): CodeSection[] => {
@@ -185,32 +164,28 @@ export const CodeBlock: React.FC<Props> = ({
           )}
         </div>
         <div className="flex gap-1 items-center flex-shrink-0">
-          {codeData.collapsible && (
-            <button
-              onClick={() => setCollapsed(!collapsed)}
-              className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${styles.buttons.small}`}
-              title={collapsed ? "Expand code block" : "Collapse code block"}
-            >
-              {collapsed ? (
-                <ChevronDown className="w-3 h-3" />
-              ) : (
-                <ChevronUp className="w-3 h-3" />
-              )}
-              <span className="hidden sm:inline">
-                {collapsed ? "Show" : "Hide"}
-              </span>
-            </button>
-          )}
-          {codeData.allowDownload && (
-            <button
-              onClick={() => handleDownload(activeTab)}
-              className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${styles.buttons.small}`}
-              title="Download code file"
-            >
-              <Download className="w-3 h-3" />
-              <span className="hidden sm:inline">Download</span>
-            </button>
-          )}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${styles.buttons.small}`}
+            title={collapsed ? "Expand code block" : "Collapse code block"}
+          >
+            {collapsed ? (
+              <ChevronDown className="w-3 h-3" />
+            ) : (
+              <ChevronUp className="w-3 h-3" />
+            )}
+            <span className="hidden sm:inline">
+              {collapsed ? "Show" : "Hide"}
+            </span>
+          </button>
+          <button
+            onClick={() => handleDownload(activeTab)}
+            className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${styles.buttons.small}`}
+            title="Download code file"
+          >
+            <Download className="w-3 h-3" />
+            <span className="hidden sm:inline">Download</span>
+          </button>
           <button
             onClick={() => handleCopy(activeTab)}
             className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${styles.buttons.small}`}
@@ -236,30 +211,35 @@ export const CodeBlock: React.FC<Props> = ({
         }}
       >
         <pre
-          className={`language-${currentSection.language} !m-0 overflow-x-auto w-full text-sm ${codeData.wrapLines ? "whitespace-pre-wrap" : "whitespace-pre"}`}
-          style={{ maxHeight: codeData.maxHeight }}
-        >
-          <div className="flex min-h-full">
-            {codeData.showLineNumbers && (
-              <LineNumbers styles={styles} content={currentSection.content} />
-            )}
-            <div className="flex-1 relative">
-              {normalizedSections.map((section, i) => (
-                <code
-                  key={i}
-                  ref={(el) => {
-                    if (el) {
-                      codeRefs.current.set(`${i}`, el);
-                      if (!prismLoaded) el.textContent = section.content;
-                    }
-                  }}
-                  className={`!language-${section.language} block !p-4 ${codeData.wrapLines ? "break-words" : ""} ${i === activeTab ? "block" : "hidden"}`}
-                  style={{ minHeight: "1.5rem" }}
-                />
-              ))}
-            </div>
+      className={`language-${currentSection.language} !m-0 overflow-x-auto w-full text-sm`}
+      style={{ maxHeight: codeData.maxHeight }}
+    >
+      <div className="flex min-h-full px-4 py-3">
+        <div className="flex-1 relative">
+          {normalizedSections.map((section, i) => (
+            <code
+              key={i}
+              ref={(el) => {
+                if (el) {
+                    codeRefs.current.set(`${i}`, el);
+                    if (!prismLoaded) el.textContent = section.content;
+                  }
+                }}
+                className={`!language-${section.language} block !p-0 leading-6 ${
+                  codeData.wrapLines
+                    ? "whitespace-pre-wrap break-words"
+                    : "whitespace-pre overflow-x-auto"
+                } ${i === activeTab ? "block" : "hidden"}`}
+                style={{
+                  minHeight: "1.5rem",
+                  whiteSpace: codeData.wrapLines ? "pre-wrap" : "pre",
+                  display: i === activeTab ? "block" : "none",
+                }}
+              />
+            ))}
           </div>
-        </pre>
+        </div>
+      </pre>
         {!hasMultipleSections && (
           <div
             className={`absolute top-2 right-2 px-2 py-1 rounded text-xs backdrop-blur-sm ${styles.code.language}`}

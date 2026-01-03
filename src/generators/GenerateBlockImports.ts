@@ -2,9 +2,10 @@ import "dotenv/config";
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import fg from "fast-glob";
 import appRoot from "app-root-path";
-import { resolveDataPath, createLogger } from "@shadow-shard-tools/docs-core";
+import fg from "fast-glob";
+import { createLogger, resolveDataPath } from "@shadow-shard-tools/docs-core";
+import { DEFAULT_BLOCKS, type BlockType } from "../layouts/editor/blocks/blockRegistry";
 
 const logger = createLogger("generate-block-imports");
 
@@ -24,14 +25,6 @@ const generatedDir = path.join(
   "generatedImports",
 );
 const outputFile = path.join(generatedDir, "blockImports.generated.ts");
-
-type BlockContent = {
-  type?: string | null;
-};
-
-type BlockItem = {
-  content?: BlockContent[];
-};
 
 const toPosix = (value: string): string =>
   value.split(path.sep).join(path.posix.sep);
@@ -60,7 +53,7 @@ const toComponentName = (type: string): string => {
   );
 };
 
-async function collectBlockTypes(dataRoot: string): Promise<string[]> {
+async function collectBlockTypes(dataRoot: string): Promise<BlockType[]> {
   const pattern = toPosix(path.join(dataRoot, "**/items/*.json"));
   logger.info(`Scanning content items in ${dataRoot}`);
 
@@ -76,7 +69,7 @@ async function collectBlockTypes(dataRoot: string): Promise<string[]> {
     files.map(async (filePath) => {
       try {
         const raw = await fs.readFile(filePath, "utf8");
-        const parsed = JSON.parse(raw) as BlockItem;
+        const parsed = JSON.parse(raw) as { content?: { type?: string | null }[] };
         const blocks = Array.isArray(parsed.content) ? parsed.content : [];
 
         for (const block of blocks) {
@@ -87,16 +80,20 @@ async function collectBlockTypes(dataRoot: string): Promise<string[]> {
             }
           }
         }
-      } catch {
-        logger.warn(`Failed to parse block file ${filePath}, skipping`);
+      } catch (err) {
+        logger.warn(
+          `Failed to parse block file ${path.relative(projectRoot, filePath)}: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
       }
     }),
   );
 
-  return [...blockTypes].sort();
+  return [...blockTypes].sort() as BlockType[];
 }
 
-async function writeGeneratedFile(blockTypes: string[]): Promise<void> {
+async function writeGeneratedFile(blockTypes: BlockType[]): Promise<void> {
   const lines: string[] = [
     "// AUTO-GENERATED FILE. DO NOT EDIT.",
     'import { lazy } from "react";',
@@ -125,10 +122,15 @@ async function writeGeneratedFile(blockTypes: string[]): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  logger.info("Generating block import map");
-
+  const useFull =
+    process.env.FULL_BLOCKS === "1" ||
+    process.env.FULL_BLOCKS === "true" ||
+    process.argv.includes("--full");
   const dataRoot = resolveDataPath();
-  const blockTypes = await collectBlockTypes(dataRoot);
+
+  const blockTypes = useFull
+    ? (Object.keys(DEFAULT_BLOCKS).sort() as BlockType[])
+    : await collectBlockTypes(dataRoot);
 
   await writeGeneratedFile(blockTypes);
 

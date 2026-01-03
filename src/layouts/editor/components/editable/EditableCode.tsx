@@ -28,11 +28,8 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
   const baseData: CodeData = {
     language: "javascript",
     content: "",
-    showLineNumbers: true,
     wrapLines: false,
-    allowDownload: false,
-    collapsible: false,
-    defaultCollapsed: false,
+    defaultCollapsed: true,
     ...safeData,
   };
   const codeData: CodeData = {

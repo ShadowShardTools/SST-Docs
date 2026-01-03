@@ -6,7 +6,7 @@ interface Props {
   styles: StyleTheme;
 }
 
-export function CodeToolbarControls({ data, onChange }: Props) {
+export function CodeToolbarControls({ data, onChange, styles }: Props) {
   const toggle = (key: string) =>
     onChange((prev) => ({
       ...prev,
@@ -18,14 +18,6 @@ export function CodeToolbarControls({ data, onChange }: Props) {
       <label className="inline-flex items-center gap-1">
         <input
           type="checkbox"
-          checked={!!data?.showLineNumbers}
-          onChange={() => toggle("showLineNumbers")}
-        />
-        <span>Lines</span>
-      </label>
-      <label className="inline-flex items-center gap-1">
-        <input
-          type="checkbox"
           checked={!!data?.wrapLines}
           onChange={() => toggle("wrapLines")}
         />
@@ -34,18 +26,25 @@ export function CodeToolbarControls({ data, onChange }: Props) {
       <label className="inline-flex items-center gap-1">
         <input
           type="checkbox"
-          checked={!!data?.allowDownload}
-          onChange={() => toggle("allowDownload")}
+          checked={!!data?.defaultCollapsed}
+          onChange={() => toggle("defaultCollapsed")}
         />
-        <span>Download</span>
+        <span>Default collapsed</span>
       </label>
       <label className="inline-flex items-center gap-1">
+        <span>Max height</span>
         <input
-          type="checkbox"
-          checked={!!data?.collapsible}
-          onChange={() => toggle("collapsible")}
+          type="text"
+          value={data?.maxHeight ?? ""}
+          onChange={(e) =>
+            onChange((prev) => ({
+              ...prev,
+              codeData: { ...(prev as any).codeData, maxHeight: e.target.value || undefined },
+            }))
+          }
+          placeholder="e.g. 400px"
+          className={`${styles.input} px-2 py-1 w-24`}
         />
-        <span>Collapsible</span>
       </label>
     </div>
   );

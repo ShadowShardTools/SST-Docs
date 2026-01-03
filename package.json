@@ -14,12 +14,14 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "generate": "run-p generate:*",
+    "generate": "run-p generate:blocks generate:prism",
+    "generate:dev": "run-p generate:blocks:full generate:prism:full",
     "generate:blocks": "tsx src/generators/GenerateBlockImports.ts",
-    "generate:index": "tsx src/generators/GenerateIndex.ts",
+    "generate:blocks:full": "tsx src/generators/GenerateBlockImports.ts --full",
     "generate:prism": "tsx src/generators/GeneratePrismLanguages.ts",
+    "generate:prism:full": "tsx src/generators/GeneratePrismLanguages.ts --full",
     "generate:static-html": "node ./node_modules/@shadow-shard-tools/docs-html-generator/dist/cli.js",
-    "dev": "npm run generate && vite",
+    "dev": "npm run generate:dev && vite",
     "build": "npm run generate && tsc -b && vite build",
     "start": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,md}\"",

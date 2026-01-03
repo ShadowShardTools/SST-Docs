@@ -10,7 +10,7 @@ import { useMediaQuery } from "../render/hooks";
 import isCategory from "../render/utilities/isCategory";
 import { useEditorDocNavigation } from "./hooks/useEditorDocNavigation";
 import { useEditorData } from "./state/useEditorData";
-import { read, write, runGenerator } from "./api";
+import { read, write } from "./api";
 import BlockListEditor from "./components/BlockListEditor";
 import type {
   Category,
@@ -84,10 +84,6 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const [fileError, setFileError] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
   const [backupOnSave, setBackupOnSave] = useState(false);
-  const [generatorStatus, setGeneratorStatus] = useState<
-    "idle" | "running" | "error" | "success"
-  >("idle");
-  const [generatorMessage, setGeneratorMessage] = useState<string | null>(null);
   const [panelMode, setPanelMode] = useState<"preview" | "json" | "blocks">(
     "preview",
   );
@@ -128,8 +124,6 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       setFileStatus("loading");
       setFileError(null);
       setDirty(false);
-      setGeneratorStatus("idle");
-      setGeneratorMessage(null);
       try {
         const res = await read(currentFilePath);
         if (res.encoding !== "utf8") {
@@ -192,20 +186,6 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       return JSON.parse(raw);
     } catch {
       return null;
-    }
-  };
-
-  const handleRunGenerator = async (script: string) => {
-    setGeneratorStatus("running");
-    setGeneratorMessage(null);
-    try {
-      const res = await runGenerator(script);
-      setGeneratorStatus("success");
-      setGeneratorMessage(res.stdout ?? "Completed");
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Generator failed";
-      setGeneratorStatus("error");
-      setGeneratorMessage(message);
     }
   };
 
@@ -347,39 +327,6 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     );
   };
 
-  const renderGenerators = () => (
-    <div className="border border-slate-200 dark:border-slate-800 rounded p-4">
-      <div className="flex items-center gap-3 mb-3">
-        <h3 className="text-base font-semibold">Generators</h3>
-        {generatorStatus === "running" && (
-          <span className="text-xs text-slate-500">Running…</span>
-        )}
-        {generatorStatus === "error" && generatorMessage && (
-          <span className="text-xs text-red-600">{generatorMessage}</span>
-        )}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {["generate:index", "generate:blocks", "generate:prism"].map(
-          (script) => (
-            <button
-              key={script}
-              className="px-3 py-2 text-sm border rounded"
-              onClick={() => handleRunGenerator(script)}
-              disabled={generatorStatus === "running"}
-            >
-              npm run {script}
-            </button>
-          ),
-        )}
-      </div>
-      {generatorMessage && generatorStatus === "success" && (
-        <pre className="mt-3 max-h-48 overflow-auto text-xs bg-slate-950 text-slate-100 p-3 rounded">
-          {generatorMessage}
-        </pre>
-      )}
-    </div>
-  );
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header
@@ -426,13 +373,13 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
               isSearchOpen={false}
             />
           ) : (
-            <section className="space-y-6">
+            <section className="p-2 space-y-2">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xs uppercase tracking-wide text-slate-500">
                     Mode
                   </span>
-                  {(["preview", "json", "blocks"] as const).map((mode) => (
+                  {(["preview", "blocks", "json"] as const).map((mode) => (
                     <button
                       key={mode}
                       className={`px-3 py-1.5 text-sm border rounded ${panelMode === mode
@@ -444,35 +391,16 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                     >
                       <span className="inline-flex items-center gap-2">
                         {mode === "preview" && <Eye className="w-4 h-4" />}
-                        {mode === "json" && <FileCode className="w-4 h-4" />}
                         {mode === "blocks" && (
                           <SquareStack className="w-4 h-4" />
                         )}
+                        {mode === "json" && <FileCode className="w-4 h-4" />}
                         <span className="capitalize">{mode}</span>
                       </span>
                     </button>
                   ))}
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <select
-                    className={`${styles.input} px-2 py-1 border`}
-                    value={currentFilePath ?? ""}
-                    onChange={(e) => setCurrentFilePath(e.target.value || null)}
-                  >
-                    {defaultFilePath ? (
-                      <option value={defaultFilePath}>
-                        Selected ({selected?.id ?? "none"})
-                      </option>
-                    ) : (
-                      <option value="">Select a file</option>
-                    )}
-                    <option value="products.json">products.json</option>
-                    {currentProduct ? (
-                      <option value={`${currentProduct}/versions.json`}>
-                        {currentProduct}/versions.json
-                      </option>
-                    ) : null}
-                  </select>
                   <label className="inline-flex items-center gap-2 text-xs">
                     <input
                       type="checkbox"
@@ -503,7 +431,6 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                 </p>
               )}
 
-              {renderGenerators()}
             </section>
           )}
         </div>

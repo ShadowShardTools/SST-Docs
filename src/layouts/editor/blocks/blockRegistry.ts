@@ -131,7 +131,8 @@ export const DEFAULT_BLOCKS: Record<BlockType, Content> = {
     codeData: {
       content: "// code goes here",
       language: "javascript",
-      showLineNumbers: true,
+      wrapLines: false,
+      defaultCollapsed: true,
     },
   },
   chart: {
