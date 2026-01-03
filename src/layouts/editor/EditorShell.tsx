@@ -336,20 +336,14 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
       );
     }
     return (
-      <div>
-        <p className="text-xs text-slate-500 mb-3">
-          Changes here update the preview immediately and will be written when
-          you hit Save.
-        </p>
-        <BlockListEditor
-          content={draftContent}
-          onChange={(updated) => {
-            setDraftContent(updated);
-            setDirty(true);
-          }}
-          styles={styles}
-        />
-      </div>
+      <BlockListEditor
+        content={draftContent}
+        onChange={(updated) => {
+          setDraftContent(updated);
+          setDirty(true);
+        }}
+        styles={styles}
+      />
     );
   };
 
@@ -398,7 +392,7 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
         currentVersion={currentVersion}
         onVersionChange={(v) => reload(currentProduct, v)}
         loading={status === "loading"}
-        onSearchOpen={() => {}}
+        onSearchOpen={() => { }}
         isMobileNavOpen={isMobileNavOpen}
         onMobileNavToggle={() => setIsMobileNavOpen((prev) => !prev)}
       />
@@ -441,11 +435,10 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                   {(["preview", "json", "blocks"] as const).map((mode) => (
                     <button
                       key={mode}
-                      className={`px-3 py-1.5 text-sm border rounded ${
-                        panelMode === mode
+                      className={`px-3 py-1.5 text-sm border rounded ${panelMode === mode
                           ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
                           : "bg-white dark:bg-slate-900"
-                      }`}
+                        }`}
                       onClick={() => setPanelMode(mode)}
                       type="button"
                     >

@@ -47,11 +47,6 @@ export function BlockListEditor({
 
   const showToolbar = (idx: number) => hoveredIndex === idx || expandedIndex === idx;
 
-  const addBlock = (type: BlockType) => {
-    const template = DEFAULT_BLOCKS[type];
-    onChange([...blocks, JSON.parse(JSON.stringify(template))]);
-  };
-
   const insertBlockAt = (index: number, type: BlockType) => {
     const template = DEFAULT_BLOCKS[type];
     const next = [...blocks];
@@ -63,10 +58,13 @@ export function BlockListEditor({
     onChange(blocks.filter((_, i) => i !== index));
   };
 
-  const InsertControl: React.FC<{ position: number }> = ({ position }) => {
+  const InsertControl: React.FC<{ position: number; fullWidth?: boolean }> = ({
+    position,
+    fullWidth = false,
+  }) => {
     const [open, setOpen] = useState(false);
     return (
-      <div className="relative my-3 flex items-center">
+      <div className={`relative my-3 flex items-center ${fullWidth ? "w-full" : ""}`}>
         <div className="h-0.5 bg-emerald-400/60 rounded-full flex-1" />
         <button
           type="button"
@@ -138,21 +136,11 @@ export function BlockListEditor({
 
   return (
     <div className="space-y-6 text-sm">
-      <div className="flex flex-wrap gap-2">
-        {(Object.keys(BLOCK_LABELS) as BlockType[]).map((type) => (
-          <button
-            key={type}
-            className="px-3 py-1.5 text-sm border rounded hover:bg-slate-100 dark:hover:bg-slate-800"
-            onClick={() => addBlock(type)}
-            type="button"
-          >
-            + {BLOCK_LABELS[type]}
-          </button>
-        ))}
-      </div>
-
       {blocks.length === 0 ? (
-        <p className="text-sm text-slate-500">No blocks yet. Add one above.</p>
+        <div className="flex flex-col items-center gap-3 text-sm text-slate-500">
+          <p>No blocks yet. Add one above.</p>
+          <InsertControl position={0} fullWidth />
+        </div>
       ) : (
         <div>
           {blocks.map((block, idx) => {
