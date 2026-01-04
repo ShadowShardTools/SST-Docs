@@ -1,4 +1,14 @@
 [
-  { "product": "mainInfo", "label": "Main Info" },
-  { "product": "exampleSecondProduct", "label":"Example Second Product" }
+  {
+    "product": "mainInfo",
+    "label": "Main Info"
+  },
+  {
+    "product": "exampleSecondProduct",
+    "label": "Example Second Product"
+  },
+  {
+    "product": "third",
+    "label": "Third"
+  }
 ]

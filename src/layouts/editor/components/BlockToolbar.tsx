@@ -4,7 +4,6 @@ import { BLOCK_LABELS } from "../blocks";
 import {
   updateBlockAt,
   transformBlockAt,
-  insertBlockAfter,
 } from "./utils/blockTransforms";
 import Dropdown from "../../common/components/Dropdown";
 import TitleToolbarControls from "./toolbars/TitleToolbarControls";
@@ -43,10 +42,6 @@ export function BlockToolbar({
 }: Props) {
   const handleTransform = (to: BlockType) => {
     onChange(transformBlockAt(blocks, index, to));
-  };
-
-  const handleInsert = (type: BlockType) => {
-    onChange(insertBlockAfter(blocks, index, type));
   };
 
   const handleUpdate = (updater: (prev: Content) => Content) => {

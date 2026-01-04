@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs/promises";
 import path from "node:path";
+import fssync from "node:fs";
 import {
   buildClientVisibleConfig,
   loadSstDocsConfigSync,
@@ -75,6 +76,20 @@ function isTextFile(filePath: string) {
     ".html",
     ".svg",
   ].includes(ext);
+}
+
+function camelId(value: string): string {
+  const parts = value
+    .split(/[^a-zA-Z0-9]+/u)
+    .filter(Boolean)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (!parts.length) return "product";
+  const [first, ...rest] = parts;
+  return [
+    first.charAt(0).toLowerCase() + first.slice(1),
+    ...rest.map((p) => p.charAt(0).toUpperCase() + p.slice(1)),
+  ].join("");
 }
 
 function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
@@ -222,6 +237,215 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
               });
             });
             return;
+          }
+
+          if (pathname === `${EDITOR_API_PREFIX}/product` && req.method === "POST") {
+            const bodyBuffer = await readRequestBody(req);
+            const payload = JSON.parse(bodyBuffer.toString("utf8")) as {
+              product?: string;
+              label?: string;
+            };
+            const { product, label } = payload;
+            if (!label && !product) return sendJson(400, { error: "Missing product or label" });
+            const baseId = product && product.trim() ? product : label ?? "";
+            if (!baseId.trim()) return sendJson(400, { error: "Missing product or label" });
+            const safeId = camelId(baseId);
+            const safeLabel = label && label.trim() ? label : baseId;
+            const productsPath = assertPathInsideRoot(dataRoot, "products.json");
+            const productsRaw = fssync.existsSync(productsPath)
+              ? await fs.readFile(productsPath, "utf8")
+              : "[]";
+            const products = JSON.parse(productsRaw) as Array<{ product: string; label: string }>;
+            if (products.some((p) => p.product === safeId)) {
+              return sendJson(400, { error: "Product already exists" });
+            }
+            products.push({ product: safeId, label: safeLabel });
+            await fs.writeFile(productsPath, JSON.stringify(products, null, 2));
+
+            const productDir = assertPathInsideRoot(dataRoot, safeId);
+            await fs.mkdir(productDir, { recursive: true });
+            const versionsPath = path.join(productDir, "versions.json");
+            const defaultVersion = { version: "v1.0", label: "v1.0" };
+            await fs.writeFile(versionsPath, JSON.stringify([defaultVersion], null, 2));
+            const versionDir = path.join(productDir, defaultVersion.version);
+            await fs.mkdir(path.join(versionDir, "categories"), { recursive: true });
+            await fs.mkdir(path.join(versionDir, "items"), { recursive: true });
+            await fs.writeFile(
+              path.join(versionDir, "index.json"),
+              JSON.stringify({ categories: [], items: [] }, null, 2),
+            );
+
+            return sendJson(200, { ok: true, product: safeId, label: safeLabel });
+          }
+
+          if (pathname === `${EDITOR_API_PREFIX}/product` && req.method === "DELETE") {
+            const product = url.searchParams.get("product");
+            if (!product) return sendJson(400, { error: "Missing product" });
+
+            const productsPath = assertPathInsideRoot(dataRoot, "products.json");
+            const productsRaw = fssync.existsSync(productsPath)
+              ? await fs.readFile(productsPath, "utf8")
+              : "[]";
+            const products = JSON.parse(productsRaw) as Array<{ product: string; label: string }>;
+            const next = products.filter((p) => p.product !== product);
+            if (next.length === products.length) {
+              return sendJson(404, { error: "Product not found" });
+            }
+            await fs.writeFile(productsPath, JSON.stringify(next, null, 2));
+
+            const productDir = assertPathInsideRoot(dataRoot, product);
+            await fs.rm(productDir, { recursive: true, force: true });
+            return sendJson(200, { ok: true });
+          }
+
+          if (pathname === `${EDITOR_API_PREFIX}/product` && req.method === "PUT") {
+            const bodyBuffer = await readRequestBody(req);
+            const payload = JSON.parse(bodyBuffer.toString("utf8")) as {
+              product?: string;
+              label?: string;
+            };
+            const { product, label } = payload;
+            if (!product || !label) return sendJson(400, { error: "Missing product or label" });
+            const safeId = camelId(label);
+
+            const productsPath = assertPathInsideRoot(dataRoot, "products.json");
+            const productsRaw = fssync.existsSync(productsPath)
+              ? await fs.readFile(productsPath, "utf8")
+              : "[]";
+            const products = JSON.parse(productsRaw) as Array<{ product: string; label: string }>;
+            const existingIndex = products.findIndex((p) => p.product === product);
+            if (existingIndex === -1) return sendJson(404, { error: "Product not found" });
+            if (products.some((p, idx) => idx !== existingIndex && p.product === safeId)) {
+              return sendJson(400, { error: "Target id already exists" });
+            }
+
+            const oldDir = assertPathInsideRoot(dataRoot, product);
+            const newDir = assertPathInsideRoot(dataRoot, safeId);
+            if (oldDir !== newDir) {
+              await fs.mkdir(path.dirname(newDir), { recursive: true });
+              if (fssync.existsSync(newDir)) {
+                await fs.rm(newDir, { recursive: true, force: true });
+              }
+              try {
+                await fs.rename(oldDir, newDir);
+              } catch (err) {
+                // Fallback for Windows/locked handles: copy then remove
+                await fs.cp(oldDir, newDir, { recursive: true });
+                await fs.rm(oldDir, { recursive: true, force: true });
+              }
+            }
+
+            products[existingIndex] = { product: safeId, label };
+            await fs.writeFile(productsPath, JSON.stringify(products, null, 2));
+
+            return sendJson(200, { ok: true, product: safeId, label });
+          }
+
+          if (pathname === `${EDITOR_API_PREFIX}/version` && req.method === "POST") {
+            const bodyBuffer = await readRequestBody(req);
+            const payload = JSON.parse(bodyBuffer.toString("utf8")) as {
+              product?: string;
+              version?: string;
+              label?: string;
+            };
+            const { product, version, label } = payload;
+            if (!product || !version || !label) {
+              return sendJson(400, { error: "Missing product, version, or label" });
+            }
+
+            const productDir = assertPathInsideRoot(dataRoot, product);
+            const versionsPath = path.join(productDir, "versions.json");
+            const versionsRaw = fssync.existsSync(versionsPath)
+              ? await fs.readFile(versionsPath, "utf8")
+              : "[]";
+            const versions = JSON.parse(versionsRaw) as Array<{ version: string; label: string }>;
+            if (versions.some((v) => v.version === version)) {
+              return sendJson(400, { error: "Version already exists" });
+            }
+            versions.push({ version, label });
+            await fs.writeFile(versionsPath, JSON.stringify(versions, null, 2));
+
+            const versionDir = path.join(productDir, version);
+            await fs.mkdir(path.join(versionDir, "categories"), { recursive: true });
+            await fs.mkdir(path.join(versionDir, "items"), { recursive: true });
+            await fs.writeFile(
+              path.join(versionDir, "index.json"),
+              JSON.stringify({ categories: [], items: [] }, null, 2),
+            );
+
+            return sendJson(200, { ok: true });
+          }
+
+          if (pathname === `${EDITOR_API_PREFIX}/version` && req.method === "DELETE") {
+            const product = url.searchParams.get("product");
+            const version = url.searchParams.get("version");
+            if (!product || !version) {
+              return sendJson(400, { error: "Missing product or version" });
+            }
+
+            const productDir = assertPathInsideRoot(dataRoot, product);
+            const versionsPath = path.join(productDir, "versions.json");
+            const versionsRaw = fssync.existsSync(versionsPath)
+              ? await fs.readFile(versionsPath, "utf8")
+              : "[]";
+            const versions = JSON.parse(versionsRaw) as Array<{ version: string; label: string }>;
+            const next = versions.filter((v) => v.version !== version);
+            if (next.length === versions.length) {
+              return sendJson(404, { error: "Version not found" });
+            }
+            await fs.writeFile(versionsPath, JSON.stringify(next, null, 2));
+
+            const versionDir = path.join(productDir, version);
+            await fs.rm(versionDir, { recursive: true, force: true });
+            return sendJson(200, { ok: true });
+          }
+
+          if (pathname === `${EDITOR_API_PREFIX}/version` && req.method === "PUT") {
+            const bodyBuffer = await readRequestBody(req);
+            const payload = JSON.parse(bodyBuffer.toString("utf8")) as {
+              product?: string;
+              version?: string;
+              label?: string;
+            };
+            const { product, version, label } = payload;
+            if (!product || !version || !label) {
+              return sendJson(400, { error: "Missing product, version or label" });
+            }
+            const safeVersion = camelId(label);
+
+            const productDir = assertPathInsideRoot(dataRoot, product);
+            const versionsPath = path.join(productDir, "versions.json");
+            const versionsRaw = fssync.existsSync(versionsPath)
+              ? await fs.readFile(versionsPath, "utf8")
+              : "[]";
+            const versions = JSON.parse(versionsRaw) as Array<{ version: string; label: string }>;
+            const existingIndex = versions.findIndex((v) => v.version === version);
+            if (existingIndex === -1) {
+              return sendJson(404, { error: "Version not found" });
+            }
+            if (versions.some((v, idx) => idx !== existingIndex && v.version === safeVersion)) {
+              return sendJson(400, { error: "Target version id already exists" });
+            }
+
+            const oldDir = path.join(productDir, version);
+            const newDir = path.join(productDir, safeVersion);
+            if (oldDir !== newDir) {
+              await fs.mkdir(path.dirname(newDir), { recursive: true });
+              if (fssync.existsSync(newDir)) {
+                await fs.rm(newDir, { recursive: true, force: true });
+              }
+              try {
+                await fs.rename(oldDir, newDir);
+              } catch (err) {
+                await fs.cp(oldDir, newDir, { recursive: true });
+                await fs.rm(oldDir, { recursive: true, force: true });
+              }
+            }
+
+            versions[existingIndex] = { version: safeVersion, label };
+            await fs.writeFile(versionsPath, JSON.stringify(versions, null, 2));
+
+            return sendJson(200, { ok: true, version: safeVersion, label });
           }
 
           return sendJson(404, { error: "Unknown editor API route" });

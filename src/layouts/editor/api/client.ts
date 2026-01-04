@@ -81,3 +81,57 @@ export async function runGenerator(script: string) {
     body: JSON.stringify({ script }),
   });
 }
+
+export async function createProduct(product: string, label: string) {
+  return request<{ ok: boolean; product: string; label: string }>(`${API_PREFIX}/product`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product, label }),
+  });
+}
+
+export async function deleteProduct(product: string) {
+  const params = new URLSearchParams({ product });
+  return request<{ ok: boolean }>(
+    `${API_PREFIX}/product?${params.toString()}`,
+    {
+      method: "DELETE",
+    },
+  );
+}
+
+export async function updateProduct(product: string, label: string) {
+  return request<{ ok: boolean; product: string; label: string }>(`${API_PREFIX}/product`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product, label }),
+  });
+}
+
+export async function createVersion(
+  product: string,
+  version: string,
+  label: string,
+) {
+  return request<{ ok: boolean }>(`${API_PREFIX}/version`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product, version, label }),
+  });
+}
+
+export async function deleteVersion(product: string, version: string) {
+  const params = new URLSearchParams({ product, version });
+  return request<{ ok: boolean }>(
+    `${API_PREFIX}/version?${params.toString()}`,
+    { method: "DELETE" },
+  );
+}
+
+export async function updateVersion(product: string, version: string, label: string) {
+  return request<{ ok: boolean; version: string; label: string }>(`${API_PREFIX}/version`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product, version, label }),
+  });
+}

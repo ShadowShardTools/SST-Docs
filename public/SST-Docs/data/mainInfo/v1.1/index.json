@@ -1,17 +1,19 @@
 {
   "categories": [
-    "examples-category",
-    "getting-started-category"
+    "getting-started-category",
+    "examples-category"
   ],
   "items": [
+    "newTestDocument",
+    "standalone-examples-item",
+    "introduction-item",
     "charts-examples-item",
     "code-examples-item",
     "common-examples-item",
     "configuration-item",
     "installation-item",
-    "introduction-item",
     "math-examples-item",
     "media-examples-item",
-    "standalone-examples-item"
+    "test"
   ]
 }

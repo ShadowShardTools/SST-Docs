@@ -1,12 +1,10 @@
 {
-  "product": "exampleSecondProduct",
+  "product": "third",
   "version": "v1.0",
-  "generatedAt": "2026-01-03T16:27:17.050Z",
+  "generatedAt": "2026-01-03T16:27:17.086Z",
   "index": "index.html",
   "categories": [],
-  "docs": [
-    "docs/math-examples-item/index.html"
-  ],
+  "docs": [],
   "charts": [],
   "media": [],
   "staticStylesPath": "../../../static-styles",

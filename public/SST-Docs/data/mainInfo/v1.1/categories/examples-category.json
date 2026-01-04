@@ -16,6 +16,9 @@
     "media-examples-item",
     "math-examples-item",
     "code-examples-item",
-    "charts-examples-item"
+    "charts-examples-item",
+    "test"
+  ],
+  "children": [
   ]
 }

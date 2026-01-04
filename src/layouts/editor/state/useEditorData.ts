@@ -25,6 +25,33 @@ export function useEditorData() {
   const [error, setError] = useState<string | null>(null);
   const [lastPing, setLastPing] = useState<{ dataRoot?: string } | null>(null);
   const productVersioning = clientConfig.PRODUCT_VERSIONING ?? false;
+  const PRODUCT_KEY = "editor:selectedProduct";
+  const VERSION_KEY = "editor:selectedVersion";
+
+  const readStored = useCallback(() => {
+    if (typeof window === "undefined") return { product: undefined, version: undefined };
+    try {
+      const product = window.localStorage.getItem(PRODUCT_KEY) ?? undefined;
+      const version = window.localStorage.getItem(VERSION_KEY) ?? undefined;
+      return { product, version };
+    } catch {
+      return { product: undefined, version: undefined };
+    }
+  }, []);
+
+  const writeStored = useCallback((product?: string, version?: string) => {
+    if (typeof window === "undefined") return;
+    try {
+      if (product) {
+        window.localStorage.setItem(PRODUCT_KEY, product);
+      }
+      if (version) {
+        window.localStorage.setItem(VERSION_KEY, version);
+      }
+    } catch {
+      // ignore storage errors
+    }
+  }, []);
 
   // Initial ping to verify middleware is up and get dataRoot info
   useEffect(() => {
@@ -60,8 +87,17 @@ export function useEditorData() {
   }, []);
 
   useEffect(() => {
-    loadData(undefined, undefined);
-  }, [loadData]);
+    const stored = readStored();
+    loadData(stored.product, stored.version);
+  }, [loadData, readStored]);
+
+  useEffect(() => {
+    if (currentProduct) writeStored(currentProduct, undefined);
+  }, [currentProduct, writeStored]);
+
+  useEffect(() => {
+    if (currentProduct && currentVersion) writeStored(currentProduct, currentVersion);
+  }, [currentProduct, currentVersion, writeStored]);
 
   const dataInfo = useMemo(
     () => ({

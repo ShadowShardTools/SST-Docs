@@ -48,6 +48,32 @@ export function useDocumentationData() {
     lastError?: Error;
   }>({});
 
+  const PRODUCT_KEY = "docs:selectedProduct";
+  const VERSION_KEY = "docs:selectedVersion";
+
+  const readStored = useCallback(() => {
+    if (typeof window === "undefined") {
+      return { product: undefined, version: undefined };
+    }
+    try {
+      const product = window.localStorage.getItem(PRODUCT_KEY) ?? undefined;
+      const version = window.localStorage.getItem(VERSION_KEY) ?? undefined;
+      return { product, version };
+    } catch {
+      return { product: undefined, version: undefined };
+    }
+  }, []);
+
+  const writeStored = useCallback((product?: string, version?: string) => {
+    if (typeof window === "undefined") return;
+    try {
+      if (product) window.localStorage.setItem(PRODUCT_KEY, product);
+      if (version) window.localStorage.setItem(VERSION_KEY, version);
+    } catch {
+      // ignore storage errors
+    }
+  }, []);
+
   // Load products/versions/content whenever the requested selection changes
   useEffect(() => {
     let isMounted = true;
@@ -142,6 +168,22 @@ export function useDocumentationData() {
       isMounted = false;
     };
   }, [productVersioning, pendingProduct, pendingVersion]);
+
+  // Initialize from stored selection
+  useEffect(() => {
+    const stored = readStored();
+    if (stored.product) setPendingProduct(stored.product);
+    if (stored.version) setPendingVersion(stored.version);
+  }, [readStored]);
+
+  // Persist current selections
+  useEffect(() => {
+    if (currentProduct) writeStored(currentProduct, undefined);
+  }, [currentProduct, writeStored]);
+
+  useEffect(() => {
+    if (currentProduct && currentVersion) writeStored(currentProduct, currentVersion);
+  }, [currentProduct, currentVersion, writeStored]);
 
   // Helper function to retry loading content
   const retryLoadContent = useCallback(async () => {
