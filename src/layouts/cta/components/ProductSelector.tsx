@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Package } from "lucide-react";
 import LoadingSpinner from "../../dialog/components/LoadingSpinner";
 import type { StyleTheme, Product } from "@shadow-shard-tools/docs-core";
 import Dropdown from "../../common/components/Dropdown";
@@ -21,6 +22,7 @@ export const ProductSelector = memo<ProductSelectorProps>(
         items={products.map(({ product, label }) => ({
           value: product,
           label,
+          icon: <Package className="w-4 h-4" />,
         }))}
         selectedValue={currentProduct}
         onSelect={onProductChange}

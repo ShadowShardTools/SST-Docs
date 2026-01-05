@@ -32,7 +32,7 @@ export function ImageToolbarControls({ data, onChange, styles }: Props) {
           step={0.01}
           min={0.01}
           max={1}
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800 w-20"
+          className={`${styles.input} px-2 py-1 w-20`}
           value={imageData.scale ?? 1}
           onChange={(e) =>
             update({

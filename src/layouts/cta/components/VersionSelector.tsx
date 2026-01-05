@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { GitBranch } from "lucide-react";
 import LoadingSpinner from "../../dialog/components/LoadingSpinner";
 import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
 import Dropdown from "../../common/components/Dropdown";
@@ -21,6 +22,7 @@ export const VersionSelector = memo<VersionSelectorProps>(
         items={versions.map(({ version, label }) => ({
           value: version,
           label,
+          icon: <GitBranch className="w-4 h-4" />,
         }))}
         selectedValue={currentVersion}
         onSelect={onVersionChange}

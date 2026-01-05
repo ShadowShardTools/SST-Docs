@@ -30,7 +30,15 @@ import type {
   DocItem,
   StyleTheme,
 } from "@shadow-shard-tools/docs-core";
-import { Eye, SquareStack, Trash2, Pencil } from "lucide-react";
+import {
+  Copy,
+  Eye,
+  FileDown,
+  Pencil,
+  Save,
+  SquareStack,
+  Trash2,
+} from "lucide-react";
 
 const findCategoryTrail = (
   nodes: Category[],
@@ -82,12 +90,39 @@ const collectCategoryIds = (nodes: Category[], acc = new Set<string>()) => {
   return acc;
 };
 
+const collectCategoryTitles = (nodes: Category[], acc = new Set<string>()) => {
+  for (const node of nodes) {
+    if (node.title) acc.add(node.title);
+    if (node.children?.length) {
+      collectCategoryTitles(node.children, acc);
+    }
+  }
+  return acc;
+};
+
+const collectDocTitles = (docs: DocItem[], acc = new Set<string>()) => {
+  for (const doc of docs) {
+    if (doc.title) acc.add(doc.title);
+  }
+  return acc;
+};
+
 const generateId = (prefix: string) => {
   const base =
     typeof crypto !== "undefined" && crypto.randomUUID
       ? crypto.randomUUID().replace(/-/g, "")
       : Math.random().toString(36).slice(2, 10);
   return `${prefix}${base}`;
+};
+
+const nextIncrementTitle = (base: string, existing: Set<string>) => {
+  let i = 1;
+  let candidate = `${base} (${i})`;
+  while (existing.has(candidate)) {
+    i += 1;
+    candidate = `${base} (${i})`;
+  }
+  return candidate;
 };
 
 const wait = (ms: number) =>
@@ -561,6 +596,198 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       alert(`Failed to update info: ${message}`);
+    }
+  };
+
+  const handleDuplicateSelected = async () => {
+    if (!selected || !currentProduct || !currentVersion) return;
+    const basePath = `${currentProduct}/${currentVersion}`;
+    let nextSelectionId: string | null = null;
+    const insertAfter = (list: string[], target: string, value: string) => {
+      if (list.includes(value)) return list;
+      const idx = list.indexOf(target);
+      if (idx >= 0) {
+        list.splice(idx + 1, 0, value);
+      } else {
+        list.push(value);
+      }
+      return list;
+    };
+
+    try {
+      if (isCategory(selected)) {
+        const rootNode = findCategoryNode(tree, selected.id);
+        if (!rootNode) return;
+
+        const categoryNodes: Category[] = [];
+        const docNodes: DocItem[] = [];
+        const collect = (node: Category) => {
+          categoryNodes.push(node);
+          node.docs?.forEach((doc) => docNodes.push(doc));
+          node.children?.forEach(collect);
+        };
+        collect(rootNode);
+
+        const catIdMap = new Map<string, string>();
+        const docIdMap = new Map<string, string>();
+        categoryNodes.forEach((node) =>
+          catIdMap.set(node.id, generateId("cat-")),
+        );
+        docNodes.forEach((doc) => docIdMap.set(doc.id, generateId("doc-")));
+
+        const newRootId = catIdMap.get(rootNode.id);
+        if (!newRootId) return;
+        nextSelectionId = newRootId;
+
+        const categoryTitles = collectCategoryTitles(tree);
+        const newRootTitle = nextIncrementTitle(
+          rootNode.title ?? "Untitled Category",
+          categoryTitles,
+        );
+
+        const indexPath = `${basePath}/index.json`;
+        const index = JSON.parse((await read(indexPath)).content);
+
+        const parentTrail = findCategoryTrail(tree, selected.id);
+        const parentId =
+          parentTrail && parentTrail.length > 1
+            ? parentTrail[parentTrail.length - 2].id
+            : null;
+
+        if (parentId) {
+          const parentPath = `${basePath}/categories/${parentId}.json`;
+          const parent = JSON.parse((await read(parentPath)).content);
+          const children = Array.isArray(parent.children)
+            ? [...parent.children]
+            : [];
+          insertAfter(children, selected.id, newRootId);
+          parent.children = children;
+          await write(parentPath, JSON.stringify(parent, null, 2), "utf8");
+        } else {
+          const categories = Array.isArray(index.categories)
+            ? [...index.categories]
+            : [];
+          insertAfter(categories, selected.id, newRootId);
+          index.categories = categories;
+        }
+
+        const items = Array.isArray(index.items) ? [...index.items] : [];
+        docNodes.forEach((doc) => {
+          const mapped = docIdMap.get(doc.id);
+          if (mapped) insertAfter(items, doc.id, mapped);
+        });
+        index.items = items;
+        await write(indexPath, JSON.stringify(index, null, 2), "utf8");
+
+        for (const node of categoryNodes) {
+          let data: any = null;
+          try {
+            const file = await read(
+              `${basePath}/categories/${node.id}.json`,
+            );
+            data = JSON.parse(file.content);
+          } catch {
+            data = {
+              id: node.id,
+              title: node.title,
+              description: (node as any).description ?? "",
+              docs: node.docs?.map((doc) => doc.id) ?? [],
+              children: node.children?.map((child) => child.id) ?? [],
+            };
+          }
+          const newId = catIdMap.get(node.id);
+          if (!newId) continue;
+          const rewritten = {
+            ...data,
+            id: newId,
+            title:
+              node.id === rootNode.id
+                ? newRootTitle
+                : data.title ?? node.title,
+            docs: Array.isArray(data.docs)
+              ? data.docs
+                  .map((id: string) => docIdMap.get(id) ?? id)
+                  .filter(Boolean)
+              : data.docs,
+            children: Array.isArray(data.children)
+              ? data.children
+                  .map((id: string) => catIdMap.get(id) ?? id)
+                  .filter(Boolean)
+              : data.children,
+          };
+          await write(
+            `${basePath}/categories/${newId}.json`,
+            JSON.stringify(rewritten, null, 2),
+            "utf8",
+          );
+        }
+
+        for (const doc of docNodes) {
+          let data: any = null;
+          try {
+            const file = await read(`${basePath}/items/${doc.id}.json`);
+            data = JSON.parse(file.content);
+          } catch {
+            data = { id: doc.id, title: doc.title, content: [] };
+          }
+          const newId = docIdMap.get(doc.id);
+          if (!newId) continue;
+          const rewritten = { ...data, id: newId };
+          await write(
+            `${basePath}/items/${newId}.json`,
+            JSON.stringify(rewritten, null, 2),
+            "utf8",
+          );
+        }
+      } else {
+        const docPath = `${basePath}/items/${selected.id}.json`;
+        const doc = JSON.parse((await read(docPath)).content);
+        const existingTitles = collectDocTitles(
+          [...items, ...standaloneDocs],
+          new Set<string>(),
+        );
+        const newId = generateId("doc-");
+        nextSelectionId = newId;
+        const newTitle = nextIncrementTitle(
+          doc.title ?? selected.title ?? "Untitled Document",
+          existingTitles,
+        );
+        const duplicated = { ...doc, id: newId, title: newTitle };
+        await write(
+          `${basePath}/items/${newId}.json`,
+          JSON.stringify(duplicated, null, 2),
+          "utf8",
+        );
+
+        const indexPath = `${basePath}/index.json`;
+        const index = JSON.parse((await read(indexPath)).content);
+        const itemsList = Array.isArray(index.items) ? [...index.items] : [];
+        insertAfter(itemsList, selected.id, newId);
+        index.items = itemsList;
+        await write(indexPath, JSON.stringify(index, null, 2), "utf8");
+
+        const trail = findDocTrail(tree, selected.id);
+        const parentId =
+          trail && trail.categories.length > 0
+            ? trail.categories[trail.categories.length - 1].id
+            : null;
+        if (parentId) {
+          const parentPath = `${basePath}/categories/${parentId}.json`;
+          const parent = JSON.parse((await read(parentPath)).content);
+          const docs = Array.isArray(parent.docs) ? [...parent.docs] : [];
+          insertAfter(docs, selected.id, newId);
+          parent.docs = docs;
+          await write(parentPath, JSON.stringify(parent, null, 2), "utf8");
+        }
+      }
+
+      await reload(currentProduct, currentVersion);
+      if (nextSelectionId) {
+        navigate(`/editor/${nextSelectionId}`, { replace: true });
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`Failed to duplicate item: ${message}`);
     }
   };
 
@@ -1040,30 +1267,41 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                     <span>Backup on save</span>
                   </label>
                   <button
-                    className={`${styles.buttons.common} px-3 py-2 text-sm`}
+                    className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                     onClick={handleSave}
                     disabled={
                       !dirty || !currentFilePath || fileStatus === "saving"
                     }
                   >
-                    {fileStatus === "saving" ? "Saving..." : "Save"}
+                    {fileStatus === "saving" ? <FileDown className="w-5 h-5" /> : <Save className="w-5 h-5" />}
                   </button>
                   {selected && (
                     <button
-                      className={`${styles.buttons.small}`}
+                      className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                       onClick={handleEditSelectedMeta}
                       type="button"
                     >
-                      <Pencil className="w-4 h-4" />
+                      <Pencil className="w-5 h-5" />
                     </button>
                   )}
                   {selected && (
                     <button
-                      className={`${styles.buttons.small} text-red-600`}
+                      className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
+                      onClick={handleDuplicateSelected}
+                      type="button"
+                      title="Duplicate item"
+                      aria-label="Duplicate item"
+                    >
+                      <Copy className="w-5 h-5" />
+                    </button>
+                  )}
+                  {selected && (
+                    <button
+                      className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                       onClick={handleDeleteSelected}
                       type="button"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   )}
                 </div>
