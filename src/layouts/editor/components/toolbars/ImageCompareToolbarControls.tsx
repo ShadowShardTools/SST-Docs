@@ -1,6 +1,8 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
+import { Columns2, SlidersHorizontal } from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -24,31 +26,35 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
         <Dropdown
           styles={styles}
           items={[
-            { value: "slider", label: "Slider" },
-            { value: "individual", label: "Side by side" },
+            {
+              value: "slider",
+              label: "Slider",
+              icon: <SlidersHorizontal className="w-4 h-4" />,
+            },
+            {
+              value: "individual",
+              label: "Side by side",
+              icon: <Columns2 className="w-4 h-4" />,
+            },
           ]}
           selectedValue={imageCompareData.type ?? "slider"}
           onSelect={(val) => update({ type: val as ImageCompareData["type"] })}
           className="min-w-[140px]"
         />
       </div>
-
-      <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            { value: "left", label: "Left" },
-            { value: "center", label: "Center" },
-            { value: "right", label: "Right" },
-          ]}
-          selectedValue={imageCompareData.alignment ?? "center"}
-          onSelect={(val) =>
-            update({ alignment: val as ImageCompareData["alignment"] })
-          }
-          className="min-w-[120px]"
-        />
-      </div>
+      
+      <AlignmentToggleButton
+        styles={styles}
+        value={
+          (imageCompareData.alignment ?? "center") as
+            | "left"
+            | "center"
+            | "right"
+        }
+        onChange={(val) =>
+          update({ alignment: val as ImageCompareData["alignment"] })
+        }
+      />
 
       <label className="flex items-center gap-1">
         <span>Scale</span>

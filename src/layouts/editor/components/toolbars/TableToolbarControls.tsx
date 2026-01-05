@@ -1,4 +1,5 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import { Columns2, LayoutGrid, Rows2, Table } from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
@@ -8,10 +9,26 @@ interface Props {
 }
 
 const OPTIONS = [
-  { value: "blank", label: "No headers" },
-  { value: "horizontal", label: "Row headers" },
-  { value: "vertical", label: "Column headers" },
-  { value: "matrix", label: "Matrix" },
+  {
+    value: "blank",
+    label: "No headers",
+    icon: <Table className="w-4 h-4" />,
+  },
+  {
+    value: "horizontal",
+    label: "Row headers",
+    icon: <Rows2 className="w-4 h-4" />,
+  },
+  {
+    value: "vertical",
+    label: "Column headers",
+    icon: <Columns2 className="w-4 h-4" />,
+  },
+  {
+    value: "matrix",
+    label: "Matrix",
+    icon: <LayoutGrid className="w-4 h-4" />,
+  },
 ] as const;
 
 export function TableToolbarControls({ data, onChange, styles }: Props) {
@@ -25,6 +42,7 @@ export function TableToolbarControls({ data, onChange, styles }: Props) {
         items={OPTIONS.map((option) => ({
           value: option.value,
           label: option.label,
+          icon: option.icon,
         }))}
         selectedValue={layout}
         onSelect={(val) =>

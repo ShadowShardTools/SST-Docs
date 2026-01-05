@@ -1,5 +1,6 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import Dropdown from "../../../common/components/Dropdown";
+import { Heading1, Heading2, Heading3, Link2, Link2Off } from "lucide-react";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -8,40 +9,38 @@ interface Props {
 }
 
 export function TitleToolbarControls({ data, onChange, styles }: Props) {
+  const level = Number(data.level ?? 2);
+  const nextLevel = level >= 3 ? 1 : level + 1;
+  const LevelIcon = level === 1 ? Heading1 : level === 2 ? Heading2 : Heading3;
+  const anchorEnabled = !!data.enableAnchorLink;
+  const AnchorIcon = anchorEnabled ? Link2 : Link2Off;
+
   return (
     <>
       <div className="flex items-center gap-1">
-        <span>Level</span>
-        <Dropdown
-          styles={styles}
-          items={[1, 2, 3].map((lvl) => ({
-            value: String(lvl),
-            label: `H${lvl}`,
-          }))}
-          selectedValue={String(data.level ?? 2)}
-          onSelect={(val) =>
+        <button
+          type="button"
+          className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
+          onClick={() =>
             onChange((prev) => ({
               ...prev,
               titleData: {
                 ...(prev as any).titleData,
-                level: Number(val),
+                level: nextLevel,
               },
             }))
           }
-          className="min-w-[80px]"
-        />
+          title={`Heading ${level}`}
+          aria-label={`Heading ${level}`}
+        >
+          <LevelIcon className="w-5 h-5" />
+        </button>
       </div>
       <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
+        <AlignmentToggleButton
           styles={styles}
-          items={[
-            { value: "left", label: "Left" },
-            { value: "center", label: "Center" },
-            { value: "right", label: "Right" },
-          ]}
-          selectedValue={data.alignment ?? "left"}
-          onSelect={(val) =>
+          value={(data.alignment ?? "left") as "left" | "center" | "right"}
+          onChange={(val) =>
             onChange((prev) => ({
               ...prev,
               titleData: {
@@ -50,27 +49,24 @@ export function TitleToolbarControls({ data, onChange, styles }: Props) {
               },
             }))
           }
-          className="min-w-[110px]"
         />
       </div>
       <button
         type="button"
-        className={`px-2 py-1 border rounded ${
-          data.enableAnchorLink
-            ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-            : ""
-        }`}
+        className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
         onClick={() =>
           onChange((prev) => ({
             ...prev,
             titleData: {
               ...(prev as any).titleData,
-              enableAnchorLink: !(data.enableAnchorLink ?? false),
+              enableAnchorLink: !anchorEnabled,
             },
           }))
         }
+        title={anchorEnabled ? "Anchor link: On" : "Anchor link: Off"}
+        aria-label={anchorEnabled ? "Anchor link: On" : "Anchor link: Off"}
       >
-        Anchor
+        <AnchorIcon className="w-5 h-5" />
       </button>
     </>
   );

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Trash2 } from "lucide-react";
 import CodeBlock from "../../../blocks/components/CodeBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { CodeData } from "@shadow-shard-tools/docs-core/types/CodeData";
@@ -109,7 +110,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             {sections.length > 1 && (
               <button
                 type="button"
-                className="px-1.5 py-1 rounded border text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
+                className={`${styles.buttons.small} text-red-600`}
                 onClick={() => {
                   const updated = sections.filter((_, sIdx) => sIdx !== idx);
                   const nextActive = Math.min(
@@ -123,8 +124,9 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
                   });
                 }}
                 aria-label={`Delete tab ${section.filename || section.language}`}
+                title="Delete tab"
               >
-                ×
+                <Trash2 className="w-4 h-4" />
               </button>
             )}
           </div>

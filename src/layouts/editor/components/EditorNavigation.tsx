@@ -1,10 +1,11 @@
 import { useMemo, useState, useCallback } from "react";
 import {
-  FolderPlus,
   Folder,
   FileText,
   ChevronDown,
   ChevronRight,
+  Plus,
+  FolderPlus,
 } from "lucide-react";
 import type {
   Category,
@@ -115,37 +116,54 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
     };
 
     return (
-      <div className="relative inline-block">
+      <div className="relative w-full">
         <button
           type="button"
-          className={`text-xs flex items-center gap-1 p-1 ${styles.buttons.common} ${highlight ? "!border-sky-400 !text-sky-200" : ""}`}
+          aria-label={label}
+          className="group relative w-full h-4 flex items-center justify-center"
           onClick={handleClick}
         >
-          <FolderPlus className="w-4 h-4" />
-          {label}
+          <span
+            className={`absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 transition-colors ${
+              highlight ? "bg-sky-400" : "bg-slate-500/30 dark:bg-slate-400/20"
+            }`}
+          />
+          <span
+            className={`relative z-10 inline-flex items-center justify-center w-12 h-6 rounded-full border transition-all ${
+              styles.buttons.common
+            } ${highlight ? "!border-sky-400 !text-sky-200" : ""} ${
+              open
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100"
+            }`}
+          >
+            <Plus className="w-4 h-4" />
+          </span>
         </button>
         {!docOnly && !categoryOnly && open && (
           <div
-            className={`absolute z-20 mt-1 min-w-[140px] ${styles.dropdown.container}`}
+            className={`absolute left-1/2 -translate-x-1/2 z-20 mt-2 min-w-[160px] ${styles.dropdown.container}`}
           >
             <button
               type="button"
-              className={`w-full text-left px-3 py-2 ${styles.dropdown.item}`}
+              className={`w-full text-left px-3 py-2 flex items-center gap-2 ${styles.dropdown.item}`}
               onClick={() => {
                 setAddMenuFor(null);
                 onCreateCategory();
               }}
             >
+              <FolderPlus className="w-4 h-4" />
               Category
             </button>
             <button
               type="button"
-              className={`w-full text-left px-3 py-2 ${styles.dropdown.item}`}
+              className={`w-full text-left px-3 py-2 flex items-center gap-2 ${styles.dropdown.item}`}
               onClick={() => {
                 setAddMenuFor(null);
                 onCreateDoc();
               }}
             >
+              <FileText className="w-4 h-4" />
               Document
             </button>
           </div>

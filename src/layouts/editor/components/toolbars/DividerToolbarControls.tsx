@@ -1,4 +1,11 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import {
+  Equal,
+  Minus,
+  MoreHorizontal,
+  ScissorsLineDashed,
+  Sparkles,
+} from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
@@ -14,12 +21,34 @@ export function DividerToolbarControls({ data, onChange, styles }: Props) {
         <span>Style</span>
         <Dropdown
           styles={styles}
-          items={(
-            ["line", "dashed", "dotted", "double", "thick", "gradient"] as const
-          ).map((s) => ({
-            value: s,
-            label: s,
-          }))}
+          items={[
+            { value: "line", label: "line", icon: <Minus className="w-4 h-4" /> },
+            {
+              value: "dashed",
+              label: "dashed",
+              icon: <ScissorsLineDashed className="w-4 h-4" />,
+            },
+            {
+              value: "dotted",
+              label: "dotted",
+              icon: <MoreHorizontal className="w-4 h-4" />,
+            },
+            {
+              value: "double",
+              label: "double",
+              icon: <Equal className="w-4 h-4" />,
+            },
+            {
+              value: "thick",
+              label: "thick",
+              icon: <Minus className="w-4 h-4" strokeWidth={3} />,
+            },
+            {
+              value: "gradient",
+              label: "gradient",
+              icon: <Sparkles className="w-4 h-4" />,
+            },
+          ]}
           selectedValue={data.type ?? "line"}
           onSelect={(val) =>
             onChange((prev) => ({

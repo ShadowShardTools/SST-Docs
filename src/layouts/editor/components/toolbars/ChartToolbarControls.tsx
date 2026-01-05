@@ -1,6 +1,17 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import {
+  BarChart2,
+  Bubbles,
+  ChartScatter,
+  CircleDot,
+  Donut,
+  LineChart,
+  PieChart,
+  Radar,
+} from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -35,14 +46,26 @@ export function ChartToolbarControls({ data, onChange, styles }: Props) {
         <Dropdown
           styles={styles}
           items={[
-            { value: "bar", label: "Bar" },
-            { value: "line", label: "Line" },
-            { value: "pie", label: "Pie" },
-            { value: "doughnut", label: "Doughnut" },
-            { value: "radar", label: "Radar" },
-            { value: "polarArea", label: "Polar area" },
-            { value: "bubble", label: "Bubble" },
-            { value: "scatter", label: "Scatter" },
+            { value: "bar", label: "Bar", icon: <BarChart2 className="w-4 h-4" /> },
+            { value: "line", label: "Line", icon: <LineChart className="w-4 h-4" /> },
+            { value: "pie", label: "Pie", icon: <PieChart className="w-4 h-4" /> },
+            {
+              value: "doughnut",
+              label: "Doughnut",
+              icon: <Donut className="w-4 h-4" />,
+            },
+            { value: "radar", label: "Radar", icon: <Radar className="w-4 h-4" /> },
+            {
+              value: "polarArea",
+              label: "Polar area",
+              icon: <CircleDot className="w-4 h-4" />,
+            },
+            { value: "bubble", label: "Bubble", icon: <Bubbles className="w-4 h-4" /> },
+            {
+              value: "scatter",
+              label: "Scatter",
+              icon: <ChartScatter className="w-4 h-4" />,
+            },
           ]}
           selectedValue={(chartData.type as string) ?? "bar"}
           onSelect={(val) => updateType(val as ChartData["type"])}
@@ -50,20 +73,11 @@ export function ChartToolbarControls({ data, onChange, styles }: Props) {
         />
       </div>
 
-      <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            { value: "left", label: "Left" },
-            { value: "center", label: "Center" },
-            { value: "right", label: "Right" },
-          ]}
-          selectedValue={(chartData.alignment as string) ?? "center"}
-          onSelect={(val) => toggleAlignment(val as ChartData["alignment"])}
-          className="min-w-[120px]"
-        />
-      </div>
+      <AlignmentToggleButton
+        styles={styles}
+        value={(chartData.alignment ?? "center") as "left" | "center" | "right"}
+        onChange={(val) => toggleAlignment(val as ChartData["alignment"])}
+      />
 
       <label className="flex items-center gap-1">
         <span>Scale</span>

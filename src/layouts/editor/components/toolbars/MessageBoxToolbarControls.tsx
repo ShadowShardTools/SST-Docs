@@ -1,4 +1,12 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Info,
+  MinusCircle,
+  Quote,
+  XCircle,
+} from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
 
 interface Props {
@@ -14,12 +22,34 @@ export function MessageBoxToolbarControls({ data, onChange, styles }: Props) {
         <span>Type</span>
         <Dropdown
           styles={styles}
-          items={(
-            ["info", "warning", "error", "success", "neutral", "quote"] as const
-          ).map((s) => ({
-            value: s,
-            label: s,
-          }))}
+          items={[
+            { value: "info", label: "info", icon: <Info className="w-4 h-4" /> },
+            {
+              value: "warning",
+              label: "warning",
+              icon: <AlertTriangle className="w-4 h-4" />,
+            },
+            {
+              value: "error",
+              label: "error",
+              icon: <XCircle className="w-4 h-4" />,
+            },
+            {
+              value: "success",
+              label: "success",
+              icon: <CheckCircle2 className="w-4 h-4" />,
+            },
+            {
+              value: "neutral",
+              label: "neutral",
+              icon: <MinusCircle className="w-4 h-4" />,
+            },
+            {
+              value: "quote",
+              label: "quote",
+              icon: <Quote className="w-4 h-4" />,
+            },
+          ]}
           selectedValue={data.type ?? "info"}
           onSelect={(val) =>
             onChange((prev) => ({

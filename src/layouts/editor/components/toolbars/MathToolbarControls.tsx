@@ -1,5 +1,5 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import Dropdown from "../../../common/components/Dropdown";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -7,32 +7,24 @@ interface Props {
   styles: StyleTheme;
 }
 
-const ALIGN_OPTIONS = ["left", "center", "right"] as const;
-
 export function MathToolbarControls({ data, onChange, styles }: Props) {
-  const alignment = (data.alignment ??
-    "center") as (typeof ALIGN_OPTIONS)[number];
+  const alignment = (data.alignment ?? "center") as
+    | "left"
+    | "center"
+    | "right";
 
   return (
     <>
-      <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
-          styles={styles}
-          items={ALIGN_OPTIONS.map((opt) => ({
-            value: opt,
-            label: opt[0].toUpperCase() + opt.slice(1),
-          }))}
-          selectedValue={alignment}
-          onSelect={(val) =>
-            onChange((prev) => ({
-              ...prev,
-              mathData: { ...(prev as any).mathData, alignment: val },
-            }))
-          }
-          className="min-w-[110px]"
-        />
-      </div>
+      <AlignmentToggleButton
+        styles={styles}
+        value={alignment}
+        onChange={(val) =>
+          onChange((prev) => ({
+            ...prev,
+            mathData: { ...(prev as any).mathData, alignment: val },
+          }))
+        }
+      />
     </>
   );
 }

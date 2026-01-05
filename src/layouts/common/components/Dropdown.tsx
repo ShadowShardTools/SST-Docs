@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 
 export interface DropdownItem {
   value: string;
   label: string;
+  icon?: ReactNode;
 }
 
 interface DropdownProps {
@@ -31,11 +32,12 @@ export function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const selectedLabel = useMemo(
-    () =>
-      items.find((item) => item.value === selectedValue)?.label ?? placeholder,
-    [items, selectedValue, placeholder],
+  const selectedItem = useMemo(
+    () => items.find((item) => item.value === selectedValue),
+    [items, selectedValue],
   );
+  const selectedLabel = selectedItem?.label ?? placeholder;
+  const selectedIcon = selectedItem?.icon;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -72,7 +74,10 @@ export function Dropdown({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className="truncate text-left">{selectedLabel}</span>
+        <span className="flex items-center gap-2 min-w-0">
+          {selectedIcon && <span className="flex items-center">{selectedIcon}</span>}
+          <span className="truncate text-left">{selectedLabel}</span>
+        </span>
         <ChevronDown
           className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
         />
@@ -83,7 +88,7 @@ export function Dropdown({
           className={`absolute top-full left-0 mt-1 z-50 min-w-full max-h-60 overflow-y-auto ${styles.dropdown.container} ${listClassName}`}
           role="listbox"
         >
-          {items.map(({ value, label }) => (
+          {items.map(({ value, label, icon }) => (
             <li key={value}>
               <button
                 type="button"
@@ -91,13 +96,14 @@ export function Dropdown({
                   onSelect(value);
                   setIsOpen(false);
                 }}
-                className={`w-full px-3 py-2 text-left cursor-pointer ${styles.dropdown.item} ${
+                className={`w-full px-3 py-2 text-left cursor-pointer flex items-center gap-2 ${styles.dropdown.item} ${
                   value === selectedValue ? styles.dropdown.itemActive : ""
                 }`}
                 role="option"
                 aria-selected={value === selectedValue}
               >
-                {label}
+                {icon && <span className="flex items-center">{icon}</span>}
+                <span>{label}</span>
               </button>
             </li>
           ))}

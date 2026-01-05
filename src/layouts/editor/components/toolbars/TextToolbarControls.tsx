@@ -1,5 +1,5 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import Dropdown from "../../../common/components/Dropdown";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -10,28 +10,19 @@ interface Props {
 export function TextToolbarControls({ data, onChange, styles }: Props) {
   return (
     <>
-      <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            { value: "left", label: "Left" },
-            { value: "center", label: "Center" },
-            { value: "right", label: "Right" },
-          ]}
-          selectedValue={data.alignment ?? "left"}
-          onSelect={(val) =>
-            onChange((prev) => ({
-              ...prev,
-              textData: {
-                ...(prev as any).textData,
-                alignment: val,
-              },
-            }))
-          }
-          className="min-w-[110px]"
-        />
-      </div>
+      <AlignmentToggleButton
+        styles={styles}
+        value={(data.alignment ?? "left") as "left" | "center" | "right"}
+        onChange={(val) =>
+          onChange((prev) => ({
+            ...prev,
+            textData: {
+              ...(prev as any).textData,
+              alignment: val,
+            },
+          }))
+        }
+      />
     </>
   );
 }

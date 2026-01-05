@@ -136,24 +136,31 @@ export function BlockListEditor({
     }, [open]);
     return (
       <div
-        className={`relative my-3 flex items-center ${fullWidth ? "w-full" : ""}`}
+        className={`group relative my-1 flex items-center justify-center ${fullWidth ? "w-full" : ""}`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => {
           setHovered(false);
         }}
       >
-        <div
-          className={`h-px rounded-full flex-1 transition-colors ${showButton ? "bg-slate-500/50" : "bg-slate-500/20"}`}
+        <span
+          className={`absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 transition-colors ${
+            showButton ? "bg-slate-500/50" : "bg-slate-500/20"
+          }`}
         />
         <button
           type="button"
-          className={`absolute left-1/2 -translate-x-1/2 -top-3 px-3 py-1 text-xs rounded-full shadow-sm flex items-center gap-2 border bg-slate-800 text-slate-50 border-slate-500/50 transition-opacity ${showButton ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+          className={`relative z-10 inline-flex items-center justify-center w-12 h-6 rounded-full border transition-all ${
+            styles.buttons.common
+          } ${
+            showButton
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-75 pointer-events-none group-hover:opacity-100 group-hover:scale-100"
+          }`}
           onClick={() => setOpen((prev) => !prev)}
           aria-label="Add block"
           ref={triggerRef}
         >
           <Plus className="w-4 h-4" />
-          <span className="font-medium">Add block</span>
         </button>
         {open && (
           <div

@@ -1,5 +1,6 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import Dropdown from "../../../common/components/Dropdown";
+import { List, ListOrdered } from "lucide-react";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -9,48 +10,41 @@ interface Props {
 
 export function ListToolbarControls({ data, onChange, styles }: Props) {
   const listType = data.type ?? "ul";
+  const nextType = listType === "ul" ? "ol" : "ul";
+  const FormatIcon = listType === "ul" ? List : ListOrdered;
   return (
     <>
       <div className="flex items-center gap-1">
-        <span>Format</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            { value: "ul", label: "Bullets" },
-            { value: "ol", label: "Numbers" },
-          ]}
-          selectedValue={listType}
-          onSelect={(val) =>
+        <button
+          type="button"
+          className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
+          onClick={() =>
             onChange((prev) => ({
               ...prev,
-              listData: { ...(prev as any).listData, type: val },
+              listData: { ...(prev as any).listData, type: nextType },
             }))
           }
-          className="min-w-[120px]"
-        />
+          title={listType === "ul" ? "Format: Bullets" : "Format: Numbers"}
+          aria-label={listType === "ul" ? "Format: Bullets" : "Format: Numbers"}
+        >
+          <FormatIcon className="w-5 h-5" />
+        </button>
       </div>
-      <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            { value: "left", label: "Left" },
-            { value: "center", label: "Center" },
-            { value: "right", label: "Right" },
-          ]}
-          selectedValue={data.alignment ?? "left"}
-          onSelect={(val) =>
-            onChange((prev) => ({
-              ...prev,
-              listData: {
-                ...(prev as any).listData,
-                alignment: val,
-              },
-            }))
-          }
-          className="min-w-[110px]"
-        />
-      </div>
+
+      <AlignmentToggleButton
+        styles={styles}
+        value={(data.alignment ?? "left") as "left" | "center" | "right"}
+        onChange={(val) =>
+          onChange((prev) => ({
+            ...prev,
+            listData: {
+              ...(prev as any).listData,
+              alignment: val,
+            },
+          }))
+        }
+      />
+
       <label className="inline-flex items-center gap-1">
         <input
           type="checkbox"

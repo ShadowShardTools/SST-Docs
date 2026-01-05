@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import ChartBlock from "../../../blocks/components/ChartBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import { Trash2 } from "lucide-react";
 
 type EditableChartDataset = {
   label: string;
@@ -225,8 +226,10 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                   type="button"
                   className={`${styles.buttons.small} text-red-600`}
                   onClick={() => removeLabel(idx)}
+                  aria-label={`Delete label ${idx + 1}`}
+                  title="Delete label"
                 >
-                  Delete
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             ))}
@@ -288,8 +291,10 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                   type="button"
                   className={`${styles.buttons.small} text-red-600`}
                   onClick={() => removeDataset(dsIndex)}
+                  aria-label={`Delete dataset ${dsIndex + 1}`}
+                  title="Delete dataset"
                 >
-                  Delete
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
               {!isScatter ? (
@@ -417,10 +422,12 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                         </label>
                         <button
                           type="button"
-                          className="ml-auto px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
+                          className={`ml-auto ${styles.buttons.small} text-red-600`}
                           onClick={() => removePoint(dsIndex, pointIdx)}
+                          aria-label={`Delete point ${pointIdx + 1}`}
+                          title="Delete point"
                         >
-                          Delete
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     ))}

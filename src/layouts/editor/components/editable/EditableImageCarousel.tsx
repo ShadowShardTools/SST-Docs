@@ -1,6 +1,7 @@
 import ImageCarouselBlock from "../../../blocks/components/ImageCarouselBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
+import { Trash2 } from "lucide-react";
 
 interface EditableImageCarouselProps {
   data?: ImageCarouselData;
@@ -77,10 +78,12 @@ export function EditableImageCarousel({
               {(carouselData.images?.length ?? 0) > 1 && (
                 <button
                   type="button"
-                  className="px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
+                  className={`${styles.buttons.small} text-red-600`}
                   onClick={() => removeImage(idx)}
+                  aria-label={`Delete image ${idx + 1}`}
+                  title="Delete image"
                 >
-                  Delete
+                  <Trash2 className="w-4 h-4" />
                 </button>
               )}
             </div>

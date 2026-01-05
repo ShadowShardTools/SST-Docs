@@ -178,9 +178,9 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
                 >
                   <button
                     type="button"
-                    className={`w-7 h-7 inline-flex items-center justify-center rounded-full border text-xs shadow-sm bg-slate-900/80 text-white ${
+                    className={`w-7 h-7 inline-flex items-center justify-center rounded-full text-xs shadow-sm ${styles.buttons.common} ${
                       canDeleteColumn(colIndex)
-                        ? "hover:bg-slate-800/90"
+                        ? ""
                         : "opacity-40 cursor-not-allowed"
                     }`}
                     onClick={() => handleRemoveColumn(colIndex)}
@@ -199,7 +199,7 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
               <th className="text-center align-middle p-1 bg-transparent">
                 <button
                   type="button"
-                  className="w-8 h-8 inline-flex items-center justify-center rounded-full border text-xs shadow-sm bg-indigo-600 text-white hover:bg-indigo-500"
+                  className={`w-8 h-8 inline-flex items-center justify-center rounded-full text-xs shadow-sm ${styles.buttons.common}`}
                   onClick={handleAddColumn}
                   aria-label="Add column"
                   title="Add column"
@@ -213,16 +213,16 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
             {tableData.data.map((row, rowIndex) => (
               <tr key={`row-${rowIndex}`}>
                 <td className="text-center align-middle p-1 bg-transparent">
-                  <button
-                    type="button"
-                    className={`w-7 h-7 inline-flex items-center justify-center rounded-full border text-xs shadow-sm bg-slate-900/80 text-white ${
-                      canDeleteRow(rowIndex)
-                        ? "hover:bg-slate-800/90"
-                        : "opacity-40 cursor-not-allowed"
-                    }`}
-                    onClick={() => handleRemoveRow(rowIndex)}
-                    disabled={!canDeleteRow(rowIndex)}
-                    aria-label={`Delete row ${rowIndex + 1}`}
+                <button
+                  type="button"
+                  className={`w-7 h-7 inline-flex items-center justify-center rounded-full text-xs shadow-sm ${styles.buttons.common} ${
+                    canDeleteRow(rowIndex)
+                      ? ""
+                      : "opacity-40 cursor-not-allowed"
+                  }`}
+                  onClick={() => handleRemoveRow(rowIndex)}
+                  disabled={!canDeleteRow(rowIndex)}
+                  aria-label={`Delete row ${rowIndex + 1}`}
                     title={
                       canDeleteRow(rowIndex)
                         ? "Delete row"
@@ -287,7 +287,7 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
               <td className="text-center align-middle p-1 bg-transparent">
                 <button
                   type="button"
-                  className="w-8 h-8 inline-flex items-center justify-center rounded-full border text-xs shadow-sm bg-indigo-600 text-white hover:bg-indigo-500"
+                  className={`w-8 h-8 inline-flex items-center justify-center rounded-full text-xs shadow-sm ${styles.buttons.common}`}
                   onClick={handleAddRow}
                   aria-label="Add row"
                   title="Add row"

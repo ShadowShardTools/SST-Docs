@@ -1,6 +1,6 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
-import Dropdown from "../../../common/components/Dropdown";
+import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
   data: any;
@@ -18,22 +18,13 @@ export function ImageToolbarControls({ data, onChange, styles }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1">
-        <span>Align</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            { value: "left", label: "Left" },
-            { value: "center", label: "Center" },
-            { value: "right", label: "Right" },
-          ]}
-          selectedValue={imageData.alignment ?? "center"}
-          onSelect={(val) =>
-            update({ alignment: val as ImageData["alignment"] })
-          }
-          className="min-w-[110px]"
-        />
-      </div>
+      <AlignmentToggleButton
+        styles={styles}
+        value={(imageData.alignment ?? "center") as "left" | "center" | "right"}
+        onChange={(val) =>
+          update({ alignment: val as ImageData["alignment"] })
+        }
+      />
       <label className="flex items-center gap-1">
         <span>Scale</span>
         <input
