@@ -20,17 +20,23 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
     image: ensureImage((data as any)?.image),
     alignment: "center",
     scale: 1,
-    ...data
+    ...data,
   };
 
   const srcRef = useRef<HTMLInputElement>(null);
   const altRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (srcRef.current && srcRef.current.value !== (imageData.image?.src ?? "")) {
+    if (
+      srcRef.current &&
+      srcRef.current.value !== (imageData.image?.src ?? "")
+    ) {
       srcRef.current.value = imageData.image?.src ?? "";
     }
-    if (altRef.current && altRef.current.value !== (imageData.image?.alt ?? "")) {
+    if (
+      altRef.current &&
+      altRef.current.value !== (imageData.image?.alt ?? "")
+    ) {
       altRef.current.value = imageData.image?.alt ?? "";
     }
   }, [imageData.image?.src, imageData.image?.alt]);
@@ -46,7 +52,10 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
           onChange={(e) =>
             onChange({
               ...imageData,
-              image: ensureImage({ ...(imageData.image ?? {}), src: e.target.value }),
+              image: ensureImage({
+                ...(imageData.image ?? {}),
+                src: e.target.value,
+              }),
             })
           }
           placeholder="https://example.com/image.jpg"
@@ -61,7 +70,10 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
           onChange={(e) =>
             onChange({
               ...imageData,
-              image: ensureImage({ ...(imageData.image ?? {}), alt: e.target.value }),
+              image: ensureImage({
+                ...(imageData.image ?? {}),
+                alt: e.target.value,
+              }),
             })
           }
           placeholder="Description for accessibility"

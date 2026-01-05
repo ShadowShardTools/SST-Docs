@@ -6,9 +6,5 @@
   {
     "product": "exampleSecondProduct",
     "label": "Example Second Product"
-  },
-  {
-    "product": "third",
-    "label": "Third"
   }
 ]

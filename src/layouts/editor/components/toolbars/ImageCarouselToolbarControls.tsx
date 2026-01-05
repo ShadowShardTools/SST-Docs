@@ -8,7 +8,11 @@ interface Props {
   styles: StyleTheme;
 }
 
-export function ImageCarouselToolbarControls({ data, onChange, styles }: Props) {
+export function ImageCarouselToolbarControls({
+  data,
+  onChange,
+  styles,
+}: Props) {
   const carouselData: ImageCarouselData = data ?? {};
   const update = (partial: Partial<ImageCarouselData>) =>
     onChange((prev) => ({
@@ -16,7 +20,9 @@ export function ImageCarouselToolbarControls({ data, onChange, styles }: Props) 
       imageCarouselData: { ...(prev as any).imageCarouselData, ...partial },
     }));
 
-  const toggle = (key: keyof NonNullable<ImageCarouselData["carouselOptions"]>) =>
+  const toggle = (
+    key: keyof NonNullable<ImageCarouselData["carouselOptions"]>,
+  ) =>
     update({
       carouselOptions: {
         ...(carouselData.carouselOptions ?? {}),
@@ -36,7 +42,9 @@ export function ImageCarouselToolbarControls({ data, onChange, styles }: Props) 
             { value: "right", label: "Right" },
           ]}
           selectedValue={carouselData.alignment ?? "center"}
-          onSelect={(val) => update({ alignment: val as ImageCarouselData["alignment"] })}
+          onSelect={(val) =>
+            update({ alignment: val as ImageCarouselData["alignment"] })
+          }
           className="min-w-[110px]"
         />
       </div>
@@ -49,7 +57,11 @@ export function ImageCarouselToolbarControls({ data, onChange, styles }: Props) 
           max={1}
           className={`${styles.input} px-2 py-1 w-20`}
           value={carouselData.scale ?? 1}
-          onChange={(e) => update({ scale: Math.min(Number.parseFloat(e.target.value) || 1, 1) })}
+          onChange={(e) =>
+            update({
+              scale: Math.min(Number.parseFloat(e.target.value) || 1, 1),
+            })
+          }
         />
       </label>
       <label className="inline-flex items-center gap-1">

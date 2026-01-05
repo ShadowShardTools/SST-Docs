@@ -1,5 +1,11 @@
 import { useMemo, useState, useCallback } from "react";
-import { FolderPlus, Folder, FileText, ChevronDown, ChevronRight, Trash2 } from "lucide-react";
+import {
+  FolderPlus,
+  Folder,
+  FileText,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import type {
   Category,
   DocItem,
@@ -56,7 +62,7 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
   selectedItem,
   onReload,
 }) => {
-  const { categoryParent, childrenOrder } = useMemo(
+  const { categoryParent, docParent, childrenOrder } = useMemo(
     () => buildParentMaps(tree, standaloneDocs),
     [tree, standaloneDocs],
   );
@@ -69,13 +75,10 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
   const filteredTree = tree;
   const filteredStandalone = standaloneDocs;
 
-  const readJson = useCallback(
-    async (path: string) => {
-      const res = await read(path);
-      return JSON.parse(res.content);
-    },
-    [],
-  );
+  const readJson = useCallback(async (path: string) => {
+    const res = await read(path);
+    return JSON.parse(res.content);
+  }, []);
 
   const AddMenuTrigger: React.FC<{
     label: string;
@@ -155,71 +158,26 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
     await write(path, JSON.stringify(data, null, 2), "utf8");
   }, []);
 
-  const deleteDoc = async (docId: string, parentId: string | null) => {
-    if (!window.confirm("Delete this document?")) return;
-    const indexPath = `${basePath}/index.json`;
-    try {
-      const index = await readJson(indexPath);
-      index.items = Array.isArray(index.items)
-        ? index.items.filter((id: string) => id !== docId)
-        : [];
-      await writeJson(indexPath, index);
-
-      if (parentId) {
-        const catPath = `${basePath}/categories/${parentId}.json`;
-        const category = await readJson(catPath);
-        category.docs = Array.isArray(category.docs)
-          ? category.docs.filter((id: string) => id !== docId)
-          : [];
-        await writeJson(catPath, category);
-      }
-
-      await onReload(currentProduct, currentVersion);
-    } catch (err) {
-      alert(`Failed to delete document: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  };
-
-  const deleteCategory = async (categoryId: string) => {
-    if (!window.confirm("Delete this category?")) return;
-    const indexPath = `${basePath}/index.json`;
-    try {
-      const index = await readJson(indexPath);
-      const parentId = categoryParent.get(categoryId) ?? null;
-
-      index.categories = Array.isArray(index.categories)
-        ? index.categories.filter((id: string) => id !== categoryId)
-        : [];
-
-      if (parentId) {
-        const parentPath = `${basePath}/categories/${parentId}.json`;
-        const parent = await readJson(parentPath);
-        parent.children = Array.isArray(parent.children)
-          ? parent.children.filter((id: string) => id !== categoryId)
-          : [];
-        await writeJson(parentPath, parent);
-      }
-
-      await writeJson(indexPath, index);
-      await onReload(currentProduct, currentVersion);
-    } catch (err) {
-      alert(`Failed to delete category: ${err instanceof Error ? err.message : String(err)}`);
-    }
+  const generateUniqueId = (prefix: string) => {
+    const existing = new Set<string>([
+      ...categoryParent.keys(),
+      ...docParent.keys(),
+    ]);
+    let candidate = "";
+    do {
+      const rand =
+        typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : Math.random().toString(36).slice(2, 10);
+      candidate = `${prefix}-${rand}`;
+    } while (existing.has(candidate));
+    return candidate;
   };
 
   const createCategory = async (parentId: string | null = null) => {
     const title = window.prompt("Category title");
     if (!title) return;
-    const id = title
-      .split(/[^a-zA-Z0-9]+/u)
-      .filter(Boolean)
-      .map((part, idx) =>
-        idx === 0
-          ? part.toLowerCase()
-          : part.charAt(0).toUpperCase() + part.slice(1).toLowerCase(),
-      )
-      .join("");
-    if (!id) return;
+    const id = generateUniqueId("cat");
 
     const indexPath = `${basePath}/index.json`;
     const catPath = `${basePath}/categories/${id}.json`;
@@ -234,7 +192,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       };
       await writeJson(catPath, newCategory);
 
-      const categories = Array.isArray(index.categories) ? [...index.categories] : [];
+      const categories = Array.isArray(index.categories)
+        ? [...index.categories]
+        : [];
       if (!categories.includes(id)) categories.push(id);
       index.categories = categories;
 
@@ -250,23 +210,16 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       await writeJson(indexPath, index);
       await onReload(currentProduct, currentVersion);
     } catch (err) {
-      alert(`Failed to create category: ${err instanceof Error ? err.message : String(err)}`);
+      alert(
+        `Failed to create category: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   };
 
   const createDoc = async (parentId: string | null) => {
     const title = window.prompt("Document title");
     if (!title) return;
-    const id = title
-      .split(/[^a-zA-Z0-9]+/u)
-      .filter(Boolean)
-      .map((part, idx) =>
-        idx === 0
-          ? part.toLowerCase()
-          : part.charAt(0).toUpperCase() + part.slice(1).toLowerCase(),
-      )
-      .join("");
-    if (!id) return;
+    const id = generateUniqueId("doc");
 
     const indexPath = `${basePath}/index.json`;
     const docPath = `${basePath}/items/${id}.json`;
@@ -292,7 +245,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       await writeJson(indexPath, index);
       await onReload(currentProduct, currentVersion);
     } catch (err) {
-      alert(`Failed to create document: ${err instanceof Error ? err.message : String(err)}`);
+      alert(
+        `Failed to create document: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   };
 
@@ -312,23 +267,31 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       const index = await readJson(indexPath);
       const removeFromParent = async (parentId: string | null) => {
         if (!parentId) {
-          index.categories = (index.categories as string[]).filter((c) => c !== categoryId);
+          index.categories = (index.categories as string[]).filter(
+            (c) => c !== categoryId,
+          );
         } else {
           const parentPath = `${basePath}/categories/${parentId}.json`;
           const parent = await readJson(parentPath);
-          parent.children = (parent.children ?? []).filter((c: string) => c !== categoryId);
+          parent.children = (parent.children ?? []).filter(
+            (c: string) => c !== categoryId,
+          );
           await writeJson(parentPath, parent);
         }
       };
       const addToParent = async (parentId: string | null) => {
         if (!parentId) {
-          const cats = Array.isArray(index.categories) ? [...index.categories] : [];
+          const cats = Array.isArray(index.categories)
+            ? [...index.categories]
+            : [];
           cats.splice(targetIndex, 0, categoryId);
           index.categories = cats;
         } else {
           const parentPath = `${basePath}/categories/${parentId}.json`;
           const parent = await readJson(parentPath);
-          const children = Array.isArray(parent.children) ? [...parent.children] : [];
+          const children = Array.isArray(parent.children)
+            ? [...parent.children]
+            : [];
           children.splice(targetIndex, 0, categoryId);
           parent.children = children;
           await writeJson(parentPath, parent);
@@ -340,7 +303,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       await writeJson(indexPath, index);
       await onReload(currentProduct, currentVersion);
     } catch (err) {
-      alert(`Failed to move category: ${err instanceof Error ? err.message : String(err)}`);
+      alert(
+        `Failed to move category: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   };
 
@@ -382,7 +347,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
 
       await onReload(currentProduct, currentVersion);
     } catch (err) {
-      alert(`Failed to move document: ${err instanceof Error ? err.message : String(err)}`);
+      alert(
+        `Failed to move document: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   };
 
@@ -448,7 +415,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
           <li
             key={doc.id}
             draggable
-            onDragStart={() => setDragItem({ type: "doc", id: doc.id, parentId })}
+            onDragStart={() =>
+              setDragItem({ type: "doc", id: doc.id, parentId })
+            }
             onDragOver={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -459,22 +428,13 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
               setDragOverKey(null);
             }}
             onDrop={handleDropDoc(parentId, idx)}
-            className={`${cls} ${over ? "!border-2 !border-sky-500 !bg-sky-500/10 !rounded-md" : ""
-              }`}
+            className={`${cls} ${
+              over ? "!border-2 !border-sky-500 !bg-sky-500/10 !rounded-md" : ""
+            }`}
             onClick={() => onSelect(doc)}
           >
             <FileText className="w-4 h-4 shrink-0" />
             <span className="truncate">{doc.title}</span>
-            <button
-              type="button"
-              className={`${styles.buttons.common} p-0.25 ml-auto`}
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteDoc(doc.id, parentId);
-              }}
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
           </li>
         );
       })}
@@ -490,8 +450,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
     return (
       <div key={node.id} className="space-y-1">
         <div
-          className={`${cls} flex items-center gap-2 ${over ? "!border-2 !border-sky-500 !bg-sky-500/10 !rounded-md" : ""
-            }`}
+          className={`${cls} flex items-center gap-2 ${
+            over ? "!border-2 !border-sky-500 !bg-sky-500/10 !rounded-md" : ""
+          }`}
           draggable
           onDragStart={() =>
             setDragItem({
@@ -510,32 +471,20 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
         >
           <Folder className="w-4 h-4 shrink-0" />
           <span className="truncate">{node.title}</span>
-          <div className="ml-auto flex items-center gap-1">
-            <button
-              type="button"
-              className={`${styles.buttons.common} text-red-500`}
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteCategory(node.id);
-              }}
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              className="p-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpen((prev) => ({ ...prev, [node.id]: !expanded }));
-              }}
-            >
-              {expanded ? (
-                <ChevronDown className="w-4 h-4 shrink-0" />
-              ) : (
-                <ChevronRight className="w-4 h-4 shrink-0" />
-              )}
-            </button>
-          </div>
+          <button
+            type="button"
+            className="p-1 ml-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen((prev) => ({ ...prev, [node.id]: !expanded }));
+            }}
+          >
+            {expanded ? (
+              <ChevronDown className="w-4 h-4 shrink-0" />
+            ) : (
+              <ChevronRight className="w-4 h-4 shrink-0" />
+            )}
+          </button>
         </div>
         {expanded && (
           <>
@@ -575,77 +524,68 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       className={`hidden md:block fixed md:sticky top-16 bottom-0 md:top-16 md:h-[calc(100vh-4rem)] w-64 shrink-0 p-4 overflow-y-auto custom-scrollbar z-40 ${styles.sections.sidebarBackground} transition-colors`}
     >
       <nav className="space-y-3">
-        {filteredStandalone.length > 0 && (
-          <div>
-            <div className="text-xs uppercase text-slate-500 mb-1">
-              Standalone
-            </div>
-            <div
-              className="mb-2"
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOverKey("standalone-add");
-              }}
-              onDragLeave={() => setDragOverKey(null)}
-              onDrop={handleStandaloneDrop(filteredStandalone.length)}
-            >
-              <AddMenuTrigger
-                label="Item"
-                activeKey="standalone-add"
-                addMenuFor={addMenuFor}
-                setAddMenuFor={setAddMenuFor}
-                onCreateCategory={() => createCategory(null)}
-                onCreateDoc={() => createDoc(null)}
-                highlight={dragOverKey === "standalone-add"}
-                docOnly
-              />
-            </div>
-            <ul className="space-y-1">
-              {filteredStandalone.map((doc, idx) => {
-                const active = selectedItem?.id === doc.id;
-                const cls = rowClasses(styles, active, false, 0);
-                const dragKey = `doc-${doc.id}`;
-                const over = dragOverKey === dragKey && dragItem?.type === "doc";
-
-                return (
-                  <li
-                    key={doc.id}
-                    draggable
-                    onDragStart={() =>
-                      setDragItem({ type: "doc", id: doc.id, parentId: null })
-                    }
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setDragOverKey(dragKey);
-                    }}
-                    onDragLeave={(e) => {
-                      e.stopPropagation();
-                      setDragOverKey(null);
-                    }}
-                    onDrop={handleStandaloneDrop(idx)}
-                    className={`${cls} ${over ? "!border-2 !border-sky-500 !bg-sky-500/10 !rounded" : ""
-                      }`}
-                    onClick={() => onSelect(doc)}
-                  >
-                    <FileText className="w-4 h-4 shrink-0" />
-                    <span className="truncate">{doc.title}</span>
-                    <button
-                      type="button"
-                      className={`${styles.buttons.common} p-0.25 ml-auto`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteDoc(doc.id, null);
-                      }}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+        <div>
+          <div className="text-xs uppercase text-slate-500 mb-1">
+            Standalone
           </div>
-        )}
+          <div
+            className="mb-2"
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOverKey("standalone-add");
+            }}
+            onDragLeave={() => setDragOverKey(null)}
+            onDrop={handleStandaloneDrop(filteredStandalone.length)}
+          >
+            <AddMenuTrigger
+              label="Item"
+              activeKey="standalone-add"
+              addMenuFor={addMenuFor}
+              setAddMenuFor={setAddMenuFor}
+              onCreateCategory={() => createCategory(null)}
+              onCreateDoc={() => createDoc(null)}
+              highlight={dragOverKey === "standalone-add"}
+              docOnly
+            />
+          </div>
+          <ul className="space-y-1">
+            {filteredStandalone.map((doc, idx) => {
+              const active = selectedItem?.id === doc.id;
+              const cls = rowClasses(styles, active, false, 0);
+              const dragKey = `doc-${doc.id}`;
+              const over = dragOverKey === dragKey && dragItem?.type === "doc";
+
+              return (
+                <li
+                  key={doc.id}
+                  draggable
+                  onDragStart={() =>
+                    setDragItem({ type: "doc", id: doc.id, parentId: null })
+                  }
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDragOverKey(dragKey);
+                  }}
+                  onDragLeave={(e) => {
+                    e.stopPropagation();
+                    setDragOverKey(null);
+                  }}
+                  onDrop={handleStandaloneDrop(idx)}
+                  className={`${cls} ${
+                    over
+                      ? "!border-2 !border-sky-500 !bg-sky-500/10 !rounded"
+                      : ""
+                  }`}
+                  onClick={() => onSelect(doc)}
+                >
+                  <FileText className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{doc.title}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
 
         <div className="text-xs uppercase text-slate-500">Categories</div>
         <div
@@ -682,7 +622,11 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
           }}
           onDragLeave={() => setDragOverKey(null)}
           onDrop={handleRootDrop}
-          className={dragOverKey === "root" && dragItem?.type === "category" ? "border-t-2 border-sky-500 rounded" : ""}
+          className={
+            dragOverKey === "root" && dragItem?.type === "category"
+              ? "border-t-2 border-sky-500 rounded"
+              : ""
+          }
         >
           {filteredTree.map((node) => renderCategory(node))}
         </div>

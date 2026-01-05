@@ -4,7 +4,6 @@
     "examples-category"
   ],
   "items": [
-    "newTestDocument",
     "standalone-examples-item",
     "introduction-item",
     "charts-examples-item",
@@ -13,7 +12,6 @@
     "configuration-item",
     "installation-item",
     "math-examples-item",
-    "media-examples-item",
-    "test"
+    "media-examples-item"
   ]
 }

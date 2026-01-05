@@ -182,7 +182,8 @@ export function useDocumentationData() {
   }, [currentProduct, writeStored]);
 
   useEffect(() => {
-    if (currentProduct && currentVersion) writeStored(currentProduct, currentVersion);
+    if (currentProduct && currentVersion)
+      writeStored(currentProduct, currentVersion);
   }, [currentProduct, currentVersion, writeStored]);
 
   // Helper function to retry loading content

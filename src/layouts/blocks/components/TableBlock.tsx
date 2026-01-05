@@ -49,9 +49,7 @@ export const TableBlock: React.FC<Props> = ({ tableData, styles, index }) => {
                     (rowIndex === 0 || cellIndex === 0));
                 const CellComponent = isHeader ? "th" : "td";
                 const isMatrixCorner =
-                  tableType === "matrix" &&
-                  rowIndex === 0 &&
-                  cellIndex === 0;
+                  tableType === "matrix" && rowIndex === 0 && cellIndex === 0;
                 const baseCellClass = `px-2 py-1 border-r ${styles.table.border} last:border-r-0`;
 
                 const cellStyle = isMatrixCorner

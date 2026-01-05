@@ -13,7 +13,8 @@ interface EditableMathProps {
 export function EditableMath({ data, styles, onChange }: EditableMathProps) {
   const mathData = data ?? {};
   const expression = mathData.expression ?? "";
-  const alignment = (mathData.alignment ?? "center") as keyof typeof ALIGNMENT_CLASSES;
+  const alignment = (mathData.alignment ??
+    "center") as keyof typeof ALIGNMENT_CLASSES;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -22,7 +23,8 @@ export function EditableMath({ data, styles, onChange }: EditableMathProps) {
     }
   }, [expression]);
 
-  const textAlignClass = ALIGNMENT_CLASSES[alignment]?.text ?? ALIGNMENT_CLASSES.center.text;
+  const textAlignClass =
+    ALIGNMENT_CLASSES[alignment]?.text ?? ALIGNMENT_CLASSES.center.text;
   const previewData = useMemo(
     () => ({
       ...mathData,
@@ -50,7 +52,11 @@ export function EditableMath({ data, styles, onChange }: EditableMathProps) {
         />
       </label>
       <div className={`rounded border px-3 py-2 ${textAlignClass}`}>
-        <MathBlock index={0} styles={styles} mathData={previewData as MathData} />
+        <MathBlock
+          index={0}
+          styles={styles}
+          mathData={previewData as MathData}
+        />
       </div>
     </div>
   );

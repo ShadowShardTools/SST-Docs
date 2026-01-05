@@ -32,7 +32,8 @@ export function Dropdown({
   const ref = useRef<HTMLDivElement>(null);
 
   const selectedLabel = useMemo(
-    () => items.find((item) => item.value === selectedValue)?.label ?? placeholder,
+    () =>
+      items.find((item) => item.value === selectedValue)?.label ?? placeholder,
     [items, selectedValue, placeholder],
   );
 
@@ -72,7 +73,9 @@ export function Dropdown({
         aria-expanded={isOpen}
       >
         <span className="truncate text-left">{selectedLabel}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
       {isOpen && (

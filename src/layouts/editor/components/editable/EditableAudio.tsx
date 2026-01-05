@@ -36,7 +36,10 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
     if (srcRef.current && srcRef.current.value !== (audioData.src ?? "")) {
       srcRef.current.value = audioData.src ?? "";
     }
-    if (captionRef.current && captionRef.current.value !== (audioData.caption ?? "")) {
+    if (
+      captionRef.current &&
+      captionRef.current.value !== (audioData.caption ?? "")
+    ) {
       captionRef.current.value = audioData.caption ?? "";
     }
   }, [audioData.src, audioData.caption]);

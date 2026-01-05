@@ -18,7 +18,10 @@ export const VersionSelector = memo<VersionSelectorProps>(
     return (
       <Dropdown
         styles={styles}
-        items={versions.map(({ version, label }) => ({ value: version, label }))}
+        items={versions.map(({ version, label }) => ({
+          value: version,
+          label,
+        }))}
         selectedValue={currentVersion}
         onSelect={onVersionChange}
         placeholder="Select Version"

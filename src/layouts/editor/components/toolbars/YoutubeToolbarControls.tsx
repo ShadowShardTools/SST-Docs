@@ -29,7 +29,9 @@ export function YoutubeToolbarControls({ data, onChange, styles }: Props) {
             { value: "right", label: "Right" },
           ]}
           selectedValue={youtubeData.alignment ?? "center"}
-          onSelect={(val) => update({ alignment: val as YoutubeData["alignment"] })}
+          onSelect={(val) =>
+            update({ alignment: val as YoutubeData["alignment"] })
+          }
           className="min-w-[110px]"
         />
       </div>
@@ -42,7 +44,11 @@ export function YoutubeToolbarControls({ data, onChange, styles }: Props) {
           max={1}
           className={`${styles.input} px-2 py-1 w-20`}
           value={youtubeData.scale ?? 1}
-          onChange={(e) => update({ scale: Math.min(Number.parseFloat(e.target.value) || 1, 1) })}
+          onChange={(e) =>
+            update({
+              scale: Math.min(Number.parseFloat(e.target.value) || 1, 1),
+            })
+          }
         />
       </label>
     </div>

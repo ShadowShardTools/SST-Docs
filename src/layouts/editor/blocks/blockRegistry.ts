@@ -53,7 +53,10 @@ export const DEFAULT_BLOCKS: Record<BlockType, Content> = {
     tableData: {
       type: "horizontal",
       data: [
-        [{ content: "Column 1", scope: "col" }, { content: "Column 2", scope: "col" }],
+        [
+          { content: "Column 1", scope: "col" },
+          { content: "Column 2", scope: "col" },
+        ],
         [{ content: "Row 1" }, { content: "Value" }],
         [{ content: "Row 2" }, { content: "Value" }],
       ],

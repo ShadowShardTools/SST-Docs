@@ -58,6 +58,13 @@ export async function write(
   });
 }
 
+export async function remove(filePath: string) {
+  const params = new URLSearchParams({ path: filePath });
+  return request<{ ok: boolean }>(`${API_PREFIX}/delete?${params.toString()}`, {
+    method: "DELETE",
+  });
+}
+
 export async function upload(filePath: string, data: Blob | ArrayBuffer) {
   const params = new URLSearchParams({ path: filePath });
   return request<{ ok: boolean; path: string; size: number }>(
@@ -83,11 +90,14 @@ export async function runGenerator(script: string) {
 }
 
 export async function createProduct(product: string, label: string) {
-  return request<{ ok: boolean; product: string; label: string }>(`${API_PREFIX}/product`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product, label }),
-  });
+  return request<{ ok: boolean; product: string; label: string }>(
+    `${API_PREFIX}/product`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product, label }),
+    },
+  );
 }
 
 export async function deleteProduct(product: string) {
@@ -101,11 +111,14 @@ export async function deleteProduct(product: string) {
 }
 
 export async function updateProduct(product: string, label: string) {
-  return request<{ ok: boolean; product: string; label: string }>(`${API_PREFIX}/product`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product, label }),
-  });
+  return request<{ ok: boolean; product: string; label: string }>(
+    `${API_PREFIX}/product`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product, label }),
+    },
+  );
 }
 
 export async function createVersion(
@@ -128,10 +141,17 @@ export async function deleteVersion(product: string, version: string) {
   );
 }
 
-export async function updateVersion(product: string, version: string, label: string) {
-  return request<{ ok: boolean; version: string; label: string }>(`${API_PREFIX}/version`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product, version, label }),
-  });
+export async function updateVersion(
+  product: string,
+  version: string,
+  label: string,
+) {
+  return request<{ ok: boolean; version: string; label: string }>(
+    `${API_PREFIX}/version`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product, version, label }),
+    },
+  );
 }

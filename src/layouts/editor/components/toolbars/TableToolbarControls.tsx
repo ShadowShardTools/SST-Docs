@@ -22,7 +22,10 @@ export function TableToolbarControls({ data, onChange, styles }: Props) {
       <span>Layout</span>
       <Dropdown
         styles={styles}
-        items={OPTIONS.map((option) => ({ value: option.value, label: option.label }))}
+        items={OPTIONS.map((option) => ({
+          value: option.value,
+          label: option.label,
+        }))}
         selectedValue={layout}
         onSelect={(val) =>
           onChange((prev) => ({

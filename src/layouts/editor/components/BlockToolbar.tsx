@@ -1,10 +1,7 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { BlockType } from "../blocks";
 import { BLOCK_LABELS } from "../blocks";
-import {
-  updateBlockAt,
-  transformBlockAt,
-} from "./utils/blockTransforms";
+import { updateBlockAt, transformBlockAt } from "./utils/blockTransforms";
 import Dropdown from "../../common/components/Dropdown";
 import TitleToolbarControls from "./toolbars/TitleToolbarControls";
 import TextToolbarControls from "./toolbars/TextToolbarControls";
@@ -69,72 +66,156 @@ export function BlockToolbar({
   const renderInlineControls = () => {
     if (block.type === "title") {
       const data = (block as any).titleData ?? {};
-      return <TitleToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <TitleToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "text") {
       const data = (block as any).textData ?? {};
-      return <TextToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <TextToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "list") {
       const data = (block as any).listData ?? {};
-      return <ListToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <ListToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "divider") {
       const data = (block as any).dividerData ?? {};
-      return <DividerToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <DividerToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "messageBox") {
       const data = (block as any).messageBoxData ?? {};
-      return <MessageBoxToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <MessageBoxToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "table") {
       const data = (block as any).tableData ?? {};
-      return <TableToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <TableToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "math") {
       const data = (block as any).mathData ?? {};
-      return <MathToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <MathToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "code") {
       const data = (block as any).codeData ?? {};
-      return <CodeToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <CodeToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "chart") {
       const data = (block as any).chartData ?? {};
-      return <ChartToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <ChartToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "image") {
       const data = (block as any).imageData ?? {};
-      return <ImageToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <ImageToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "imageCompare") {
       const data = (block as any).imageCompareData ?? {};
-      return <ImageCompareToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <ImageCompareToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "imageCarousel") {
       const data = (block as any).imageCarouselData ?? {};
-      return <ImageCarouselToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <ImageCarouselToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "imageGrid") {
       const data = (block as any).imageGridData ?? {};
-      return <ImageGridToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <ImageGridToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     if (block.type === "youtube") {
       const data = (block as any).youtubeData ?? {};
-      return <YoutubeToolbarControls data={data} onChange={handleUpdate} styles={styles} />;
+      return (
+        <YoutubeToolbarControls
+          data={data}
+          onChange={handleUpdate}
+          styles={styles}
+        />
+      );
     }
 
     return null;
@@ -150,7 +231,10 @@ export function BlockToolbar({
     >
       <Dropdown
         styles={styles}
-        items={typeOptions.map((t) => ({ value: t, label: BLOCK_LABELS[t] ?? t }))}
+        items={typeOptions.map((t) => ({
+          value: t,
+          label: BLOCK_LABELS[t] ?? t,
+        }))}
         selectedValue={block.type as string}
         onSelect={(value) => handleTransform(value as BlockType)}
         placeholder="Type"

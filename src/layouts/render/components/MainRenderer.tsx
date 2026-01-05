@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDocumentationData } from "../../../services";
 import {
   useDocNavigation,
@@ -68,6 +69,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const navigate = useNavigate();
 
   const {
     productVersioning,
@@ -88,6 +90,32 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
     items,
     tree,
     standaloneDocs,
+  );
+  const handleSelectProduct = useCallback(
+    (product: string) => {
+      if (!productVersioning) return;
+      if (product === currentProduct) return;
+      setCurrentProduct(product);
+      setCurrentVersion("");
+      navigate("/", { replace: true });
+    },
+    [
+      navigate,
+      setCurrentProduct,
+      setCurrentVersion,
+      productVersioning,
+      currentProduct,
+    ],
+  );
+
+  const handleSelectVersion = useCallback(
+    (version: string) => {
+      if (!currentProduct) return;
+      if (version === currentVersion) return;
+      setCurrentVersion(version);
+      navigate("/", { replace: true });
+    },
+    [setCurrentVersion, currentProduct, currentVersion, navigate],
   );
 
   const {
@@ -229,10 +257,10 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           productVersioning={productVersioning}
           products={products}
           currentProduct={currentProduct}
-          onProductChange={setCurrentProduct}
+          onProductChange={handleSelectProduct}
           versions={versions}
           currentVersion={currentVersion}
-          onVersionChange={setCurrentVersion}
+          onVersionChange={handleSelectVersion}
           loading={loading.versions}
           onSearchOpen={handleSearchOpen}
           isMobileNavOpen={isMobileNavOpen}

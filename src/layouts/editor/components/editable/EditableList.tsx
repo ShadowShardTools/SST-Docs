@@ -155,4 +155,3 @@ export function EditableList({ data, listClass, onChange }: EditableListProps) {
     </div>
   );
 }
-

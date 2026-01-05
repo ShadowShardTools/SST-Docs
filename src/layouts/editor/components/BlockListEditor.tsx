@@ -1,12 +1,30 @@
 import type React from "react";
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
-import { GripVertical, Wrench, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import {
+  GripVertical,
+  Wrench,
+  Plus,
+  Heading,
+  Text as TextIcon,
+  List as ListIcon,
+  Table as TableIcon,
+  MessageSquare,
+  Minus,
+  Image as ImageIcon,
+  Columns2,
+  Images,
+  LayoutGrid,
+  Music2,
+  Youtube,
+  FunctionSquare,
+  Code,
+  BarChart2,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ContentBlockRenderer from "../../render/components/ContentBlockRenderer";
 import { BLOCK_LABELS, DEFAULT_BLOCKS, type BlockType } from "../blocks";
 import BlockToolbar from "./BlockToolbar";
-import Dropdown from "../../common/components/Dropdown";
 import {
   EditableDivider,
   EditableList,
@@ -39,13 +57,31 @@ export function BlockListEditor({
   styles,
   currentPath = "editor",
 }: Props) {
+  const blockIcons: Record<BlockType, React.ReactNode> = {
+    title: <Heading className="w-4 h-4" />,
+    text: <TextIcon className="w-4 h-4" />,
+    list: <ListIcon className="w-4 h-4" />,
+    table: <TableIcon className="w-4 h-4" />,
+    messageBox: <MessageSquare className="w-4 h-4" />,
+    divider: <Minus className="w-4 h-4" />,
+    image: <ImageIcon className="w-4 h-4" />,
+    imageCompare: <Columns2 className="w-4 h-4" />,
+    imageCarousel: <Images className="w-4 h-4" />,
+    imageGrid: <LayoutGrid className="w-4 h-4" />,
+    audio: <Music2 className="w-4 h-4" />,
+    youtube: <Youtube className="w-4 h-4" />,
+    math: <FunctionSquare className="w-4 h-4" />,
+    code: <Code className="w-4 h-4" />,
+    chart: <BarChart2 className="w-4 h-4" />,
+  };
+
   const blocks = useMemo(() => content ?? [], [content]);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
-  const showToolbar = (idx: number) => hoveredIndex === idx || expandedIndex === idx;
+  const showToolbar = (idx: number) =>
+    hoveredIndex === idx || expandedIndex === idx;
 
   const insertBlockAt = (index: number, type: BlockType) => {
     const template = DEFAULT_BLOCKS[type];
@@ -63,32 +99,83 @@ export function BlockListEditor({
     fullWidth = false,
   }) => {
     const [open, setOpen] = useState(false);
+    const [hovered, setHovered] = useState(false);
+    const showButton = hovered || open;
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const [openAbove, setOpenAbove] = useState(false);
+
+    useEffect(() => {
+      if (!open) return;
+      const menuHeight =
+        dropdownRef.current?.getBoundingClientRect().height ?? 256;
+      const triggerRect = triggerRef.current?.getBoundingClientRect();
+      if (triggerRect) {
+        const belowSpace = window.innerHeight - triggerRect.bottom;
+        setOpenAbove(belowSpace < menuHeight + 12);
+      }
+    }, [open]);
+
+    useEffect(() => {
+      if (!open) return;
+      const handleClickOutside = (e: MouseEvent) => {
+        const target = e.target as Node;
+        if (
+          dropdownRef.current &&
+          triggerRef.current &&
+          !dropdownRef.current.contains(target) &&
+          !triggerRef.current.contains(target)
+        ) {
+          setOpen(false);
+          setHovered(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }, [open]);
     return (
-      <div className={`relative my-3 flex items-center ${fullWidth ? "w-full" : ""}`}>
-        <div className="h-0.5 bg-emerald-400/60 rounded-full flex-1" />
+      <div
+        className={`relative my-3 flex items-center ${fullWidth ? "w-full" : ""}`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => {
+          setHovered(false);
+        }}
+      >
+        <div
+          className={`h-px rounded-full flex-1 transition-colors ${showButton ? "bg-slate-500/50" : "bg-slate-500/20"}`}
+        />
         <button
           type="button"
-          className="absolute left-1/2 -translate-x-1/2 -top-2 bg-emerald-500 text-white rounded-full px-2 py-1 shadow flex items-center gap-1 hover:bg-emerald-600"
+          className={`absolute left-1/2 -translate-x-1/2 -top-3 px-3 py-1 text-xs rounded-full shadow-sm flex items-center gap-2 border bg-slate-800 text-slate-50 border-slate-500/50 transition-opacity ${showButton ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
           onClick={() => setOpen((prev) => !prev)}
           aria-label="Add block"
+          ref={triggerRef}
         >
           <Plus className="w-4 h-4" />
+          <span className="font-medium">Add block</span>
         </button>
         {open && (
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 min-w-[150px]">
-            <Dropdown
-              styles={styles}
-              items={(Object.keys(BLOCK_LABELS) as BlockType[]).map((type) => ({
-                value: type,
-                label: BLOCK_LABELS[type],
-              }))}
-              selectedValue={undefined}
-              onSelect={(val) => {
-                insertBlockAt(position, val as BlockType);
-                setOpen(false);
-              }}
-              placeholder="+ Block"
-            />
+          <div
+            ref={dropdownRef}
+            className={`absolute left-1/2 -translate-x-1/2 z-20 min-w-[180px] max-h-64 overflow-y-auto ${styles.dropdown.container}`}
+            style={openAbove ? { bottom: "2.5rem" } : { top: "2.5rem" }}
+          >
+            {(Object.keys(BLOCK_LABELS) as BlockType[]).map((type) => (
+              <button
+                key={type}
+                type="button"
+                className={`w-full text-left px-3 py-2 flex items-center gap-2 ${styles.dropdown.item}`}
+                onClick={() => {
+                  insertBlockAt(position, type);
+                  setOpen(false);
+                  setHovered(false);
+                }}
+              >
+                {blockIcons[type]}
+                <span>{BLOCK_LABELS[type]}</span>
+              </button>
+            ))}
           </div>
         )}
       </div>
@@ -156,60 +243,69 @@ export function BlockListEditor({
               <div key={idx}>
                 <InsertControl position={idx} />
                 <div
-                  className={`relative ring-offset-2 transition ${isDragOver || isDragging
+                  className={`relative ring-offset-2 transition ${
+                    isDragOver || isDragging
                       ? "ring-1 ring-sky-400 bg-slate-50/40 dark:bg-slate-800/40"
                       : ""
-                    }`}
+                  }`}
                   onDragOver={(e) => handleDragOver(e, idx)}
                   onDragLeave={() => handleDragLeave(idx)}
                   onDrop={(e) => handleDrop(e, idx)}
                 >
                   <div className="flex gap-1 items-start">
-                    <button
-                      type="button"
-                      className={`flex items-center justify-center px-2 h-8 rounded cursor-grab active:cursor-grabbing transition ${isDragging
-                          ? "bg-sky-100 dark:bg-slate-700 border-sky-300"
-                          : "hover:bg-slate-100 dark:hover:bg-slate-800"
-                        }`}
-                      draggable
-                      aria-grabbed={isDragging}
-                      onDragStart={(e) => handleDragStart(e, idx)}
-                      onDragEnd={() => {
-                        setDragIndex(null);
-                        setDragOverIndex(null);
-                      }}
-                      title="Drag to reorder"
-                    >
-                      <GripVertical className="w-3 h-3" />
-                    </button>
-                    <div className="relative flex flex-col items-start">
+                    <div className="flex items-start gap-1">
                       <button
                         type="button"
-                        className={`flex items-center justify-center px-2 h-8 rounded text-xs transition ${showToolbar(idx)
+                        className={`flex items-center justify-center px-2 h-8 rounded cursor-grab active:cursor-grabbing transition ${
+                          isDragging
                             ? "bg-sky-100 dark:bg-slate-700 border-sky-300"
                             : "hover:bg-slate-100 dark:hover:bg-slate-800"
-                          }`}
-                        onClick={() =>
-                          setExpandedIndex((prev) => (prev === idx ? null : idx))
-                        }
-                        onMouseEnter={() => setHoveredIndex(idx)}
-                        onMouseLeave={() =>
-                          setHoveredIndex((prev) => (prev === idx ? null : prev))
-                        }
-                        title="Show options"
+                        }`}
+                        draggable
+                        aria-grabbed={isDragging}
+                        onDragStart={(e) => handleDragStart(e, idx)}
+                        onDragEnd={() => {
+                          setDragIndex(null);
+                          setDragOverIndex(null);
+                        }}
+                        title="Drag to reorder"
                       >
-                        <Wrench className="w-3 h-3" />
+                        <GripVertical className="w-3 h-3" />
                       </button>
+                      <div className="relative flex flex-col items-start">
+                        <button
+                          type="button"
+                          className={`flex items-center justify-center px-2 h-8 rounded text-xs transition ${
+                            showToolbar(idx)
+                              ? "bg-sky-100 dark:bg-slate-700 border-sky-300"
+                              : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                          }`}
+                          onClick={() =>
+                            setExpandedIndex((prev) =>
+                              prev === idx ? null : idx,
+                            )
+                          }
+                          onMouseEnter={() => setHoveredIndex(idx)}
+                          onMouseLeave={() =>
+                            setHoveredIndex((prev) =>
+                              prev === idx ? null : prev,
+                            )
+                          }
+                          title="Show options"
+                        >
+                          <Wrench className="w-3 h-3" />
+                        </button>
 
-                      <BlockToolbar
-                        block={block}
-                        index={idx}
-                        blocks={blocks}
-                        onChange={onChange}
-                        onRemove={removeBlock}
-                        styles={styles}
-                        visible={showToolbar(idx)}
-                      />
+                        <BlockToolbar
+                          block={block}
+                          index={idx}
+                          blocks={blocks}
+                          onChange={onChange}
+                          onRemove={removeBlock}
+                          styles={styles}
+                          visible={showToolbar(idx)}
+                        />
+                      </div>
                     </div>
 
                     <div className="flex-1 space-y-3">
@@ -316,7 +412,9 @@ export function BlockListEditor({
                           data={listData}
                           listClass={[
                             styles.text.list,
-                            listData.type === "ol" ? "list-decimal" : "list-disc",
+                            listData.type === "ol"
+                              ? "list-decimal"
+                              : "list-disc",
                             listData.inside ? "ml-4" : "",
                             ALIGNMENT_CLASSES[
                               (listData.alignment ??

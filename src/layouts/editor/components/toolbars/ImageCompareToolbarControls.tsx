@@ -43,7 +43,9 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
             { value: "right", label: "Right" },
           ]}
           selectedValue={imageCompareData.alignment ?? "center"}
-          onSelect={(val) => update({ alignment: val as ImageCompareData["alignment"] })}
+          onSelect={(val) =>
+            update({ alignment: val as ImageCompareData["alignment"] })
+          }
           className="min-w-[120px]"
         />
       </div>
@@ -57,7 +59,11 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
           max={1}
           className={`${styles.input} px-2 py-1 w-20`}
           value={imageCompareData.scale ?? 1}
-          onChange={(e) => update({ scale: Math.min(Number.parseFloat(e.target.value) || 1, 1) })}
+          onChange={(e) =>
+            update({
+              scale: Math.min(Number.parseFloat(e.target.value) || 1, 1),
+            })
+          }
         />
       </label>
 
@@ -68,7 +74,9 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
             type="text"
             className={`${styles.input} px-2 py-1 text-xs w-24`}
             value={imageCompareData.sliderColor ?? "#ffffff"}
-            onChange={(e) => update({ sliderColor: e.target.value || "#ffffff" })}
+            onChange={(e) =>
+              update({ sliderColor: e.target.value || "#ffffff" })
+            }
             placeholder="#ffffff"
           />
         </label>

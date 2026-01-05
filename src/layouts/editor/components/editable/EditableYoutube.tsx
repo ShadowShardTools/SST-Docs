@@ -9,7 +9,11 @@ interface EditableYoutubeProps {
   onChange: (next: YoutubeData) => void;
 }
 
-export function EditableYoutube({ data, styles, onChange }: EditableYoutubeProps) {
+export function EditableYoutube({
+  data,
+  styles,
+  onChange,
+}: EditableYoutubeProps) {
   const youtubeData: YoutubeData = {
     youtubeVideoId: "",
     caption: "",
@@ -22,10 +26,16 @@ export function EditableYoutube({ data, styles, onChange }: EditableYoutubeProps
   const captionRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (idRef.current && idRef.current.value !== (youtubeData.youtubeVideoId ?? "")) {
+    if (
+      idRef.current &&
+      idRef.current.value !== (youtubeData.youtubeVideoId ?? "")
+    ) {
       idRef.current.value = youtubeData.youtubeVideoId ?? "";
     }
-    if (captionRef.current && captionRef.current.value !== (youtubeData.caption ?? "")) {
+    if (
+      captionRef.current &&
+      captionRef.current.value !== (youtubeData.caption ?? "")
+    ) {
       captionRef.current.value = youtubeData.caption ?? "";
     }
   }, [youtubeData.youtubeVideoId, youtubeData.caption]);

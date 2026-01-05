@@ -39,7 +39,10 @@ export function CodeToolbarControls({ data, onChange, styles }: Props) {
           onChange={(e) =>
             onChange((prev) => ({
               ...prev,
-              codeData: { ...(prev as any).codeData, maxHeight: e.target.value || undefined },
+              codeData: {
+                ...(prev as any).codeData,
+                maxHeight: e.target.value || undefined,
+              },
             }))
           }
           placeholder="e.g. 400px"

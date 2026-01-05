@@ -10,7 +10,8 @@ interface Props {
 const ALIGN_OPTIONS = ["left", "center", "right"] as const;
 
 export function MathToolbarControls({ data, onChange, styles }: Props) {
-  const alignment = (data.alignment ?? "center") as (typeof ALIGN_OPTIONS)[number];
+  const alignment = (data.alignment ??
+    "center") as (typeof ALIGN_OPTIONS)[number];
 
   return (
     <>
@@ -18,7 +19,10 @@ export function MathToolbarControls({ data, onChange, styles }: Props) {
         <span>Align</span>
         <Dropdown
           styles={styles}
-          items={ALIGN_OPTIONS.map((opt) => ({ value: opt, label: opt[0].toUpperCase() + opt.slice(1) }))}
+          items={ALIGN_OPTIONS.map((opt) => ({
+            value: opt,
+            label: opt[0].toUpperCase() + opt.slice(1),
+          }))}
           selectedValue={alignment}
           onSelect={(val) =>
             onChange((prev) => ({

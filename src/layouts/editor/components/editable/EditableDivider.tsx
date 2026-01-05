@@ -7,7 +7,11 @@ interface EditableDividerProps {
   onChange: (next: string) => void;
 }
 
-export function EditableDivider({ data, styles, onChange }: EditableDividerProps) {
+export function EditableDivider({
+  data,
+  styles,
+  onChange,
+}: EditableDividerProps) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -60,4 +64,3 @@ export function EditableDivider({ data, styles, onChange }: EditableDividerProps
     </div>
   );
 }
-

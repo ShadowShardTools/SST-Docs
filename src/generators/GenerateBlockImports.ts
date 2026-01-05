@@ -5,7 +5,10 @@ import path from "node:path";
 import appRoot from "app-root-path";
 import fg from "fast-glob";
 import { createLogger, resolveDataPath } from "@shadow-shard-tools/docs-core";
-import { DEFAULT_BLOCKS, type BlockType } from "../layouts/editor/blocks/blockRegistry";
+import {
+  DEFAULT_BLOCKS,
+  type BlockType,
+} from "../layouts/editor/blocks/blockRegistry";
 
 const logger = createLogger("generate-block-imports");
 
@@ -69,7 +72,9 @@ async function collectBlockTypes(dataRoot: string): Promise<BlockType[]> {
     files.map(async (filePath) => {
       try {
         const raw = await fs.readFile(filePath, "utf8");
-        const parsed = JSON.parse(raw) as { content?: { type?: string | null }[] };
+        const parsed = JSON.parse(raw) as {
+          content?: { type?: string | null }[];
+        };
         const blocks = Array.isArray(parsed.content) ? parsed.content : [];
 
         for (const block of blocks) {

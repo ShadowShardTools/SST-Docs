@@ -15,7 +15,8 @@ interface EditableCodeProps {
 }
 
 export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
-  const { activeSectionIndex: initialActiveFromData, ...safeData } = (data as any) ?? {};
+  const { activeSectionIndex: initialActiveFromData, ...safeData } =
+    (data as any) ?? {};
   const SUPPORTED_LANGUAGES = useMemo(
     () => Object.keys(CODE_LANGUAGE_CONFIG) as SupportedLanguage[],
     [],
@@ -69,7 +70,10 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
   const activeSection = sections[activeIndex];
 
   useEffect(() => {
-    if (textareaRef.current && textareaRef.current.value !== (activeSection?.content ?? "")) {
+    if (
+      textareaRef.current &&
+      textareaRef.current.value !== (activeSection?.content ?? "")
+    ) {
       textareaRef.current.value = activeSection?.content ?? "";
     }
   }, [activeSection?.content]);
@@ -108,7 +112,10 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
                 className="px-1.5 py-1 rounded border text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30"
                 onClick={() => {
                   const updated = sections.filter((_, sIdx) => sIdx !== idx);
-                  const nextActive = Math.min(updated.length - 1, activeIndex === idx ? activeIndex - 1 : activeIndex);
+                  const nextActive = Math.min(
+                    updated.length - 1,
+                    activeIndex === idx ? activeIndex - 1 : activeIndex,
+                  );
                   setLocalActive(Math.max(nextActive, 0));
                   onChange({
                     ...codeData,
@@ -190,7 +197,9 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
               onChange({
                 ...codeData,
                 sections: sections.map((section, idx) =>
-                  idx === activeIndex ? { ...section, filename: e.target.value } : section,
+                  idx === activeIndex
+                    ? { ...section, filename: e.target.value }
+                    : section,
                 ),
               })
             }
@@ -209,7 +218,9 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             onChange({
               ...codeData,
               sections: sections.map((section, idx) =>
-                idx === activeIndex ? { ...section, content: e.target.value } : section,
+                idx === activeIndex
+                  ? { ...section, content: e.target.value }
+                  : section,
               ),
             })
           }

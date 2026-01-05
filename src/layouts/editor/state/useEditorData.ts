@@ -29,7 +29,8 @@ export function useEditorData() {
   const VERSION_KEY = "editor:selectedVersion";
 
   const readStored = useCallback(() => {
-    if (typeof window === "undefined") return { product: undefined, version: undefined };
+    if (typeof window === "undefined")
+      return { product: undefined, version: undefined };
     try {
       const product = window.localStorage.getItem(PRODUCT_KEY) ?? undefined;
       const version = window.localStorage.getItem(VERSION_KEY) ?? undefined;
@@ -66,10 +67,14 @@ export function useEditorData() {
   const loadData = useCallback(async (product?: string, version?: string) => {
     setStatus("loading");
     setError(null);
+    setItems([]);
+    setTree([]);
+    setStandaloneDocs([]);
     try {
       const data = await documentationLoader.loadVersionData({
         product,
         version,
+        source: "editor",
       });
       setProducts(data.products ?? []);
       setVersions(data.versions ?? []);
@@ -96,7 +101,8 @@ export function useEditorData() {
   }, [currentProduct, writeStored]);
 
   useEffect(() => {
-    if (currentProduct && currentVersion) writeStored(currentProduct, currentVersion);
+    if (currentProduct && currentVersion)
+      writeStored(currentProduct, currentVersion);
   }, [currentProduct, currentVersion, writeStored]);
 
   const dataInfo = useMemo(

@@ -1,4 +1,8 @@
-import type { StyleTheme, TableCell, TableData } from "@shadow-shard-tools/docs-core";
+import type {
+  StyleTheme,
+  TableCell,
+  TableData,
+} from "@shadow-shard-tools/docs-core";
 import { useEffect, useMemo, useRef } from "react";
 
 interface EditableTableProps {
@@ -75,15 +79,20 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
     updater: (prev: TableCell) => TableCell,
   ) => {
     const nextRows = tableData.data.map((row, r) =>
-      row.map((cell, c) => (r === rowIndex && c === colIndex ? updater(cell) : cell)),
+      row.map((cell, c) =>
+        r === rowIndex && c === colIndex ? updater(cell) : cell,
+      ),
     );
     emitChange({ ...tableData, data: nextRows });
   };
 
   const handleAddRow = () => {
-    const newRow: TableCell[] = Array.from({ length: columnCount || 1 }, () => ({
-      content: "",
-    }));
+    const newRow: TableCell[] = Array.from(
+      { length: columnCount || 1 },
+      () => ({
+        content: "",
+      }),
+    );
     emitChange({ ...tableData, data: [...tableData.data, newRow] });
   };
 
@@ -153,11 +162,11 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
           }}
         >
           <colgroup>
-            <col style={{ width: '40px' }} />
+            <col style={{ width: "40px" }} />
             {Array.from({ length: columnCount }, () => (
               <col key={Math.random()} />
             ))}
-            <col style={{ width: '40px' }} />
+            <col style={{ width: "40px" }} />
           </colgroup>
           <thead>
             <tr>
@@ -245,14 +254,12 @@ export function EditableTable({ data, styles, onChange }: EditableTableProps) {
                                 ? "row"
                                 : undefined
                           : undefined);
-                  
+
                   // Apply borders to create the table structure
                   const borderClasses = `border-r border-b ${styles.table.border} ${
-                    cellIndex === 0 ? `border-l ${styles.table.border}` : ''
-                  } ${
-                    rowIndex === 0 ? `border-t ${styles.table.border}` : ''
-                  }`;
-                  
+                    cellIndex === 0 ? `border-l ${styles.table.border}` : ""
+                  } ${rowIndex === 0 ? `border-t ${styles.table.border}` : ""}`;
+
                   return (
                     <CellComponent
                       key={`cell-${rowIndex}-${cellIndex}`}

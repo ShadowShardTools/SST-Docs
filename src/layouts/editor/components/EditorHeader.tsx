@@ -69,7 +69,11 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           aria-label="Toggle navigation"
           className={`md:hidden p-2 ${styles.header.mobileNavigationToggle}`}
         >
-          {isMobileNavOpen ? <Menu className="w-6 h-6" /> : <List className="w-6 h-6" />}
+          {isMobileNavOpen ? (
+            <Menu className="w-6 h-6" />
+          ) : (
+            <List className="w-6 h-6" />
+          )}
         </button>
 
         <div className="flex-1 flex items-center gap-3 min-w-0">
@@ -183,7 +187,11 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
             aria-label="Toggle menu"
             className={`p-2 ${styles.header.mobileMenuToggle}`}
           >
-            {isMenuOpen ? <Menu className="w-6 h-6" /> : <List className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <Menu className="w-6 h-6" />
+            ) : (
+              <List className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>

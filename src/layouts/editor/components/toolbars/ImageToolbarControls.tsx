@@ -28,7 +28,9 @@ export function ImageToolbarControls({ data, onChange, styles }: Props) {
             { value: "right", label: "Right" },
           ]}
           selectedValue={imageData.alignment ?? "center"}
-          onSelect={(val) => update({ alignment: val as ImageData["alignment"] })}
+          onSelect={(val) =>
+            update({ alignment: val as ImageData["alignment"] })
+          }
           className="min-w-[110px]"
         />
       </div>

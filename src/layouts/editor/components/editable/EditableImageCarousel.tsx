@@ -21,7 +21,10 @@ export function EditableImageCarousel({
     ...data,
   };
 
-  const updateImage = (index: number, partial: { src?: string; alt?: string }) => {
+  const updateImage = (
+    index: number,
+    partial: { src?: string; alt?: string },
+  ) => {
     const next = [...(carouselData.images ?? [])];
     next[index] = { ...(next[index] ?? {}), ...partial };
     onChange({ ...carouselData, images: next });
@@ -34,7 +37,10 @@ export function EditableImageCarousel({
 
   const removeImage = (index: number) => {
     const next = (carouselData.images ?? []).filter((_, i) => i !== index);
-    onChange({ ...carouselData, images: next.length ? next : [{ src: "", alt: "" }] });
+    onChange({
+      ...carouselData,
+      images: next.length ? next : [{ src: "", alt: "" }],
+    });
   };
 
   return (
@@ -51,7 +57,10 @@ export function EditableImageCarousel({
       </div>
       <div className="space-y-2">
         {(carouselData.images ?? []).map((img, idx) => (
-          <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+          <div
+            key={idx}
+            className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm"
+          >
             <input
               className={`${styles.input} px-2 py-1`}
               value={img.src ?? ""}
@@ -80,7 +89,11 @@ export function EditableImageCarousel({
       </div>
 
       <div className="rounded border px-3 py-2">
-        <ImageCarouselBlock index={0} styles={styles} imageCarouselData={carouselData} />
+        <ImageCarouselBlock
+          index={0}
+          styles={styles}
+          imageCarouselData={carouselData}
+        />
       </div>
     </div>
   );

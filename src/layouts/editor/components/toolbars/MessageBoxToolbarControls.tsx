@@ -14,12 +14,12 @@ export function MessageBoxToolbarControls({ data, onChange, styles }: Props) {
         <span>Type</span>
         <Dropdown
           styles={styles}
-          items={
-            (["info", "warning", "error", "success", "neutral", "quote"] as const).map((s) => ({
-              value: s,
-              label: s,
-            }))
-          }
+          items={(
+            ["info", "warning", "error", "success", "neutral", "quote"] as const
+          ).map((s) => ({
+            value: s,
+            label: s,
+          }))}
           selectedValue={data.type ?? "info"}
           onSelect={(val) =>
             onChange((prev) => ({

@@ -9,7 +9,11 @@ interface EditableImageGridProps {
   onChange: (next: ImageGridData) => void;
 }
 
-export function EditableImageGrid({ data, styles, onChange }: EditableImageGridProps) {
+export function EditableImageGrid({
+  data,
+  styles,
+  onChange,
+}: EditableImageGridProps) {
   const imageGridData: ImageGridData = useMemo(
     () => ({
       images: [{ src: "", alt: "" }],
@@ -20,7 +24,10 @@ export function EditableImageGrid({ data, styles, onChange }: EditableImageGridP
     [data],
   );
 
-  const updateImage = (index: number, partial: { src?: string; alt?: string }) => {
+  const updateImage = (
+    index: number,
+    partial: { src?: string; alt?: string },
+  ) => {
     const next = [...(imageGridData.images ?? [])];
     next[index] = { ...(next[index] ?? {}), ...partial };
     onChange({ ...imageGridData, images: next });
@@ -33,7 +40,10 @@ export function EditableImageGrid({ data, styles, onChange }: EditableImageGridP
 
   const removeImage = (index: number) => {
     const next = (imageGridData.images ?? []).filter((_, i) => i !== index);
-    onChange({ ...imageGridData, images: next.length ? next : [{ src: "", alt: "" }] });
+    onChange({
+      ...imageGridData,
+      images: next.length ? next : [{ src: "", alt: "" }],
+    });
   };
 
   return (
@@ -50,7 +60,10 @@ export function EditableImageGrid({ data, styles, onChange }: EditableImageGridP
       </div>
       <div className="space-y-2">
         {(imageGridData.images ?? []).map((img, idx) => (
-          <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+          <div
+            key={idx}
+            className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm"
+          >
             <input
               className={`${styles.input} px-2 py-1`}
               value={img.src ?? ""}
@@ -79,7 +92,11 @@ export function EditableImageGrid({ data, styles, onChange }: EditableImageGridP
       </div>
 
       <div className="rounded border px-3 py-2">
-        <ImageGridBlock index={0} styles={styles} imageGridData={imageGridData} />
+        <ImageGridBlock
+          index={0}
+          styles={styles}
+          imageGridData={imageGridData}
+        />
       </div>
     </div>
   );

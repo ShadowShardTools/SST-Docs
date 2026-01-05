@@ -36,16 +36,28 @@ export function EditableImageCompare({
   const afterAltRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (beforeSrcRef.current && beforeSrcRef.current.value !== (imageCompareData.beforeImage?.src ?? "")) {
+    if (
+      beforeSrcRef.current &&
+      beforeSrcRef.current.value !== (imageCompareData.beforeImage?.src ?? "")
+    ) {
       beforeSrcRef.current.value = imageCompareData.beforeImage?.src ?? "";
     }
-    if (beforeAltRef.current && beforeAltRef.current.value !== (imageCompareData.beforeImage?.alt ?? "")) {
+    if (
+      beforeAltRef.current &&
+      beforeAltRef.current.value !== (imageCompareData.beforeImage?.alt ?? "")
+    ) {
       beforeAltRef.current.value = imageCompareData.beforeImage?.alt ?? "";
     }
-    if (afterSrcRef.current && afterSrcRef.current.value !== (imageCompareData.afterImage?.src ?? "")) {
+    if (
+      afterSrcRef.current &&
+      afterSrcRef.current.value !== (imageCompareData.afterImage?.src ?? "")
+    ) {
       afterSrcRef.current.value = imageCompareData.afterImage?.src ?? "";
     }
-    if (afterAltRef.current && afterAltRef.current.value !== (imageCompareData.afterImage?.alt ?? "")) {
+    if (
+      afterAltRef.current &&
+      afterAltRef.current.value !== (imageCompareData.afterImage?.alt ?? "")
+    ) {
       afterAltRef.current.value = imageCompareData.afterImage?.alt ?? "";
     }
   }, [
@@ -67,7 +79,10 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                beforeImage: ensureImage({ ...(imageCompareData.beforeImage ?? {}), src: e.target.value }),
+                beforeImage: ensureImage({
+                  ...(imageCompareData.beforeImage ?? {}),
+                  src: e.target.value,
+                }),
               })
             }
             placeholder="https://example.com/before.jpg"
@@ -82,7 +97,10 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                afterImage: ensureImage({ ...(imageCompareData.afterImage ?? {}), src: e.target.value }),
+                afterImage: ensureImage({
+                  ...(imageCompareData.afterImage ?? {}),
+                  src: e.target.value,
+                }),
               })
             }
             placeholder="https://example.com/after.jpg"
@@ -100,7 +118,10 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                beforeImage: ensureImage({ ...(imageCompareData.beforeImage ?? {}), alt: e.target.value }),
+                beforeImage: ensureImage({
+                  ...(imageCompareData.beforeImage ?? {}),
+                  alt: e.target.value,
+                }),
               })
             }
             placeholder="Before description"
@@ -115,7 +136,10 @@ export function EditableImageCompare({
             onChange={(e) =>
               onChange({
                 ...imageCompareData,
-                afterImage: ensureImage({ ...(imageCompareData.afterImage ?? {}), alt: e.target.value }),
+                afterImage: ensureImage({
+                  ...(imageCompareData.afterImage ?? {}),
+                  alt: e.target.value,
+                }),
               })
             }
             placeholder="After description"
@@ -124,7 +148,11 @@ export function EditableImageCompare({
       </div>
 
       <div className="rounded border px-3 py-2">
-        <ImageCompareBlock index={0} styles={styles} imageCompareData={imageCompareData} />
+        <ImageCompareBlock
+          index={0}
+          styles={styles}
+          imageCompareData={imageCompareData}
+        />
       </div>
     </div>
   );

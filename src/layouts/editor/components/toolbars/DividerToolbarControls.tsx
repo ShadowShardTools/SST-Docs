@@ -14,12 +14,12 @@ export function DividerToolbarControls({ data, onChange, styles }: Props) {
         <span>Style</span>
         <Dropdown
           styles={styles}
-          items={
-            (["line", "dashed", "dotted", "double", "thick", "gradient"] as const).map((s) => ({
-              value: s,
-              label: s,
-            }))
-          }
+          items={(
+            ["line", "dashed", "dotted", "double", "thick", "gradient"] as const
+          ).map((s) => ({
+            value: s,
+            label: s,
+          }))}
           selectedValue={data.type ?? "line"}
           onSelect={(val) =>
             onChange((prev) => ({

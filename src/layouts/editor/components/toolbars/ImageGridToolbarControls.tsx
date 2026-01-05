@@ -28,7 +28,9 @@ export function ImageGridToolbarControls({ data, onChange, styles }: Props) {
             { value: "right", label: "Right" },
           ]}
           selectedValue={gridData.alignment ?? "center"}
-          onSelect={(val) => update({ alignment: val as ImageGridData["alignment"] })}
+          onSelect={(val) =>
+            update({ alignment: val as ImageGridData["alignment"] })
+          }
           className="min-w-[110px]"
         />
       </div>
@@ -41,7 +43,11 @@ export function ImageGridToolbarControls({ data, onChange, styles }: Props) {
           max={1}
           className={`${styles.input} px-2 py-1 w-20`}
           value={gridData.scale ?? 1}
-          onChange={(e) => update({ scale: Math.min(Number.parseFloat(e.target.value) || 1, 1) })}
+          onChange={(e) =>
+            update({
+              scale: Math.min(Number.parseFloat(e.target.value) || 1, 1),
+            })
+          }
         />
       </label>
     </div>

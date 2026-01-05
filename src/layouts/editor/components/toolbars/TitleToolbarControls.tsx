@@ -14,7 +14,10 @@ export function TitleToolbarControls({ data, onChange, styles }: Props) {
         <span>Level</span>
         <Dropdown
           styles={styles}
-          items={[1, 2, 3].map((lvl) => ({ value: String(lvl), label: `H${lvl}` }))}
+          items={[1, 2, 3].map((lvl) => ({
+            value: String(lvl),
+            label: `H${lvl}`,
+          }))}
           selectedValue={String(data.level ?? 2)}
           onSelect={(val) =>
             onChange((prev) => ({

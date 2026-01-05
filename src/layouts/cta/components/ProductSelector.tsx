@@ -18,7 +18,10 @@ export const ProductSelector = memo<ProductSelectorProps>(
     return (
       <Dropdown
         styles={styles}
-        items={products.map(({ product, label }) => ({ value: product, label }))}
+        items={products.map(({ product, label }) => ({
+          value: product,
+          label,
+        }))}
         selectedValue={currentProduct}
         onSelect={onProductChange}
         placeholder="Select Product"

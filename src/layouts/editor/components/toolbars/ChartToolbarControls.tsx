@@ -74,7 +74,9 @@ export function ChartToolbarControls({ data, onChange, styles }: Props) {
           max={1}
           className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800 w-20"
           value={chartData.scale ?? 1}
-          onChange={(e) => updateScale(Math.min(Number.parseFloat(e.target.value) || 1, 1))}
+          onChange={(e) =>
+            updateScale(Math.min(Number.parseFloat(e.target.value) || 1, 1))
+          }
         />
       </label>
     </div>

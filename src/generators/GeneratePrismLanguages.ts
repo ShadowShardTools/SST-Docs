@@ -36,25 +36,37 @@ async function writeGeneratedFile(languages: string[]): Promise<void> {
   await fs.writeFile(outputFile, lines.join("\n"));
 }
 
-async function collectUsedLanguages(dataRoot: string): Promise<SupportedLanguage[]> {
-  const pattern = path.join(dataRoot, "**/items/*.json").split(path.sep).join(path.posix.sep);
+async function collectUsedLanguages(
+  dataRoot: string,
+): Promise<SupportedLanguage[]> {
+  const pattern = path
+    .join(dataRoot, "**/items/*.json")
+    .split(path.sep)
+    .join(path.posix.sep);
   logger.info(`Scanning content items in ${dataRoot} for code languages`);
 
   const files = await fg(pattern, { absolute: true, onlyFiles: true });
-  const validLanguages = new Set(Object.keys(CODE_LANGUAGE_CONFIG) as SupportedLanguage[]);
+  const validLanguages = new Set(
+    Object.keys(CODE_LANGUAGE_CONFIG) as SupportedLanguage[],
+  );
   const languages = new Set<SupportedLanguage>();
 
   await Promise.all(
     files.map(async (filePath) => {
       try {
         const raw = await fs.readFile(filePath, "utf8");
-        const parsed = JSON.parse(raw) as { content?: Array<{ type?: string; codeData?: any }> };
+        const parsed = JSON.parse(raw) as {
+          content?: Array<{ type?: string; codeData?: any }>;
+        };
         const blocks = Array.isArray(parsed.content) ? parsed.content : [];
         for (const block of blocks) {
           if (block?.type !== "code") continue;
           const code = block.codeData ?? {};
           const addLang = (lang?: string) => {
-            if (typeof lang === "string" && validLanguages.has(lang as SupportedLanguage)) {
+            if (
+              typeof lang === "string" &&
+              validLanguages.has(lang as SupportedLanguage)
+            ) {
               languages.add(lang as SupportedLanguage);
             }
           };
@@ -78,7 +90,9 @@ async function collectUsedLanguages(dataRoot: string): Promise<SupportedLanguage
   return [...languages].sort();
 }
 
-const LANGUAGE_COMPONENT_MAP: Partial<Record<SupportedLanguage, string | null>> = {
+const LANGUAGE_COMPONENT_MAP: Partial<
+  Record<SupportedLanguage, string | null>
+> = {
   html: "markup",
   xml: "markup",
   dockerfile: "docker",
@@ -103,9 +117,8 @@ async function main(): Promise<void> {
     ? (Object.keys(CODE_LANGUAGE_CONFIG) as SupportedLanguage[])
     : await collectUsedLanguages(dataRoot);
 
-  const resolvedComponents = (languages.length > 0
-    ? languages
-    : (["plaintext"] as SupportedLanguage[])
+  const resolvedComponents = (
+    languages.length > 0 ? languages : (["plaintext"] as SupportedLanguage[])
   )
     .map(toPrismComponent)
     .filter((value): value is string => Boolean(value));

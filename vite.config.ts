@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs/promises";
 import path from "node:path";
 import fssync from "node:fs";
+import { randomUUID } from "node:crypto";
 import {
   buildClientVisibleConfig,
   loadSstDocsConfigSync,
@@ -90,6 +91,11 @@ function camelId(value: string): string {
     first.charAt(0).toLowerCase() + first.slice(1),
     ...rest.map((p) => p.charAt(0).toUpperCase() + p.slice(1)),
   ].join("");
+}
+
+function randomId(prefix: string) {
+  const rand = randomUUID?.() ?? Math.random().toString(36).slice(2, 10);
+  return `${prefix}${rand.replace(/-/g, "")}`;
 }
 
 function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
@@ -188,6 +194,18 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
             return sendJson(200, { ok: true, path: payload.path });
           }
 
+          if (pathname === `${EDITOR_API_PREFIX}/delete` && req.method === "DELETE") {
+            const fileParam = url.searchParams.get("path");
+            if (!fileParam) return sendJson(400, { error: "Missing path" });
+            const normalized = fileParam.trim();
+            if (!normalized || normalized === "." || normalized === "/") {
+              return sendJson(400, { error: "Invalid delete path" });
+            }
+            const targetPath = assertPathInsideRoot(dataRoot, normalized);
+            await fs.rm(targetPath, { recursive: true, force: true });
+            return sendJson(200, { ok: true, path: fileParam });
+          }
+
           if (pathname === `${EDITOR_API_PREFIX}/upload` && req.method === "POST") {
             const fileParam = url.searchParams.get("path");
             if (!fileParam) return sendJson(400, { error: "Missing path" });
@@ -246,11 +264,12 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
               label?: string;
             };
             const { product, label } = payload;
-            if (!label && !product) return sendJson(400, { error: "Missing product or label" });
-            const baseId = product && product.trim() ? product : label ?? "";
-            if (!baseId.trim()) return sendJson(400, { error: "Missing product or label" });
-            const safeId = camelId(baseId);
-            const safeLabel = label && label.trim() ? label : baseId;
+            if (!label || !label.trim()) {
+              return sendJson(400, { error: "Missing product label" });
+            }
+            const safeId =
+              product && product.trim() ? product.trim() : camelId(label);
+            const safeLabel = label.trim();
             const productsPath = assertPathInsideRoot(dataRoot, "products.json");
             const productsRaw = fssync.existsSync(productsPath)
               ? await fs.readFile(productsPath, "utf8")
@@ -265,7 +284,7 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
             const productDir = assertPathInsideRoot(dataRoot, safeId);
             await fs.mkdir(productDir, { recursive: true });
             const versionsPath = path.join(productDir, "versions.json");
-            const defaultVersion = { version: "v1.0", label: "v1.0" };
+            const defaultVersion = { version: randomId("v-"), label: "v1.0" };
             await fs.writeFile(versionsPath, JSON.stringify([defaultVersion], null, 2));
             const versionDir = path.join(productDir, defaultVersion.version);
             await fs.mkdir(path.join(versionDir, "categories"), { recursive: true });
@@ -287,6 +306,9 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
               ? await fs.readFile(productsPath, "utf8")
               : "[]";
             const products = JSON.parse(productsRaw) as Array<{ product: string; label: string }>;
+            if (products.length <= 1) {
+              return sendJson(400, { error: "Cannot delete the last remaining product" });
+            }
             const next = products.filter((p) => p.product !== product);
             if (next.length === products.length) {
               return sendJson(404, { error: "Product not found" });
@@ -306,7 +328,6 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
             };
             const { product, label } = payload;
             if (!product || !label) return sendJson(400, { error: "Missing product or label" });
-            const safeId = camelId(label);
 
             const productsPath = assertPathInsideRoot(dataRoot, "products.json");
             const productsRaw = fssync.existsSync(productsPath)
@@ -315,30 +336,10 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
             const products = JSON.parse(productsRaw) as Array<{ product: string; label: string }>;
             const existingIndex = products.findIndex((p) => p.product === product);
             if (existingIndex === -1) return sendJson(404, { error: "Product not found" });
-            if (products.some((p, idx) => idx !== existingIndex && p.product === safeId)) {
-              return sendJson(400, { error: "Target id already exists" });
-            }
-
-            const oldDir = assertPathInsideRoot(dataRoot, product);
-            const newDir = assertPathInsideRoot(dataRoot, safeId);
-            if (oldDir !== newDir) {
-              await fs.mkdir(path.dirname(newDir), { recursive: true });
-              if (fssync.existsSync(newDir)) {
-                await fs.rm(newDir, { recursive: true, force: true });
-              }
-              try {
-                await fs.rename(oldDir, newDir);
-              } catch (err) {
-                // Fallback for Windows/locked handles: copy then remove
-                await fs.cp(oldDir, newDir, { recursive: true });
-                await fs.rm(oldDir, { recursive: true, force: true });
-              }
-            }
-
-            products[existingIndex] = { product: safeId, label };
+            products[existingIndex] = { product, label };
             await fs.writeFile(productsPath, JSON.stringify(products, null, 2));
 
-            return sendJson(200, { ok: true, product: safeId, label });
+            return sendJson(200, { ok: true, product, label });
           }
 
           if (pathname === `${EDITOR_API_PREFIX}/version` && req.method === "POST") {
@@ -389,6 +390,9 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
               ? await fs.readFile(versionsPath, "utf8")
               : "[]";
             const versions = JSON.parse(versionsRaw) as Array<{ version: string; label: string }>;
+            if (versions.length <= 1) {
+              return sendJson(400, { error: "Cannot delete the last remaining version" });
+            }
             const next = versions.filter((v) => v.version !== version);
             if (next.length === versions.length) {
               return sendJson(404, { error: "Version not found" });
@@ -411,7 +415,6 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
             if (!product || !version || !label) {
               return sendJson(400, { error: "Missing product, version or label" });
             }
-            const safeVersion = camelId(label);
 
             const productDir = assertPathInsideRoot(dataRoot, product);
             const versionsPath = path.join(productDir, "versions.json");
@@ -423,29 +426,11 @@ function createLocalEditorApi(config: { FS_DATA_PATH?: string }): Plugin {
             if (existingIndex === -1) {
               return sendJson(404, { error: "Version not found" });
             }
-            if (versions.some((v, idx) => idx !== existingIndex && v.version === safeVersion)) {
-              return sendJson(400, { error: "Target version id already exists" });
-            }
 
-            const oldDir = path.join(productDir, version);
-            const newDir = path.join(productDir, safeVersion);
-            if (oldDir !== newDir) {
-              await fs.mkdir(path.dirname(newDir), { recursive: true });
-              if (fssync.existsSync(newDir)) {
-                await fs.rm(newDir, { recursive: true, force: true });
-              }
-              try {
-                await fs.rename(oldDir, newDir);
-              } catch (err) {
-                await fs.cp(oldDir, newDir, { recursive: true });
-                await fs.rm(oldDir, { recursive: true, force: true });
-              }
-            }
-
-            versions[existingIndex] = { version: safeVersion, label };
+            versions[existingIndex] = { version, label };
             await fs.writeFile(versionsPath, JSON.stringify(versions, null, 2));
 
-            return sendJson(200, { ok: true, version: safeVersion, label });
+            return sendJson(200, { ok: true, version, label });
           }
 
           return sendJson(404, { error: "Unknown editor API route" });

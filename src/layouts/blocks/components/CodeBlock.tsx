@@ -17,7 +17,10 @@ import { copyToClipboard } from "@shadow-shard-tools/docs-core/utilities/dom/cop
 import { createTimeout } from "@shadow-shard-tools/docs-core/utilities/system/createTimeout";
 import { downloadTextFile } from "@shadow-shard-tools/docs-core/utilities/dom/downloadTextFile";
 import { sanitizeFilename } from "@shadow-shard-tools/docs-core/utilities/string/sanitizeFilename";
-import type { CodeData, CodeSection } from "@shadow-shard-tools/docs-core/types/CodeData";
+import type {
+  CodeData,
+  CodeSection,
+} from "@shadow-shard-tools/docs-core/types/CodeData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 
 interface Props {
@@ -211,35 +214,35 @@ export const CodeBlock: React.FC<Props> = ({
         }}
       >
         <pre
-      className={`language-${currentSection.language} !m-0 overflow-x-auto w-full text-sm`}
-      style={{ maxHeight: codeData.maxHeight }}
-    >
-      <div className="flex min-h-full px-4 py-3">
-        <div className="flex-1 relative">
-          {normalizedSections.map((section, i) => (
-            <code
-              key={i}
-              ref={(el) => {
-                if (el) {
-                    codeRefs.current.set(`${i}`, el);
-                    if (!prismLoaded) el.textContent = section.content;
-                  }
-                }}
-                className={`!language-${section.language} block !p-0 leading-6 ${
-                  codeData.wrapLines
-                    ? "whitespace-pre-wrap break-words"
-                    : "whitespace-pre overflow-x-auto"
-                } ${i === activeTab ? "block" : "hidden"}`}
-                style={{
-                  minHeight: "1.5rem",
-                  whiteSpace: codeData.wrapLines ? "pre-wrap" : "pre",
-                  display: i === activeTab ? "block" : "none",
-                }}
-              />
-            ))}
+          className={`language-${currentSection.language} !m-0 overflow-x-auto w-full text-sm`}
+          style={{ maxHeight: codeData.maxHeight }}
+        >
+          <div className="flex min-h-full px-4 py-3">
+            <div className="flex-1 relative">
+              {normalizedSections.map((section, i) => (
+                <code
+                  key={i}
+                  ref={(el) => {
+                    if (el) {
+                      codeRefs.current.set(`${i}`, el);
+                      if (!prismLoaded) el.textContent = section.content;
+                    }
+                  }}
+                  className={`!language-${section.language} block !p-0 leading-6 ${
+                    codeData.wrapLines
+                      ? "whitespace-pre-wrap break-words"
+                      : "whitespace-pre overflow-x-auto"
+                  } ${i === activeTab ? "block" : "hidden"}`}
+                  style={{
+                    minHeight: "1.5rem",
+                    whiteSpace: codeData.wrapLines ? "pre-wrap" : "pre",
+                    display: i === activeTab ? "block" : "none",
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </pre>
+        </pre>
         {!hasMultipleSections && (
           <div
             className={`absolute top-2 right-2 px-2 py-1 rounded text-xs backdrop-blur-sm ${styles.code.language}`}
