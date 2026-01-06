@@ -23,8 +23,6 @@ export function EditableMath({ data, styles, onChange }: EditableMathProps) {
     }
   }, [expression]);
 
-  const textAlignClass =
-    ALIGNMENT_CLASSES[alignment]?.text ?? ALIGNMENT_CLASSES.center.text;
   const previewData = useMemo(
     () => ({
       ...mathData,
@@ -51,13 +49,11 @@ export function EditableMath({ data, styles, onChange }: EditableMathProps) {
           placeholder="Enter LaTeX expression"
         />
       </label>
-      <div className={`rounded border px-3 py-2 ${textAlignClass}`}>
-        <MathBlock
-          index={0}
-          styles={styles}
-          mathData={previewData as MathData}
-        />
-      </div>
+      <MathBlock
+        index={0}
+        styles={styles}
+        mathData={previewData as MathData}
+      />
     </div>
   );
 }

@@ -79,9 +79,7 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
           placeholder="Description for accessibility"
         />
       </label>
-      <div className="rounded border px-3 py-2">
-        <ImageBlock index={0} styles={styles} imageData={imageData} />
-      </div>
+      <ImageBlock index={0} styles={styles} imageData={imageData} />
     </div>
   );
 }

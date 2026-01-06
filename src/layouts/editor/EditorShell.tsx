@@ -30,8 +30,9 @@ import type {
   DocItem,
   StyleTheme,
 } from "@shadow-shard-tools/docs-core";
-import {
+  import {
   Copy,
+  DatabaseBackup,
   Eye,
   FileDown,
   Pencil,
@@ -1223,49 +1224,55 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
             />
           ) : (
             <section className="space-y-2">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3 p-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs uppercase tracking-wide text-slate-500">
                     Mode
                   </span>
                   <button
-                    className={`px-3 py-1.5 text-sm border rounded ${
+                    className={`flex justify-center items-center gap-2 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${
                       panelMode === "preview"
-                        ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                        : "bg-white dark:bg-slate-900"
+                        ? styles.buttons.tabSmallActive
+                        : styles.buttons.tabSmall
                     }`}
                     onClick={() => setPanelMode("preview")}
                     type="button"
                   >
                     <span className="inline-flex items-center gap-2">
-                      <Eye className="w-4 h-4" />
+                      <Eye className="w-5 h-5" />
                       <span className="capitalize">Preview</span>
                     </span>
                   </button>
                   <button
-                    className={`px-3 py-1.5 text-sm border rounded ${
+                    className={`flex justify-center items-center gap-2 py-1 px-2 transition-colors cursor-pointer ${
                       panelMode === "blocks"
-                        ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                        : "bg-white dark:bg-slate-900"
+                        ? styles.buttons.tabSmallActive
+                        : styles.buttons.tabSmall
                     }`}
                     onClick={() => setPanelMode("blocks")}
                     type="button"
                   >
                     <span className="inline-flex items-center gap-2">
-                      <SquareStack className="w-4 h-4" />
-                      <span className="capitalize">Blocks</span>
+                      <SquareStack className="w-5 h-5" />
+                      <span className="capitalize">Edit</span>
                     </span>
                   </button>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <label className="inline-flex items-center gap-2 text-xs">
-                    <input
-                      type="checkbox"
-                      checked={backupOnSave}
-                      onChange={(e) => setBackupOnSave(e.target.checked)}
-                    />
-                    <span>Backup on save</span>
-                  </label>
+                  <button
+                    type="button"
+                    className={`inline-flex justify-center items-center gap-2 py-1 px-2 h-8 text-xs rounded transition-colors cursor-pointer ${
+                      backupOnSave
+                        ? styles.buttons.tabSmallActive
+                        : styles.buttons.tabSmall
+                    }`}
+                    onClick={() => setBackupOnSave((prev) => !prev)}
+                    aria-pressed={backupOnSave}
+                    title="Backup on save"
+                  >
+                    <DatabaseBackup className="w-5 h-5" />
+                    <span>Backup</span>
+                  </button>
                   <button
                     className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                     onClick={handleSave}

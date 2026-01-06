@@ -64,7 +64,7 @@ export function ListToolbarControls({ data, onChange, styles }: Props) {
           <input
             type="number"
             min={1}
-            className="border rounded px-1.5 py-0.5 w-16 bg-white dark:bg-slate-800"
+            className={`${styles.input} px-2 py-1 w-14`}
             value={data.startNumber ?? 1}
             onChange={(e) =>
               onChange((prev) => ({
@@ -82,7 +82,7 @@ export function ListToolbarControls({ data, onChange, styles }: Props) {
         <span>Aria</span>
         <input
           type="text"
-          className="border rounded px-1.5 py-0.5 bg-white dark:bg-slate-800"
+          className={`${styles.input} px-2 py-1`}
           value={data.ariaLabel ?? ""}
           onChange={(e) =>
             onChange((prev) => ({

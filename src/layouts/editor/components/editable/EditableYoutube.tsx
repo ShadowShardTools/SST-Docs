@@ -73,9 +73,7 @@ export function EditableYoutube({
         />
       </label>
 
-      <div className="rounded border px-3 py-2">
-        <YoutubeBlock styles={styles} youtubeData={youtubeData} />
-      </div>
+      <YoutubeBlock styles={styles} youtubeData={youtubeData} />
     </div>
   );
 }

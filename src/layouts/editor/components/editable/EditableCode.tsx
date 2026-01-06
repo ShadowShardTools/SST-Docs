@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import CodeBlock from "../../../blocks/components/CodeBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { CodeData } from "@shadow-shard-tools/docs-core/types/CodeData";
@@ -26,6 +26,30 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
     SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)
       ? (lang as SupportedLanguage)
       : "plaintext";
+  const getLanguageExtension = (language: SupportedLanguage) =>
+    CODE_LANGUAGE_CONFIG[language]?.ext ?? "txt";
+  const getDefaultFilenameBase = () => "snippet";
+  const buildFilename = (base: string, language: SupportedLanguage) => {
+    const safeBase = base.trim() || getDefaultFilenameBase();
+    return `${safeBase}.${getLanguageExtension(language)}`;
+  };
+  const getFilenameBase = (
+    filename: string | undefined,
+    language: SupportedLanguage,
+  ) => {
+    if (!filename) return "";
+    const ext = getLanguageExtension(language);
+    const lower = filename.toLowerCase();
+    const suffix = `.${ext.toLowerCase()}`;
+    if (lower.endsWith(suffix)) {
+      return filename.slice(0, -suffix.length);
+    }
+    const lastDot = filename.lastIndexOf(".");
+    if (lastDot > 0) {
+      return filename.slice(0, lastDot);
+    }
+    return filename;
+  };
 
   const baseData: CodeData = {
     language: "javascript",
@@ -40,9 +64,11 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
   };
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const addMenuRef = useRef<HTMLDivElement>(null);
   const [localActive, setLocalActive] = useState<number>(
     typeof initialActiveFromData === "number" ? initialActiveFromData : 0,
   );
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
 
   const sections = useMemo(() => {
     if (codeData.sections?.length) {
@@ -78,6 +104,26 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
       textareaRef.current.value = activeSection?.content ?? "";
     }
   }, [activeSection?.content]);
+  useEffect(() => {
+    if (!isAddMenuOpen) return;
+    const handleClick = (event: MouseEvent) => {
+      if (
+        addMenuRef.current &&
+        !addMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsAddMenuOpen(false);
+      }
+    };
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsAddMenuOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [isAddMenuOpen]);
 
   const previewData = useMemo<CodeData>(
     () => ({
@@ -97,10 +143,10 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           <div key={idx} className="flex items-center gap-1">
             <button
               type="button"
-              className={`px-2 py-1 rounded border ${
+              className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${
                 idx === activeIndex
-                  ? "bg-indigo-600 text-white border-indigo-600"
-                  : "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  ? styles.buttons.tabSmallActive
+                  : styles.buttons.tabSmall
               }`}
               onClick={() => setLocalActive(idx)}
               title={section.filename || section.language}
@@ -131,51 +177,57 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             )}
           </div>
         ))}
-        <button
-          type="button"
-          className="px-2 py-1 rounded border bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800"
-          onClick={() => {
-            const updated = [
-              ...sections,
-              {
-                language: ensureLanguage("javascript"),
-                content: "",
-                filename: "",
-              },
-            ];
-            setLocalActive(updated.length - 1);
-            onChange({
-              ...codeData,
-              sections: updated,
-            });
-          }}
-        >
-          + Tab
-        </button>
+        <div className="relative" ref={addMenuRef}>
+          <button
+            type="button"
+            className={`inline-flex items-center justify-center w-7 h-7 ${styles.buttons.common}`}
+            onClick={() => setIsAddMenuOpen((prev) => !prev)}
+            aria-label="Add tab"
+            title="Add tab"
+            aria-haspopup="listbox"
+            aria-expanded={isAddMenuOpen}
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+          {isAddMenuOpen && (
+            <ul
+              className={`absolute top-full left-0 mt-1 z-50 min-w-[160px] max-h-60 overflow-y-auto ${styles.dropdown.container}`}
+              role="listbox"
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <li key={lang}>
+                  <button
+                    type="button"
+                    className={`w-full px-3 py-2 text-left cursor-pointer flex items-center gap-2 ${styles.dropdown.item}`}
+                    onClick={() => {
+                      const language = ensureLanguage(lang);
+                      const updated = [
+                        ...sections,
+                        {
+                          language,
+                          content: "",
+                          filename: buildFilename("", language),
+                        },
+                      ];
+                      setLocalActive(updated.length - 1);
+                      onChange({
+                        ...codeData,
+                        sections: updated,
+                      });
+                      setIsAddMenuOpen(false);
+                    }}
+                    role="option"
+                  >
+                    {CODE_LANGUAGE_CONFIG[lang]?.name ?? lang}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-3 items-center text-xs text-slate-600">
-        <div className="flex items-center gap-1">
-          <span>Language</span>
-          <Dropdown
-            styles={styles}
-            items={SUPPORTED_LANGUAGES.map((lang) => ({
-              value: lang,
-              label: CODE_LANGUAGE_CONFIG[lang]?.name ?? lang,
-            }))}
-            selectedValue={activeSection?.language ?? "plaintext"}
-            onSelect={(val) => {
-              const language = ensureLanguage(val);
-              onChange({
-                ...codeData,
-                sections: sections.map((section, idx) =>
-                  idx === activeIndex ? { ...section, language } : section,
-                ),
-              });
-            }}
-            className="min-w-[150px]"
-          />
-        </div>
         <label className="flex items-center gap-1">
           <span>Block title</span>
           <input
@@ -194,20 +246,61 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           <span>Filename</span>
           <input
             className={`${styles.input} px-2 py-1`}
-            value={activeSection?.filename ?? ""}
+            value={
+              getFilenameBase(
+                activeSection?.filename,
+                activeSection?.language ?? "plaintext",
+              ) || getDefaultFilenameBase()
+            }
             onChange={(e) =>
               onChange({
                 ...codeData,
                 sections: sections.map((section, idx) =>
                   idx === activeIndex
-                    ? { ...section, filename: e.target.value }
+                    ? {
+                        ...section,
+                        filename: buildFilename(
+                          e.target.value,
+                          section.language,
+                        ),
+                      }
                     : section,
                 ),
               })
             }
-            placeholder="Optional filename"
+            placeholder="Filename"
           />
         </label>
+        <div className="flex items-center gap-1">
+          <span>Language</span>
+          <Dropdown
+            styles={styles}
+            items={SUPPORTED_LANGUAGES.map((lang) => ({
+              value: lang,
+              label: CODE_LANGUAGE_CONFIG[lang]?.name ?? lang,
+            }))}
+            selectedValue={activeSection?.language ?? "plaintext"}
+            onSelect={(val) => {
+              const language = ensureLanguage(val);
+              onChange({
+                ...codeData,
+                sections: sections.map((section, idx) =>
+                  idx === activeIndex
+                    ? {
+                        ...section,
+                        language,
+                        filename: buildFilename(
+                          getFilenameBase(section.filename, section.language),
+                          language,
+                        ),
+                      }
+                    : section,
+                ),
+              });
+            }}
+            className="min-w-[150px]"
+          />
+        </div>
       </div>
 
       <label className="flex flex-col gap-1">
@@ -229,10 +322,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           placeholder="// Start typing your code"
         />
       </label>
-
-      <div className="rounded border px-3 py-2">
-        <CodeBlock index={0} styles={styles} codeData={previewData} />
-      </div>
+      <CodeBlock index={0} styles={styles} codeData={previewData} />
     </div>
   );
 }

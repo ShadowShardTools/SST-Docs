@@ -147,13 +147,11 @@ export function EditableImageCompare({
         </label>
       </div>
 
-      <div className="rounded border px-3 py-2">
-        <ImageCompareBlock
-          index={0}
-          styles={styles}
-          imageCompareData={imageCompareData}
-        />
-      </div>
+      <ImageCompareBlock
+        index={0}
+        styles={styles}
+        imageCompareData={imageCompareData}
+      />
     </div>
   );
 }

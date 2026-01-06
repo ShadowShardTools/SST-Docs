@@ -53,7 +53,9 @@ export function TitleToolbarControls({ data, onChange, styles }: Props) {
       </div>
       <button
         type="button"
-        className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
+        className={`inline-flex items-center justify-center w-8 h-8 ${
+          anchorEnabled ? styles.buttons.tabSmallActive : styles.buttons.tabSmall
+        }`}
         onClick={() =>
           onChange((prev) => ({
             ...prev,

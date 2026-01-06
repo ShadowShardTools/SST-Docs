@@ -232,7 +232,7 @@ export function BlockListEditor({
     <div className="space-y-6 text-sm px-2 md:px-4">
       {blocks.length === 0 ? (
         <div className="flex flex-col items-center gap-3 text-sm text-slate-500">
-          <p>No blocks yet. Add one above.</p>
+          <p>No blocks yet</p>
           <InsertControl position={0} fullWidth />
         </div>
       ) : (

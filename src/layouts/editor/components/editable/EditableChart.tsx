@@ -1,9 +1,8 @@
-import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
 import { useMemo } from "react";
 import ChartBlock from "../../../blocks/components/ChartBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 type EditableChartDataset = {
   label: string;
@@ -204,16 +203,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
     <div className="space-y-4">
       {!isScatter && (
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs">
-            <span>Labels</span>
-            <button
-              type="button"
-              className={`${styles.buttons.small}`}
-              onClick={addLabel}
-            >
-              + Label
-            </button>
-          </div>
+          <span>Labels</span>
           <div className="space-y-2">
             {(chartData.labels ?? []).map((label, idx) => (
               <div key={idx} className="flex items-center gap-2 text-sm">
@@ -224,39 +214,37 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                 />
                 <button
                   type="button"
-                  className={`${styles.buttons.small} text-red-600`}
+                  className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                   onClick={() => removeLabel(idx)}
                   aria-label={`Delete label ${idx + 1}`}
                   title="Delete label"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-5 h-5" />
                 </button>
               </div>
             ))}
+            <button
+              type="button"
+              className={`inline-flex items-center justify-center w-7 h-7 ${styles.buttons.common}`}
+              onClick={addLabel}
+            >
+              <Plus className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
 
       <div className="space-y-3">
-        <div className="flex items-center gap-2 text-xs">
-          <span>Datasets</span>
-          <button
-            type="button"
-            className="px-2 py-1 border rounded text-xs hover:bg-slate-100 dark:hover:bg-slate-800"
-            onClick={addDataset}
-          >
-            + Dataset
-          </button>
-        </div>
+        <span>Datasets</span>
         <div className="space-y-3">
           {(chartData.datasets ?? []).map((ds, dsIndex) => (
             <div
               key={dsIndex}
-              className="border rounded p-3 space-y-2 bg-white/60 dark:bg-slate-900/60"
+              className={`${styles.input} px-2 py-1`}
             >
               <div className="flex items-center gap-2 text-sm">
                 <input
-                  className={`${styles.input} flex-1`}
+                  className={`${styles.input} px-2 py-1`}
                   value={ds.label ?? ""}
                   onChange={(e) =>
                     handleDatasetChange(dsIndex, { label: e.target.value })
@@ -266,7 +254,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                 {!isColorPerValue && (
                   <>
                     <input
-                      className={`${styles.input} px-2 py-1 w-32`}
+                      className={`${styles.input} px-2 py-1`}
                       value={ds.backgroundColor ?? ""}
                       onChange={(e) =>
                         handleDatasetChange(dsIndex, {
@@ -276,7 +264,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                       placeholder="Background color"
                     />
                     <input
-                      className={`${styles.input} px-2 py-1 w-32`}
+                      className={`${styles.input} px-2 py-1`}
                       value={ds.borderColor ?? ""}
                       onChange={(e) =>
                         handleDatasetChange(dsIndex, {
@@ -289,12 +277,12 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                 )}
                 <button
                   type="button"
-                  className={`${styles.buttons.small} text-red-600`}
+                  className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                   onClick={() => removeDataset(dsIndex)}
                   aria-label={`Delete dataset ${dsIndex + 1}`}
                   title="Delete dataset"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-5 h-5" />
                 </button>
               </div>
               {!isScatter ? (
@@ -306,7 +294,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                     {(chartData.labels ?? []).map((label, valueIdx) => (
                       <label
                         key={valueIdx}
-                        className="flex flex-col gap-1 text-xs text-slate-600 bg-white/60 dark:bg-slate-900/60 rounded border px-2 py-1"
+                        className="flex flex-col gap-1"
                       >
                         <span className="truncate">
                           {label || `Label ${valueIdx + 1}`}
@@ -368,21 +356,12 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-xs">
-                    <span>Points (x,y)</span>
-                    <button
-                      type="button"
-                      className={styles.buttons.small}
-                      onClick={() => addPoint(dsIndex)}
-                    >
-                      + Point
-                    </button>
-                  </div>
+                  <span>Points (x,y)</span>
                   <div className="space-y-2">
                     {((ds.data as any[]) ?? []).map((point, pointIdx) => (
                       <div
                         key={pointIdx}
-                        className="flex items-center gap-2 text-xs bg-white/60 dark:bg-slate-900/60 rounded border px-2 py-1"
+                        className="flex gap-2"
                       >
                         <label className="flex items-center gap-1">
                           <span>X</span>
@@ -422,32 +401,41 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                         </label>
                         <button
                           type="button"
-                          className={`ml-auto ${styles.buttons.small} text-red-600`}
+                          className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                           onClick={() => removePoint(dsIndex, pointIdx)}
                           aria-label={`Delete point ${pointIdx + 1}`}
                           title="Delete point"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-5 h-5" />
                         </button>
                       </div>
                     ))}
                   </div>
+                  <button
+                    type="button"
+                    className={`inline-flex items-center justify-center w-7 h-7 ${styles.buttons.common}`}
+                    onClick={() => addPoint(dsIndex)}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
                 </div>
               )}
             </div>
           ))}
+          <button
+            type="button"
+            className={`inline-flex items-center justify-center w-7 h-7 ${styles.buttons.common}`}
+            onClick={addDataset}
+          >
+            <Plus className="w-4 h-4" />
+          </button>
         </div>
       </div>
-
-      <div
-        className={`rounded border px-3 py-2 ${ALIGNMENT_CLASSES[chartData.alignment ?? "center"].container}`}
-      >
         <ChartBlock
           index={0}
           styles={styles}
           chartData={chartData as unknown as ChartData}
         />
-      </div>
     </div>
   );
 }

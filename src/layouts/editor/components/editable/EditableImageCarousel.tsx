@@ -78,12 +78,12 @@ export function EditableImageCarousel({
               {(carouselData.images?.length ?? 0) > 1 && (
                 <button
                   type="button"
-                  className={`${styles.buttons.small} text-red-600`}
+                  className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
                   onClick={() => removeImage(idx)}
                   aria-label={`Delete image ${idx + 1}`}
                   title="Delete image"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-5 h-5" />
                 </button>
               )}
             </div>
@@ -91,13 +91,11 @@ export function EditableImageCarousel({
         ))}
       </div>
 
-      <div className="rounded border px-3 py-2">
-        <ImageCarouselBlock
-          index={0}
-          styles={styles}
-          imageCarouselData={carouselData}
-        />
-      </div>
+      <ImageCarouselBlock
+        index={0}
+        styles={styles}
+        imageCarouselData={carouselData}
+      />
     </div>
   );
 }

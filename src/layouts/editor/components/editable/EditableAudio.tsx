@@ -78,9 +78,7 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
         />
       </label>
 
-      <div className="rounded border px-3 py-2">
-        <AudioBlock styles={styles} audioData={audioData} />
-      </div>
+      <AudioBlock styles={styles} audioData={audioData} />
     </div>
   );
 }
