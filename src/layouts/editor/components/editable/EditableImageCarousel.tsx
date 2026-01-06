@@ -1,7 +1,7 @@
 import ImageCarouselBlock from "../../../blocks/components/ImageCarouselBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 interface EditableImageCarouselProps {
   data?: ImageCarouselData;
@@ -46,16 +46,7 @@ export function EditableImageCarousel({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 text-xs">
-        <span>Images</span>
-        <button
-          type="button"
-          className="px-2 py-1 border rounded text-xs hover:bg-slate-100 dark:hover:bg-slate-800"
-          onClick={addImage}
-        >
-          + Image
-        </button>
-      </div>
+      <span>Images</span>
       <div className="space-y-2">
         {(carouselData.images ?? []).map((img, idx) => (
           <div
@@ -89,6 +80,13 @@ export function EditableImageCarousel({
             </div>
           </div>
         ))}
+        <button
+          type="button"
+          className={`inline-flex items-center justify-center w-7 h-7 ${styles.buttons.common}`}
+          onClick={addImage}
+        >
+          <Plus className="w-4 h-4" />
+        </button>
       </div>
 
       <ImageCarouselBlock

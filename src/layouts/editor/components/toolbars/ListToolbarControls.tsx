@@ -1,5 +1,5 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import { List, ListOrdered } from "lucide-react";
+import { ChartNoAxesGantt, List, ListOrdered } from "lucide-react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
@@ -45,19 +45,28 @@ export function ListToolbarControls({ data, onChange, styles }: Props) {
         }
       />
 
-      <label className="inline-flex items-center gap-1">
-        <input
-          type="checkbox"
-          checked={data.inside ?? false}
-          onChange={(e) =>
-            onChange((prev) => ({
-              ...prev,
-              listData: { ...(prev as any).listData, inside: e.target.checked },
-            }))
-          }
-        />
-        <span>Inside</span>
-      </label>
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center w-8 h-8 ${
+          data.inside ?? false
+            ? styles.buttons.tabSmallActive
+            : styles.buttons.tabSmall
+        }`}
+        onClick={() =>
+          onChange((prev) => ({
+            ...prev,
+            listData: {
+              ...(prev as any).listData,
+              inside: !(data.inside ?? false),
+            },
+          }))
+        }
+        aria-pressed={data.inside ?? false}
+        title={(data.inside ?? false) ? "Inside: On" : "Inside: Off"}
+        aria-label={(data.inside ?? false) ? "Inside: On" : "Inside: Off"}
+      >
+        <ChartNoAxesGantt className="w-5 h-5" />
+      </button>
       {listType === "ol" && (
         <label className="flex items-center gap-1">
           <span>Start</span>

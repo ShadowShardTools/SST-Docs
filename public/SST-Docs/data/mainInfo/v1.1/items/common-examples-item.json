@@ -118,27 +118,9 @@
     {
       "type": "messageBox",
       "messageBoxData": {
-        "type": "info",
-        "text": "This is an large info message with basic content",
-        "size": "large",
-        "showIcon": true
-      }
-    },
-    {
-      "type": "messageBox",
-      "messageBoxData": {
         "type": "success",
         "text": "This is a success message celebrating completion without icon",
         "size": "medium",
-        "showIcon": false
-      }
-    },
-    {
-      "type": "messageBox",
-      "messageBoxData": {
-        "type": "neutral",
-        "text": "Small message without icon",
-        "size": "small",
         "showIcon": false
       }
     },
@@ -416,5 +398,9 @@
       }
     }
   ],
-  "tags": ["examples", "common", "text"]
+  "tags": [
+    "examples",
+    "common",
+    "text"
+  ]
 }

@@ -1,5 +1,6 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
+import { ArrowLeftRight, RectangleEllipsis } from "lucide-react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
@@ -41,6 +42,46 @@ export function ImageCarouselToolbarControls({
           update({ alignment: val as ImageCarouselData["alignment"] })
         }
       />
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center w-8 h-8 ${
+          carouselData.carouselOptions?.pagination
+            ? styles.buttons.tabSmallActive
+            : styles.buttons.tabSmall
+        }`}
+        onClick={() => toggle("pagination")}
+        aria-pressed={!!carouselData.carouselOptions?.pagination}
+        title={
+          carouselData.carouselOptions?.pagination
+            ? "Pagination: On"
+            : "Pagination: Off"
+        }
+        aria-label={
+          carouselData.carouselOptions?.pagination
+            ? "Pagination: On"
+            : "Pagination: Off"
+        }
+      >
+        <RectangleEllipsis className="w-5 h-5" />
+      </button>
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center w-8 h-8 ${
+          carouselData.carouselOptions?.arrows
+            ? styles.buttons.tabSmallActive
+            : styles.buttons.tabSmall
+        }`}
+        onClick={() => toggle("arrows")}
+        aria-pressed={!!carouselData.carouselOptions?.arrows}
+        title={
+          carouselData.carouselOptions?.arrows ? "Arrows: On" : "Arrows: Off"
+        }
+        aria-label={
+          carouselData.carouselOptions?.arrows ? "Arrows: On" : "Arrows: Off"
+        }
+      >
+        <ArrowLeftRight className="w-5 h-5" />
+      </button>
       <label className="flex items-center gap-1">
         <span>Scale</span>
         <input
@@ -56,22 +97,6 @@ export function ImageCarouselToolbarControls({
             })
           }
         />
-      </label>
-      <label className="inline-flex items-center gap-1">
-        <input
-          type="checkbox"
-          checked={!!carouselData.carouselOptions?.pagination}
-          onChange={() => toggle("pagination")}
-        />
-        <span>Pagination</span>
-      </label>
-      <label className="inline-flex items-center gap-1">
-        <input
-          type="checkbox"
-          checked={!!carouselData.carouselOptions?.arrows}
-          onChange={() => toggle("arrows")}
-        />
-        <span>Arrows</span>
       </label>
     </div>
   );

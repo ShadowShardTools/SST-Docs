@@ -1,7 +1,6 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
 import { Columns2, SlidersHorizontal } from "lucide-react";
-import Dropdown from "../../../common/components/Dropdown";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
@@ -12,6 +11,12 @@ interface Props {
 
 export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
   const imageCompareData: ImageCompareData = data ?? {};
+  const mode = (imageCompareData.type ?? "slider") as ImageCompareData["type"];
+  const modeOrder: ImageCompareData["type"][] = ["slider", "individual"];
+  const modeIndex = Math.max(modeOrder.indexOf(mode), 0);
+  const nextMode = modeOrder[(modeIndex + 1) % modeOrder.length];
+  const ModeIcon = mode === "slider" ? SlidersHorizontal : Columns2;
+  const modeLabel = mode === "slider" ? "Slider" : "Side by side";
 
   const update = (partial: Partial<ImageCompareData>) =>
     onChange((prev) => ({
@@ -21,28 +26,16 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1">
-        <span>Mode</span>
-        <Dropdown
-          styles={styles}
-          items={[
-            {
-              value: "slider",
-              label: "Slider",
-              icon: <SlidersHorizontal className="w-4 h-4" />,
-            },
-            {
-              value: "individual",
-              label: "Side by side",
-              icon: <Columns2 className="w-4 h-4" />,
-            },
-          ]}
-          selectedValue={imageCompareData.type ?? "slider"}
-          onSelect={(val) => update({ type: val as ImageCompareData["type"] })}
-          className="min-w-[140px]"
-        />
-      </div>
-      
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center w-8 h-8 ${styles.buttons.common}`}
+        onClick={() => update({ type: nextMode })}
+        title={`Mode: ${modeLabel}`}
+        aria-label={`Mode: ${modeLabel}`}
+      >
+        <ModeIcon className="w-5 h-5" />
+      </button>
+
       <AlignmentToggleButton
         styles={styles}
         value={

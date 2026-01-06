@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   Info,
+  LayoutList,
   MinusCircle,
   Quote,
   XCircle,
@@ -63,22 +64,28 @@ export function MessageBoxToolbarControls({ data, onChange, styles }: Props) {
           className="min-w-[140px]"
         />
       </div>
-      <label className="inline-flex items-center gap-1">
-        <input
-          type="checkbox"
-          checked={data.showIcon ?? true}
-          onChange={(e) =>
-            onChange((prev) => ({
-              ...prev,
-              messageBoxData: {
-                ...(prev as any).messageBoxData,
-                showIcon: e.target.checked,
-              },
-            }))
-          }
-        />
-        <span>Icon</span>
-      </label>
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center w-8 h-8 ${
+          data.showIcon ?? true
+            ? styles.buttons.tabSmallActive
+            : styles.buttons.tabSmall
+        }`}
+        onClick={() =>
+          onChange((prev) => ({
+            ...prev,
+            messageBoxData: {
+              ...(prev as any).messageBoxData,
+              showIcon: !(data.showIcon ?? true),
+            },
+          }))
+        }
+        aria-pressed={data.showIcon ?? true}
+        title={(data.showIcon ?? true) ? "Icon: On" : "Icon: Off"}
+        aria-label={(data.showIcon ?? true) ? "Icon: On" : "Icon: Off"}
+      >
+        <LayoutList className="w-4 h-4" />
+      </button>
     </>
   );
 }
