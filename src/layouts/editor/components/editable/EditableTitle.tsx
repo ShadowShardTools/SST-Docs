@@ -25,11 +25,14 @@ export function EditableTitle({
   wrapperClass,
   onChange,
 }: EditableTitleProps) {
-  const ref = useRef<HTMLHeadingElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (ref.current && ref.current.innerText !== value) {
-      ref.current.innerText = value ?? "";
+    if (!textRef.current) return;
+    const el = textRef.current;
+    const isActive = document.activeElement === el;
+    if (!isActive && el.innerText !== (value ?? "")) {
+      el.innerText = value ?? "";
     }
   }, [value]);
 
@@ -40,13 +43,18 @@ export function EditableTitle({
     <div className={SPACING_CLASSES.none}>
       <div className={wrapperClass}>
         <Heading
-          ref={ref}
-          contentEditable
-          suppressContentEditableWarning
-          className={`${alignmentClass} ${levelClass} font-bold leading-tight scroll-mt-20 group relative bg-transparent outline-none border-0 focus:border-0 focus:ring-0 px-0 py-0`}
-          onInput={(e) => onChange((e.target as HTMLElement).innerText)}
+          className={`${alignmentClass} ${levelClass} font-bold leading-tight scroll-mt-20 bg-transparent p-0`}
         >
-          {value}
+          <span
+            ref={textRef}
+            contentEditable
+            suppressContentEditableWarning
+            className="inline-block bg-transparent outline-none min-h-[1.5rem] px-1.5 py-1.5 border border-transparent focus:border-sky-400 rounded"
+            style={{ whiteSpace: "pre-wrap" }}
+            onInput={(e) =>
+              onChange((e.target as HTMLElement).innerText ?? "")
+            }
+          />
           {showAnchor && (
             <span
               contentEditable={false}

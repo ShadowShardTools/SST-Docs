@@ -17,8 +17,11 @@ export function EditableText({
   const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    if (ref.current && ref.current.innerText !== value) {
-      ref.current.innerText = value ?? "";
+    if (!ref.current) return;
+    const el = ref.current;
+    const isActive = document.activeElement === el;
+    if (!isActive && el.innerText !== (value ?? "")) {
+      el.innerText = value ?? "";
     }
   }, [value]);
 

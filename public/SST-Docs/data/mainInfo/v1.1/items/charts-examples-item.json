@@ -31,10 +31,11 @@
               3,
               5
             ],
-            "backgroundColor": "#3b82f6",
-            "borderColor": "#1d4ed8"
+            "backgroundColor": "#3a7fee",
+            "borderColor": "#f7f7f8"
           }
-        ]
+        ],
+        "alignment": "center"
       }
     },
     {
@@ -63,13 +64,15 @@
             "data": [
               15,
               25,
-              20,
+              19,
               30
             ],
-            "borderColor": "#3b82f6",
-            "fill": false
+            "borderColor": "#478eff",
+            "fill": false,
+            "backgroundColor": "#0a4761"
           }
-        ]
+        ],
+        "alignment": "center"
       }
     },
     {
@@ -103,8 +106,8 @@
               81,
               56
             ],
-            "backgroundColor": "rgba(59, 130, 246, 0.2)",
-            "borderColor": "#3b82f6"
+            "backgroundColor": "#e01010",
+            "borderColor": "#751515"
           },
           {
             "label": "Car B",
@@ -115,10 +118,11 @@
               19,
               96
             ],
-            "backgroundColor": "rgba(239, 68, 68, 0.2)",
-            "borderColor": "#ef4444"
+            "backgroundColor": "#1ab741",
+            "borderColor": "#16642e"
           }
-        ]
+        ],
+        "alignment": "center"
       }
     },
     {
@@ -238,9 +242,11 @@
                 "r": 8
               }
             ],
-            "backgroundColor": "#3b82f6"
+            "backgroundColor": "#3b82f6",
+            "borderColor": "#f7f7f7"
           }
-        ]
+        ],
+        "alignment": "center"
       }
     },
     {
@@ -317,9 +323,10 @@
               }
             ],
             "borderColor": "#ef4444",
-            "backgroundColor": "rgba(239, 68, 68, 0.4)"
+            "backgroundColor": "#4b0c0c"
           }
-        ]
+        ],
+        "alignment": "center"
       }
     }
   ]

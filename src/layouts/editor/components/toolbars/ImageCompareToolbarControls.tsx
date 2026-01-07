@@ -1,6 +1,7 @@
 import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
 import { Columns2, SlidersHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 
 interface Props {
@@ -11,6 +12,10 @@ interface Props {
 
 export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
   const imageCompareData: ImageCompareData = data ?? {};
+  const defaultColor = "#ffffff";
+  const [sliderDraft, setSliderDraft] = useState(
+    imageCompareData.sliderColor ?? defaultColor,
+  );
   const mode = (imageCompareData.type ?? "slider") as ImageCompareData["type"];
   const modeOrder: ImageCompareData["type"][] = ["slider", "individual"];
   const modeIndex = Math.max(modeOrder.indexOf(mode), 0);
@@ -23,6 +28,15 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
       ...prev,
       imageCompareData: { ...(prev as any).imageCompareData, ...partial },
     }));
+
+  useEffect(() => {
+    setSliderDraft(imageCompareData.sliderColor ?? defaultColor);
+  }, [imageCompareData.sliderColor]);
+
+  const isValidHex = (value: string) => /^#([0-9a-fA-F]{6})$/.test(value);
+  const pickerColor = isValidHex(sliderDraft)
+    ? sliderDraft
+    : imageCompareData.sliderColor ?? defaultColor;
 
   return (
     <div className="flex items-center gap-2">
@@ -70,13 +84,28 @@ export function ImageCompareToolbarControls({ data, onChange, styles }: Props) {
         <label className="flex items-center gap-1">
           <span>Slider color</span>
           <input
+            type="color"
+            className={`${styles.input} w-10 h-8 p-1`}
+            value={pickerColor}
+            onChange={(e) => {
+              setSliderDraft(e.target.value);
+              update({ sliderColor: e.target.value || defaultColor });
+            }}
+            title="Slider color"
+            aria-label="Slider color"
+          />
+          <input
             type="text"
-            className={`${styles.input} px-2 py-1 text-xs w-24`}
-            value={imageCompareData.sliderColor ?? "#ffffff"}
-            onChange={(e) =>
-              update({ sliderColor: e.target.value || "#ffffff" })
-            }
-            placeholder="#ffffff"
+            className={`${styles.input} h-8 px-2 text-[10px] font-mono w-20`}
+            value={(sliderDraft ?? defaultColor).toUpperCase()}
+            onChange={(e) => setSliderDraft(e.target.value.trim())}
+            onBlur={() => {
+              if (isValidHex(sliderDraft)) {
+                update({ sliderColor: sliderDraft });
+              } else {
+                setSliderDraft(imageCompareData.sliderColor ?? defaultColor);
+              }
+            }}
           />
         </label>
       )}

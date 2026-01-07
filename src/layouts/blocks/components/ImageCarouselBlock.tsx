@@ -43,6 +43,7 @@ export const ImageCarouselBlock: React.FC<Props> = ({
     ...DEFAULT_CAROUSEL_OPTIONS,
     ...imageCarouselData.carouselOptions,
   };
+  const hasPagination = !!carouselOptions.pagination;
 
   if (!imageCarouselData.images?.length) return null;
 
@@ -63,14 +64,18 @@ export const ImageCarouselBlock: React.FC<Props> = ({
                 : "";
               return (
                 <SplideSlide key={i}>
-                  <div className="flex flex-col items-center">
+                  <div
+                    className={`flex flex-col items-center ${hasPagination ? "pb-8" : ""}`}
+                  >
                     <img
                       src={src}
                       alt={img.alt || `Image ${i + 1}`}
                       className="w-full h-auto"
                     />
                     {img.alt && (
-                      <p className={`mt-2 ${styles.text.alternative}`}>
+                      <p
+                        className={`${styles.text.alternative}`}
+                      >
                         {img.alt}
                       </p>
                     )}
