@@ -156,7 +156,7 @@ export const CodeBlock: React.FC<Props> = ({
                   <button
                     key={i}
                     onClick={() => handleTabChange(i)}
-                    className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${i === activeTab ? styles.buttons.tabSmallActive : styles.buttons.tabSmall}`}
+                    className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${i === activeTab ? styles.buttons.tabActive : styles.buttons.tab}`}
                     title={`Switch to ${getLanguageDisplayName(section.language)}`}
                   >
                     {getLanguageDisplayName(section.language)}

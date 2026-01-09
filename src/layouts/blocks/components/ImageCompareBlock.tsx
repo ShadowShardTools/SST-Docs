@@ -63,7 +63,7 @@ export const ImageCompareBlock: React.FC<Props> = ({
                     className="w-full h-auto"
                   />
                   {img?.alt && (
-                    <p className={`mt-2 ${styles.text.alternative}`}>
+                    <p className={`mt-2 ${styles.text.caption}`}>
                       {img.alt}
                     </p>
                   )}

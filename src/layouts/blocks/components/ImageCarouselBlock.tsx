@@ -74,7 +74,7 @@ export const ImageCarouselBlock: React.FC<Props> = ({
                     />
                     {img.alt && (
                       <p
-                        className={`${styles.text.alternative}`}
+                        className={`${styles.text.caption}`}
                       >
                         {img.alt}
                       </p>

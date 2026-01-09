@@ -46,8 +46,8 @@ export function ImageCarouselToolbarControls({
         type="button"
         className={`inline-flex items-center justify-center w-8 h-8 ${
           carouselData.carouselOptions?.pagination
-            ? styles.buttons.tabSmallActive
-            : styles.buttons.tabSmall
+            ? styles.buttons.tabActive
+            : styles.buttons.tab
         }`}
         onClick={() => toggle("pagination")}
         aria-pressed={!!carouselData.carouselOptions?.pagination}
@@ -68,8 +68,8 @@ export function ImageCarouselToolbarControls({
         type="button"
         className={`inline-flex items-center justify-center w-8 h-8 ${
           carouselData.carouselOptions?.arrows
-            ? styles.buttons.tabSmallActive
-            : styles.buttons.tabSmall
+            ? styles.buttons.tabActive
+            : styles.buttons.tab
         }`}
         onClick={() => toggle("arrows")}
         aria-pressed={!!carouselData.carouselOptions?.arrows}

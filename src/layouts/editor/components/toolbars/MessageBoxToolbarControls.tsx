@@ -68,8 +68,8 @@ export function MessageBoxToolbarControls({ data, onChange, styles }: Props) {
         type="button"
         className={`inline-flex items-center justify-center w-8 h-8 ${
           data.showIcon ?? true
-            ? styles.buttons.tabSmallActive
-            : styles.buttons.tabSmall
+            ? styles.buttons.tabActive
+            : styles.buttons.tab
         }`}
         onClick={() =>
           onChange((prev) => ({

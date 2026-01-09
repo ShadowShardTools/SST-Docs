@@ -1230,10 +1230,10 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                     Mode
                   </span>
                   <button
-                    className={`flex justify-center items-center gap-2 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${
+                    className={`flex justify-center items-center gap-2 py-1 px-2 text-xs transition-colors cursor-pointer ${
                       panelMode === "preview"
-                        ? styles.buttons.tabSmallActive
-                        : styles.buttons.tabSmall
+                        ? styles.buttons.tabActive
+                        : styles.buttons.tab
                     }`}
                     onClick={() => setPanelMode("preview")}
                     type="button"
@@ -1244,10 +1244,10 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                     </span>
                   </button>
                   <button
-                    className={`flex justify-center items-center gap-2 py-1 px-2 transition-colors cursor-pointer ${
+                    className={`flex justify-center items-center gap-2 py-1 px-2 text-xs transition-colors cursor-pointer ${
                       panelMode === "blocks"
-                        ? styles.buttons.tabSmallActive
-                        : styles.buttons.tabSmall
+                        ? styles.buttons.tabActive
+                        : styles.buttons.tab
                     }`}
                     onClick={() => setPanelMode("blocks")}
                     type="button"
@@ -1263,8 +1263,8 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
                     type="button"
                     className={`inline-flex justify-center items-center gap-2 py-1 px-2 h-8 text-xs rounded transition-colors cursor-pointer ${
                       backupOnSave
-                        ? styles.buttons.tabSmallActive
-                        : styles.buttons.tabSmall
+                        ? styles.buttons.tabActive
+                        : styles.buttons.tab
                     }`}
                     onClick={() => setBackupOnSave((prev) => !prev)}
                     aria-pressed={backupOnSave}

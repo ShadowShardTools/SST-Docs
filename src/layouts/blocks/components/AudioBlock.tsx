@@ -137,7 +137,7 @@ export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
       </div>
 
       {audioData.caption && (
-        <p className={styles.text.alternative}>{audioData.caption}</p>
+        <p className={styles.text.caption}>{audioData.caption}</p>
       )}
     </div>
   );

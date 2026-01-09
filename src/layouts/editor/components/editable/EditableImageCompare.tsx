@@ -1,8 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { Image as ImageIcon } from "lucide-react";
 import ImageCompareBlock from "../../../blocks/components/ImageCompareBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
 import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
+import PathInput from "../../../common/components/PathInput";
+import { list } from "../../api/client";
+import { clientConfig } from "../../../../application/config/clientConfig";
 
 interface EditableImageCompareProps {
   data?: ImageCompareData;
@@ -30,29 +34,23 @@ export function EditableImageCompare({
     ...data,
   };
 
-  const beforeSrcRef = useRef<HTMLInputElement>(null);
   const beforeAltRef = useRef<HTMLInputElement>(null);
-  const afterSrcRef = useRef<HTMLInputElement>(null);
   const afterAltRef = useRef<HTMLInputElement>(null);
+  const publicBasePath = useMemo(
+    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
+    [],
+  );
+  const imageExtensions = useMemo(
+    () => [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif"],
+    [],
+  );
 
   useEffect(() => {
-    if (
-      beforeSrcRef.current &&
-      beforeSrcRef.current.value !== (imageCompareData.beforeImage?.src ?? "")
-    ) {
-      beforeSrcRef.current.value = imageCompareData.beforeImage?.src ?? "";
-    }
     if (
       beforeAltRef.current &&
       beforeAltRef.current.value !== (imageCompareData.beforeImage?.alt ?? "")
     ) {
       beforeAltRef.current.value = imageCompareData.beforeImage?.alt ?? "";
-    }
-    if (
-      afterSrcRef.current &&
-      afterSrcRef.current.value !== (imageCompareData.afterImage?.src ?? "")
-    ) {
-      afterSrcRef.current.value = imageCompareData.afterImage?.src ?? "";
     }
     if (
       afterAltRef.current &&
@@ -61,56 +59,62 @@ export function EditableImageCompare({
       afterAltRef.current.value = imageCompareData.afterImage?.alt ?? "";
     }
   }, [
-    imageCompareData.beforeImage?.src,
     imageCompareData.beforeImage?.alt,
-    imageCompareData.afterImage?.src,
     imageCompareData.afterImage?.alt,
   ]);
 
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <label className="flex flex-col gap-1">
-          <span className="text-xs text-slate-500">Before image URL</span>
-          <input
-            ref={beforeSrcRef}
-            className={`${styles.input} px-2 py-1`}
-            defaultValue={imageCompareData.beforeImage?.src ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...imageCompareData,
-                beforeImage: ensureImage({
-                  ...(imageCompareData.beforeImage ?? {}),
-                  src: e.target.value,
-                }),
-              })
-            }
-            placeholder="https://example.com/before.jpg"
-          />
-        </label>
-        <label className="flex flex-col gap-1">
-          <span className="text-xs text-slate-500">After image URL</span>
-          <input
-            ref={afterSrcRef}
-            className={`${styles.input} px-2 py-1`}
-            defaultValue={imageCompareData.afterImage?.src ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...imageCompareData,
-                afterImage: ensureImage({
-                  ...(imageCompareData.afterImage ?? {}),
-                  src: e.target.value,
-                }),
-              })
-            }
-            placeholder="https://example.com/after.jpg"
-          />
-        </label>
+        <PathInput
+          styles={styles}
+          label="Before image URL"
+          value={imageCompareData.beforeImage?.src ?? ""}
+          onChange={(next) =>
+            onChange({
+              ...imageCompareData,
+              beforeImage: ensureImage({
+                ...(imageCompareData.beforeImage ?? {}),
+                src: next,
+              }),
+            })
+          }
+          placeholder="https://example.com/before.jpg"
+          listEntries={list}
+          allowedExtensions={imageExtensions}
+          publicBasePath={publicBasePath}
+          requiredFolder="images"
+          dialogTitle="Select image"
+          dialogIcon={ImageIcon}
+          fileIcon={ImageIcon}
+        />
+        <PathInput
+          styles={styles}
+          label="After image URL"
+          value={imageCompareData.afterImage?.src ?? ""}
+          onChange={(next) =>
+            onChange({
+              ...imageCompareData,
+              afterImage: ensureImage({
+                ...(imageCompareData.afterImage ?? {}),
+                src: next,
+              }),
+            })
+          }
+          placeholder="https://example.com/after.jpg"
+          listEntries={list}
+          allowedExtensions={imageExtensions}
+          publicBasePath={publicBasePath}
+          requiredFolder="images"
+          dialogTitle="Select image"
+          dialogIcon={ImageIcon}
+          fileIcon={ImageIcon}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <label className="flex flex-col gap-1">
-          <span className="text-xs text-slate-500">Before alt text</span>
+          <span className={`${styles.text.alternative}`}>Before alt text</span>
           <input
             ref={beforeAltRef}
             className={`${styles.input} px-2 py-1`}
@@ -128,7 +132,7 @@ export function EditableImageCompare({
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-xs text-slate-500">After alt text</span>
+          <span className={`${styles.text.alternative}`}>After alt text</span>
           <input
             ref={afterAltRef}
             className={`${styles.input} px-2 py-1`}

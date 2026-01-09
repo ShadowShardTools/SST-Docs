@@ -43,7 +43,7 @@ export function EditableYoutube({
   return (
     <div className="space-y-3">
       <label className="flex flex-col gap-1">
-        <span className="text-xs text-slate-500">YouTube URL or ID</span>
+        <span className={`${styles.text.alternative}`}>YouTube URL or ID</span>
         <input
           ref={idRef}
           className={`${styles.input} px-2 py-1`}
@@ -58,7 +58,7 @@ export function EditableYoutube({
         />
       </label>
       <label className="flex flex-col gap-1">
-        <span className="text-xs text-slate-500">Caption (optional)</span>
+        <span className={`${styles.text.alternative}`}>Caption (optional)</span>
         <input
           ref={captionRef}
           className={`${styles.input} px-2 py-1`}

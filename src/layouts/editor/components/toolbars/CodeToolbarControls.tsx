@@ -22,7 +22,7 @@ export function CodeToolbarControls({ data, onChange, styles }: Props) {
       <button
         type="button"
         className={`flex justify-center items-center py-1 px-2 w-8 h-8 transition-colors cursor-pointer ${
-          wrapEnabled ? styles.buttons.tabSmallActive : styles.buttons.tabSmall
+          wrapEnabled ? styles.buttons.tabActive : styles.buttons.tab
         }`}
         onClick={() => toggle("wrapLines")}
         aria-pressed={wrapEnabled}
@@ -35,8 +35,8 @@ export function CodeToolbarControls({ data, onChange, styles }: Props) {
         type="button"
         className={`flex justify-center items-center py-1 px-2 w-8 h-8 transition-colors cursor-pointer ${
           collapseEnabled
-            ? styles.buttons.tabSmallActive
-            : styles.buttons.tabSmall
+            ? styles.buttons.tabActive
+            : styles.buttons.tab
         }`}
         onClick={() => toggle("defaultCollapsed")}
         aria-pressed={collapseEnabled}

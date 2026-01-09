@@ -35,7 +35,7 @@ export function EditableMath({ data, styles, onChange }: EditableMathProps) {
   return (
     <div className="space-y-2">
       <label className="flex flex-col gap-1">
-        <span className="text-xs text-slate-500">Expression</span>
+        <span className={`${styles.text.alternative}`}>Expression</span>
         <textarea
           ref={textareaRef}
           className={`${styles.input} w-full min-h-[90px] px-2 py-1 font-mono`}

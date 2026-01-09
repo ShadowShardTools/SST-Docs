@@ -138,15 +138,15 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2 text-xs">
+      <div className="flex flex-wrap gap-2">
         {sections.map((section, idx) => (
           <div key={idx} className="flex items-center gap-1">
             <button
               type="button"
-              className={`flex justify-center items-center gap-1 py-1 px-2 text-xs rounded transition-colors cursor-pointer ${
+              className={`flex justify-center items-center gap-1 py-1 px-2 transition-colors cursor-pointer ${
                 idx === activeIndex
-                  ? styles.buttons.tabSmallActive
-                  : styles.buttons.tabSmall
+                  ? styles.buttons.tabActive
+                  : styles.buttons.tab
               }`}
               onClick={() => setLocalActive(idx)}
               title={section.filename || section.language}
@@ -156,7 +156,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
             {sections.length > 1 && (
               <button
                 type="button"
-                className={`${styles.buttons.small} text-red-600`}
+                className={`${styles.buttons.small}`}
                 onClick={() => {
                   const updated = sections.filter((_, sIdx) => sIdx !== idx);
                   const nextActive = Math.min(
@@ -227,9 +227,9 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3 items-center text-xs text-slate-600">
+      <div className="flex flex-wrap gap-3 items-center">
         <label className="flex items-center gap-1">
-          <span>Block title</span>
+          <span className={`${styles.text.alternative}`}>Title:</span>
           <input
             className={`${styles.input} px-2 py-1`}
             value={codeData.name ?? ""}
@@ -243,7 +243,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           />
         </label>
         <label className="flex items-center gap-1">
-          <span>Filename</span>
+          <span className={`${styles.text.alternative}`}>Filename:</span>
           <input
             className={`${styles.input} px-2 py-1`}
             value={
@@ -272,7 +272,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           />
         </label>
         <div className="flex items-center gap-1">
-          <span>Language</span>
+          <span className={`${styles.text.alternative}`}>Language:</span>
           <Dropdown
             styles={styles}
             items={SUPPORTED_LANGUAGES.map((lang) => ({

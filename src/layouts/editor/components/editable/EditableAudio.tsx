@@ -1,7 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { Music2 } from "lucide-react";
 import AudioBlock from "../../../blocks/components/AudioBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
+import PathInput from "../../../common/components/PathInput";
+import { list } from "../../api/client";
+import { clientConfig } from "../../../../application/config/clientConfig";
 
 interface EditableAudioProps {
   data?: AudioData;
@@ -29,41 +33,49 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
     return "audio/mpeg";
   };
 
-  const srcRef = useRef<HTMLInputElement>(null);
   const captionRef = useRef<HTMLInputElement>(null);
+  const publicBasePath = useMemo(
+    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
+    [],
+  );
+  const audioExtensions = useMemo(
+    () => [".mp3", ".ogg", ".wav", ".m4a", ".flac", ".webm"],
+    [],
+  );
 
   useEffect(() => {
-    if (srcRef.current && srcRef.current.value !== (audioData.src ?? "")) {
-      srcRef.current.value = audioData.src ?? "";
-    }
     if (
       captionRef.current &&
       captionRef.current.value !== (audioData.caption ?? "")
     ) {
       captionRef.current.value = audioData.caption ?? "";
     }
-  }, [audioData.src, audioData.caption]);
+  }, [audioData.caption]);
 
   return (
     <div className="space-y-3">
+      <PathInput
+        styles={styles}
+        label="Audio source URL"
+        value={audioData.src ?? ""}
+        onChange={(next) =>
+          onChange({
+            ...audioData,
+            src: next,
+            mimeType: audioData.mimeType || guessMimeType(next),
+          })
+        }
+        placeholder="https://example.com/audio.mp3"
+        listEntries={list}
+        allowedExtensions={audioExtensions}
+        publicBasePath={publicBasePath}
+        requiredFolder="audio"
+        dialogTitle="Select audio"
+        dialogIcon={Music2}
+        fileIcon={Music2}
+      />
       <label className="flex flex-col gap-1">
-        <span className="text-xs text-slate-500">Audio source URL</span>
-        <input
-          ref={srcRef}
-          className={`${styles.input} px-2 py-1`}
-          defaultValue={audioData.src}
-          onChange={(e) =>
-            onChange({
-              ...audioData,
-              src: e.target.value,
-              mimeType: audioData.mimeType || guessMimeType(e.target.value),
-            })
-          }
-          placeholder="https://example.com/audio.mp3"
-        />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-xs text-slate-500">Caption (optional)</span>
+        <span className={`${styles.text.alternative}`}>Caption (optional)</span>
         <input
           ref={captionRef}
           className={`${styles.input} px-2 py-1`}

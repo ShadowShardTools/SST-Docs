@@ -105,9 +105,9 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
       data: isPointChart ? [pointSeed] : labels.map(() => 0),
       ...(isColorPerValue
         ? {
-            backgroundColor: labels.map(() => defaultColor),
-            borderColor: labels.map(() => defaultColor),
-          }
+          backgroundColor: labels.map(() => defaultColor),
+          borderColor: labels.map(() => defaultColor),
+        }
         : {}),
     });
     updateChart({ datasets: next });
@@ -163,13 +163,13 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
       data: (ds.data ?? []).filter((_, i) => i !== index),
       ...(isColorPerValue
         ? {
-            backgroundColor: Array.isArray(ds.backgroundColor)
-              ? ds.backgroundColor.filter((_, i) => i !== index)
-              : undefined,
-            borderColor: Array.isArray(ds.borderColor)
-              ? ds.borderColor.filter((_, i) => i !== index)
-              : undefined,
-          }
+          backgroundColor: Array.isArray(ds.backgroundColor)
+            ? ds.backgroundColor.filter((_, i) => i !== index)
+            : undefined,
+          borderColor: Array.isArray(ds.borderColor)
+            ? ds.borderColor.filter((_, i) => i !== index)
+            : undefined,
+        }
         : {}),
     }));
     updateChart({ labels: nextLabels, datasets: nextDatasets });
@@ -394,163 +394,158 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                 </button>
               </div>
               {!isPointChart ? (
-                <div className="space-y-1">
-                  <span className="text-xs text-slate-500">
-                    Values (match labels)
-                  </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {(chartData.labels ?? []).map((label, valueIdx) => (
-                      <label
-                        key={valueIdx}
-                        className="flex flex-col gap-1"
-                      >
-                        <span className="truncate">
-                          {label || `Label ${valueIdx + 1}`}
-                        </span>
-                        <input
-                          type="number"
-                          className={`${styles.input} px-2 py-1`}
-                          value={ds.data?.[valueIdx] ?? 0}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            const nextData = [...(ds.data ?? [])];
-                            nextData[valueIdx] = Number.isFinite(val) ? val : 0;
-                            handleDatasetChange(dsIndex, { data: nextData });
-                          }}
-                        />
-                        {isColorPerValue && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                            <label className="inline-flex items-center gap-1 text-xs">
-                              <span>Bg</span>
-                              <input
-                                type="color"
-                                className={`${styles.input} w-10 h-8 p-1`}
-                                value={getPickerColor(
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {(chartData.labels ?? []).map((label, valueIdx) => (
+                    <label
+                      key={valueIdx}
+                      className="flex flex-col gap-1"
+                    >
+                      <span className="truncate">
+                        {label || `Label ${valueIdx + 1}`}
+                      </span>
+                      <input
+                        type="number"
+                        className={`${styles.input} px-2 py-1`}
+                        value={ds.data?.[valueIdx] ?? 0}
+                        onChange={(e) => {
+                          const val = Number(e.target.value);
+                          const nextData = [...(ds.data ?? [])];
+                          nextData[valueIdx] = Number.isFinite(val) ? val : 0;
+                          handleDatasetChange(dsIndex, { data: nextData });
+                        }}
+                      />
+                      {isColorPerValue && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                          <label className="inline-flex items-center gap-1">
+                            <span className={`${styles.text.alternative}`}>Bg</span>
+                            <input
+                              type="color"
+                              className={`${styles.input} w-10 h-8 p-1`}
+                              value={getPickerColor(
+                                `ds-${dsIndex}-val-${valueIdx}-bg`,
+                                ensureColorArray(
+                                  ds.backgroundColor as any[],
+                                  chartData.labels?.length ?? 0,
+                                )[valueIdx],
+                              )}
+                              onChange={(e) =>
+                                setDraftColor(
                                   `ds-${dsIndex}-val-${valueIdx}-bg`,
-                                  ensureColorArray(
-                                    ds.backgroundColor as any[],
-                                    chartData.labels?.length ?? 0,
-                                  )[valueIdx],
-                                )}
-                                onChange={(e) =>
-                                  setDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-bg`,
-                                    e.target.value,
-                                  )
-                                }
-                                onBlur={() =>
-                                  commitDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-bg`,
-                                    (value) =>
-                                      updateValueColor(
-                                        dsIndex,
-                                        valueIdx,
-                                        "backgroundColor",
-                                        value,
-                                      ),
-                                  )
-                                }
-                              />
-                              <input
-                                type="text"
-                                className={`${styles.input} h-8 px-2 text-[10px] font-mono w-20`}
-                                value={getDraftColor(
+                                  e.target.value,
+                                )
+                              }
+                              onBlur={() =>
+                                commitDraftColor(
                                   `ds-${dsIndex}-val-${valueIdx}-bg`,
-                                  ensureColorArray(
-                                    ds.backgroundColor as any[],
-                                    chartData.labels?.length ?? 0,
-                                  )[valueIdx],
-                                ).toUpperCase()}
-                                onChange={(e) =>
-                                  setDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-bg`,
-                                    e.target.value.trim(),
-                                  )
-                                }
-                                onBlur={() =>
-                                  commitDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-bg`,
-                                    (value) =>
-                                      updateValueColor(
-                                        dsIndex,
-                                        valueIdx,
-                                        "backgroundColor",
-                                        value,
-                                      ),
-                                  )
-                                }
-                              />
-                            </label>
-                            <label className="inline-flex items-center gap-1 text-xs">
-                              <span>Border</span>
-                              <input
-                                type="color"
-                                className={`${styles.input} w-10 h-8 p-1`}
-                                value={getPickerColor(
+                                  (value) =>
+                                    updateValueColor(
+                                      dsIndex,
+                                      valueIdx,
+                                      "backgroundColor",
+                                      value,
+                                    ),
+                                )
+                              }
+                            />
+                            <input
+                              type="text"
+                              className={`${styles.input} h-8 px-2 text-[10px] font-mono w-20`}
+                              value={getDraftColor(
+                                `ds-${dsIndex}-val-${valueIdx}-bg`,
+                                ensureColorArray(
+                                  ds.backgroundColor as any[],
+                                  chartData.labels?.length ?? 0,
+                                )[valueIdx],
+                              ).toUpperCase()}
+                              onChange={(e) =>
+                                setDraftColor(
+                                  `ds-${dsIndex}-val-${valueIdx}-bg`,
+                                  e.target.value.trim(),
+                                )
+                              }
+                              onBlur={() =>
+                                commitDraftColor(
+                                  `ds-${dsIndex}-val-${valueIdx}-bg`,
+                                  (value) =>
+                                    updateValueColor(
+                                      dsIndex,
+                                      valueIdx,
+                                      "backgroundColor",
+                                      value,
+                                    ),
+                                )
+                              }
+                            />
+                          </label>
+                          <label className="inline-flex items-center gap-1 text-xs">
+                            <span className={`${styles.text.alternative}`}>Border</span>
+                            <input
+                              type="color"
+                              className={`${styles.input} w-10 h-8 p-1`}
+                              value={getPickerColor(
+                                `ds-${dsIndex}-val-${valueIdx}-border`,
+                                ensureColorArray(
+                                  ds.borderColor as any[],
+                                  chartData.labels?.length ?? 0,
+                                )[valueIdx],
+                              )}
+                              onChange={(e) =>
+                                setDraftColor(
                                   `ds-${dsIndex}-val-${valueIdx}-border`,
-                                  ensureColorArray(
-                                    ds.borderColor as any[],
-                                    chartData.labels?.length ?? 0,
-                                  )[valueIdx],
-                                )}
-                                onChange={(e) =>
-                                  setDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-border`,
-                                    e.target.value,
-                                  )
-                                }
-                                onBlur={() =>
-                                  commitDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-border`,
-                                    (value) =>
-                                      updateValueColor(
-                                        dsIndex,
-                                        valueIdx,
-                                        "borderColor",
-                                        value,
-                                      ),
-                                  )
-                                }
-                              />
-                              <input
-                                type="text"
-                                className={`${styles.input} h-8 px-2 text-[10px] font-mono w-20`}
-                                value={getDraftColor(
+                                  e.target.value,
+                                )
+                              }
+                              onBlur={() =>
+                                commitDraftColor(
                                   `ds-${dsIndex}-val-${valueIdx}-border`,
-                                  ensureColorArray(
-                                    ds.borderColor as any[],
-                                    chartData.labels?.length ?? 0,
-                                  )[valueIdx],
-                                ).toUpperCase()}
-                                onChange={(e) =>
-                                  setDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-border`,
-                                    e.target.value.trim(),
-                                  )
-                                }
-                                onBlur={() =>
-                                  commitDraftColor(
-                                    `ds-${dsIndex}-val-${valueIdx}-border`,
-                                    (value) =>
-                                      updateValueColor(
-                                        dsIndex,
-                                        valueIdx,
-                                        "borderColor",
-                                        value,
-                                      ),
-                                  )
-                                }
-                              />
-                            </label>
-                          </div>
-                        )}
-                      </label>
-                    ))}
-                  </div>
+                                  (value) =>
+                                    updateValueColor(
+                                      dsIndex,
+                                      valueIdx,
+                                      "borderColor",
+                                      value,
+                                    ),
+                                )
+                              }
+                            />
+                            <input
+                              type="text"
+                              className={`${styles.input} h-8 px-2 text-[10px] font-mono w-20`}
+                              value={getDraftColor(
+                                `ds-${dsIndex}-val-${valueIdx}-border`,
+                                ensureColorArray(
+                                  ds.borderColor as any[],
+                                  chartData.labels?.length ?? 0,
+                                )[valueIdx],
+                              ).toUpperCase()}
+                              onChange={(e) =>
+                                setDraftColor(
+                                  `ds-${dsIndex}-val-${valueIdx}-border`,
+                                  e.target.value.trim(),
+                                )
+                              }
+                              onBlur={() =>
+                                commitDraftColor(
+                                  `ds-${dsIndex}-val-${valueIdx}-border`,
+                                  (value) =>
+                                    updateValueColor(
+                                      dsIndex,
+                                      valueIdx,
+                                      "borderColor",
+                                      value,
+                                    ),
+                                )
+                              }
+                            />
+                          </label>
+                        </div>
+                      )}
+                    </label>
+                  ))}
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <span>{isBubble ? "Points (x,y,r)" : "Points (x,y)"}</span>
+                  <span className={`${styles.text.alternative}`}>{isBubble ? "Points (x,y,r)" : "Points (x,y)"}</span>
                   <div className="space-y-2">
                     {((ds.data as any[]) ?? []).map((point, pointIdx) => (
                       <div
@@ -558,7 +553,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                         className="flex gap-2"
                       >
                         <label className="flex items-center gap-1">
-                          <span>X</span>
+                          <span className={`${styles.text.alternative}`}>X</span>
                           <input
                             type="number"
                             className={`${styles.input} px-2 py-1 w-24`}
@@ -576,7 +571,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                           />
                         </label>
                         <label className="flex items-center gap-1">
-                          <span>Y</span>
+                          <span className={`${styles.text.alternative}`}>Y</span>
                           <input
                             type="number"
                             className={`${styles.input} px-2 py-1 w-24`}
@@ -595,7 +590,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
                         </label>
                         {isBubble && (
                           <label className="flex items-center gap-1">
-                            <span>R</span>
+                            <span className={`${styles.text.alternative}`}>R</span>
                             <input
                               type="number"
                               className={`${styles.input} px-2 py-1 w-24`}
@@ -645,7 +640,7 @@ export function EditableChart({ data, styles, onChange }: EditableChartProps) {
           </button>
         </div>
       </div>
-        {chartPreview}
+      {chartPreview}
     </div>
   );
 }

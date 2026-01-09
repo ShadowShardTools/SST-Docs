@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import {
   Folder,
   FileText,
@@ -103,6 +103,7 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
     categoryOnly = false,
   }) => {
     const open = addMenuFor === activeKey;
+    const ref = useRef<HTMLDivElement>(null);
     const handleClick = () => {
       if (docOnly) {
         onCreateDoc();
@@ -115,8 +116,21 @@ const EditorNavigation: React.FC<EditorNavigationProps> = ({
       setAddMenuFor(open ? null : activeKey);
     };
 
+    useEffect(() => {
+      if (!open) return;
+      const handleOutsideClick = (event: MouseEvent) => {
+        const target = event.target as Node;
+        if (ref.current && !ref.current.contains(target)) {
+          setAddMenuFor(null);
+        }
+      };
+      document.addEventListener("mousedown", handleOutsideClick);
+      return () =>
+        document.removeEventListener("mousedown", handleOutsideClick);
+    }, [open, setAddMenuFor]);
+
     return (
-      <div className="relative w-full">
+      <div className="relative w-full" ref={ref}>
         <button
           type="button"
           aria-label={label}

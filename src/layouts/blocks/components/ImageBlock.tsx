@@ -42,7 +42,7 @@ export const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
               className="w-full h-auto"
             />
             {imageData.image.alt && (
-              <p className={`mt-2 ${styles.text.alternative}`}>
+              <p className={`mt-2 ${styles.text.caption}`}>
                 {imageData.image.alt}
               </p>
             )}
