@@ -349,6 +349,7 @@ Apache Version 2.0 License - see [LICENSE](LICENSE) for details
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit issues and pull requests.
+**The repository needs real developers and someone who can take over further development!**
 
 ## 📞 Support
 
