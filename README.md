@@ -2,8 +2,8 @@
 
 A powerful, feature-rich React documentation platform built with Vite, designed for creating beautiful, searchable, and versioned documentation sites from structured JSON data. Perfect for technical documentation, API references, product guides, and knowledge bases.
 
-![SST-Docs Screenshot](https://github.com/user-attachments/assets/cfe822a5-b94a-4bb0-a45d-dc1a16fa7c57)
-![SST-Docs Dark Mode](https://github.com/user-attachments/assets/7af47e44-ed2c-4a3f-b6bb-5aa8a2aaeaf3)
+![SST-Docs Dark Mode]<img width="1645" height="1025" alt="image" src="https://github.com/user-attachments/assets/e3580e04-f168-4b24-ad4c-dc5227b11666" />
+![SST-Docs Light Mode]<img width="1645" height="1025" alt="image" src="https://github.com/user-attachments/assets/20564de1-abb6-40fb-97ab-3eb6b871233e" />
 
 ## ✨ Key Features
 
