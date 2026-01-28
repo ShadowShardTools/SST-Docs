@@ -1,0 +1,11 @@
+{
+  "id": "getting-started-category",
+  "title": "Getting Started",
+  "description": "Getting Started category",
+  "docs": [
+    "installation-item",
+    "configuration-item",
+    "doc-43ce7445-d532-4354-9aef-c94e97415fae"
+  ],
+  "children": []
+}

@@ -1,0 +1,115 @@
+{
+  "id": "introduction-item",
+  "title": "Introduction",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "SST-Docs - Modern React Documentation System",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "A powerful, feature-rich React documentation platform built with Vite, designed for creating beautiful, searchable, and versioned documentation sites from structured JSON data. Perfect for technical documentation, API references, product guides, and knowledge bases."
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Content Management",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ul",
+        "items": [
+          "<strong>JSON-Driven Architecture</strong>: All documentation stored as structured JSON for easy version control and automation",
+          "<strong>Multi-Product Support</strong>: Manage documentation for multiple products from a single installation",
+          "<strong>Version Control</strong>: Built-in versioning system with per-version assets and content",
+          "<strong>Rich Content Blocks</strong>: 16+ specialized content types including code, math, charts, media, and interactive"
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "User Experience",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ul",
+        "items": [
+          "<strong>Powerful Search</strong>: Real-time search with highlighted snippets and keyboard navigation (<strong>/</strong> or <strong>Ctrl+K</strong>)",
+          "<strong>Keyboard-First Navigation</strong>: <strong>F</strong> - Focus filter, <strong>Ctrl + Arrow Keys</strong> - Navigate documentation tree, <strong>Ctrl + Enter</strong> - Open selected item, Arrow keys in search results",
+          "<strong>Responsive Design</strong>: Optimized for desktop, tablet, and mobile devices",
+          "<strong>Theme Support</strong>: Light and dark modes with smooth transitions",
+          "<strong>Deep Linking</strong>: Direct links to any document or category"
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "License",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "info",
+        "text": "Apache Version 2.0 License - see <a href=\"https://github.com/ShadowShardTools/SST-Docs/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener noreferrer\">LICENSE</a> for details",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Contributing",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "success",
+        "text": "Contributions are welcome! Please feel free to submit issues and pull requests.<br><strong>The repository needs real developers and someone who can take over further development!</strong>",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Links",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ul",
+        "items": [
+          "<a href=\"https://shadowshardtools.github.io\" target=\"_blank\" rel=\"noopener noreferrer\">Website</a>",
+          "<a href=\"https://github.com/ShadowShardTools\" target=\"_blank\" rel=\"noopener noreferrer\">Github</a>",
+          "<a href=\"https://assetstore.unity.com/publishers/46006\" target=\"_blank\" rel=\"noopener noreferrer\">Unity AssetStore</a>",
+          "<a href=\"https://www.youtube.com/@shadowshardtools\" target=\"_blank\" rel=\"noopener noreferrer\">Youtube</a>",
+          "<a href=\"https://www.linkedin.com/company/shadowshardtools\" target=\"_blank\" rel=\"noopener noreferrer\">LinkedIn</a>",
+          "<a href=\"https://discord.gg/QyQACA5YvA\" target=\"_blank\" rel=\"noopener noreferrer\">Discord</a>"
+        ]
+      }
+    }
+  ]
+}

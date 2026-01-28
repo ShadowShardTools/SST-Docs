@@ -1,0 +1,296 @@
+{
+  "id": "doc-70bef80f4e7d45dcb57fff48148dcf53",
+  "title": "Common",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Title-H1 Example",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Title-H2 Example\n",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Title-H3 Example\n",
+        "level": 3,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "Text <strong>Bold</strong> <em>Italic</em> <strong><em>Bold-Italic </em></strong><a href=\"https://github.com/ShadowShardTools/SST-Docs\" target=\"_blank\" rel=\"noopener noreferrer\">Hyperlink</a>"
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ul",
+        "items": [
+          "List item",
+          "List item",
+          "List item"
+        ]
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ol",
+        "items": [
+          "List item",
+          "List item",
+          "List item"
+        ],
+        "inside": true,
+        "alignment": "left"
+      }
+    },
+    {
+      "type": "table",
+      "tableData": {
+        "type": "blank",
+        "data": [
+          [
+            {
+              "content": "Column 1",
+              "scope": "col"
+            },
+            {
+              "content": "Column 2",
+              "scope": "col"
+            }
+          ],
+          [
+            {
+              "content": "Row 1"
+            },
+            {
+              "content": "Value"
+            }
+          ],
+          [
+            {
+              "content": "Row 2"
+            },
+            {
+              "content": "Value"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "table",
+      "tableData": {
+        "type": "horizontal",
+        "data": [
+          [
+            {
+              "content": "Column 1",
+              "scope": "col"
+            },
+            {
+              "content": "Column 2",
+              "scope": "col"
+            }
+          ],
+          [
+            {
+              "content": "Row 1"
+            },
+            {
+              "content": "Value"
+            }
+          ],
+          [
+            {
+              "content": "Row 2"
+            },
+            {
+              "content": "Value"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "table",
+      "tableData": {
+        "type": "vertical",
+        "data": [
+          [
+            {
+              "content": "Column 1",
+              "scope": "col"
+            },
+            {
+              "content": "Column 2",
+              "scope": "col"
+            }
+          ],
+          [
+            {
+              "content": "Value"
+            },
+            {
+              "content": "Value"
+            }
+          ],
+          [
+            {
+              "content": "Value"
+            },
+            {
+              "content": "Value"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "table",
+      "tableData": {
+        "type": "matrix",
+        "data": [
+          [
+            {
+              "content": "Corner",
+              "scope": "col"
+            },
+            {
+              "content": "Column 1",
+              "scope": "col"
+            },
+            {
+              "content": "Column 2"
+            }
+          ],
+          [
+            {
+              "content": "Row 1"
+            },
+            {
+              "content": "Value"
+            },
+            {
+              "content": "Value"
+            }
+          ],
+          [
+            {
+              "content": "Row 2"
+            },
+            {
+              "content": "Value"
+            },
+            {
+              "content": "Value"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "info",
+        "text": "Message text",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "warning",
+        "text": "Message text",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "error",
+        "text": "Message text",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "success",
+        "text": "Message text",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "neutral",
+        "text": "Message text",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "messageBox",
+      "messageBoxData": {
+        "type": "quote",
+        "text": "Message text",
+        "showIcon": true
+      }
+    },
+    {
+      "type": "divider",
+      "dividerData": {
+        "type": "line",
+        "text": "Line"
+      }
+    },
+    {
+      "type": "divider",
+      "dividerData": {
+        "type": "dashed",
+        "text": "Dashed"
+      }
+    },
+    {
+      "type": "divider",
+      "dividerData": {
+        "type": "dotted",
+        "text": "Dotted"
+      }
+    },
+    {
+      "type": "divider",
+      "dividerData": {
+        "type": "double",
+        "text": "Double"
+      }
+    },
+    {
+      "type": "divider",
+      "dividerData": {
+        "type": "thick",
+        "text": "Thick"
+      }
+    },
+    {
+      "type": "divider",
+      "dividerData": {
+        "type": "gradient",
+        "text": "Gradient"
+      }
+    }
+  ],
+  "description": ""
+}

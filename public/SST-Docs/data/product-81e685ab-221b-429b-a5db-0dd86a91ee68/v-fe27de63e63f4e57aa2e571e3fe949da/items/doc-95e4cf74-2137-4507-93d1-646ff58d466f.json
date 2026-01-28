@@ -1,0 +1,65 @@
+{
+  "id": "doc-95e4cf74-2137-4507-93d1-646ff58d466f",
+  "title": "Code",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Single Language Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": false,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "javascript",
+            "content": "console.log('Hello, World!');",
+            "filename": "HelloWorld.js"
+          }
+        ],
+        "name": ""
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Multi-language Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "html",
+            "content": "<h1>Hello</h1>",
+            "filename": "Example.html"
+          },
+          {
+            "language": "css",
+            "content": "h1 { color: blue; }",
+            "filename": "Example.css"
+          },
+          {
+            "language": "javascript",
+            "content": "document.querySelector('h1').textContent = 'Hi!';",
+            "filename": "Example.js"
+          }
+        ]
+      }
+    }
+  ]
+}

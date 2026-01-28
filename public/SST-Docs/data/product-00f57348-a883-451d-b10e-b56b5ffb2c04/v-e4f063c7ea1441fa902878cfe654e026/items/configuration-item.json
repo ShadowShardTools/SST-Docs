@@ -1,0 +1,37 @@
+{
+  "id": "configuration-item",
+  "title": "Configuration",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Main Configuration",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "Set <strong>BASE_URL</strong> in your build environment(Vite config) to customize the base path."
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "json",
+            "content": "{\n  \"FS_DATA_PATH\": \"./public/SST-Docs/data\",\n  \"PRODUCT_VERSIONING\": true,\n  \"HEADER_BRANDING\": {\n    \"logoSrc\": \"https://avatars.githubusercontent.com/u/107807003\",\n    \"logoAlt\": \"SST Docs\",\n    \"logoText\": \"SST Docs\"\n  },\n  \"HTML_GENERATOR_SETTINGS\": {\n    \"OUTPUT_DIRECTORY\": \"./public/SST-Docs/data\",\n    \"PAGE_SIZE\": \"Letter\",\n    \"PAGE_PADDINGS\": [20, 10, 10, 20],\n    \"INCLUDE_TOC\": true,\n    \"THEME\": \"default\"\n  }\n}",
+            "filename": "sst-docs.config.json"
+          }
+        ]
+      }
+    }
+  ],
+  "description": ""
+}

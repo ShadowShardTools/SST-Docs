@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+@import "@splidejs/react-splide/css";
+@import "katex/dist/katex.min.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "./index.html";
+@source "./src/**/*.{js,ts,jsx,tsx}";
+@source "../node_modules/@shadow-shard-tools/docs-core/dist/**/*.{js,ts}";
+
+html {
+  scroll-behavior: smooth;
+}
+
+.bg-zinc-850 {
+  background-color: #1c1c1f;
+}
+
+.function-plot text {
+  font-size: 14px !important;
+}
