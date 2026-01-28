@@ -1,0 +1,333 @@
+{
+  "id": "charts-examples-item",
+  "title": "Charts",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Bar Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "bar",
+        "title": "Bar Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Red",
+          "Blue",
+          "Yellow",
+          "Green"
+        ],
+        "datasets": [
+          {
+            "label": "Votes",
+            "data": [
+              12,
+              19,
+              3,
+              5
+            ],
+            "backgroundColor": "#3a7fee",
+            "borderColor": "#f7f7f8"
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Line Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "line",
+        "title": "Line Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "datasets": [
+          {
+            "label": "Revenue ($k)",
+            "data": [
+              15,
+              25,
+              19,
+              30
+            ],
+            "borderColor": "#478eff",
+            "fill": false,
+            "backgroundColor": "#0a4761"
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Radar Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "radar",
+        "title": "Radar Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Speed",
+          "Reliability",
+          "Comfort",
+          "Safety",
+          "Efficiency"
+        ],
+        "datasets": [
+          {
+            "label": "Car A",
+            "data": [
+              65,
+              59,
+              90,
+              81,
+              56
+            ],
+            "backgroundColor": "#e01010",
+            "borderColor": "#751515"
+          },
+          {
+            "label": "Car B",
+            "data": [
+              28,
+              48,
+              40,
+              19,
+              96
+            ],
+            "backgroundColor": "#1ab741",
+            "borderColor": "#16642e"
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Doughnut Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "doughnut",
+        "title": "Doughnut Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ],
+        "datasets": [
+          {
+            "label": "Browser Share",
+            "data": [
+              55,
+              25,
+              20
+            ],
+            "backgroundColor": [
+              "#3b82f6",
+              "#ef4444",
+              "#facc15"
+            ],
+            "borderColor": [
+              "#ffffff",
+              "#ffffff",
+              "#ffffff"
+            ]
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Polar Area Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "polarArea",
+        "title": "Polar Area Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "North",
+          "East",
+          "South",
+          "West"
+        ],
+        "datasets": [
+          {
+            "data": [
+              11,
+              16,
+              7,
+              12
+            ],
+            "backgroundColor": [
+              "#3b82f6",
+              "#22c55e",
+              "#f97316",
+              "#a855f7"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Bubble Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "bubble",
+        "title": "Bubble Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Data"
+        ],
+        "datasets": [
+          {
+            "label": "Bubbles",
+            "data": [
+              {
+                "x": 5,
+                "y": 7,
+                "r": 10
+              },
+              {
+                "x": 3,
+                "y": 14,
+                "r": 15
+              },
+              {
+                "x": 8,
+                "y": 4,
+                "r": 8
+              }
+            ],
+            "backgroundColor": "#3b82f6",
+            "borderColor": "#f7f7f7"
+          }
+        ],
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Pie Example",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "pie",
+        "title": "Pie Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Apple",
+          "Samsung",
+          "Huawei"
+        ],
+        "datasets": [
+          {
+            "data": [
+              40,
+              30,
+              30
+            ],
+            "backgroundColor": [
+              "#ef4444",
+              "#22c55e",
+              "#3b82f6"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Chart: Scatter Example",
+        "level": "2",
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "chart",
+      "chartData": {
+        "type": "scatter",
+        "title": "Scatter Chart Example",
+        "scale": 0.6,
+        "labels": [
+          "Data"
+        ],
+        "datasets": [
+          {
+            "label": "Measurements",
+            "data": [
+              {
+                "x": 4,
+                "y": 5
+              },
+              {
+                "x": 8,
+                "y": 3
+              },
+              {
+                "x": 2,
+                "y": 7
+              },
+              {
+                "x": 6,
+                "y": 9
+              }
+            ],
+            "borderColor": "#ef4444",
+            "backgroundColor": "#4b0c0c"
+          }
+        ],
+        "alignment": "center"
+      }
+    }
+  ]
+}

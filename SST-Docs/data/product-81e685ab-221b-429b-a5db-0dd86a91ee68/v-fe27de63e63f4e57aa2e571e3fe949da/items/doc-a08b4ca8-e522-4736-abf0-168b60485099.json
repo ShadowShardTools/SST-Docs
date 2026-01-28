@@ -1,0 +1,13 @@
+{
+  "id": "doc-a08b4ca8-e522-4736-abf0-168b60485099",
+  "title": "Math",
+  "content": [
+    {
+      "type": "math",
+      "mathData": {
+        "expression": "\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}",
+        "alignment": "center"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "getting-started-category",
+  "title": "Getting Started",
+  "description": "Getting Started category",
+  "docs": [
+    "introduction-item",
+    "installation-item",
+    "configuration-item"
+  ],
+  "children": [
+    "examples-category"
+  ]
+}

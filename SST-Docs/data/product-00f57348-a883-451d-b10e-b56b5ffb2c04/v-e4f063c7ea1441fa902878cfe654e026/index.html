@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main - Documentation</title>
+  <link rel="stylesheet" href="../../static-styles/site.css">
+  <link rel="stylesheet" href="../../static-styles/static-code-block.css">
+  <link rel="stylesheet" href="../../static-styles/static-carousel.css">
+  <link rel="stylesheet" href="../../static-styles/static-compare.css">
+  <link rel="stylesheet" href="../../static-styles/prism-tomorrow.css">
+  <link rel="stylesheet" href="../../static-styles/splide.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+    
+    :root {
+      --page-width: 8.5in;
+      --page-height: 11in;
+      --page-padding-top: 20px;
+      --page-padding-right: 10px;
+      --page-padding-bottom: 10px;
+      --page-padding-left: 20px;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #3a3a3a;
+      min-height: 100vh;
+    }
+    
+    .prose {
+      font-family: 'Libre Baskerville', serif;
+    }
+    
+    .page {
+      width: var(--page-width);
+      min-height: var(--page-height);
+      padding: var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      margin: 24px auto;
+      box-sizing: border-box;
+    }
+    
+    .page-content {
+      min-height: calc(var(--page-height) - var(--page-padding-top) - var(--page-padding-bottom));
+    }
+
+    .toc-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .toc-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toc-leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(148, 163, 184, 0.9);
+      transform: translateY(-0.15em);
+    }
+
+    .toc-page {
+      min-width: 2.5rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media print {
+      @page {
+        size: Letter;
+        margin: 0;
+      }
+      body {
+        background-color: white !important;
+      }
+      .page {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
+        box-shadow: none;
+        page-break-after: always;
+      }
+      .page:last-child {
+        page-break-after: auto;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="py-8">
+  <!-- Cover Page -->
+  <div class="page bg-gray-100 dark:bg-zinc-900">
+    <div class="page-content flex flex-col justify-center items-center text-center">
+      <h1 class="text-6xl font-black tracking-tight mb-6 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">Main</h1>
+      <div class="w-32 h-1 bg-blue-600 mb-6"></div>
+      <p class="text-xl font-semibold text-sm text-gray-400">Version v1.1 (Latest)</p>
+      <div class="mt-16 text-sm font-mono text-sm text-gray-400">
+        <p>Generated: 1/28/2026</p>
+        <p>SST-Docs Engine</p>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Table of Contents Page -->
+  <div class="page bg-gray-100 dark:bg-zinc-900">
+    <div class="page-content">
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+            <div class="flex flex-col items-center gap-1 text-center w-full">
+              <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" x2="21" y1="6" y2="6"></line><line x1="8" x2="21" y1="12" y2="12"></line><line x1="8" x2="21" y1="18" y2="18"></line><line x1="3" x2="3.01" y1="6" y2="6"></line><line x1="3" x2="3.01" y1="12" y2="12"></line><line x1="3" x2="3.01" y1="18" y2="18"></line></svg>
+              <h1 aria-label="Table of Contents">Table of Contents</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="space-y-3">
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">1.</span>
+            <span style="display:inline-block; width:0rem;"></span>
+            <a href="#doc-category-getting-started-category" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Getting Started</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">3</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">2.</span>
+            <span style="display:inline-block; width:1.25rem;"></span>
+            <a href="#doc-introduction-item" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Introduction</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">4</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">3.</span>
+            <span style="display:inline-block; width:1.25rem;"></span>
+            <a href="#doc-installation-item" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Installation</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">5</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">4.</span>
+            <span style="display:inline-block; width:1.25rem;"></span>
+            <a href="#doc-configuration-item" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Configuration Examples</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">6</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">5.</span>
+            <span style="display:inline-block; width:1.25rem;"></span>
+            <a href="#doc-category-examples-category" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Examples</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">7</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">6.</span>
+            <span style="display:inline-block; width:2.5rem;"></span>
+            <a href="#doc-code-examples-item" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Code</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">8</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">7.</span>
+            <span style="display:inline-block; width:2.5rem;"></span>
+            <a href="#doc-charts-examples-item" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Charts</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">9</span>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+
+  <!-- Document Pages -->
+  
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-category-getting-started-category">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h5l2 2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path></svg>
+              <h1 aria-label="Getting Started">Getting Started</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Getting Started</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 1 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"><a href="#doc-category-examples-category" class="p-4 rounded-xl text-left transition-colors bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 block">
+                  <div class="flex items-center gap-2 text-lg font-semibold mb-1 text-stone-700 dark:text-gray-50">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h5l2 2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path></svg>
+                    <h3>Examples</h3>
+                  </div>
+                  <p class="text-sm line-clamp-3 text-gray-600 dark:text-indigo-400">Example description for the category</p>
+                </a><a href="#doc-introduction-item" class="p-4 rounded-xl text-left transition-colors bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 block">
+                  <div class="flex items-center gap-2 text-lg font-semibold mb-1 text-stone-700 dark:text-gray-50">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                    <h3>Introduction</h3>
+                  </div>
+                  
+                </a><a href="#doc-installation-item" class="p-4 rounded-xl text-left transition-colors bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 block">
+                  <div class="flex items-center gap-2 text-lg font-semibold mb-1 text-stone-700 dark:text-gray-50">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                    <h3>Installation</h3>
+                  </div>
+                  
+                </a><a href="#doc-configuration-item" class="p-4 rounded-xl text-left transition-colors bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 block">
+                  <div class="flex items-center gap-2 text-lg font-semibold mb-1 text-stone-700 dark:text-gray-50">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                    <h3>Configuration Examples</h3>
+                  </div>
+                  
+                </a></div>
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-introduction-item">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Introduction">Introduction</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Getting Started</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Introduction</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 2 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-installation-item">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Installation">Installation</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Getting Started</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Installation</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 3 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-configuration-item">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Configuration Examples">Configuration Examples</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Getting Started</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Configuration Examples</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 4 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-category-examples-category">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h5l2 2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path></svg>
+              <h1 aria-label="Examples">Examples</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Getting Started</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Examples</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 5 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"><a href="#doc-code-examples-item" class="p-4 rounded-xl text-left transition-colors bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 block">
+                  <div class="flex items-center gap-2 text-lg font-semibold mb-1 text-stone-700 dark:text-gray-50">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                    <h3>Code</h3>
+                  </div>
+                  
+                </a><a href="#doc-charts-examples-item" class="p-4 rounded-xl text-left transition-colors bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 block">
+                  <div class="flex items-center gap-2 text-lg font-semibold mb-1 text-stone-700 dark:text-gray-50">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                    <h3>Charts</h3>
+                  </div>
+                  
+                </a></div>
+        
+        <div class="mb-4"><p class="text-left text-base text-gray-700 mb-2 leading-relaxed dark:text-gray-300">Categories are separate pages in their own right and can have all the content that you have in regular documentation pages. This category contains a set of examples with different types of content blocks.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-code-examples-item">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Code">Code</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Getting Started</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Examples</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Code</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 6 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        <div class=""><div class=""><h2 id="single-language-example" data-anchor-id="single-language-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Single Language Example<a href="#single-language-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="relative mb-6 overflow-hidden rounded static-code-block" id="code-block-0" data-code-block data-code-collapsed="false">
+    <div class="flex items-center justify-between px-3 py-2 bg-stone-700/80 text-gray-200 border-b border-stone-300 dark:bg-indigo-900/80 dark:text-white dark:border-indigo-500">
+    <div class="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
+      <span class="truncate">hello.js</span>
+    </div>
+    <div class="flex gap-1 items-center flex-shrink-0">
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="toggle" title="Toggle code block">
+        <span class="hidden sm:inline" data-code-toggle-label>Hide</span>
+      </button>
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="download" title="Download code file">
+        <span class="hidden sm:inline">Download</span>
+      </button>
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="copy" title="Copy code to clipboard">
+        <span class="hidden sm:inline">Copy</span>
+      </button>
+    </div>
+  </div>
+    <div class="static-code-body transition-all duration-300 ease-in-out" style=""><div class="static-code-panel" data-code-panel="0" data-code-label="hello.js" data-code-language="JavaScript" style="">
+        <pre class="language-javascript text-sm w-full overflow-x-auto whitespace-pre"><div class="flex min-h-full px-4 py-3">
+      <div class="flex-1 relative"><code class="language-javascript block">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Hello, World!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></div>
+    </div></pre>
+      </div></div>
+    <div class="absolute top-12 right-2 px-2 py-1 rounded text-xs backdrop-blur-sm pointer-events-none text-xs font-semibold text-stone-300 mt-1 text-right dark:text-indigo-300">JavaScript</div>
+  </div>
+
+<div class=""><div class=""><h2 id="multi-language-example" data-anchor-id="multi-language-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Multi-language Example<a href="#multi-language-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="relative mb-6 overflow-hidden rounded static-code-block" id="code-block-1" data-code-block data-code-collapsed="false">
+    <div class="flex items-center justify-between px-3 py-2 bg-stone-700/80 text-gray-200 border-b border-stone-300 dark:bg-indigo-900/80 dark:text-white dark:border-indigo-500">
+    <div class="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
+      <span class="truncate">Simple code example</span><div class="flex items-center gap-1 flex-wrap" data-code-tabs>
+        <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs rounded-md transition-colors text-stone-800 bg-lime-500 border border-lime-300 dark:text-gray-800 dark:bg-lime-500 dark:border-lime-300 cursor-pointer" data-code-tab="0" data-base="flex justify-center items-center gap-1 py-1 px-2 text-xs" data-tab="rounded-md transition-colors text-stone-300 bg-stone-700 border border-stone-300 hover:bg-stone-500 dark:text-indigo-300 dark:bg-indigo-950 dark:border-indigo-600 dark:hover:bg-indigo-700/70 cursor-pointer" data-tab-active="rounded-md transition-colors text-stone-800 bg-lime-500 border border-lime-300 dark:text-gray-800 dark:bg-lime-500 dark:border-lime-300 cursor-pointer" title="Switch to index.html">HTML</button><button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs rounded-md transition-colors text-stone-300 bg-stone-700 border border-stone-300 hover:bg-stone-500 dark:text-indigo-300 dark:bg-indigo-950 dark:border-indigo-600 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-tab="1" data-base="flex justify-center items-center gap-1 py-1 px-2 text-xs" data-tab="rounded-md transition-colors text-stone-300 bg-stone-700 border border-stone-300 hover:bg-stone-500 dark:text-indigo-300 dark:bg-indigo-950 dark:border-indigo-600 dark:hover:bg-indigo-700/70 cursor-pointer" data-tab-active="rounded-md transition-colors text-stone-800 bg-lime-500 border border-lime-300 dark:text-gray-800 dark:bg-lime-500 dark:border-lime-300 cursor-pointer" title="Switch to styles.css">CSS</button><button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs rounded-md transition-colors text-stone-300 bg-stone-700 border border-stone-300 hover:bg-stone-500 dark:text-indigo-300 dark:bg-indigo-950 dark:border-indigo-600 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-tab="2" data-base="flex justify-center items-center gap-1 py-1 px-2 text-xs" data-tab="rounded-md transition-colors text-stone-300 bg-stone-700 border border-stone-300 hover:bg-stone-500 dark:text-indigo-300 dark:bg-indigo-950 dark:border-indigo-600 dark:hover:bg-indigo-700/70 cursor-pointer" data-tab-active="rounded-md transition-colors text-stone-800 bg-lime-500 border border-lime-300 dark:text-gray-800 dark:bg-lime-500 dark:border-lime-300 cursor-pointer" title="Switch to script.js">JavaScript</button>
+      </div>
+    </div>
+    <div class="flex gap-1 items-center flex-shrink-0">
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="toggle" title="Toggle code block">
+        <span class="hidden sm:inline" data-code-toggle-label>Hide</span>
+      </button>
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="download" title="Download code file">
+        <span class="hidden sm:inline">Download</span>
+      </button>
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="copy" title="Copy code to clipboard">
+        <span class="hidden sm:inline">Copy</span>
+      </button>
+    </div>
+  </div>
+    <div class="static-code-body transition-all duration-300 ease-in-out" style=""><div class="static-code-panel" data-code-panel="0" data-code-label="index.html" data-code-language="HTML" style="">
+        <pre class="language-markup text-sm w-full overflow-x-auto whitespace-pre-wrap break-words"><div class="flex min-h-full px-4 py-3">
+      <div class="flex-1 relative"><code class="language-markup block"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Hello<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span></code></div>
+    </div></pre>
+      </div><div class="static-code-panel" data-code-panel="1" data-code-label="styles.css" data-code-language="CSS" style="display:none;">
+        <pre class="language-css text-sm w-full overflow-x-auto whitespace-pre-wrap break-words"><div class="flex min-h-full px-4 py-3">
+      <div class="flex-1 relative"><code class="language-css block"><span class="token selector">h1</span> <span class="token punctuation">{</span> <span class="token property">color</span><span class="token punctuation">:</span> blue<span class="token punctuation">;</span> <span class="token punctuation">}</span></code></div>
+    </div></pre>
+      </div><div class="static-code-panel" data-code-panel="2" data-code-label="script.js" data-code-language="JavaScript" style="display:none;">
+        <pre class="language-javascript text-sm w-full overflow-x-auto whitespace-pre-wrap break-words"><div class="flex min-h-full px-4 py-3">
+      <div class="flex-1 relative"><code class="language-javascript block">document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'h1'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>textContent <span class="token operator">=</span> <span class="token string">'Hi!'</span><span class="token punctuation">;</span></code></div>
+    </div></pre>
+      </div></div>
+    
+  </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-charts-examples-item">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Charts">Charts</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Getting Started</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" >
+                  <span class="cursor-default">Examples</span>
+                  <span aria-hidden="true">/</span>
+                </li>
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Charts</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 7 of 7</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        <div class=""><div class=""><h2 id="chart-bar-example" data-anchor-id="chart-bar-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Bar Example<a href="#chart-bar-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;bar&quot;,&quot;title&quot;:&quot;Bar Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Red&quot;,&quot;Blue&quot;,&quot;Yellow&quot;,&quot;Green&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Votes&quot;,&quot;data&quot;:[12,19,3,5],&quot;backgroundColor&quot;:&quot;#3a7fee&quot;,&quot;borderColor&quot;:&quot;#f7f7f8&quot;}],&quot;alignment&quot;:&quot;center&quot;},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Bar Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-line-example" data-anchor-id="chart-line-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Line Example<a href="#chart-line-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;line&quot;,&quot;title&quot;:&quot;Line Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Q1&quot;,&quot;Q2&quot;,&quot;Q3&quot;,&quot;Q4&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Revenue ($k)&quot;,&quot;data&quot;:[15,25,19,30],&quot;borderColor&quot;:&quot;#478eff&quot;,&quot;fill&quot;:false,&quot;backgroundColor&quot;:&quot;#0a4761&quot;}],&quot;alignment&quot;:&quot;center&quot;},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Line Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-radar-example" data-anchor-id="chart-radar-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Radar Example<a href="#chart-radar-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;radar&quot;,&quot;title&quot;:&quot;Radar Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Speed&quot;,&quot;Reliability&quot;,&quot;Comfort&quot;,&quot;Safety&quot;,&quot;Efficiency&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Car A&quot;,&quot;data&quot;:[65,59,90,81,56],&quot;backgroundColor&quot;:&quot;#e01010&quot;,&quot;borderColor&quot;:&quot;#751515&quot;},{&quot;label&quot;:&quot;Car B&quot;,&quot;data&quot;:[28,48,40,19,96],&quot;backgroundColor&quot;:&quot;#1ab741&quot;,&quot;borderColor&quot;:&quot;#16642e&quot;}],&quot;alignment&quot;:&quot;center&quot;},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Radar Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-doughnut-example" data-anchor-id="chart-doughnut-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Doughnut Example<a href="#chart-doughnut-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;doughnut&quot;,&quot;title&quot;:&quot;Doughnut Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Chrome&quot;,&quot;Firefox&quot;,&quot;Safari&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Browser Share&quot;,&quot;data&quot;:[55,25,20],&quot;backgroundColor&quot;:[&quot;#3b82f6&quot;,&quot;#ef4444&quot;,&quot;#facc15&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;]}],&quot;alignment&quot;:&quot;center&quot;},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Doughnut Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-polar-area-example" data-anchor-id="chart-polar-area-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Polar Area Example<a href="#chart-polar-area-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;polarArea&quot;,&quot;title&quot;:&quot;Polar Area Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;North&quot;,&quot;East&quot;,&quot;South&quot;,&quot;West&quot;],&quot;datasets&quot;:[{&quot;data&quot;:[11,16,7,12],&quot;backgroundColor&quot;:[&quot;#3b82f6&quot;,&quot;#22c55e&quot;,&quot;#f97316&quot;,&quot;#a855f7&quot;]}]},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Polar Area Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-bubble-example" data-anchor-id="chart-bubble-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Bubble Example<a href="#chart-bubble-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;bubble&quot;,&quot;title&quot;:&quot;Bubble Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Data&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Bubbles&quot;,&quot;data&quot;:[{&quot;x&quot;:5,&quot;y&quot;:7,&quot;r&quot;:10},{&quot;x&quot;:3,&quot;y&quot;:14,&quot;r&quot;:15},{&quot;x&quot;:8,&quot;y&quot;:4,&quot;r&quot;:8}],&quot;backgroundColor&quot;:&quot;#3b82f6&quot;,&quot;borderColor&quot;:&quot;#f7f7f7&quot;}],&quot;alignment&quot;:&quot;center&quot;},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Bubble Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-pie-example" data-anchor-id="chart-pie-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Pie Example<a href="#chart-pie-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;pie&quot;,&quot;title&quot;:&quot;Pie Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Apple&quot;,&quot;Samsung&quot;,&quot;Huawei&quot;],&quot;datasets&quot;:[{&quot;data&quot;:[40,30,30],&quot;backgroundColor&quot;:[&quot;#ef4444&quot;,&quot;#22c55e&quot;,&quot;#3b82f6&quot;]}]},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Pie Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+
+<div class=""><div class=""><h2 id="chart-scatter-example" data-anchor-id="chart-scatter-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Chart: Scatter Example<a href="#chart-scatter-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class="mb-6 text-center mx-auto" style="width: 60%;"><div class="w-full"><figure class="flex flex-col items-center gap-3">
+    <div class="aspect-video w-full">
+      <canvas class="w-full h-full" data-chart="{&quot;data&quot;:{&quot;type&quot;:&quot;scatter&quot;,&quot;title&quot;:&quot;Scatter Chart Example&quot;,&quot;scale&quot;:0.6,&quot;labels&quot;:[&quot;Data&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Measurements&quot;,&quot;data&quot;:[{&quot;x&quot;:4,&quot;y&quot;:5},{&quot;x&quot;:8,&quot;y&quot;:3},{&quot;x&quot;:2,&quot;y&quot;:7},{&quot;x&quot;:6,&quot;y&quot;:9}],&quot;borderColor&quot;:&quot;#ef4444&quot;,&quot;backgroundColor&quot;:&quot;#4b0c0c&quot;}],&quot;alignment&quot;:&quot;center&quot;},&quot;theme&quot;:{&quot;legendLabelColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBg&quot;:&quot;#f9fafb&quot;,&quot;tooltipTitleColor&quot;:&quot;#111827&quot;,&quot;tooltipBodyColor&quot;:&quot;#1f2937&quot;,&quot;tooltipBorderColor&quot;:&quot;#d1d5db&quot;,&quot;axisTickColor&quot;:&quot;#4b5563&quot;,&quot;gridLineColor&quot;:&quot;rgba(148, 163, 184, 0.3)&quot;},&quot;themeDark&quot;:{&quot;legendLabelColor&quot;:&quot;#e5e7eb&quot;,&quot;tooltipBg&quot;:&quot;#0b1224&quot;,&quot;tooltipTitleColor&quot;:&quot;#e0e7ff&quot;,&quot;tooltipBodyColor&quot;:&quot;#f3f4f6&quot;,&quot;tooltipBorderColor&quot;:&quot;#6366f1&quot;,&quot;axisTickColor&quot;:&quot;#e5e7eb&quot;,&quot;gridLineColor&quot;:&quot;rgba(99, 102, 241, 0.35)&quot;},&quot;title&quot;:&quot;Scatter Chart Example&quot;}"></canvas>
+    </div>
+    
+  </figure></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Page -->
+  <div class="page bg-gray-100 dark:bg-zinc-900">
+    <div class="page-content flex flex-col justify-center items-center text-center">
+      <div class="w-24 h-1 bg-gray-300 mb-8"></div>
+      <p class="text-gray-500">End of Document</p>
+      <p class="text-sm text-gray-400 mt-4">&copy; 2026 Main. All rights reserved.</p>
+      <p class="text-xs text-gray-400 mt-1">Generated via SST-Docs</p>
+    </div>
+  </div>
+  <button type="button" class="fixed top-4 right-4 z-50 flex justify-center items-center gap-2 p-2 rounded font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999; pointer-events: auto;" data-theme-toggle aria-label="Toggle theme" title="Toggle light/dark mode">
+    <span data-theme-icon="sun" class="hidden">
+      <svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </span>
+    <span data-theme-icon="moon" class="hidden">
+      <svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+      </svg>
+    </span>
+  </button>
+  <script src="../../static-styles/vendor/prism.js"></script>
+  <script src="../../static-styles/vendor/chart.umd.js"></script>
+  <script src="../../static-styles/vendor/splide.min.js"></script>
+  <script>
+  (function () {
+    var THEME_KEY = "theme";
+    var storedTheme = null;
+    try { storedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+    var prefersDark = false;
+    try {
+      prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch (e) {}
+    var isDark = storedTheme ? storedTheme === "dark" : prefersDark;
+
+    var applyTheme = function (dark) {
+      var theme = dark ? "dark" : "light";
+      [document.documentElement, document.body].forEach(function (el) {
+        if (!el) return;
+        el.classList.toggle("dark", theme === "dark");
+        el.classList.toggle("light", theme === "light");
+        el.dataset.theme = theme;
+        el.style.colorScheme = theme;
+      });
+      var sunIcon = document.querySelector("[data-theme-icon='sun']");
+      var moonIcon = document.querySelector("[data-theme-icon='moon']");
+      if (sunIcon) sunIcon.classList.toggle("hidden", theme !== "dark");
+      if (moonIcon) moonIcon.classList.toggle("hidden", theme !== "light");
+    };
+
+    applyTheme(isDark);
+
+    if (window.Prism && typeof window.Prism.highlightAll === "function") {
+      window.Prism.highlightAll();
+    }
+
+    if (window.Splide) {
+      document.querySelectorAll(".splide").forEach(function (el) {
+        var raw = el.getAttribute("data-splide-options");
+        var options = {};
+        if (raw) {
+          try { options = JSON.parse(raw); } catch (e) {}
+        }
+        try { new window.Splide(el, options).mount(); } catch (e) {}
+      });
+    }
+
+    document.querySelectorAll("[data-static-compare]").forEach(function (container) {
+      var range = container.querySelector("[data-static-compare-range]");
+      var beforeLabel = container.getAttribute("data-before-label") || "";
+      var afterLabel = container.getAttribute("data-after-label") || "";
+      var summary = container.querySelector("[data-static-compare-summary]");
+      var dragging = false;
+      var apply = function (value) {
+        var numeric = Number(value);
+        if (!isFinite(numeric)) {
+          numeric = Number(container.getAttribute("data-initial") || 50);
+        }
+        var clamped = Math.max(0, Math.min(100, numeric));
+        container.style.setProperty("--static-compare-position", clamped + "%");
+        if (summary) {
+          var beforeText = beforeLabel ? Math.round(clamped) + "% " + beforeLabel : "";
+          var afterText = afterLabel ? Math.round(100 - clamped) + "% " + afterLabel : "";
+          summary.textContent = beforeText && afterText ? beforeText + " / " + afterText : (beforeText || afterText);
+        }
+      };
+      var applyFromClientX = function (clientX) {
+        var rect = container.getBoundingClientRect();
+        if (!rect.width) return;
+        var percent = ((clientX - rect.left) / rect.width) * 100;
+        apply(percent);
+        if (range) range.value = String(Math.max(0, Math.min(100, percent)));
+      };
+      if (range) {
+        apply(range.value);
+        ["input", "change"].forEach(function (eventName) {
+          range.addEventListener(eventName, function (evt) {
+            var target = evt && evt.target && typeof evt.target.value !== "undefined" ? evt.target : range;
+            apply(target.value);
+          });
+        });
+      } else {
+        apply(container.getAttribute("data-initial") || 50);
+      }
+
+      container.addEventListener("pointerdown", function (event) {
+        dragging = true;
+        try { container.setPointerCapture(event.pointerId); } catch (e) {}
+        applyFromClientX(event.clientX);
+      });
+      container.addEventListener("pointermove", function (event) {
+        if (!dragging) return;
+        applyFromClientX(event.clientX);
+      });
+      var stopDrag = function (event) {
+        if (!dragging) return;
+        dragging = false;
+        try { container.releasePointerCapture(event.pointerId); } catch (e) {}
+      };
+      container.addEventListener("pointerup", stopDrag);
+      container.addEventListener("pointercancel", stopDrag);
+    });
+
+    document.querySelectorAll("[data-code-block]").forEach(function (block) {
+      var panels = Array.prototype.slice.call(block.querySelectorAll("[data-code-panel]"));
+      var tabs = Array.prototype.slice.call(block.querySelectorAll("[data-code-tab]"));
+      var body = block.querySelector(".static-code-body");
+      var toggleLabels = Array.prototype.slice.call(block.querySelectorAll("[data-code-toggle-label]"));
+      var setActive = function (index) {
+        panels.forEach(function (panel, i) {
+          panel.style.display = i === index ? "" : "none";
+        });
+        tabs.forEach(function (tab, i) {
+          var inactiveClass = tab.getAttribute("data-tab") || "";
+          var activeClass = tab.getAttribute("data-tab-active") || "";
+          var baseClass = tab.getAttribute("data-base") || "";
+          tab.className = (baseClass + " " + (i === index ? activeClass : inactiveClass)).trim();
+        });
+      };
+      if (tabs.length) {
+        tabs.forEach(function (tab, i) {
+          tab.addEventListener("click", function () {
+            setActive(i);
+          });
+        });
+      }
+
+      var applyCollapsed = function (collapsed) {
+        if (!body) return;
+        if (collapsed) {
+          body.style.maxHeight = "0px";
+          body.style.opacity = "0";
+          body.style.overflow = "hidden";
+        } else {
+          body.style.maxHeight = "";
+          body.style.opacity = "1";
+          body.style.overflow = "";
+        }
+        block.setAttribute("data-code-collapsed", collapsed ? "true" : "false");
+        toggleLabels.forEach(function (label) {
+          label.textContent = collapsed ? "Show" : "Hide";
+        });
+      };
+
+      var toggleButtons = Array.prototype.slice.call(block.querySelectorAll("[data-code-action='toggle']"));
+      toggleButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var isCollapsed = block.getAttribute("data-code-collapsed") === "true";
+          applyCollapsed(!isCollapsed);
+        });
+      });
+
+      applyCollapsed(block.getAttribute("data-code-collapsed") === "true");
+
+      var copyButtons = Array.prototype.slice.call(block.querySelectorAll("[data-code-action='copy']"));
+      copyButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var activePanel = panels.find(function (panel) { return panel.style.display !== "none"; }) || panels[0];
+          if (!activePanel) return;
+          var code = activePanel.querySelector("code");
+          var text = code ? code.textContent || "" : "";
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(function () {});
+          }
+        });
+      });
+
+      var downloadButtons = Array.prototype.slice.call(block.querySelectorAll("[data-code-action='download']"));
+      downloadButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var activePanel = panels.find(function (panel) { return panel.style.display !== "none"; }) || panels[0];
+          if (!activePanel) return;
+          var code = activePanel.querySelector("code");
+          var text = code ? code.textContent || "" : "";
+          var label = activePanel.getAttribute("data-code-label") || "code";
+          var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+          var url = URL.createObjectURL(blob);
+          var link = document.createElement("a");
+          link.href = url;
+          link.download = label.replace(/[^a-z0-9._-]+/gi, "_");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        });
+      });
+    });
+
+    var chartInstances = [];
+    var buildChartOptions = function (chartData, theme, type) {
+      var baseFont = {
+        family: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+        size: 12,
+      };
+      var options = {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: theme.legendLabelColor || "#1f2937",
+              font: baseFont,
+            },
+          },
+          tooltip: {
+            backgroundColor: theme.tooltipBg || "#f9fafb",
+            titleColor: theme.tooltipTitleColor || "#111827",
+            bodyColor: theme.tooltipBodyColor || "#1f2937",
+            borderColor: theme.tooltipBorderColor || "#d1d5db",
+            borderWidth: 1,
+            titleFont: baseFont,
+            bodyFont: baseFont,
+          },
+        },
+      };
+      if (type === "radar" || type === "polarArea") {
+        options.scales = {
+          r: {
+            grid: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            angleLines: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            pointLabels: {
+              color: theme.axisTickColor || "#4b5563",
+              font: baseFont,
+            },
+            ticks: {
+              color: theme.axisTickColor || "#4b5563",
+              font: baseFont,
+            },
+          },
+        };
+      } else {
+        options.scales = {
+          x: {
+            grid: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            ticks: { color: theme.axisTickColor || "#4b5563", font: baseFont },
+          },
+          y: {
+            grid: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            ticks: { color: theme.axisTickColor || "#4b5563", font: baseFont },
+          },
+        };
+      }
+      return options;
+    };
+
+    var applyChartTheme = function (dark) {
+      chartInstances.forEach(function (entry) {
+        var theme = dark ? entry.themeDark : entry.theme;
+        entry.instance.options = buildChartOptions(entry.data, theme, entry.type);
+        entry.instance.update();
+      });
+    };
+
+    if (window.Chart) {
+      var typeMap = {
+        bar: "bar",
+        line: "line",
+        radar: "radar",
+        doughnut: "doughnut",
+        polarArea: "polarArea",
+        bubble: "bubble",
+        pie: "pie",
+        scatter: "scatter",
+      };
+      var isRadial = function (type) {
+        return type === "radar" || type === "polarArea";
+      };
+
+      document.querySelectorAll("canvas[data-chart]").forEach(function (canvas) {
+        var raw = canvas.getAttribute("data-chart");
+        if (!raw) return;
+        var payload;
+        try { payload = JSON.parse(raw); } catch (e) { return; }
+        if (!payload || !payload.data) return;
+
+        var chartData = payload.data;
+        var theme = (isDark ? payload.themeDark : payload.theme) || payload.theme || {};
+        var type = typeMap[chartData.type] || "bar";
+        var options = buildChartOptions(chartData, theme, type);
+        if (type === "radar") {
+          chartData.datasets = (chartData.datasets || []).map(function (dataset) {
+            if (typeof dataset.fill === "undefined") {
+              dataset.fill = false;
+            }
+            return dataset;
+          });
+        }
+
+        try {
+          var instance = new window.Chart(canvas, {
+            type: type,
+            data: {
+              labels: chartData.labels || [],
+              datasets: chartData.datasets || [],
+            },
+            options: options,
+          });
+          chartInstances.push({
+            instance: instance,
+            data: chartData,
+            theme: payload.theme || {},
+            themeDark: payload.themeDark || payload.theme || {},
+            type: type,
+          });
+        } catch (e) {}
+      });
+    }
+
+    var toggle = document.querySelector("[data-theme-toggle]");
+    if (toggle) {
+      toggle.addEventListener("click", function () {
+        isDark = !isDark;
+        applyTheme(isDark);
+        try { localStorage.setItem(THEME_KEY, isDark ? "dark" : "light"); } catch (e) {}
+        applyChartTheme(isDark);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

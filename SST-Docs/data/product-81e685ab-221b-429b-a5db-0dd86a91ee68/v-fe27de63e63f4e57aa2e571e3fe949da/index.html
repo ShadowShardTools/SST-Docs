@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examples - Documentation</title>
+  <link rel="stylesheet" href="../../static-styles/site.css">
+  <link rel="stylesheet" href="../../static-styles/static-code-block.css">
+  <link rel="stylesheet" href="../../static-styles/static-carousel.css">
+  <link rel="stylesheet" href="../../static-styles/static-compare.css">
+  <link rel="stylesheet" href="../../static-styles/prism-tomorrow.css">
+  <link rel="stylesheet" href="../../static-styles/splide.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+    
+    :root {
+      --page-width: 8.5in;
+      --page-height: 11in;
+      --page-padding-top: 20px;
+      --page-padding-right: 10px;
+      --page-padding-bottom: 10px;
+      --page-padding-left: 20px;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #3a3a3a;
+      min-height: 100vh;
+    }
+    
+    .prose {
+      font-family: 'Libre Baskerville', serif;
+    }
+    
+    .page {
+      width: var(--page-width);
+      min-height: var(--page-height);
+      padding: var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      margin: 24px auto;
+      box-sizing: border-box;
+    }
+    
+    .page-content {
+      min-height: calc(var(--page-height) - var(--page-padding-top) - var(--page-padding-bottom));
+    }
+
+    .toc-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .toc-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toc-leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(148, 163, 184, 0.9);
+      transform: translateY(-0.15em);
+    }
+
+    .toc-page {
+      min-width: 2.5rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media print {
+      @page {
+        size: Letter;
+        margin: 0;
+      }
+      body {
+        background-color: white !important;
+      }
+      .page {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
+        box-shadow: none;
+        page-break-after: always;
+      }
+      .page:last-child {
+        page-break-after: auto;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="py-8">
+  <!-- Cover Page -->
+  <div class="page bg-gray-100 dark:bg-zinc-900">
+    <div class="page-content flex flex-col justify-center items-center text-center">
+      <h1 class="text-6xl font-black tracking-tight mb-6 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">Examples</h1>
+      <div class="w-32 h-1 bg-blue-600 mb-6"></div>
+      <p class="text-xl font-semibold text-sm text-gray-400">Version 1.0</p>
+      <div class="mt-16 text-sm font-mono text-sm text-gray-400">
+        <p>Generated: 1/28/2026</p>
+        <p>SST-Docs Engine</p>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Table of Contents Page -->
+  <div class="page bg-gray-100 dark:bg-zinc-900">
+    <div class="page-content">
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+            <div class="flex flex-col items-center gap-1 text-center w-full">
+              <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" x2="21" y1="6" y2="6"></line><line x1="8" x2="21" y1="12" y2="12"></line><line x1="8" x2="21" y1="18" y2="18"></line><line x1="3" x2="3.01" y1="6" y2="6"></line><line x1="3" x2="3.01" y1="12" y2="12"></line><line x1="3" x2="3.01" y1="18" y2="18"></line></svg>
+              <h1 aria-label="Table of Contents">Table of Contents</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="space-y-3">
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">1.</span>
+            <span style="display:inline-block; width:0rem;"></span>
+            <a href="#doc-doc-70bef80f4e7d45dcb57fff48148dcf53" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Common</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">3</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">2.</span>
+            <span style="display:inline-block; width:0rem;"></span>
+            <a href="#doc-doc-954b6826-db8e-4a57-8290-86a2d7c30459" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Media</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">4</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">3.</span>
+            <span style="display:inline-block; width:0rem;"></span>
+            <a href="#doc-doc-a08b4ca8-e522-4736-abf0-168b60485099" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Math</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">5</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">4.</span>
+            <span style="display:inline-block; width:0rem;"></span>
+            <a href="#doc-doc-95e4cf74-2137-4507-93d1-646ff58d466f" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Code</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">6</span>
+          </li>
+        
+          <li class="toc-entry">
+            <span class="text-gray-400 font-mono text-sm w-8">5.</span>
+            <span style="display:inline-block; width:0rem;"></span>
+            <a href="#doc-doc-c557f277-d2e0-40f6-81f2-1a4889315ca0" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60 toc-title">Charts</a>
+            <span class="toc-leader" aria-hidden="true"></span>
+            <span class="text-gray-400 font-mono text-sm toc-page">7</span>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+
+  <!-- Document Pages -->
+  
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-doc-70bef80f4e7d45dcb57fff48148dcf53">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Common">Common</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Common</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 1 of 5</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        <div class=""><div class=""><h1 id="title-h1-example" data-anchor-id="title-h1-example" class="text-left font-bold scroll-mt-20 group relative text-3xl font-bold text-stone-600 mb-3 mt-8 first:mt-0 dark:text-indigo-400">Title-H1 Example<a href="#title-h1-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h1></div></div>
+
+<div class=""><div class=""><h2 id="title-h2-example" data-anchor-id="title-h2-example" class="text-left font-bold scroll-mt-20 group relative text-2xl font-semibold text-gray-800 mb-4 mt-8 first:mt-0 dark:text-gray-100">Title-H2 Example
+<a href="#title-h2-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h2></div></div>
+
+<div class=""><div class=""><h3 id="title-h3-example" data-anchor-id="title-h3-example" class="text-left font-bold scroll-mt-20 group relative text-xl font-medium text-gray-700 mb-3 mt-6 first:mt-0 dark:text-gray-200">Title-H3 Example
+<a href="#title-h3-example" class="ml-2 inline-block text-stone-400 hover:text-blue-500 dark:text-gray-400" aria-label="Anchor link">#</a></h3></div></div>
+
+<div class="mb-4"><p class="text-left text-base text-gray-700 mb-2 leading-relaxed dark:text-gray-300">Text <strong>Bold</strong> <em>Italic</em> <strong><em>Bold-Italic </em></strong><a href="https://github.com/ShadowShardTools/SST-Docs" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 hover:underline underline-offset-2 decoration-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded dark:text-indigo-400-300 dark:hover:text-indigo-200 dark:focus-visible:ring-indigo-500/60">Hyperlink</a></p></div>
+
+<ul role="list" class="mb-2 list-inside text-gray-700 mb-2 space-y-1 dark:text-gray-300 list-disc text-left">
+  <li role="listitem">List item</li>
+  <li role="listitem">List item</li>
+  <li role="listitem">List item</li>
+</ul>
+
+<ol role="list" class="mb-2 list-inside text-gray-700 mb-2 space-y-1 dark:text-gray-300 list-decimal ml-4 text-left">
+  <li role="listitem">List item</li>
+  <li role="listitem">List item</li>
+  <li role="listitem">List item</li>
+</ol>
+
+<div class="mb-6 overflow-x-auto" style="-webkit-overflow-scrolling: touch; overflow-x: auto; white-space: nowrap;">
+  <table class="border-stone-400 dark:border-indigo-700 border rounded-lg" style="border-collapse: collapse; table-layout: auto; min-width: 100%;">
+    <tbody>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <td scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Column 1</td>
+    <td scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Column 2</td>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Row 1</td>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Row 2</td>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mb-6 overflow-x-auto" style="-webkit-overflow-scrolling: touch; overflow-x: auto; white-space: nowrap;">
+  <table class="border-stone-400 dark:border-indigo-700 border rounded-lg" style="border-collapse: collapse; table-layout: auto; min-width: 100%;">
+    <tbody>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Column 1</th>
+    <td scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Column 2</td>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="row" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Row 1</th>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="row" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Row 2</th>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mb-6 overflow-x-auto" style="-webkit-overflow-scrolling: touch; overflow-x: auto; white-space: nowrap;">
+  <table class="border-stone-400 dark:border-indigo-700 border rounded-lg" style="border-collapse: collapse; table-layout: auto; min-width: 100%;">
+    <tbody>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Column 1</th>
+    <th scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Column 2</th>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mb-6 overflow-x-auto" style="-webkit-overflow-scrolling: touch; overflow-x: auto; white-space: nowrap;">
+  <table class="border-stone-400 dark:border-indigo-700 border rounded-lg" style="border-collapse: collapse; table-layout: auto; min-width: 100%;">
+    <tbody>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-900/80 font-bold text-white text-lg dark:bg-indigo-900/50 dark:text-gray-200">Corner</th>
+    <th scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Column 1</th>
+    <th scope="col" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Column 2</th>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="row" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Row 1</th>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+  <tr class="border-b border-stone-400 dark:border-indigo-700 last:border-b-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">
+    <th scope="row" class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-700/80 font-semibold text-white text-lg dark:bg-indigo-900/80 dark:text-gray-200">Row 2</th>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+    <td class="px-2 py-1 border-r border-stone-400 dark:border-indigo-700 last:border-r-0 bg-stone-50 text-gray-700 dark:bg-indigo-950/5 dark:text-gray-200">Value</td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="my-4"><div class="rounded-lg border p-4 text-base bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/40 dark:text-blue-200 dark:border-blue-400/60"><div class="flex items-center"><svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg><div class="flex-1"><div class="mb-2 last:mb-0">Message text</div></div></div></div></div>
+
+<div class="my-4"><div class="rounded-lg border p-4 text-base bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/40 dark:text-yellow-200 dark:border-yellow-400/60"><div class="flex items-center"><svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg><div class="flex-1"><div class="mb-2 last:mb-0">Message text</div></div></div></div></div>
+
+<div class="my-4"><div class="rounded-lg border p-4 text-base bg-red-100 text-red-800 border-red-300 dark:bg-red-900/40 dark:text-red-200 dark:border-red-400/60"><div class="flex items-center"><svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" x2="9" y1="9" y2="15"></line><line x1="9" x2="15" y1="9" y2="15"></line></svg><div class="flex-1"><div class="mb-2 last:mb-0">Message text</div></div></div></div></div>
+
+<div class="my-4"><div class="rounded-lg border p-4 text-base bg-green-100 text-green-800 border-green-300 dark:bg-green-900/40 dark:text-green-200 dark:border-green-400/60"><div class="flex items-center"><svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><div class="flex-1"><div class="mb-2 last:mb-0">Message text</div></div></div></div></div>
+
+<div class="my-4"><div class="rounded-lg border p-4 text-base bg-stone-100 text-gray-700 border-gray-300 dark:bg-indigo-300/20 dark:text-gray-200 dark:border-gray-500"><div class="flex items-center"><svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line></svg><div class="flex-1"><div class="mb-2 last:mb-0">Message text</div></div></div></div></div>
+
+<blockquote class="pl-4 py-2 my-4 bg-stone-300 border-l-4 border-stone-500 text-gray-700 italic dark:bg-indigo-900/50 dark:border-white dark:text-white">Message text</blockquote>
+
+<div class="mb-6 flex items-center"><div class="flex-1 border-stone-400 dark:border-gray-500 border-t"></div><span class="px-4 text-sm text-stone-400 dark:text-gray-500">Line</span><div class="flex-1 border-stone-400 dark:border-gray-500 border-t"></div></div>
+
+<div class="mb-6 flex items-center"><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-2 border-dashed"></div><span class="px-4 text-sm text-stone-400 dark:text-gray-500">Dashed</span><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-2 border-dashed"></div></div>
+
+<div class="mb-6 flex items-center"><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-2 border-dotted"></div><span class="px-4 text-sm text-stone-400 dark:text-gray-500">Dotted</span><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-2 border-dotted"></div></div>
+
+<div class="mb-6 flex items-center"><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-4 border-double"></div><span class="px-4 text-sm text-stone-400 dark:text-gray-500">Double</span><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-4 border-double"></div></div>
+
+<div class="mb-6 flex items-center"><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-2"></div><span class="px-4 text-sm text-stone-400 dark:text-gray-500">Thick</span><div class="flex-1 border-stone-400 dark:border-gray-500 border-t-2"></div></div>
+
+<div class="mb-6 flex items-center"><div class="bg-gradient-to-r from-transparent via-stone-400 to-transparent dark:via-gray-500 h-px flex-1"></div><span class="px-4 text-sm text-stone-400 dark:text-gray-500">Gradient</span><div class="bg-gradient-to-r from-transparent via-stone-400 to-transparent dark:via-gray-500 h-px flex-1"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-doc-954b6826-db8e-4a57-8290-86a2d7c30459">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Media">Media</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Media</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 2 of 5</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        <div class="mb-4 text-center"><div class="mx-auto" style="width: 50%;"><img src="images/Image_Example_1.png" alt="Image description" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">Image description</p></div></div>
+
+<div class="mb-4 text-center"><div class="flex gap-4 justify-center mx-auto" style="width: 100%;"><div class="w-1/2"><img src="images/Image_Example_1.png" alt="Before" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">Before</p></div><div class="w-1/2"><img src="images/Image_Example_2.png" alt="After" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">After</p></div></div></div>
+
+<div class="mb-4 text-center"><div class="mx-auto" style="width: 50%;">
+    <div class="static-compare" data-static-compare data-before-label="Before" data-after-label="After" data-initial="50" style="--static-compare-position: 50%;">
+      <figure class="static-compare-figure">
+        <img src="images/Image_Example_2.png" alt="After" class="static-compare-image static-compare-image--after">
+        <div class="static-compare-overlay" data-static-compare-overlay>
+          <img src="images/Image_Example_1.png" alt="Before" class="static-compare-image static-compare-image--before">
+        </div>
+        <div class="static-compare-handle" data-static-compare-handle aria-hidden="true">
+          <span class="static-compare-handle-button" aria-hidden="true"></span>
+        </div>
+      </figure>
+      <p class="mt-2 text-sm text-gray-400 text-center italic static-compare-summary" data-static-compare-summary></p>
+    </div>
+  </div></div>
+
+<div class="mb-4 text-center"><div class="mx-auto" style="width: 50%;"><div class="splide" data-splide-options="{&quot;type&quot;:&quot;loop&quot;,&quot;gap&quot;:&quot;1rem&quot;,&quot;arrows&quot;:true,&quot;pagination&quot;:true,&quot;autoplay&quot;:false,&quot;interval&quot;:3000}"><div class="splide__track"><ul class="splide__list"><li class="splide__slide"><div class="flex flex-col items-center pb-8"><img src="images/Image_Example_1.png" alt="Slide 1" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 text-center">Slide 1</p></div></li><li class="splide__slide"><div class="flex flex-col items-center pb-8"><img src="images/Image_Example_2.png" alt="Slide 2" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 text-center">Slide 2</p></div></li></ul></div></div></div></div>
+
+<div class="mb-4 text-center"><div class="mx-auto" style="width: 100%;"><div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3"><div class="flex flex-col items-center"><img src="images/Image_Example_1.png" alt="Grid item" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">Grid item</p></div><div class="flex flex-col items-center"><img src="images/Image_Example_2.png" alt="Grid item" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">Grid item</p></div><div class="flex flex-col items-center"><img src="images/Image_Example_1.png" alt="Grid item" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">Grid item</p></div><div class="flex flex-col items-center"><img src="images/Image_Example_2.png" alt="Grid item" class="w-full h-auto"><p class="text-sm italic text-gray-400 mt-2 mt-2 text-center">Grid item</p></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-doc-a08b4ca8-e522-4736-abf0-168b60485099">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Math">Math</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Math</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 3 of 5</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        <div class="mb-4 text-center"><div class="text-lg text-gray-800 dark:text-gray-200 math-block" style="display: flex; justify-content: center; width: 100%; text-align: center;"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3427em;vertical-align:-0.3558em;"></span><span class="mop"><span class="mop op-symbol small-op" style="margin-right:0.19445em;position:relative;top:-0.0006em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8593em;"><span style="top:-2.3442em;margin-left:-0.1945em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span><span style="top:-3.2579em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3558em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9869em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.931em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.383em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.038em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4739em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8059em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">π</span></span></span><span style="top:-2.7659em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2341em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-doc-95e4cf74-2137-4507-93d1-646ff58d466f">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Code">Code</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Code</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 4 of 5</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        <div class="relative mb-6 overflow-hidden rounded static-code-block" id="code-block-2" data-code-block data-code-collapsed="false">
+    <div class="flex items-center justify-between px-3 py-2 bg-stone-700/80 text-gray-200 border-b border-stone-300 dark:bg-indigo-900/80 dark:text-white dark:border-indigo-500">
+    <div class="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
+      <span class="truncate"></span>
+    </div>
+    <div class="flex gap-1 items-center flex-shrink-0">
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="toggle" title="Toggle code block">
+        <span class="hidden sm:inline" data-code-toggle-label>Hide</span>
+      </button>
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="download" title="Download code file">
+        <span class="hidden sm:inline">Download</span>
+      </button>
+      <button type="button" class="flex justify-center items-center gap-1 py-1 px-2 text-xs font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" data-code-action="copy" title="Copy code to clipboard">
+        <span class="hidden sm:inline">Copy</span>
+      </button>
+    </div>
+  </div>
+    <div class="static-code-body transition-all duration-300 ease-in-out" style=""><div class="static-code-panel" data-code-panel="0" data-code-label="HelloWorld.js" data-code-language="JavaScript" style="">
+        <pre class="language-javascript text-sm w-full overflow-x-auto whitespace-pre"><div class="flex min-h-full px-4 py-3">
+      <div class="flex-1 relative"><code class="language-javascript block">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Hello, World!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></div>
+    </div></pre>
+      </div></div>
+    <div class="absolute top-12 right-2 px-2 py-1 rounded text-xs backdrop-blur-sm pointer-events-none text-xs font-semibold text-stone-300 mt-1 text-right dark:text-indigo-300">JavaScript</div>
+  </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page bg-gray-100 dark:bg-zinc-900" id="doc-doc-c557f277-d2e0-40f6-81f2-1a4889315ca0">
+    <div class="page-content">
+      
+      <div class="mb-4 bg-stone-200 border-b border-stone-400 dark:bg-indigo-900/60 dark:border-gray-700" style="margin-left: calc(var(--page-padding-left) * -1); margin-right: calc(var(--page-padding-right) * -1); margin-top: calc(var(--page-padding-top) * -1); width: calc(100% + var(--page-padding-left) + var(--page-padding-right));">
+        <div class="relative flex items-center py-2" style="padding-left: var(--page-padding-left); padding-right: var(--page-padding-right); padding-top: var(--page-padding-top);">
+          <div class="flex flex-col items-center gap-1 text-center w-full">
+            <div class="flex items-center gap-2 text-2xl font-bold leading-tight text-stone-600 dark:text-gray-300">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <h1 aria-label="Charts">Charts</h1>
+            </div>
+            <nav aria-label="Breadcrumb" class="flex justify-center">
+            <ol class="flex flex-wrap items-center justify-center gap-2 text-sm text-sm text-stone-500 dark:text-gray-400">
+              
+                <li class="flex items-center gap-2" aria-current="page">
+                  <span class="cursor-default">Charts</span>
+                  
+                </li>
+            </ol>
+          </nav>
+          </div>
+          <div class="absolute right-0 text-right text-xs text-gray-400 font-mono no-print" style="right: var(--page-padding-right);">
+            <p>Page 5 of 5</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-none">
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Page -->
+  <div class="page bg-gray-100 dark:bg-zinc-900">
+    <div class="page-content flex flex-col justify-center items-center text-center">
+      <div class="w-24 h-1 bg-gray-300 mb-8"></div>
+      <p class="text-gray-500">End of Document</p>
+      <p class="text-sm text-gray-400 mt-4">&copy; 2026 Examples. All rights reserved.</p>
+      <p class="text-xs text-gray-400 mt-1">Generated via SST-Docs</p>
+    </div>
+  </div>
+  <button type="button" class="fixed top-4 right-4 z-50 flex justify-center items-center gap-2 p-2 rounded font-bold rounded-md transition-colors text-stone-700 bg-stone-200 border border-stone-400 hover:bg-stone-300 dark:text-gray-100 dark:bg-indigo-900/50 dark:border-indigo-800 dark:hover:bg-indigo-700/70 cursor-pointer" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999; pointer-events: auto;" data-theme-toggle aria-label="Toggle theme" title="Toggle light/dark mode">
+    <span data-theme-icon="sun" class="hidden">
+      <svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </span>
+    <span data-theme-icon="moon" class="hidden">
+      <svg aria-hidden="true" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+      </svg>
+    </span>
+  </button>
+  <script src="../../static-styles/vendor/prism.js"></script>
+  <script src="../../static-styles/vendor/chart.umd.js"></script>
+  <script src="../../static-styles/vendor/splide.min.js"></script>
+  <script>
+  (function () {
+    var THEME_KEY = "theme";
+    var storedTheme = null;
+    try { storedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+    var prefersDark = false;
+    try {
+      prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch (e) {}
+    var isDark = storedTheme ? storedTheme === "dark" : prefersDark;
+
+    var applyTheme = function (dark) {
+      var theme = dark ? "dark" : "light";
+      [document.documentElement, document.body].forEach(function (el) {
+        if (!el) return;
+        el.classList.toggle("dark", theme === "dark");
+        el.classList.toggle("light", theme === "light");
+        el.dataset.theme = theme;
+        el.style.colorScheme = theme;
+      });
+      var sunIcon = document.querySelector("[data-theme-icon='sun']");
+      var moonIcon = document.querySelector("[data-theme-icon='moon']");
+      if (sunIcon) sunIcon.classList.toggle("hidden", theme !== "dark");
+      if (moonIcon) moonIcon.classList.toggle("hidden", theme !== "light");
+    };
+
+    applyTheme(isDark);
+
+    if (window.Prism && typeof window.Prism.highlightAll === "function") {
+      window.Prism.highlightAll();
+    }
+
+    if (window.Splide) {
+      document.querySelectorAll(".splide").forEach(function (el) {
+        var raw = el.getAttribute("data-splide-options");
+        var options = {};
+        if (raw) {
+          try { options = JSON.parse(raw); } catch (e) {}
+        }
+        try { new window.Splide(el, options).mount(); } catch (e) {}
+      });
+    }
+
+    document.querySelectorAll("[data-static-compare]").forEach(function (container) {
+      var range = container.querySelector("[data-static-compare-range]");
+      var beforeLabel = container.getAttribute("data-before-label") || "";
+      var afterLabel = container.getAttribute("data-after-label") || "";
+      var summary = container.querySelector("[data-static-compare-summary]");
+      var dragging = false;
+      var apply = function (value) {
+        var numeric = Number(value);
+        if (!isFinite(numeric)) {
+          numeric = Number(container.getAttribute("data-initial") || 50);
+        }
+        var clamped = Math.max(0, Math.min(100, numeric));
+        container.style.setProperty("--static-compare-position", clamped + "%");
+        if (summary) {
+          var beforeText = beforeLabel ? Math.round(clamped) + "% " + beforeLabel : "";
+          var afterText = afterLabel ? Math.round(100 - clamped) + "% " + afterLabel : "";
+          summary.textContent = beforeText && afterText ? beforeText + " / " + afterText : (beforeText || afterText);
+        }
+      };
+      var applyFromClientX = function (clientX) {
+        var rect = container.getBoundingClientRect();
+        if (!rect.width) return;
+        var percent = ((clientX - rect.left) / rect.width) * 100;
+        apply(percent);
+        if (range) range.value = String(Math.max(0, Math.min(100, percent)));
+      };
+      if (range) {
+        apply(range.value);
+        ["input", "change"].forEach(function (eventName) {
+          range.addEventListener(eventName, function (evt) {
+            var target = evt && evt.target && typeof evt.target.value !== "undefined" ? evt.target : range;
+            apply(target.value);
+          });
+        });
+      } else {
+        apply(container.getAttribute("data-initial") || 50);
+      }
+
+      container.addEventListener("pointerdown", function (event) {
+        dragging = true;
+        try { container.setPointerCapture(event.pointerId); } catch (e) {}
+        applyFromClientX(event.clientX);
+      });
+      container.addEventListener("pointermove", function (event) {
+        if (!dragging) return;
+        applyFromClientX(event.clientX);
+      });
+      var stopDrag = function (event) {
+        if (!dragging) return;
+        dragging = false;
+        try { container.releasePointerCapture(event.pointerId); } catch (e) {}
+      };
+      container.addEventListener("pointerup", stopDrag);
+      container.addEventListener("pointercancel", stopDrag);
+    });
+
+    document.querySelectorAll("[data-code-block]").forEach(function (block) {
+      var panels = Array.prototype.slice.call(block.querySelectorAll("[data-code-panel]"));
+      var tabs = Array.prototype.slice.call(block.querySelectorAll("[data-code-tab]"));
+      var body = block.querySelector(".static-code-body");
+      var toggleLabels = Array.prototype.slice.call(block.querySelectorAll("[data-code-toggle-label]"));
+      var setActive = function (index) {
+        panels.forEach(function (panel, i) {
+          panel.style.display = i === index ? "" : "none";
+        });
+        tabs.forEach(function (tab, i) {
+          var inactiveClass = tab.getAttribute("data-tab") || "";
+          var activeClass = tab.getAttribute("data-tab-active") || "";
+          var baseClass = tab.getAttribute("data-base") || "";
+          tab.className = (baseClass + " " + (i === index ? activeClass : inactiveClass)).trim();
+        });
+      };
+      if (tabs.length) {
+        tabs.forEach(function (tab, i) {
+          tab.addEventListener("click", function () {
+            setActive(i);
+          });
+        });
+      }
+
+      var applyCollapsed = function (collapsed) {
+        if (!body) return;
+        if (collapsed) {
+          body.style.maxHeight = "0px";
+          body.style.opacity = "0";
+          body.style.overflow = "hidden";
+        } else {
+          body.style.maxHeight = "";
+          body.style.opacity = "1";
+          body.style.overflow = "";
+        }
+        block.setAttribute("data-code-collapsed", collapsed ? "true" : "false");
+        toggleLabels.forEach(function (label) {
+          label.textContent = collapsed ? "Show" : "Hide";
+        });
+      };
+
+      var toggleButtons = Array.prototype.slice.call(block.querySelectorAll("[data-code-action='toggle']"));
+      toggleButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var isCollapsed = block.getAttribute("data-code-collapsed") === "true";
+          applyCollapsed(!isCollapsed);
+        });
+      });
+
+      applyCollapsed(block.getAttribute("data-code-collapsed") === "true");
+
+      var copyButtons = Array.prototype.slice.call(block.querySelectorAll("[data-code-action='copy']"));
+      copyButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var activePanel = panels.find(function (panel) { return panel.style.display !== "none"; }) || panels[0];
+          if (!activePanel) return;
+          var code = activePanel.querySelector("code");
+          var text = code ? code.textContent || "" : "";
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(function () {});
+          }
+        });
+      });
+
+      var downloadButtons = Array.prototype.slice.call(block.querySelectorAll("[data-code-action='download']"));
+      downloadButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var activePanel = panels.find(function (panel) { return panel.style.display !== "none"; }) || panels[0];
+          if (!activePanel) return;
+          var code = activePanel.querySelector("code");
+          var text = code ? code.textContent || "" : "";
+          var label = activePanel.getAttribute("data-code-label") || "code";
+          var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+          var url = URL.createObjectURL(blob);
+          var link = document.createElement("a");
+          link.href = url;
+          link.download = label.replace(/[^a-z0-9._-]+/gi, "_");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        });
+      });
+    });
+
+    var chartInstances = [];
+    var buildChartOptions = function (chartData, theme, type) {
+      var baseFont = {
+        family: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+        size: 12,
+      };
+      var options = {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: theme.legendLabelColor || "#1f2937",
+              font: baseFont,
+            },
+          },
+          tooltip: {
+            backgroundColor: theme.tooltipBg || "#f9fafb",
+            titleColor: theme.tooltipTitleColor || "#111827",
+            bodyColor: theme.tooltipBodyColor || "#1f2937",
+            borderColor: theme.tooltipBorderColor || "#d1d5db",
+            borderWidth: 1,
+            titleFont: baseFont,
+            bodyFont: baseFont,
+          },
+        },
+      };
+      if (type === "radar" || type === "polarArea") {
+        options.scales = {
+          r: {
+            grid: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            angleLines: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            pointLabels: {
+              color: theme.axisTickColor || "#4b5563",
+              font: baseFont,
+            },
+            ticks: {
+              color: theme.axisTickColor || "#4b5563",
+              font: baseFont,
+            },
+          },
+        };
+      } else {
+        options.scales = {
+          x: {
+            grid: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            ticks: { color: theme.axisTickColor || "#4b5563", font: baseFont },
+          },
+          y: {
+            grid: { color: theme.gridLineColor || "rgba(0,0,0,0.05)", borderDash: [] },
+            ticks: { color: theme.axisTickColor || "#4b5563", font: baseFont },
+          },
+        };
+      }
+      return options;
+    };
+
+    var applyChartTheme = function (dark) {
+      chartInstances.forEach(function (entry) {
+        var theme = dark ? entry.themeDark : entry.theme;
+        entry.instance.options = buildChartOptions(entry.data, theme, entry.type);
+        entry.instance.update();
+      });
+    };
+
+    if (window.Chart) {
+      var typeMap = {
+        bar: "bar",
+        line: "line",
+        radar: "radar",
+        doughnut: "doughnut",
+        polarArea: "polarArea",
+        bubble: "bubble",
+        pie: "pie",
+        scatter: "scatter",
+      };
+      var isRadial = function (type) {
+        return type === "radar" || type === "polarArea";
+      };
+
+      document.querySelectorAll("canvas[data-chart]").forEach(function (canvas) {
+        var raw = canvas.getAttribute("data-chart");
+        if (!raw) return;
+        var payload;
+        try { payload = JSON.parse(raw); } catch (e) { return; }
+        if (!payload || !payload.data) return;
+
+        var chartData = payload.data;
+        var theme = (isDark ? payload.themeDark : payload.theme) || payload.theme || {};
+        var type = typeMap[chartData.type] || "bar";
+        var options = buildChartOptions(chartData, theme, type);
+        if (type === "radar") {
+          chartData.datasets = (chartData.datasets || []).map(function (dataset) {
+            if (typeof dataset.fill === "undefined") {
+              dataset.fill = false;
+            }
+            return dataset;
+          });
+        }
+
+        try {
+          var instance = new window.Chart(canvas, {
+            type: type,
+            data: {
+              labels: chartData.labels || [],
+              datasets: chartData.datasets || [],
+            },
+            options: options,
+          });
+          chartInstances.push({
+            instance: instance,
+            data: chartData,
+            theme: payload.theme || {},
+            themeDark: payload.themeDark || payload.theme || {},
+            type: type,
+          });
+        } catch (e) {}
+      });
+    }
+
+    var toggle = document.querySelector("[data-theme-toggle]");
+    if (toggle) {
+      toggle.addEventListener("click", function () {
+        isDark = !isDark;
+        applyTheme(isDark);
+        try { localStorage.setItem(THEME_KEY, isDark ? "dark" : "light"); } catch (e) {}
+        applyChartTheme(isDark);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

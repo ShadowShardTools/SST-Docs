@@ -1,0 +1,98 @@
+{
+  "id": "doc-954b6826-db8e-4a57-8290-86a2d7c30459",
+  "title": "Media",
+  "content": [
+    {
+      "type": "image",
+      "imageData": {
+        "image": {
+          "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
+          "alt": "Image description"
+        },
+        "alignment": "center",
+        "scale": 0.5
+      }
+    },
+    {
+      "type": "imageCompare",
+      "imageCompareData": {
+        "type": "individual",
+        "beforeImage": {
+          "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
+          "alt": "Before"
+        },
+        "afterImage": {
+          "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_2.png",
+          "alt": "After"
+        },
+        "alignment": "center",
+        "scale": 1,
+        "sliderColor": "#ffffff"
+      }
+    },
+    {
+      "type": "imageCompare",
+      "imageCompareData": {
+        "type": "slider",
+        "beforeImage": {
+          "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
+          "alt": "Before"
+        },
+        "afterImage": {
+          "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_2.png",
+          "alt": "After"
+        },
+        "alignment": "center",
+        "scale": 0.5,
+        "sliderColor": "#ffffff",
+        "showPercentage": true
+      }
+    },
+    {
+      "type": "imageCarousel",
+      "imageCarouselData": {
+        "images": [
+          {
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
+            "alt": "Slide 1"
+          },
+          {
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_2.png",
+            "alt": "Slide 2"
+          }
+        ],
+        "carouselOptions": {
+          "pagination": true,
+          "arrows": true
+        },
+        "alignment": "center",
+        "scale": 0.5
+      }
+    },
+    {
+      "type": "imageGrid",
+      "imageGridData": {
+        "images": [
+          {
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
+            "alt": "Grid item"
+          },
+          {
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_2.png",
+            "alt": "Grid item"
+          },
+          {
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
+            "alt": "Grid item"
+          },
+          {
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_2.png",
+            "alt": "Grid item"
+          }
+        ],
+        "scale": 1,
+        "alignment": "center"
+      }
+    }
+  ]
+}

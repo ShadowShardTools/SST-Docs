@@ -1,0 +1,13 @@
+{
+  "categories": [
+    "getting-started-category",
+    "examples-category"
+  ],
+  "items": [
+    "introduction-item",
+    "charts-examples-item",
+    "code-examples-item",
+    "configuration-item",
+    "installation-item"
+  ]
+}

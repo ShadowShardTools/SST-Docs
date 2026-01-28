@@ -1,0 +1,12 @@
+{
+  "product": "mainInfo",
+  "version": "v1.0",
+  "generatedAt": "2026-01-03T16:27:16.995Z",
+  "index": "index.html",
+  "categories": [],
+  "docs": [],
+  "charts": [],
+  "media": [],
+  "staticStylesPath": "../../../static-styles",
+  "assetsManifest": "../../../static-styles/assets-manifest.json"
+}

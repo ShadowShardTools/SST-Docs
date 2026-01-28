@@ -1,0 +1,1 @@
+import{j as n}from"./index-CyEw6W5r.js";const a=({index:s,type:e,styles:o})=>{const t=o.messageBox.warning||"sst-msg-warning";return n.jsx("div",{className:`mb-4 p-3 rounded-md ${t}`,role:"status",children:n.jsxs("p",{children:["Unknown content type: ",e]})},s)};export{a as UnknownBlock,a as default};

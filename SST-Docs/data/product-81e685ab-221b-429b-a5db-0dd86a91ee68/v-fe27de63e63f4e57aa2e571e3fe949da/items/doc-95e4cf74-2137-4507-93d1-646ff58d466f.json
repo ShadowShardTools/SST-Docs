@@ -1,0 +1,23 @@
+{
+  "id": "doc-95e4cf74-2137-4507-93d1-646ff58d466f",
+  "title": "Code",
+  "content": [
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": false,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "javascript",
+            "content": "console.log('Hello, World!');",
+            "filename": "HelloWorld.js"
+          }
+        ],
+        "name": ""
+      }
+    }
+  ]
+}
