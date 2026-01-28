@@ -3,11 +3,9 @@
   "title": "Getting Started",
   "description": "Getting Started category",
   "docs": [
-    "introduction-item",
     "installation-item",
-    "configuration-item"
+    "configuration-item",
+    "doc-43ce7445-d532-4354-9aef-c94e97415fae"
   ],
-  "children": [
-    "examples-category"
-  ]
+  "children": []
 }

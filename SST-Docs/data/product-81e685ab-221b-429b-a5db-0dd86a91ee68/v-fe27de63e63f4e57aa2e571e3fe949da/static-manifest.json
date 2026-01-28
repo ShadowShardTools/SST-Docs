@@ -11,12 +11,13 @@
     "product": "product-81e685ab-221b-429b-a5db-0dd86a91ee68",
     "label": "Examples"
   },
-  "generatedAt": "2026-01-28T00:00:00.467Z",
+  "generatedAt": "2026-01-28T18:59:09.621Z",
   "index": "index.html",
   "categories": [],
   "docs": [],
   "charts": [],
   "media": [
+    "audio/AudioSample.mp3",
     "images/Image_Example_1.png",
     "images/Image_Example_2.png"
   ],

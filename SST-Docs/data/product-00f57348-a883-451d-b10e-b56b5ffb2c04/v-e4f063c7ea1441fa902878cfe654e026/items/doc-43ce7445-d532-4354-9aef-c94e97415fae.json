@@ -1,0 +1,163 @@
+{
+  "id": "doc-43ce7445-d532-4354-9aef-c94e97415fae",
+  "title": "Content editing",
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Visual Editor (Recommended)",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "The built-in visual editor provides a user-friendly interface for creating and editing documentation:<br>1. Start the development server: <strong>npm run dev</strong><br>2. Navigate to <a href=\"http://localhost:5173/SST-Docs/#/editor/\" target=\"_blank\" rel=\"noopener noreferrer\">http://localhost:5173/SST-Docs/#/editor/</a><br>3. Select a product and version from the interface, or access directly via URL: <a href=\"http://localhost:5173/SST-Docs/#/editor/my-document?product=myProduct&amp;version=v1.0\" target=\"_blank\" rel=\"noopener noreferrer\">http://localhost:5173/SST-Docs/#/editor/my-document?product=myProduct&amp;version=v1.0</a> (Example)<br>4. Use the visual interface to:"
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ul",
+        "items": [
+          "Create and manage products",
+          "Add versions",
+          "Create categories and documents",
+          "Add and configure content blocks",
+          "Upload images and assets",
+          "Preview changes in real-time"
+        ],
+        "inside": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "The editor automatically generates the proper JSON structure and saves files to the correct locations."
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Manual JSON Editing",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Add a Product",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "Edit <strong><em>public/SST-Docs/data/products.json</em></strong>:"
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "json",
+            "content": "[\n  {\n    \"product\": \"my-product\",\n    \"label\": \"My Product\"\n  }\n]",
+            "filename": "products.json"
+          }
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Add Versions",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "Create <em><strong>public/SST-Docs/data/my-product/versions.json</strong></em>:"
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "javascript",
+            "content": "[\n  {\n    \"version\": \"1.0\",\n    \"label\": \"Version 1.0\"\n  }\n]",
+            "filename": "versions.js"
+          }
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Create Documentation",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "Create <strong><em>public/SST-Docs/data/my-product/1.0/items/getting-started.json</em></strong>:"
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "json",
+            "content": "{\n  \"id\": \"getting-started\",\n  \"title\": \"Getting Started\",\n  \"description\": \"Quick start guide\",\n  \"content\": [\n    {\n      \"type\": \"title\",\n      \"titleData\": {\n        \"text\": \"Getting Started\",\n        \"level\": 1,\n        \"enableAnchorLink\": true\n      }\n    },\n    {\n      \"type\": \"text\",\n      \"textData\": {\n        \"text\": \"Welcome to the documentation!\"\n      }\n    },\n    {\n      \"type\": \"code\",\n      \"codeData\": {\n        \"language\": \"javascript\",\n        \"content\": \"console.log('Hello, World!');\",\n        \"name\": \"example.js\"\n      }\n    }\n  ]\n}",
+            "filename": "Example.json"
+          }
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Regenerate Imports",
+        "level": 2,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "bash",
+            "content": "npm run generate",
+            "filename": "generate.sh"
+          }
+        ]
+      }
+    }
+  ]
+}

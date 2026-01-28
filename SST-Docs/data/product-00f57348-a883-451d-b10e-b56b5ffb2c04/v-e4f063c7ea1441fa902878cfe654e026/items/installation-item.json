@@ -1,5 +1,77 @@
 {
   "id": "installation-item",
   "title": "Installation",
-  "content": []
+  "content": [
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Technology Stack",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "list",
+      "listData": {
+        "type": "ul",
+        "items": [
+          "React",
+          "React Router",
+          "Vite",
+          "TypeScript ",
+          "Tailwind CSS",
+          "Prism.js",
+          "KaTeX",
+          "Chart.js",
+          "Lucide React"
+        ]
+      }
+    },
+    {
+      "type": "title",
+      "titleData": {
+        "text": "Installation",
+        "level": 1,
+        "enableAnchorLink": true
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "bash",
+            "content": "# Clone the repository\ngit clone https://github.com/ShadowShardTools/SST-Docs.git\ncd SST-Docs\n\n# Install dependencies\nnpm install\n\n# Run development server\nnpm run dev",
+            "filename": "Start.sh"
+          }
+        ]
+      }
+    },
+    {
+      "type": "text",
+      "textData": {
+        "text": "Visit <a href=\"http://localhost:5173\" target=\"_blank\" rel=\"noopener noreferrer\">http://localhost:5173</a> to see your documentation site.<br>Visit <a href=\"http://localhost:5173/#/editor\" target=\"_blank\" rel=\"noopener noreferrer\">http://localhost:5173/#/editor</a> to see your documentation site in editor mode."
+      }
+    },
+    {
+      "type": "code",
+      "codeData": {
+        "content": "// code goes here",
+        "language": "javascript",
+        "wrapLines": true,
+        "defaultCollapsed": false,
+        "sections": [
+          {
+            "language": "bash",
+            "content": "# Build for production\nnpm run build\n\n# Preview production build\nnpm run start\n\n# Deploy to GitHub Pages\nnpm run deploy",
+            "filename": "Production.sh"
+          }
+        ]
+      }
+    }
+  ]
 }

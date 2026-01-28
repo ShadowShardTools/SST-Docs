@@ -1,9 +1,9 @@
 {
   "version": "v-e4f063c7ea1441fa902878cfe654e026",
-  "versionLabel": "v1.1 (Latest)",
+  "versionLabel": "v0.1.0",
   "versionData": {
     "version": "v-e4f063c7ea1441fa902878cfe654e026",
-    "label": "v1.1 (Latest)"
+    "label": "v0.1.0"
   },
   "product": "product-00f57348-a883-451d-b10e-b56b5ffb2c04",
   "productLabel": "Main",
@@ -11,14 +11,12 @@
     "product": "product-00f57348-a883-451d-b10e-b56b5ffb2c04",
     "label": "Main"
   },
-  "generatedAt": "2026-01-28T00:00:00.458Z",
+  "generatedAt": "2026-01-28T18:59:09.611Z",
   "index": "index.html",
   "categories": [],
   "docs": [],
   "charts": [],
-  "media": [
-    "audio/AudioSample.mp3"
-  ],
+  "media": [],
   "staticStylesPath": "../../static-styles",
   "assetsManifest": "../../static-styles/assets-manifest.json"
 }
