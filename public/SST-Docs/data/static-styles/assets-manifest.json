@@ -62,6 +62,7 @@
   "prism-tomorrow.css",
   "site.css",
   "splide.min.css",
+  "static-code-block.css",
   "vendor/chart.umd.js",
   "vendor/prism.js",
   "vendor/splide.min.js"

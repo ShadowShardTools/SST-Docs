@@ -81,6 +81,16 @@ const DOCS_CORE_GLOB = path.join(
   "docs-core",
   "dist",
 );
+const STATIC_TEMPLATE_FILES = [
+  path.join(
+    appRoot.path,
+    "src",
+    "generators",
+    "htmlGenerator",
+    "templates",
+    "static-code-block.css",
+  ),
+];
 
 async function pathExists(targetPath: string): Promise<boolean> {
   try {
@@ -295,16 +305,6 @@ ${tailwindIndexCss}`;
   const katexCss = (await pathExists(katexCssPath))
     ? await fs.readFile(katexCssPath, "utf8")
     : "";
-
-  await fs.writeFile(
-    path.join(targetRoot, "site.css"),
-    `${tailwindCss}\n${katexCss}`,
-    "utf8",
-  );
-
-  const vendorDir = path.join(targetRoot, "vendor");
-  await fs.mkdir(vendorDir, { recursive: true });
-
   const prismSource = path.join(
     appRoot.path,
     "node_modules",
@@ -312,6 +312,25 @@ ${tailwindIndexCss}`;
     "themes",
     "prism-tomorrow.css",
   );
+  const prismCss = (await pathExists(prismSource))
+    ? await fs.readFile(prismSource, "utf8")
+    : "";
+
+  await fs.writeFile(
+    path.join(targetRoot, "site.css"),
+    `${tailwindCss}\n${katexCss}\n${prismCss}`,
+    "utf8",
+  );
+
+  for (const templatePath of STATIC_TEMPLATE_FILES) {
+    if (!(await pathExists(templatePath))) continue;
+    const filename = path.basename(templatePath);
+    await fs.copyFile(templatePath, path.join(targetRoot, filename));
+  }
+
+  const vendorDir = path.join(targetRoot, "vendor");
+  await fs.mkdir(vendorDir, { recursive: true });
+
   if (await pathExists(prismSource)) {
     await fs.copyFile(prismSource, path.join(targetRoot, "prism-tomorrow.css"));
   }
