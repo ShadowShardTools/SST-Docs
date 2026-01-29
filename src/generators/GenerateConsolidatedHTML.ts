@@ -621,11 +621,6 @@ async function traverseTree(
   const categoryNodes = tree.filter((category: any) =>
     indexCategoryIds.includes(category.id),
   );
-  const flattened = flattenTreeToItems(categoryNodes);
-  items.push(...flattened.items);
-  toc.push(...flattened.toc);
-  Object.assign(meta, flattened.meta);
-  Object.assign(categoryIndex, flattened.categoryIndex);
 
   usedDocIds.forEach((id: string) => {
     seenItems.add(id);
@@ -637,6 +632,12 @@ async function traverseTree(
     toc.push({ id: doc.id, title: doc.title, indent: 0 });
     meta[doc.id] = { breadcrumb: [doc.title], isCategory: false };
   });
+
+  const flattened = flattenTreeToItems(categoryNodes);
+  items.push(...flattened.items);
+  toc.push(...flattened.toc);
+  Object.assign(meta, flattened.meta);
+  Object.assign(categoryIndex, flattened.categoryIndex);
 
   return { items, toc, meta, categoryIndex };
 }
