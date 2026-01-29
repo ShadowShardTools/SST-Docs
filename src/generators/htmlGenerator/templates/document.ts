@@ -383,6 +383,10 @@ export function renderConsolidatedDocument(
       </svg>
     </span>
   </button>
+  <script>
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+  </script>
   <script src="${staticStylesBase}/vendor/prism.js"></script>
   <script src="${staticStylesBase}/vendor/chart.umd.js"></script>
   <script src="${staticStylesBase}/vendor/splide.min.js"></script>
@@ -413,10 +417,6 @@ export function renderConsolidatedDocument(
     };
 
     applyTheme(isDark);
-
-    if (window.Prism && typeof window.Prism.highlightAll === "function") {
-      window.Prism.highlightAll();
-    }
 
     if (window.Splide) {
       document.querySelectorAll(".splide").forEach(function (el) {

@@ -1,0 +1,26 @@
+/* Static code block styling for HTML generator output. */
+.static-code-block {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+.static-code-body {
+  background: #0b1220;
+}
+
+.static-code-block pre {
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+.static-code-block code {
+  font-family: inherit;
+}
+
+.static-code-panel {
+  width: 100%;
+}

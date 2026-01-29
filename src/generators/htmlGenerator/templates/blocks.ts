@@ -91,19 +91,74 @@ const PRISM_LANGUAGE_ALIASES: Record<string, string> = {
 };
 
 const loadedPrismLanguages = new Set<string>(["plaintext"]);
+const SUPPORTED_LANGUAGE_KEYS = Object.keys(CODE_LANGUAGE_CONFIG) as Array<
+  keyof typeof CODE_LANGUAGE_CONFIG
+>;
+const LANGUAGE_LOOKUP = new Map<string, keyof typeof CODE_LANGUAGE_CONFIG>();
+
+const normalizeLanguageToken = (value: string) =>
+  value.trim().toLowerCase().replace(/^\./, "");
+
+SUPPORTED_LANGUAGE_KEYS.forEach((key) => {
+  const config = CODE_LANGUAGE_CONFIG[key];
+  LANGUAGE_LOOKUP.set(normalizeLanguageToken(key), key);
+  if (config?.name) {
+    LANGUAGE_LOOKUP.set(normalizeLanguageToken(config.name), key);
+  }
+  if (config?.ext) {
+    LANGUAGE_LOOKUP.set(normalizeLanguageToken(config.ext), key);
+  }
+});
+
+[
+  ["js", "javascript"],
+  ["ts", "typescript"],
+  ["c#", "csharp"],
+  ["cs", "csharp"],
+  ["c++", "cpp"],
+  ["hpp", "cpp"],
+  ["h", "c"],
+  ["ps", "powershell"],
+  ["ps1", "powershell"],
+  ["sh", "bash"],
+  ["shell", "bash"],
+  ["yml", "yaml"],
+  ["htm", "html"],
+  ["xml", "xml"],
+  ["md", "markdown"],
+  ["text", "plaintext"],
+].forEach(([alias, target]) => {
+  const resolved = LANGUAGE_LOOKUP.get(normalizeLanguageToken(target));
+  if (resolved) {
+    LANGUAGE_LOOKUP.set(normalizeLanguageToken(alias), resolved);
+  }
+});
+
+const resolveSupportedLanguage = (
+  value?: string,
+): keyof typeof CODE_LANGUAGE_CONFIG | undefined => {
+  if (!value) return undefined;
+  const token = normalizeLanguageToken(value);
+  return LANGUAGE_LOOKUP.get(token);
+};
+
+const resolveLanguageFromFilename = (
+  filename?: string,
+): keyof typeof CODE_LANGUAGE_CONFIG | undefined => {
+  if (!filename) return undefined;
+  const match = /\.([a-z0-9#+-]+)$/i.exec(filename.trim());
+  if (!match) return undefined;
+  return resolveSupportedLanguage(match[1]);
+};
 
 const normalizePrismLanguage = (value?: string): string => {
   if (!value) return "plaintext";
-  const raw = value.toLowerCase();
-  if (
-    Object.prototype.hasOwnProperty.call(
-      CODE_LANGUAGE_CONFIG,
-      raw as keyof typeof CODE_LANGUAGE_CONFIG,
-    )
-  ) {
-    return PRISM_LANGUAGE_ALIASES[raw] ?? raw;
+  const resolved = resolveSupportedLanguage(value);
+  if (resolved) {
+    return PRISM_LANGUAGE_ALIASES[resolved] ?? resolved;
   }
-  return PRISM_LANGUAGE_ALIASES[raw] ?? raw;
+  const token = normalizeLanguageToken(value);
+  return PRISM_LANGUAGE_ALIASES[token] ?? token;
 };
 
 const ensurePrismLanguage = (language: string) => {
@@ -642,31 +697,32 @@ export function renderChartBlock(
   )};"><div class="w-full">${figureContent}</div></div>`;
 }
 
-function normalizeCodeSections(codeData: CodeData): CodeSection[] {
-  const isSupportedLanguage = (
-    value: string | undefined,
-  ): value is CodeSection["language"] =>
-    !!value &&
-    Object.prototype.hasOwnProperty.call(
-      CODE_LANGUAGE_CONFIG,
-      value as keyof typeof CODE_LANGUAGE_CONFIG,
-    );
+type NormalizedCodeSection = CodeSection & {
+  languageRaw?: string;
+};
 
+function normalizeCodeSections(codeData: CodeData): NormalizedCodeSection[] {
   if (codeData.sections?.length) {
-    return codeData.sections.map((section) => ({
-      ...section,
-      language: isSupportedLanguage(section.language)
-        ? section.language
-        : "plaintext",
-    }));
+    return codeData.sections.map((section) => {
+      const resolved =
+        resolveSupportedLanguage(section.language) ??
+        resolveLanguageFromFilename(section.filename) ??
+        "plaintext";
+      return {
+        ...section,
+        language: resolved,
+        languageRaw: section.language,
+      };
+    });
   }
 
   if (codeData.content) {
+    const resolved = resolveSupportedLanguage(codeData.language);
+    const fromFilename = resolveLanguageFromFilename(codeData.name);
     return [
       {
-        language: isSupportedLanguage(codeData.language)
-          ? codeData.language
-          : "plaintext",
+        language: resolved ?? fromFilename ?? "plaintext",
+        languageRaw: codeData.language,
         content: codeData.content,
         filename: codeData.name,
       },
@@ -700,7 +756,7 @@ export function renderCodeBlock(
     const wrapLines = Boolean(block.codeData?.wrapLines);
     const { highlighted, prismLanguage } = highlightWithPrism(
       section.content ?? "",
-      section.language ?? undefined,
+      section.languageRaw ?? section.language ?? undefined,
     );
     const displayKey = (section.language ??
       prismLanguage) as keyof typeof CODE_LANGUAGE_CONFIG;
@@ -708,18 +764,22 @@ export function renderCodeBlock(
       CODE_LANGUAGE_CONFIG[displayKey]?.name ??
       CODE_LANGUAGE_CONFIG[prismLanguage as keyof typeof CODE_LANGUAGE_CONFIG]
         ?.name ??
-      section.language ??
+      section.languageRaw ??
       prismLanguage;
 
     const whitespaceClass = wrapLines
       ? "whitespace-pre-wrap break-words"
       : "whitespace-pre";
+    const whitespaceStyle = wrapLines
+      ? "white-space: pre-wrap; word-break: break-word;"
+      : "white-space: pre;";
 
     return {
       highlighted,
       prismLanguage,
       languageName,
       whitespaceClass,
+      whitespaceStyle,
       filename: section.filename,
     };
   });
@@ -737,13 +797,11 @@ export function renderCodeBlock(
   const renderPanel = (segment: (typeof renderedSections)[number]) =>
     `<pre class="language-${escapeHtml(
       segment.prismLanguage,
-    )} text-sm w-full overflow-x-auto ${escapeHtml(
+    )} text-sm w-full overflow-x-auto px-4 py-3 ${escapeHtml(
       segment.whitespaceClass,
-    )}"><div class="flex min-h-full px-4 py-3">
-      <div class="flex-1 relative"><code class="language-${escapeHtml(
-        segment.prismLanguage,
-      )} block">${segment.highlighted}</code></div>
-    </div></pre>`;
+    )}"><code class="language-${escapeHtml(
+      segment.prismLanguage,
+    )} block" style="${segment.whitespaceStyle}">${segment.highlighted}</code></pre>`;
 
   const hasMultipleSections = renderedSections.length > 1;
   const panelsHtml = renderedSections
