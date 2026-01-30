@@ -175,6 +175,7 @@ The built-in visual editor provides a user-friendly interface for creating and e
    - Preview changes in real-time
 
 The editor automatically generates the proper JSON structure and saves files to the correct locations.
+<img width="1645" height="1032" alt="Screenshot 2026-01-30 220553" src="https://github.com/user-attachments/assets/08c0359e-0eb4-4655-9a1f-166839d64bf0" />
 
 ### Manual JSON Editing
 
