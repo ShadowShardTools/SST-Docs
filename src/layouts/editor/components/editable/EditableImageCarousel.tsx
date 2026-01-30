@@ -1,11 +1,9 @@
 import { Suspense, lazy, useMemo } from "react";
-import { Image as ImageIcon, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
-import PathInput from "../../../common/components/PathInput";
 import Button from "../../../common/components/Button";
-import { list } from "../../api/client";
-import { clientConfig } from "../../../../application/config/clientConfig";
+import MediaPathInput from "./MediaPathInput";
 import { LoadingSpinner } from "../../../dialog/components";
 
 const ImageCarouselBlock = lazy(
@@ -16,12 +14,14 @@ interface EditableImageCarouselProps {
   data?: ImageCarouselData;
   styles: StyleTheme;
   onChange: (next: ImageCarouselData) => void;
+  versionBasePath?: string | null;
 }
 
 export function EditableImageCarousel({
   data,
   styles,
   onChange,
+  versionBasePath,
 }: EditableImageCarouselProps) {
   const carouselData: ImageCarouselData = {
     images: [{ src: "", alt: "" }],
@@ -52,10 +52,6 @@ export function EditableImageCarousel({
       images: next.length ? next : [{ src: "", alt: "" }],
     });
   };
-  const publicBasePath = useMemo(
-    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
-    [],
-  );
   const imageExtensions = useMemo(
     () => [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif"],
     [],
@@ -67,19 +63,15 @@ export function EditableImageCarousel({
       <div className="space-y-2">
         {(carouselData.images ?? []).map((img, idx) => (
           <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <PathInput
+            <MediaPathInput
               styles={styles}
-              label={`Image ${idx + 1} URL`}
+              label={`Image ${idx + 1}`}
               value={img.src ?? ""}
               onChange={(next) => updateImage(idx, { src: next })}
-              placeholder="https://example.com/image.jpg"
-              listEntries={list}
+              placeholder="images/example.png"
               allowedExtensions={imageExtensions}
-              publicBasePath={publicBasePath}
               requiredFolder="images"
-              dialogTitle="Select image"
-              dialogIcon={ImageIcon}
-              fileIcon={ImageIcon}
+              versionBasePath={versionBasePath}
             />
             <div className="flex flex-col gap-1">
               <span className={`${styles.text.alternative}`}>

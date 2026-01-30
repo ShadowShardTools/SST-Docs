@@ -1,20 +1,23 @@
 import { useEffect, useMemo, useRef } from "react";
-import { Image as ImageIcon } from "lucide-react";
 import ImageBlock from "../../../blocks/components/ImageBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
 import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
-import PathInput from "../../../common/components/PathInput";
-import { list } from "../../api/client";
-import { clientConfig } from "../../../../application/config/clientConfig";
+import MediaPathInput from "./MediaPathInput";
 
 interface EditableImageProps {
   data?: ImageData;
   styles: StyleTheme;
   onChange: (next: ImageData) => void;
+  versionBasePath?: string | null;
 }
 
-export function EditableImage({ data, styles, onChange }: EditableImageProps) {
+export function EditableImage({
+  data,
+  styles,
+  onChange,
+  versionBasePath,
+}: EditableImageProps) {
   const ensureImage = (img?: Partial<BaseImage> | null): BaseImage => ({
     src: img?.src ?? "",
     alt: img?.alt ?? "",
@@ -28,10 +31,6 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
   };
 
   const altRef = useRef<HTMLInputElement>(null);
-  const publicBasePath = useMemo(
-    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
-    [],
-  );
   const imageExtensions = useMemo(
     () => [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif"],
     [],
@@ -48,9 +47,9 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
 
   return (
     <div className="space-y-3">
-      <PathInput
+      <MediaPathInput
         styles={styles}
-        label="Image source URL"
+        label="Image"
         value={imageData.image?.src ?? ""}
         onChange={(next) =>
           onChange({
@@ -61,14 +60,10 @@ export function EditableImage({ data, styles, onChange }: EditableImageProps) {
             }),
           })
         }
-        placeholder="https://example.com/image.jpg"
-        listEntries={list}
+        placeholder="images/example.png"
         allowedExtensions={imageExtensions}
-        publicBasePath={publicBasePath}
         requiredFolder="images"
-        dialogTitle="Select image"
-        dialogIcon={ImageIcon}
-        fileIcon={ImageIcon}
+        versionBasePath={versionBasePath}
       />
       <label className="flex flex-col gap-1">
         <span className={`${styles.text.alternative}`}>Alt text</span>

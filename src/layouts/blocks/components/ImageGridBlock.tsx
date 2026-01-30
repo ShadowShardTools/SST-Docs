@@ -8,7 +8,7 @@ import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validatio
 import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import { useMobileDevice } from "../hooks";
-import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { resolveMediaPath } from "../../common/utils/mediaPath";
 
 interface Props {
   index: number;
@@ -38,9 +38,7 @@ export const ImageGridBlock: React.FC<Props> = ({
       <div className={containerAlignment} style={{ width }}>
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {imageGridData.images.map((img, i) => {
-            const src = img?.src
-              ? withBasePath(img.src, import.meta.env.BASE_URL)
-              : "";
+            const src = img?.src ? resolveMediaPath(img.src) : "";
             return (
               <div key={i} className="flex flex-col items-center">
                 <img

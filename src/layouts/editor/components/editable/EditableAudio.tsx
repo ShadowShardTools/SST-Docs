@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useRef } from "react";
-import { Music2 } from "lucide-react";
 import AudioBlock from "../../../blocks/components/AudioBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
-import PathInput from "../../../common/components/PathInput";
-import { list } from "../../api/client";
-import { clientConfig } from "../../../../application/config/clientConfig";
+import MediaPathInput from "./MediaPathInput";
 
 interface EditableAudioProps {
   data?: AudioData;
   styles: StyleTheme;
   onChange: (next: AudioData) => void;
+  versionBasePath?: string | null;
 }
 
-export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
+export function EditableAudio({
+  data,
+  styles,
+  onChange,
+  versionBasePath,
+}: EditableAudioProps) {
   const audioData: AudioData = {
     src: "",
     mimeType: "audio/mpeg",
@@ -34,10 +37,6 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
   };
 
   const captionRef = useRef<HTMLInputElement>(null);
-  const publicBasePath = useMemo(
-    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
-    [],
-  );
   const audioExtensions = useMemo(
     () => [".mp3", ".ogg", ".wav", ".m4a", ".flac", ".webm"],
     [],
@@ -54,9 +53,9 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
 
   return (
     <div className="space-y-3">
-      <PathInput
+      <MediaPathInput
         styles={styles}
-        label="Audio source URL"
+        label="Audio"
         value={audioData.src ?? ""}
         onChange={(next) =>
           onChange({
@@ -65,14 +64,10 @@ export function EditableAudio({ data, styles, onChange }: EditableAudioProps) {
             mimeType: audioData.mimeType || guessMimeType(next),
           })
         }
-        placeholder="https://example.com/audio.mp3"
-        listEntries={list}
+        placeholder="audio/example.mp3"
         allowedExtensions={audioExtensions}
-        publicBasePath={publicBasePath}
         requiredFolder="audio"
-        dialogTitle="Select audio"
-        dialogIcon={Music2}
-        fileIcon={Music2}
+        versionBasePath={versionBasePath}
       />
       <label className="flex flex-col gap-1">
         <span className={`${styles.text.alternative}`}>Caption (optional)</span>

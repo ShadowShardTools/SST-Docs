@@ -8,7 +8,7 @@ import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { resolveMediaPath } from "../../common/utils/mediaPath";
 import { ErrorBoundary } from "../../common/components/ErrorBoundary";
 
 const CompareImage = lazy(() => import("react-compare-image"));
@@ -37,10 +37,10 @@ export const ImageCompareBlock: React.FC<Props> = ({
     : ALIGNMENT_CLASSES[alignment].container;
 
   const beforeSrc = imageCompareData.beforeImage?.src
-    ? withBasePath(imageCompareData.beforeImage.src, import.meta.env.BASE_URL)
+    ? resolveMediaPath(imageCompareData.beforeImage.src)
     : "";
   const afterSrc = imageCompareData.afterImage?.src
-    ? withBasePath(imageCompareData.afterImage.src, import.meta.env.BASE_URL)
+    ? resolveMediaPath(imageCompareData.afterImage.src)
     : "";
   const sliderColor = imageCompareData.sliderColor || "#ffffff";
 
@@ -54,9 +54,7 @@ export const ImageCompareBlock: React.FC<Props> = ({
         >
           {[imageCompareData.beforeImage, imageCompareData.afterImage].map(
             (img, i) => {
-              const src = img?.src
-                ? withBasePath(img.src, import.meta.env.BASE_URL)
-                : "";
+              const src = img?.src ? resolveMediaPath(img.src) : "";
               return (
                 <div key={i} className="w-1/2">
                   <img

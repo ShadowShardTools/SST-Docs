@@ -10,6 +10,7 @@ interface Props {
   onChange: (updated: Content[]) => void;
   styles: StyleTheme;
   currentPath?: string;
+  versionBasePath?: string | null;
 }
 
 export function BlockListEditor({
@@ -17,6 +18,7 @@ export function BlockListEditor({
   onChange,
   styles,
   currentPath = "editor",
+  versionBasePath,
 }: Props) {
   const blocks = useMemo(() => content ?? [], [content]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -81,6 +83,7 @@ export function BlockListEditor({
                   blocks={blocks}
                   styles={styles}
                   currentPath={currentPath}
+                  versionBasePath={versionBasePath}
                   dragIndex={dragIndex}
                   dragOverIndex={dragOverIndex}
                   onDragStart={handleDragStart}

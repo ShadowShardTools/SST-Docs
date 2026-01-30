@@ -1,23 +1,23 @@
 import { useMemo } from "react";
-import { Image as ImageIcon, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import ImageGridBlock from "../../../blocks/components/ImageGridBlock";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
-import PathInput from "../../../common/components/PathInput";
 import Button from "../../../common/components/Button";
-import { list } from "../../api/client";
-import { clientConfig } from "../../../../application/config/clientConfig";
+import MediaPathInput from "./MediaPathInput";
 
 interface EditableImageGridProps {
   data?: ImageGridData;
   styles: StyleTheme;
   onChange: (next: ImageGridData) => void;
+  versionBasePath?: string | null;
 }
 
 export function EditableImageGrid({
   data,
   styles,
   onChange,
+  versionBasePath,
 }: EditableImageGridProps) {
   const imageGridData: ImageGridData = useMemo(
     () => ({
@@ -50,10 +50,6 @@ export function EditableImageGrid({
       images: next.length ? next : [{ src: "", alt: "" }],
     });
   };
-  const publicBasePath = useMemo(
-    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
-    [],
-  );
   const imageExtensions = useMemo(
     () => [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif"],
     [],
@@ -65,19 +61,15 @@ export function EditableImageGrid({
       <div className="space-y-2">
         {(imageGridData.images ?? []).map((img, idx) => (
           <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <PathInput
+            <MediaPathInput
               styles={styles}
-              label={`Image ${idx + 1} URL`}
+              label={`Image ${idx + 1}`}
               value={img.src ?? ""}
               onChange={(next) => updateImage(idx, { src: next })}
-              placeholder="https://example.com/image.jpg"
-              listEntries={list}
+              placeholder="images/example.png"
               allowedExtensions={imageExtensions}
-              publicBasePath={publicBasePath}
               requiredFolder="images"
-              dialogTitle="Select image"
-              dialogIcon={ImageIcon}
-              fileIcon={ImageIcon}
+              versionBasePath={versionBasePath}
             />
             <div className="flex flex-col gap-1">
               <span className={`${styles.text.alternative}`}>

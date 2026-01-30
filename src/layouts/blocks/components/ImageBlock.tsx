@@ -8,7 +8,7 @@ import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validatio
 import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import { useMobileDevice } from "../hooks";
-import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { resolveMediaPath } from "../../common/utils/mediaPath";
 
 interface Props {
   index: number;
@@ -27,9 +27,7 @@ export const ImageBlock: React.FC<Props> = ({ index, styles, imageData }) => {
     ? "w-full"
     : ALIGNMENT_CLASSES[alignment].container;
 
-  const src = imageData.image
-    ? withBasePath(imageData.image.src, import.meta.env.BASE_URL)
-    : "";
+  const src = imageData.image ? resolveMediaPath(imageData.image.src) : "";
 
   return (
     <div key={index} className={baseClasses}>

@@ -118,7 +118,7 @@ export const DEFAULT_BLOCKS: Record<BlockType, Content> = {
   youtube: {
     type: "youtube",
     youtubeData: {
-      youtubeVideoId: "dQw4w9WgXcQ",
+      youtubeVideoId: "-1TzlCNmRTE",
       caption: "YouTube embed",
     },
   },

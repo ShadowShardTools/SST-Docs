@@ -9,7 +9,7 @@ import {
   ALIGNMENT_CLASSES,
   SPACING_CLASSES,
 } from "@shadow-shard-tools/docs-core";
-import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { resolveMediaPath } from "../../common/utils/mediaPath";
 
 const Splide = lazy(() =>
   import("@splidejs/react-splide").then((m) => ({ default: m.Splide })),
@@ -59,9 +59,7 @@ export const ImageCarouselBlock: React.FC<Props> = ({
         >
           <Splide options={carouselOptions}>
             {imageCarouselData.images.map((img, i) => {
-              const src = img?.src
-                ? withBasePath(img.src, import.meta.env.BASE_URL)
-                : "";
+              const src = img?.src ? resolveMediaPath(img.src) : "";
               return (
                 <SplideSlide key={i}>
                   <div
