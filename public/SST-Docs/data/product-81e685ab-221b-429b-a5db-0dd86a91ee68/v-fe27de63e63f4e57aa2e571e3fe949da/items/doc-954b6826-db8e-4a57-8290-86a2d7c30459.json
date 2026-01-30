@@ -86,12 +86,29 @@
             "alt": "Grid item"
           },
           {
-            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_2.png",
+            "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/images/Image_Example_1.png",
             "alt": "Grid item"
           }
         ],
         "scale": 1,
         "alignment": "center"
+      }
+    },
+    {
+      "type": "audio",
+      "audioData": {
+        "src": "/SST-Docs/data/product-81e685ab-221b-429b-a5db-0dd86a91ee68/v-fe27de63e63f4e57aa2e571e3fe949da/audio/AudioSample.mp3",
+        "caption": "Audio clip",
+        "mimeType": "audio/mpeg"
+      }
+    },
+    {
+      "type": "youtube",
+      "youtubeData": {
+        "youtubeVideoId": "-1TzlCNmRTE",
+        "caption": "YouTube embed",
+        "alignment": "center",
+        "scale": 1
       }
     }
   ]

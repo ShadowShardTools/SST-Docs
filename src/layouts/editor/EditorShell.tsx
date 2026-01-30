@@ -13,6 +13,7 @@ import { useEditorFileState } from "./hooks/useEditorFileState";
 import { useEditorSelection } from "./hooks/useEditorSelection";
 import { useEditorVersionActions } from "./hooks/useEditorVersionActions";
 import { useEditorData } from "./state/useEditorData";
+import { resolveVersionBasePath } from "./utilities/editorPaths";
 import {
   read,
   write,
@@ -255,6 +256,11 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
         </p>
       );
     }
+    const versionBasePath = resolveVersionBasePath(
+      productVersioning,
+      currentProduct,
+      currentVersion,
+    );
     return (
       <BlockListEditor
         content={draftContent}
@@ -263,6 +269,7 @@ export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
           setDirty(true);
         }}
         styles={styles}
+        versionBasePath={versionBasePath}
       />
     );
   };

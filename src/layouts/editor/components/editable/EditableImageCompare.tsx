@@ -1,11 +1,8 @@
 import { Suspense, lazy, useEffect, useMemo, useRef } from "react";
-import { Image as ImageIcon } from "lucide-react";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
 import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
-import PathInput from "../../../common/components/PathInput";
-import { list } from "../../api/client";
-import { clientConfig } from "../../../../application/config/clientConfig";
+import MediaPathInput from "./MediaPathInput";
 import { LoadingSpinner } from "../../../dialog/components";
 
 const ImageCompareBlock = lazy(
@@ -16,12 +13,14 @@ interface EditableImageCompareProps {
   data?: ImageCompareData;
   styles: StyleTheme;
   onChange: (next: ImageCompareData) => void;
+  versionBasePath?: string | null;
 }
 
 export function EditableImageCompare({
   data,
   styles,
   onChange,
+  versionBasePath,
 }: EditableImageCompareProps) {
   const ensureImage = (img?: Partial<BaseImage> | null): BaseImage => ({
     src: img?.src ?? "",
@@ -40,10 +39,6 @@ export function EditableImageCompare({
 
   const beforeAltRef = useRef<HTMLInputElement>(null);
   const afterAltRef = useRef<HTMLInputElement>(null);
-  const publicBasePath = useMemo(
-    () => clientConfig.PUBLIC_DATA_PATH ?? "/",
-    [],
-  );
   const imageExtensions = useMemo(
     () => [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif"],
     [],
@@ -67,9 +62,9 @@ export function EditableImageCompare({
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <PathInput
+        <MediaPathInput
           styles={styles}
-          label="Before image URL"
+          label="Before image"
           value={imageCompareData.beforeImage?.src ?? ""}
           onChange={(next) =>
             onChange({
@@ -80,18 +75,14 @@ export function EditableImageCompare({
               }),
             })
           }
-          placeholder="https://example.com/before.jpg"
-          listEntries={list}
+          placeholder="images/before.png"
           allowedExtensions={imageExtensions}
-          publicBasePath={publicBasePath}
           requiredFolder="images"
-          dialogTitle="Select image"
-          dialogIcon={ImageIcon}
-          fileIcon={ImageIcon}
+          versionBasePath={versionBasePath}
         />
-        <PathInput
+        <MediaPathInput
           styles={styles}
-          label="After image URL"
+          label="After image"
           value={imageCompareData.afterImage?.src ?? ""}
           onChange={(next) =>
             onChange({
@@ -102,14 +93,10 @@ export function EditableImageCompare({
               }),
             })
           }
-          placeholder="https://example.com/after.jpg"
-          listEntries={list}
+          placeholder="images/after.png"
           allowedExtensions={imageExtensions}
-          publicBasePath={publicBasePath}
           requiredFolder="images"
-          dialogTitle="Select image"
-          dialogIcon={ImageIcon}
-          fileIcon={ImageIcon}
+          versionBasePath={versionBasePath}
         />
       </div>
 

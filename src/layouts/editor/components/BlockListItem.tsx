@@ -11,6 +11,7 @@ interface BlockListItemProps {
   blocks: Content[];
   styles: StyleTheme;
   currentPath: string;
+  versionBasePath?: string | null;
   dragIndex: number | null;
   dragOverIndex: number | null;
   onDragStart: (event: DragEvent<HTMLElement>, index: number) => void;
@@ -32,6 +33,7 @@ export function BlockListItem({
   blocks,
   styles,
   currentPath,
+  versionBasePath,
   dragIndex,
   dragOverIndex,
   onDragStart,
@@ -108,6 +110,7 @@ export function BlockListItem({
             blocks={blocks}
             styles={styles}
             currentPath={currentPath}
+            versionBasePath={versionBasePath}
             onChange={onChange}
           />
         </div>

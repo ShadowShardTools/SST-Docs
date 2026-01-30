@@ -4,7 +4,7 @@ import { formatTime } from "@shadow-shard-tools/docs-core/utilities/system/forma
 import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
 import { useAudioPlayer } from "../hooks";
-import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { resolveMediaPath } from "../../common/utils/mediaPath";
 import { useCurrentTheme } from "../../../application/hooks";
 
 interface Props {
@@ -26,9 +26,7 @@ const detectMimeType = (src?: string, fallback = "audio/mpeg") => {
 
 export const AudioBlock: React.FC<Props> = ({ styles, audioData }) => {
   const [theme] = useCurrentTheme();
-  const src = audioData
-    ? withBasePath(audioData.src, import.meta.env.BASE_URL)
-    : "";
+  const src = audioData ? resolveMediaPath(audioData.src) : "";
   const mimeType = audioData.mimeType || detectMimeType(audioData.src);
 
   const {

@@ -32,8 +32,15 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
   const getLanguageExtension = (language: SupportedLanguage) =>
     CODE_LANGUAGE_CONFIG[language]?.ext ?? "txt";
   const getDefaultFilenameBase = () => "snippet";
-  const buildFilename = (base: string, language: SupportedLanguage) => {
-    const safeBase = base.trim() || getDefaultFilenameBase();
+  const buildFilename = (
+    base: string,
+    language: SupportedLanguage,
+    fallbackToDefault = false,
+  ) => {
+    const trimmed = base.trim();
+    const safeBase =
+      trimmed || (fallbackToDefault ? getDefaultFilenameBase() : "");
+    if (!safeBase) return "";
     return `${safeBase}.${getLanguageExtension(language)}`;
   };
   const getFilenameBase = (
@@ -57,8 +64,8 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
   const baseData: CodeData = {
     language: "javascript",
     content: "",
-    wrapLines: false,
-    defaultCollapsed: true,
+    wrapLines: true,
+    defaultCollapsed: false,
     ...safeData,
   };
   const codeData: CodeData = {
@@ -208,7 +215,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
                         {
                           language,
                           content: "",
-                          filename: buildFilename("", language),
+                          filename: buildFilename("", language, true),
                         },
                       ];
                       setLocalActive(updated.length - 1);
@@ -252,7 +259,7 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
               getFilenameBase(
                 activeSection?.filename,
                 activeSection?.language ?? "plaintext",
-              ) || getDefaultFilenameBase()
+              )
             }
             onChange={(e) =>
               onChange({
@@ -261,10 +268,9 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
                   idx === activeIndex
                     ? {
                         ...section,
-                        filename: buildFilename(
-                          e.target.value,
-                          section.language,
-                        ),
+                        filename:
+                          buildFilename(e.target.value, section.language) ||
+                          undefined,
                       }
                     : section,
                 ),
@@ -291,10 +297,15 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
                     ? {
                         ...section,
                         language,
-                        filename: buildFilename(
-                          getFilenameBase(section.filename, section.language),
-                          language,
-                        ),
+                        filename: (() => {
+                          const base = getFilenameBase(
+                            section.filename,
+                            section.language,
+                          );
+                          return base
+                            ? buildFilename(base, language)
+                            : undefined;
+                        })(),
                       }
                     : section,
                 ),

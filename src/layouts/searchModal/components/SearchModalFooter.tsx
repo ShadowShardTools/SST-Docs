@@ -3,10 +3,12 @@ import React from "react";
 
 interface SearchModalFooterProps {
   styles: StyleTheme;
+  showDeleteHint?: boolean;
 }
 
 export const SearchModalFooter: React.FC<SearchModalFooterProps> = ({
   styles,
+  showDeleteHint = false,
 }) => {
   return (
     <div
@@ -35,6 +37,16 @@ export const SearchModalFooter: React.FC<SearchModalFooterProps> = ({
           </kbd>
           <span className={`text-xs ${styles.hints.text}`}>to select</span>
         </div>
+        {showDeleteHint && (
+          <div className="flex items-center gap-1">
+            <kbd
+              className={`px-1.5 py-0.5 pointer-events-none text-xs ${styles.hints.key}`}
+            >
+              Del
+            </kbd>
+            <span className={`text-xs ${styles.hints.text}`}>to delete</span>
+          </div>
+        )}
       </div>
 
       {/* Right side - Close hint */}

@@ -29,6 +29,7 @@ interface BlockEditorContentProps {
   blocks: Content[];
   styles: StyleTheme;
   currentPath: string;
+  versionBasePath?: string | null;
   onChange: (updated: Content[]) => void;
 }
 
@@ -37,6 +38,7 @@ type BlockRenderContext = {
   index: number;
   styles: StyleTheme;
   currentPath: string;
+  versionBasePath?: string | null;
   onChange: (updated: Content[]) => void;
 };
 
@@ -196,6 +198,7 @@ const blockRenderers: Partial<Record<BlockType, BlockRenderer>> = {
     <EditableAudio
       data={(block as any).audioData}
       styles={ctx.styles}
+      versionBasePath={ctx.versionBasePath}
       onChange={(nextAudio) =>
         applyUpdate(ctx, (prev) => ({
           ...prev,
@@ -211,6 +214,7 @@ const blockRenderers: Partial<Record<BlockType, BlockRenderer>> = {
     <EditableImage
       data={(block as any).imageData}
       styles={ctx.styles}
+      versionBasePath={ctx.versionBasePath}
       onChange={(nextImage) =>
         applyUpdate(ctx, (prev) => ({
           ...prev,
@@ -226,6 +230,7 @@ const blockRenderers: Partial<Record<BlockType, BlockRenderer>> = {
     <EditableImageCompare
       data={(block as any).imageCompareData}
       styles={ctx.styles}
+      versionBasePath={ctx.versionBasePath}
       onChange={(nextCompare) =>
         applyUpdate(ctx, (prev) => ({
           ...prev,
@@ -241,6 +246,7 @@ const blockRenderers: Partial<Record<BlockType, BlockRenderer>> = {
     <EditableImageCarousel
       data={(block as any).imageCarouselData}
       styles={ctx.styles}
+      versionBasePath={ctx.versionBasePath}
       onChange={(nextCarousel) =>
         applyUpdate(ctx, (prev) => ({
           ...prev,
@@ -256,6 +262,7 @@ const blockRenderers: Partial<Record<BlockType, BlockRenderer>> = {
     <EditableImageGrid
       data={(block as any).imageGridData}
       styles={ctx.styles}
+      versionBasePath={ctx.versionBasePath}
       onChange={(nextGrid) =>
         applyUpdate(ctx, (prev) => ({
           ...prev,
@@ -320,11 +327,19 @@ export function BlockEditorContent({
   blocks,
   styles,
   currentPath,
+  versionBasePath,
   onChange,
 }: BlockEditorContentProps) {
   const renderer = blockRenderers[block.type as BlockType];
   if (renderer) {
-    return renderer(block, { blocks, index, styles, currentPath, onChange });
+    return renderer(block, {
+      blocks,
+      index,
+      styles,
+      currentPath,
+      versionBasePath,
+      onChange,
+    });
   }
 
   return (
