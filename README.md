@@ -276,7 +276,7 @@ SST-Docs uses Tailwind CSS 4. Modify styles in:
 Generate offline-ready documentation:
 
 ```bash
-npm run generate:static-html
+npm run generate:html
 ```
 
 This creates:
@@ -324,6 +324,7 @@ Set `BASE_URL` in your build environment to customize the base path.
 
 ## 🛠️ Technology Stack
 
+- **SST-Docs-Core**: https://github.com/ShadowShardTools/SST-Docs-Core
 - **Framework**: React 19.2
 - **Build Tool**: Vite 7.3
 - **Language**: TypeScript 5.9
