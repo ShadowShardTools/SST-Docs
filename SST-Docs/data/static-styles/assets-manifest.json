@@ -63,6 +63,7 @@
   "site.css",
   "splide.min.css",
   "static-code-block.css",
+  "static-compare.css",
   "vendor/chart.umd.js",
   "vendor/prism.js",
   "vendor/splide.min.js"
