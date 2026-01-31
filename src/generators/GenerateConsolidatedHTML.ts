@@ -90,6 +90,14 @@ const STATIC_TEMPLATE_FILES = [
     "templates",
     "static-code-block.css",
   ),
+  path.join(
+    appRoot.path,
+    "src",
+    "generators",
+    "htmlGenerator",
+    "templates",
+    "static-compare.css",
+  ),
 ];
 
 async function pathExists(targetPath: string): Promise<boolean> {

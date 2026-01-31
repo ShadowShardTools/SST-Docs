@@ -679,6 +679,9 @@
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
@@ -1944,6 +1947,11 @@
   .dark\:p-2 {
     &:where(.dark, .dark *) {
       padding: calc(var(--spacing) * 2);
+    }
+  }
+  .dark\:p-3 {
+    &:where(.dark, .dark *) {
+      padding: calc(var(--spacing) * 3);
     }
   }
   .dark\:p-4 {

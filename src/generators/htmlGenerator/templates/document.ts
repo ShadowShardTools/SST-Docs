@@ -12,6 +12,8 @@ import {
   renderImageCarouselBlock,
   renderImageCompareBlock,
   renderImageGridBlock,
+  renderAudioBlock,
+  renderYoutubeBlock,
   renderChartBlock,
   renderCodeBlock,
   renderMathBlock,
@@ -43,6 +45,10 @@ function renderBlock(
       return renderImageCompareBlock(block as any, styles, options);
     case "imageGrid":
       return renderImageGridBlock(block as any, styles, options);
+    case "audio":
+      return renderAudioBlock(block as any, styles, options);
+    case "youtube":
+      return renderYoutubeBlock(block as any, styles);
     case "chart":
       return renderChartBlock(block as any, styles, options);
     case "code":

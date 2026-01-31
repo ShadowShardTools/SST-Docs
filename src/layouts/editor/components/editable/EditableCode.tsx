@@ -255,12 +255,10 @@ export function EditableCode({ data, styles, onChange }: EditableCodeProps) {
           <span className={`${styles.text.alternative}`}>Filename:</span>
           <input
             className={`${styles.input} px-2 py-1`}
-            value={
-              getFilenameBase(
-                activeSection?.filename,
-                activeSection?.language ?? "plaintext",
-              )
-            }
+            value={getFilenameBase(
+              activeSection?.filename,
+              activeSection?.language ?? "plaintext",
+            )}
             onChange={(e) =>
               onChange({
                 ...codeData,

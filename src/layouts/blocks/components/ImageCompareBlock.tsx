@@ -108,8 +108,8 @@ export const ImageCompareBlock: React.FC<Props> = ({
                 rightImage={afterSrc}
                 onSliderPositionChange={setPosition}
                 sliderLineColor={sliderColor}
-                leftImageCss={{ maxWidth: "100%", height: "auto" }}
-                rightImageCss={{ maxWidth: "100%", height: "auto" }}
+                leftImageAlt={imageCompareData.beforeImage?.alt ?? "Before"}
+                rightImageAlt={imageCompareData.afterImage?.alt ?? "After"}
               />
             </ErrorBoundary>
           </Suspense>

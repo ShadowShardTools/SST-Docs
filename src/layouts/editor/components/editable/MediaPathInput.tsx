@@ -80,8 +80,7 @@ export function MediaPathInput({
     [],
   );
   const previewBasePath = useMemo(
-    () =>
-      resolvePublicDataPath(import.meta.env.BASE_URL ?? "/", clientConfig),
+    () => resolvePublicDataPath(import.meta.env.BASE_URL ?? "/", clientConfig),
     [],
   );
   const normalizedPublicBase = useMemo(
@@ -118,9 +117,7 @@ export function MediaPathInput({
   const handleUpload = async (file: File, currentDir: string) => {
     if (!basePath) return;
     if (!validateExtension(file.name)) {
-      window.alert(
-        `Unsupported file type. Allowed: ${allowedExts.join(", ")}`,
-      );
+      window.alert(`Unsupported file type. Allowed: ${allowedExts.join(", ")}`);
       return;
     }
     const normalizedDir = currentDir === "." ? basePath : currentDir;
@@ -133,8 +130,7 @@ export function MediaPathInput({
     try {
       const res = await list(normalizedDir || ".");
       existing = (res.entries ?? []).some(
-        (entry) =>
-          !entry.isDirectory && entry.name.toLowerCase() === lowerName,
+        (entry) => !entry.isDirectory && entry.name.toLowerCase() === lowerName,
       );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
