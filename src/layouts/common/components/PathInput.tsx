@@ -7,12 +7,7 @@ import {
   type ChangeEvent,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import {
-  ChevronLeft,
-  Folder,
-  Image as ImageIcon,
-  Trash2,
-} from "lucide-react";
+import { ChevronLeft, Folder, Image as ImageIcon, Trash2 } from "lucide-react";
 import SearchModalFooter from "../../searchModal/components/SearchModalFooter";
 import type { StyleTheme } from "@shadow-shard-tools/docs-core";
 import Button from "./Button";
@@ -598,27 +593,28 @@ export function PathInput({
                     const index = (onUpload ? 1 : 0) + dirIndex;
                     const isSelected = selectedIndex === index;
                     return (
-                    <button
-                      key={`dir-${entry.name}`}
-                      type="button"
-                      className={`w-full text-left px-3 py-2 flex items-center gap-2 cursor-pointer ${
-                        isSelected
-                          ? styles.searchModal.selectedItem
-                          : styles.searchModal.item
-                      }`}
-                      onClick={() =>
-                        setCurrentDir(
-                          currentDir === "."
-                            ? entry.name
-                            : `${currentDir}/${entry.name}`,
-                        )
-                      }
-                      onMouseEnter={() => setSelectedIndex(index)}
-                    >
-                      <Folder className="w-4 h-4" />
-                      <span>{entry.name}</span>
-                    </button>
-                  )})}
+                      <button
+                        key={`dir-${entry.name}`}
+                        type="button"
+                        className={`w-full text-left px-3 py-2 flex items-center gap-2 cursor-pointer ${
+                          isSelected
+                            ? styles.searchModal.selectedItem
+                            : styles.searchModal.item
+                        }`}
+                        onClick={() =>
+                          setCurrentDir(
+                            currentDir === "."
+                              ? entry.name
+                              : `${currentDir}/${entry.name}`,
+                          )
+                        }
+                        onMouseEnter={() => setSelectedIndex(index)}
+                      >
+                        <Folder className="w-4 h-4" />
+                        <span>{entry.name}</span>
+                      </button>
+                    );
+                  })}
                   {filteredEntries.files
                     .filter((entry) => isAllowedFile(entry.name))
                     .map((entry, fileIndex) => {
@@ -627,48 +623,49 @@ export function PathInput({
                       const index = baseIndex + fileIndex;
                       const isSelected = selectedIndex === index;
                       return (
-                      <div
-                        key={`file-${entry.name}`}
-                        className={`w-full px-3 py-2 flex items-center justify-between gap-2 cursor-pointer ${
-                          isSelected
-                            ? styles.searchModal.selectedItem
-                            : styles.searchModal.item
-                        }`}
-                        onMouseEnter={(event) =>
-                          handlePreviewEnter(entry.name, event)
-                        }
-                        onMouseOver={() => setSelectedIndex(index)}
-                        onMouseMove={(event) =>
-                          handlePreviewMove(entry.name, event)
-                        }
-                        onMouseLeave={handlePreviewLeave}
-                      >
-                        <button
-                          type="button"
-                          className="flex items-center gap-2 text-left flex-1"
-                          onClick={() => handleSelectFile(entry.name)}
-                          onMouseEnter={() => setSelectedIndex(index)}
+                        <div
+                          key={`file-${entry.name}`}
+                          className={`w-full px-3 py-2 flex items-center justify-between gap-2 cursor-pointer ${
+                            isSelected
+                              ? styles.searchModal.selectedItem
+                              : styles.searchModal.item
+                          }`}
+                          onMouseEnter={(event) =>
+                            handlePreviewEnter(entry.name, event)
+                          }
+                          onMouseOver={() => setSelectedIndex(index)}
+                          onMouseMove={(event) =>
+                            handlePreviewMove(entry.name, event)
+                          }
+                          onMouseLeave={handlePreviewLeave}
                         >
-                          <FileIcon className="w-4 h-4" />
-                          <span>{entry.name}</span>
-                        </button>
-                        {onDelete && (
-                          <Button
+                          <button
                             type="button"
-                            className="inline-flex items-center justify-center w-8 h-8"
-                            styles={styles}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleDeleteFile(entry.name);
-                            }}
-                            aria-label={`Delete ${entry.name}`}
-                            title="Delete"
+                            className="flex items-center gap-2 text-left flex-1"
+                            onClick={() => handleSelectFile(entry.name)}
+                            onMouseEnter={() => setSelectedIndex(index)}
                           >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        )}
-                      </div>
-                    )})}
+                            <FileIcon className="w-4 h-4" />
+                            <span>{entry.name}</span>
+                          </button>
+                          {onDelete && (
+                            <Button
+                              type="button"
+                              className="inline-flex items-center justify-center w-8 h-8"
+                              styles={styles}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleDeleteFile(entry.name);
+                              }}
+                              aria-label={`Delete ${entry.name}`}
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                      );
+                    })}
                   {!filteredEntries.dirs.length &&
                     !filteredEntries.files.filter((entry) =>
                       isAllowedFile(entry.name),

@@ -1,0 +1,54 @@
+.static-compare {
+  --static-compare-position: 50%;
+  position: relative;
+  width: 100%;
+  cursor: ew-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.static-compare-figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+.static-compare-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.static-compare-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  clip-path: inset(0 calc(100% - var(--static-compare-position)) 0 0);
+}
+
+.static-compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--static-compare-position);
+  transform: translateX(-50%);
+  width: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.static-compare-handle-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}

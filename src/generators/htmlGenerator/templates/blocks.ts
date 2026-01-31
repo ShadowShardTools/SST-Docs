@@ -19,6 +19,8 @@ import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
 import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
 import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
 import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
+import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
+import type { YoutubeData } from "@shadow-shard-tools/docs-core/types/YoutubeData";
 import type {
   CodeData,
   CodeSection,
@@ -26,7 +28,9 @@ import type {
 import type { MathData } from "@shadow-shard-tools/docs-core/types/MathData";
 import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
 import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
+import { extractYouTubeId } from "@shadow-shard-tools/docs-core/utilities/string/extractYouTubeId";
 import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
+import { isValidYouTubeId } from "@shadow-shard-tools/docs-core/utilities/validation/isValidYouTubeId";
 import { sanitizeRichTextStatic, escapeHtml } from "../utilities/sanitize.js";
 import { renderToString as renderKatexToString } from "katex";
 import Prism from "prismjs";
@@ -44,6 +48,8 @@ type ContentBlock =
   | { type: "imageCarousel"; imageCarouselData?: ImageCarouselData }
   | { type: "imageCompare"; imageCompareData?: ImageCompareData }
   | { type: "imageGrid"; imageGridData?: ImageGridData }
+  | { type: "audio"; audioData?: AudioData }
+  | { type: "youtube"; youtubeData?: YoutubeData }
   | { type: "chart"; chartData?: ChartData }
   | { type: "code"; codeData?: CodeData }
   | { type: "math"; mathData?: MathData };
@@ -412,7 +418,7 @@ export function renderDividerBlock(
   return `<div class="mb-6"><div class="${dividerClass}"></div></div>`;
 }
 
-function resolveImageSrc(
+function resolveMediaSrc(
   src: string,
   product: string,
   version: string,
@@ -456,7 +462,7 @@ export function renderImageBlock(
   const caption = image?.alt ?? (block.imageData as any).caption;
   const productMarker = options.productId ?? options.product;
   const versionMarker = options.versionId ?? options.version;
-  const resolvedSrc = resolveImageSrc(src, productMarker, versionMarker);
+  const resolvedSrc = resolveMediaSrc(src, productMarker, versionMarker);
 
   return `<div class="${baseClasses}"><div class="${containerAlignment}" style="width: ${width};">${resolvedSrc ? `<img src="${escapeHtml(resolvedSrc)}" alt="${escapeHtml(alt)}" class="w-full h-auto">` : ""}${caption ? `<p class="${styles.text.caption} mt-2 text-center">${escapeHtml(caption)}</p>` : ""}</div></div>`;
 }
@@ -485,7 +491,7 @@ export function renderImageGridBlock(
   const imagesHtml = block.imageGridData.images
     .map((img, i) => {
       const resolvedSrc = img?.src
-        ? resolveImageSrc(img.src, productMarker, versionMarker)
+        ? resolveMediaSrc(img.src, productMarker, versionMarker)
         : "";
       if (!resolvedSrc) return "";
       const alt = img?.alt || `Image ${i + 1}`;
@@ -538,7 +544,7 @@ export function renderImageCarouselBlock(
   const slides = block.imageCarouselData.images
     .map((img, i) => {
       const resolvedSrc = img?.src
-        ? resolveImageSrc(img.src, productMarker, versionMarker)
+        ? resolveMediaSrc(img.src, productMarker, versionMarker)
         : "";
       if (!resolvedSrc) return "";
       const alt = img?.alt || `Image ${i + 1}`;
@@ -578,10 +584,10 @@ export function renderImageCompareBlock(
   const before = block.imageCompareData.beforeImage;
   const after = block.imageCompareData.afterImage;
   const beforeSrc = before?.src
-    ? resolveImageSrc(before.src, productMarker, versionMarker)
+    ? resolveMediaSrc(before.src, productMarker, versionMarker)
     : "";
   const afterSrc = after?.src
-    ? resolveImageSrc(after.src, productMarker, versionMarker)
+    ? resolveMediaSrc(after.src, productMarker, versionMarker)
     : "";
 
   if (!beforeSrc || !afterSrc) return "";
@@ -625,6 +631,84 @@ export function renderImageCompareBlock(
       ${percentage}
     </div>
   </div></div>`;
+}
+
+const detectAudioMimeType = (src?: string, fallback = "audio/mpeg") => {
+  if (!src) return fallback;
+  const lower = src.split("?")[0]?.toLowerCase() ?? "";
+  if (lower.endsWith(".mp3")) return "audio/mpeg";
+  if (lower.endsWith(".ogg")) return "audio/ogg";
+  if (lower.endsWith(".wav")) return "audio/wav";
+  if (lower.endsWith(".m4a")) return "audio/mp4";
+  if (lower.endsWith(".flac")) return "audio/flac";
+  if (lower.endsWith(".webm")) return "audio/webm";
+  return fallback;
+};
+
+export function renderAudioBlock(
+  block: ContentBlock,
+  styles: StyleTheme,
+  options: {
+    product: string;
+    version: string;
+    productId?: string;
+    versionId?: string;
+  },
+): string {
+  if (block.type !== "audio" || !block.audioData) return "";
+
+  const src = block.audioData.src ?? "";
+  const productMarker = options.productId ?? options.product;
+  const versionMarker = options.versionId ?? options.version;
+  const resolvedSrc = resolveMediaSrc(src, productMarker, versionMarker);
+  if (!resolvedSrc) return "";
+  const mimeType = block.audioData.mimeType || detectAudioMimeType(src);
+  const caption = block.audioData.caption?.trim() ?? "";
+
+  const containerClass =
+    `rounded-md p-3 ${styles.audioPlayer.container ?? ""}`.trim();
+
+  return `<div class="${SPACING_CLASSES.medium}">
+    <div class="${containerClass}">
+      <audio controls preload="metadata" class="w-full">
+        <source src="${escapeHtml(resolvedSrc)}" type="${escapeHtml(mimeType)}">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    ${caption ? `<p class="${styles.text.caption} text-center">${escapeHtml(caption)}</p>` : ""}
+  </div>`;
+}
+
+export function renderYoutubeBlock(
+  block: ContentBlock,
+  styles: StyleTheme,
+): string {
+  if (block.type !== "youtube" || !block.youtubeData) return "";
+
+  const extractedId = extractYouTubeId(block.youtubeData.youtubeVideoId);
+  const validId =
+    extractedId && isValidYouTubeId(extractedId) ? extractedId : null;
+  if (!validId) return "";
+
+  const alignKey = (block.youtubeData.alignment ??
+    "left") as keyof typeof ALIGNMENT_CLASSES;
+  const alignment =
+    ALIGNMENT_CLASSES[alignKey as keyof typeof ALIGNMENT_CLASSES] ??
+    ALIGNMENT_CLASSES.left;
+
+  const caption = block.youtubeData.caption?.trim() ?? "";
+  const url = `https://www.youtube.com/watch?v=${validId}`;
+  const linkText = caption || url;
+
+  return `<div class="${SPACING_CLASSES.medium} ${alignment.text}">
+    <div class="${alignment.container ?? ""}">
+      <a href="${escapeHtml(
+        url,
+      )}" class="${styles.hyperlink.link}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+        linkText,
+      )}</a>
+    </div>
+  </div>`;
 }
 
 export function renderChartBlock(
