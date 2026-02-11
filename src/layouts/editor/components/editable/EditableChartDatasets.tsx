@@ -7,6 +7,7 @@ import type {
 } from "./EditableChart.types";
 import type { DraftColorState } from "./useDraftColors";
 import { EditableChartColorField } from "./EditableChartColorField";
+import NumericInput from "../../../common/components/NumericInput";
 
 interface EditableChartDatasetsProps {
   chartData: EditableChartData;
@@ -25,7 +26,7 @@ interface EditableChartDatasetsProps {
     datasetIndex: number,
     pointIndex: number,
     key: "x" | "y" | "r",
-    value: number,
+    value: number | undefined,
   ) => void;
   onAddPoint: (datasetIndex: number) => void;
   onRemovePoint: (datasetIndex: number, pointIndex: number) => void;
@@ -149,14 +150,12 @@ export function EditableChartDatasets({
                       <span className="truncate">
                         {label || `Label ${valueIdx + 1}`}
                       </span>
-                      <input
-                        type="number"
+                      <NumericInput
                         className={`${styles.input} px-2 py-1`}
-                        value={ds.data?.[valueIdx] ?? 0}
-                        onChange={(e) => {
-                          const val = Number(e.target.value);
+                        value={ds.data?.[valueIdx] as number | undefined}
+                        onChange={(nextValue) => {
                           const nextData = [...(ds.data ?? [])];
-                          nextData[valueIdx] = Number.isFinite(val) ? val : 0;
+                          nextData[valueIdx] = nextValue;
                           onDatasetChange(dsIndex, { data: nextData });
                         }}
                       />
@@ -213,19 +212,11 @@ export function EditableChartDatasets({
                           <span className={`${styles.text.alternative}`}>
                             X
                           </span>
-                          <input
-                            type="number"
+                          <NumericInput
                             className={`${styles.input} px-2 py-1 w-24`}
-                            value={point?.x ?? 0}
-                            onChange={(e) =>
-                              onPointChange(
-                                dsIndex,
-                                pointIdx,
-                                "x",
-                                Number.isFinite(Number(e.target.value))
-                                  ? Number(e.target.value)
-                                  : 0,
-                              )
+                            value={point?.x as number | undefined}
+                            onChange={(nextValue) =>
+                              onPointChange(dsIndex, pointIdx, "x", nextValue)
                             }
                           />
                         </label>
@@ -233,19 +224,11 @@ export function EditableChartDatasets({
                           <span className={`${styles.text.alternative}`}>
                             Y
                           </span>
-                          <input
-                            type="number"
+                          <NumericInput
                             className={`${styles.input} px-2 py-1 w-24`}
-                            value={point?.y ?? 0}
-                            onChange={(e) =>
-                              onPointChange(
-                                dsIndex,
-                                pointIdx,
-                                "y",
-                                Number.isFinite(Number(e.target.value))
-                                  ? Number(e.target.value)
-                                  : 0,
-                              )
+                            value={point?.y as number | undefined}
+                            onChange={(nextValue) =>
+                              onPointChange(dsIndex, pointIdx, "y", nextValue)
                             }
                           />
                         </label>
@@ -254,18 +237,15 @@ export function EditableChartDatasets({
                             <span className={`${styles.text.alternative}`}>
                               R
                             </span>
-                            <input
-                              type="number"
+                            <NumericInput
                               className={`${styles.input} px-2 py-1 w-24`}
-                              value={point?.r ?? 10}
-                              onChange={(e) =>
+                              value={point?.r as number | undefined}
+                              onChange={(nextValue) =>
                                 onPointChange(
                                   dsIndex,
                                   pointIdx,
                                   "r",
-                                  Number.isFinite(Number(e.target.value))
-                                    ? Number(e.target.value)
-                                    : 0,
+                                  nextValue,
                                 )
                               }
                             />

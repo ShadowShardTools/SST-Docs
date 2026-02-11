@@ -3,6 +3,7 @@ import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/Imag
 import { ArrowLeftRight, RectangleEllipsis } from "lucide-react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 import Button from "../../../common/components/Button";
+import NumericInput from "../../../common/components/NumericInput";
 
 interface Props {
   data: any;
@@ -81,18 +82,15 @@ export function ImageCarouselToolbarControls({
       </Button>
       <label className="flex items-center gap-1">
         <span>Scale</span>
-        <input
-          type="number"
+        <NumericInput
           step={0.01}
           min={0.01}
           max={1}
           className={`${styles.input} px-2 py-1 w-20`}
-          value={carouselData.scale ?? 1}
-          onChange={(e) =>
-            update({
-              scale: Math.min(Number.parseFloat(e.target.value) || 1, 1),
-            })
-          }
+          value={carouselData.scale}
+          clampOnBlur
+          clampMin={false}
+          onChange={(scale) => update({ scale })}
         />
       </label>
     </div>

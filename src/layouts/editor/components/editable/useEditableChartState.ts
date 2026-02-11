@@ -47,7 +47,7 @@ export const useEditableChartState = (
     datasetIndex: number,
     pointIndex: number,
     key: "x" | "y" | "r",
-    value: number,
+    value: number | undefined,
   ) => {
     updateDataset(datasetIndex, {
       data: ((chartData.datasets?.[datasetIndex]?.data as any[]) ?? []).map(
