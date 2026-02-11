@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
 import AlignmentToggleButton from "./AlignmentToggleButton";
+import NumericInput from "../../../common/components/NumericInput";
 
 interface Props {
   data: any;
@@ -33,7 +34,7 @@ export function ChartToolbarControls({ data, onChange, styles }: Props) {
       chartData: { ...(prev as any).chartData, type },
     }));
 
-  const updateScale = (scale: number) =>
+  const updateScale = (scale: number | undefined) =>
     onChange((prev) => ({
       ...prev,
       chartData: { ...(prev as any).chartData, scale },
@@ -101,16 +102,15 @@ export function ChartToolbarControls({ data, onChange, styles }: Props) {
 
       <label className="flex items-center gap-1">
         <span>Scale</span>
-        <input
-          type="number"
+        <NumericInput
           step={0.01}
           min={0.01}
           max={1}
           className={`${styles.input} px-2 py-1 w-20`}
-          value={chartData.scale ?? 1}
-          onChange={(e) =>
-            updateScale(Math.min(Number.parseFloat(e.target.value) || 1, 1))
-          }
+          value={chartData.scale}
+          clampOnBlur
+          clampMin={false}
+          onChange={updateScale}
         />
       </label>
     </div>

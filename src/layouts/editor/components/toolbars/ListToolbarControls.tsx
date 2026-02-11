@@ -2,6 +2,7 @@ import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
 import { ChartNoAxesGantt, List, ListOrdered } from "lucide-react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 import Button from "../../../common/components/Button";
+import NumericInput from "../../../common/components/NumericInput";
 
 interface Props {
   data: any;
@@ -70,17 +71,16 @@ export function ListToolbarControls({ data, onChange, styles }: Props) {
       {listType === "ol" && (
         <label className="flex items-center gap-1">
           <span>Start</span>
-          <input
-            type="number"
+          <NumericInput
             min={1}
             className={`${styles.input} px-2 py-1 w-14`}
-            value={data.startNumber ?? 1}
-            onChange={(e) =>
+            value={data.startNumber}
+            onChange={(nextValue) =>
               onChange((prev) => ({
                 ...prev,
                 listData: {
                   ...(prev as any).listData,
-                  startNumber: Number(e.target.value) || 1,
+                  startNumber: nextValue,
                 },
               }))
             }
