@@ -645,9 +645,12 @@ async function traverseTree(
   const { tree, usedDocIds } = buildTree(rawMap, allDocs, { logger });
 
   const indexCategoryIds: string[] = node.categories || [];
-  const categoryNodes = tree.filter((category: any) =>
-    indexCategoryIds.includes(category.id),
+  const treeById = new Map(
+    tree.map((category: any) => [category.id, category]),
   );
+  const categoryNodes = indexCategoryIds
+    .map((id) => treeById.get(id))
+    .filter((category): category is any => Boolean(category));
 
   usedDocIds.forEach((id: string) => {
     seenItems.add(id);
