@@ -125,6 +125,7 @@ export function MediaPathInput({
     const targetPath = publicRoot
       ? `/${publicRoot}/${normalizedDir}/${file.name}`
       : `/${normalizedDir}/${file.name}`;
+    const uploadPath = `${normalizedDir}/${file.name}`;
     const lowerName = file.name.toLowerCase();
     let existing = false;
     try {
@@ -146,7 +147,7 @@ export function MediaPathInput({
 
     setUploading(true);
     try {
-      await upload(targetPath, file);
+      await upload(uploadPath, file);
       setValue(targetPath);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
