@@ -202,7 +202,7 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   // keep hook call order stable; pass current content (empty array if none)
   useHashScroll(selectedContent);
 
-  const currentPath = location.pathname.replace(/^\//, "");
+  const currentPath = `${location.pathname}${location.search}`;
 
   const breadcrumbSegments = useMemo<BreadcrumbSegment[]>(() => {
     if (!selected) return [];
