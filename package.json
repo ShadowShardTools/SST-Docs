@@ -49,7 +49,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,md}\"",
     "prebuild": "npm run format",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "node scripts/deploy-gh-pages.mjs"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
