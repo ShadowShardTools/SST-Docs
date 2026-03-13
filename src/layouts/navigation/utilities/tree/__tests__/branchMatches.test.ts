@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { branchMatches } from "../branchMatches";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 describe("branchMatches", () => {
   const mockDoc: DocItem = {

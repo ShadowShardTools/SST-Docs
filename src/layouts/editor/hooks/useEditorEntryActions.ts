@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 import isCategory from "../../render/utilities/isCategory";
 import { findDocTrail } from "../utilities/editorTree";
 import { resolveVersionBasePath } from "../utilities/editorPaths";

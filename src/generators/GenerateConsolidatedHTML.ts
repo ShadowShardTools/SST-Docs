@@ -10,13 +10,10 @@ import {
   resolveDataPath,
   type DocItem,
   type HtmlGeneratorSettings,
-} from "@shadow-shard-tools/docs-core";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import { defaultTheme } from "@shadow-shard-tools/docs-core/themes";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types";
+} from "#core";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import { defaultTheme } from "#core/themes";
+import type { StyleTheme } from "#core/types";
 import { compile } from "tailwindcss";
 import { generateConsolidatedHTML } from "./htmlGenerator/index.js";
 
@@ -74,13 +71,7 @@ const TEMPLATE_FILES = [
   ),
 ];
 
-const DOCS_CORE_GLOB = path.join(
-  appRoot.path,
-  "node_modules",
-  "@shadow-shard-tools",
-  "docs-core",
-  "dist",
-);
+const CORE_SOURCE_ROOT = path.join(appRoot.path, "src", "core");
 const STATIC_TEMPLATE_FILES = [
   path.join(
     appRoot.path,
@@ -210,8 +201,8 @@ async function collectTailwindCandidates(
       .forEach(addClasses);
   }
 
-  if (await pathExists(DOCS_CORE_GLOB)) {
-    const stack = [DOCS_CORE_GLOB];
+  if (await pathExists(CORE_SOURCE_ROOT)) {
+    const stack = [CORE_SOURCE_ROOT];
     while (stack.length) {
       const current = stack.pop();
       if (!current) continue;
@@ -222,7 +213,12 @@ async function collectTailwindCandidates(
           stack.push(fullPath);
           continue;
         }
-        if (!fullPath.endsWith(".js") && !fullPath.endsWith(".mjs")) {
+        if (
+          !fullPath.endsWith(".js") &&
+          !fullPath.endsWith(".mjs") &&
+          !fullPath.endsWith(".ts") &&
+          !fullPath.endsWith(".tsx")
+        ) {
           continue;
         }
         const source = await fs.readFile(fullPath, "utf8");

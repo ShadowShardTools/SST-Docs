@@ -1,7 +1,7 @@
 import React, { Suspense, memo } from "react";
 import { resolveBlockRenderer } from "../../blocks/blockRendererRegistry";
 import { LoadingSpinner } from "../../dialog/components";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 
 interface Props {
   styles: StyleTheme;

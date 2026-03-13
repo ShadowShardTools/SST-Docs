@@ -1,11 +1,7 @@
 import React from "react";
 import { FileText, Folder } from "lucide-react";
 import { highlightSearchTerm } from "../utilities";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 const isCategory = (item: DocItem | Category): item is Category =>
   "docs" in item || "children" in item;

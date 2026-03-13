@@ -3,7 +3,7 @@ import branchMatches from "./branchMatches";
 import createCategoryKey from "./createCategoryKey";
 import createDocumentKey from "./createDocumentKey";
 import testString from "../string/testString";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 export const buildEntries = (
   tree: Category[],

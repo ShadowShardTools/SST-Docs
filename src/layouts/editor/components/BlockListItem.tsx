@@ -1,4 +1,4 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "#core";
 import type { DragEvent } from "react";
 import { GripVertical, Wrench } from "lucide-react";
 import Button from "../../common/components/Button";

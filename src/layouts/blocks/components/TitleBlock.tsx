@@ -1,12 +1,9 @@
 import React from "react";
 import { LinkIcon } from "lucide-react";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import { slugify } from "@shadow-shard-tools/docs-core/utilities/string/slugify";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { TitleData } from "@shadow-shard-tools/docs-core/types/TitleData";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import { slugify } from "#core/utilities/string/slugify";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { TitleData } from "#core/types/TitleData";
 
 interface Props {
   index: number;

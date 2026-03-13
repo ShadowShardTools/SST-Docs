@@ -1,8 +1,4 @@
-import type {
-  Product,
-  StyleTheme,
-  Version,
-} from "@shadow-shard-tools/docs-core";
+import type { Product, StyleTheme, Version } from "#core";
 import {
   SearchBar,
   VersionSelector,

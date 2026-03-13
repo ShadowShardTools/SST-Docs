@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { DocItem } from "#core";
 import {
   safeParseJson,
   sanitizeContentBlocks,

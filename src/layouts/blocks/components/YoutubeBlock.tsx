@@ -1,13 +1,10 @@
 import React from "react";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import { extractYouTubeId } from "@shadow-shard-tools/docs-core/utilities/string/extractYouTubeId";
-import { isValidYouTubeId } from "@shadow-shard-tools/docs-core/utilities/validation/isValidYouTubeId";
-import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { YoutubeData } from "@shadow-shard-tools/docs-core/types/YoutubeData";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import { extractYouTubeId } from "#core/utilities/string/extractYouTubeId";
+import { isValidYouTubeId } from "#core/utilities/validation/isValidYouTubeId";
+import { validateScale } from "#core/utilities/validation/validateScale";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { YoutubeData } from "#core/types/YoutubeData";
 
 interface Props {
   youtubeData: YoutubeData;

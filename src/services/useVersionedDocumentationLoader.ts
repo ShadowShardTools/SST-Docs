@@ -1,10 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type {
-  Category,
-  DocItem,
-  Product,
-  Version,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, Product, Version } from "#core";
 import { documentationLoader } from "./documentationLoader";
 
 export type LoadState = "idle" | "loading" | "error";

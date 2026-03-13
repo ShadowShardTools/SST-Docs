@@ -1,5 +1,5 @@
 import { Plus, Trash2 } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import Button from "../../../common/components/Button";
 
 interface EditableChartLabelsProps {

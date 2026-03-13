@@ -1,10 +1,6 @@
 import React from "react";
 import { FileText, Folder } from "lucide-react";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 interface Props {
   styles: StyleTheme;

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import isCategory from "../../render/utilities/isCategory";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 export const useEditorDocNavigation = (
   items: DocItem[],

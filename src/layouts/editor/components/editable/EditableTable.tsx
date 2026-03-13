@@ -1,8 +1,4 @@
-import type {
-  StyleTheme,
-  TableCell,
-  TableData,
-} from "@shadow-shard-tools/docs-core";
+import type { StyleTheme, TableCell, TableData } from "#core";
 import { Minus, Plus } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import Button from "../../../common/components/Button";

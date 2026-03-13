@@ -1,4 +1,4 @@
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import type { DraftColorState } from "./useDraftColors";
 
 interface EditableChartColorFieldProps {

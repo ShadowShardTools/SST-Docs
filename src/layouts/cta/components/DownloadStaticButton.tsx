@@ -1,12 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Download } from "lucide-react";
-import JSZip from "jszip";
-import { resolvePublicDataPath } from "@shadow-shard-tools/docs-core/configs/sstDocsConfigShared";
-import type {
-  StyleTheme,
-  Version,
-  Product,
-} from "@shadow-shard-tools/docs-core";
+import { resolvePublicDataPath } from "#core/configs/sstDocsConfigShared";
+import type { StyleTheme, Version, Product } from "#core";
 import { clientConfig } from "../../../application/config/clientConfig";
 import Button from "../../common/components/Button";
 
@@ -145,6 +140,7 @@ export const DownloadStaticButton: React.FC<Props> = ({
           .filter(Boolean)
           .pop() ?? "static-styles";
 
+      const { default: JSZip } = await import("jszip");
       const zip = new JSZip();
 
       const addFile = async (zipPath: string, url: string) => {

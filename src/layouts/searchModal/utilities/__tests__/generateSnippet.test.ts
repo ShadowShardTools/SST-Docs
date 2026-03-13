@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { generateSnippet } from "../generateSnippet";
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { DocItem } from "#core";
 
 describe("generateSnippet", () => {
   const mockDoc: DocItem = {

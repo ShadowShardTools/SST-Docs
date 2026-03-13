@@ -13,11 +13,7 @@ import {
 import Branch from "./Branch";
 import DocRow from "./DocRow";
 import NavigationHints from "./NavigationHints";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 export interface Props {
   styles: StyleTheme;

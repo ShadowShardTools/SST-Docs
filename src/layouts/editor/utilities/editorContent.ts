@@ -1,4 +1,4 @@
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { DocItem } from "#core";
 import { sanitizeRichText } from "../../common/utils/richText";
 
 export const sanitizeContentBlocks = (content: DocItem["content"]) =>

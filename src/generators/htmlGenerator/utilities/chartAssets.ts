@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve, relative } from "node:path";
 
-import type { ChartData, Logger } from "@shadow-shard-tools/docs-core";
+import type { ChartData, Logger } from "#core";
 import {
   Chart as ChartJS,
   BarElement,
@@ -21,7 +21,7 @@ import {
 import type { ChartConfiguration, ChartType, DefaultDataPoint } from "chart.js";
 import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { StyleTheme } from "#core/types/StyleTheme";
 
 ChartJS.register(
   BarElement,

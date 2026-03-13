@@ -1,4 +1,4 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "#core";
 import { Columns2, LayoutGrid, Rows2, Table } from "lucide-react";
 import Dropdown from "../../../common/components/Dropdown";
 

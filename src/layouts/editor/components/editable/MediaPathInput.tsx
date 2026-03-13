@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { Image as ImageIcon, Music2 } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import PathInput from "../../../common/components/PathInput";
 import { list, remove, upload } from "../../api/client";
 import { clientConfig } from "../../../../application/config/clientConfig";
-import { resolvePublicDataPath } from "@shadow-shard-tools/docs-core/configs";
+import { resolvePublicDataPath } from "#core/configs";
 
 interface MediaPathInputProps {
   styles: StyleTheme;

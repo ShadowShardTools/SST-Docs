@@ -1,6 +1,6 @@
 import { Suspense, lazy, useMemo } from "react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { ChartData } from "#core/types/ChartData";
 import { EditableChartLabels } from "./EditableChartLabels";
 import { EditableChartDatasets } from "./EditableChartDatasets";
 import { useEditableChartState } from "./useEditableChartState";

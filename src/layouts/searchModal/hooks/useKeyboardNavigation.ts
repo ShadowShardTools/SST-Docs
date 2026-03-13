@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import type { SearchMatch } from "../types";
 import { KEYBOARD_SHORTCUTS } from "../constants";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 export const useKeyboardNavigation = (
   isOpen: boolean,

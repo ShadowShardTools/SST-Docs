@@ -16,8 +16,8 @@ export const useKaTeX = (expression: string) => {
       return;
     }
 
-    import("katex")
-      .then((katex) => {
+    Promise.all([import("katex"), import("katex/dist/katex.min.css")])
+      .then(([katex]) => {
         if (isMounted) {
           try {
             const rendered = katex.renderToString(expression.trim(), {

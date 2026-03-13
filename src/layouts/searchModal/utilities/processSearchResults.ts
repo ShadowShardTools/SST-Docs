@@ -1,9 +1,4 @@
-import type {
-  Category,
-  CodeData,
-  DocItem,
-  TableData,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, CodeData, DocItem, TableData } from "#core";
 import type { SearchMatch } from "../types";
 import { itemMatchesSearchTerm } from "./itemMatchesSearchTerm";
 

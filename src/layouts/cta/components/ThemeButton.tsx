@@ -1,7 +1,7 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useCurrentTheme } from "../../../application/hooks";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import Button from "../../common/components/Button";
 
 interface Props {

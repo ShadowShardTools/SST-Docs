@@ -1,5 +1,5 @@
 import React from "react";
-import type { DividerData, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { DividerData, StyleTheme } from "#core";
 
 interface Props {
   index: number;

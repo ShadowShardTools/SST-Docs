@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import YoutubeBlock from "../../../blocks/components/YoutubeBlock";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { YoutubeData } from "@shadow-shard-tools/docs-core/types/YoutubeData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { YoutubeData } from "#core/types/YoutubeData";
 
 interface EditableYoutubeProps {
   data?: YoutubeData;

@@ -8,11 +8,7 @@ import {
   GithubButtonLink,
 } from "../../cta/components";
 import Button from "../../common/components/Button";
-import type {
-  Product,
-  StyleTheme,
-  Version,
-} from "@shadow-shard-tools/docs-core";
+import type { Product, StyleTheme, Version } from "#core";
 
 interface EditorHeaderProps {
   styles: StyleTheme;

@@ -1,6 +1,6 @@
 import { AlertCircle } from "lucide-react";
 import { memo } from "react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 
 interface ErrorMessageProps {
   message: string;

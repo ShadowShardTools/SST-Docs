@@ -1,4 +1,4 @@
-import { SPACING_CLASSES } from "@shadow-shard-tools/docs-core";
+import { SPACING_CLASSES } from "#core";
 import { LinkIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 

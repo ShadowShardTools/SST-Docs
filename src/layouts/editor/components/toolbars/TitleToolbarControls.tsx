@@ -1,4 +1,4 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "#core";
 import { Heading1, Heading2, Heading3, Link2, Link2Off } from "lucide-react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 import Button from "../../../common/components/Button";

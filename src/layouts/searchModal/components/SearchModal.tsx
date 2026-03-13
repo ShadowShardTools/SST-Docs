@@ -17,11 +17,7 @@ import {
 } from "../hooks";
 import SearchModalFooter from "./SearchModalFooter";
 import SearchResultItem from "./SearchResultItem";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 interface Props {
   styles: StyleTheme;

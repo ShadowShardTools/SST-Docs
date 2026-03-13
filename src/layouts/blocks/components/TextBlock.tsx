@@ -1,10 +1,7 @@
 import React from "react";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
-import type { TextData } from "@shadow-shard-tools/docs-core";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import type { StyleTheme } from "#core";
+import type { TextData } from "#core";
 import { sanitizeRichText } from "../../common/utils/richText";
 
 interface Props {

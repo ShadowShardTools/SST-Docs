@@ -1,4 +1,4 @@
-import type { CodeData, DocItem } from "@shadow-shard-tools/docs-core";
+import type { CodeData, DocItem } from "#core";
 
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, "");
 

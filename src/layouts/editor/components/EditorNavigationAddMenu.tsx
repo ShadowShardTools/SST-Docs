@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FileText, FolderPlus, Plus } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 
 interface EditorNavigationAddMenuProps {
   label: string;

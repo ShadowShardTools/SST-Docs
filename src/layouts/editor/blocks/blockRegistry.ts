@@ -1,4 +1,4 @@
-import type { Content, MessageBoxData } from "@shadow-shard-tools/docs-core";
+import type { Content, MessageBoxData } from "#core";
 
 export type BlockType = Content["type"];
 

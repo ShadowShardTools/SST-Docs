@@ -1,4 +1,4 @@
-import type { TableCell, TableData } from "@shadow-shard-tools/docs-core";
+import type { TableCell, TableData } from "#core";
 
 export const normalizeTableData = (incoming?: TableData): TableData => {
   if (!incoming?.data?.length) {

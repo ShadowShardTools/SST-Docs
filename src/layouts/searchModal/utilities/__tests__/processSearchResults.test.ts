@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { processSearchResults } from "../processSearchResults";
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { DocItem } from "#core";
 
 describe("processSearchResults", () => {
   const mockDoc: DocItem = {

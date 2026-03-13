@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import {
   BarChart2,
   Code,

@@ -6,7 +6,6 @@ const config: Config = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@shadow-shard-tools/docs-core/dist/**/*.{js,ts,jsx,tsx}",
   ],
 };
 

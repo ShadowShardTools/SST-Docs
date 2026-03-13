@@ -1,4 +1,4 @@
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 export interface SearchMatch {
   item: DocItem | Category;

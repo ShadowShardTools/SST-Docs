@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
-import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
-import { processListItems } from "@shadow-shard-tools/docs-core/utilities/string/processListItems";
-import type { ListData } from "@shadow-shard-tools/docs-core/types/ListData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { ALIGNMENT_CLASSES } from "#core";
+import { processListItems } from "#core/utilities/string/processListItems";
+import type { ListData } from "#core/types/ListData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import { sanitizeRichText } from "../../common/utils/richText";
 
 interface Props {

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { Product, Version } from "@shadow-shard-tools/docs-core";
+import type { Product, Version } from "#core";
 import type {
   ListFn,
   NavigateFn,

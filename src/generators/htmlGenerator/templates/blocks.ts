@@ -1,36 +1,27 @@
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import { processListItems } from "@shadow-shard-tools/docs-core/utilities/string/processListItems";
-import { slugify } from "@shadow-shard-tools/docs-core/utilities/string/slugify";
-import { CODE_LANGUAGE_CONFIG } from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { TitleData } from "@shadow-shard-tools/docs-core/types/TitleData";
-import type { TextData } from "@shadow-shard-tools/docs-core/types/TextData";
-import type { ListData } from "@shadow-shard-tools/docs-core/types/ListData";
-import type {
-  TableData,
-  TableCell,
-} from "@shadow-shard-tools/docs-core/types/TableData";
-import type { MessageBoxData } from "@shadow-shard-tools/docs-core/types/MessageBoxData";
-import type { DividerData } from "@shadow-shard-tools/docs-core/types/DividerData";
-import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
-import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
-import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
-import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
-import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
-import type { YoutubeData } from "@shadow-shard-tools/docs-core/types/YoutubeData";
-import type {
-  CodeData,
-  CodeSection,
-} from "@shadow-shard-tools/docs-core/types/CodeData";
-import type { MathData } from "@shadow-shard-tools/docs-core/types/MathData";
-import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
-import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
-import { extractYouTubeId } from "@shadow-shard-tools/docs-core/utilities/string/extractYouTubeId";
-import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
-import { isValidYouTubeId } from "@shadow-shard-tools/docs-core/utilities/validation/isValidYouTubeId";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import { processListItems } from "#core/utilities/string/processListItems";
+import { slugify } from "#core/utilities/string/slugify";
+import { CODE_LANGUAGE_CONFIG } from "#core/configs/codeLanguagesConfig";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { TitleData } from "#core/types/TitleData";
+import type { TextData } from "#core/types/TextData";
+import type { ListData } from "#core/types/ListData";
+import type { TableData, TableCell } from "#core/types/TableData";
+import type { MessageBoxData } from "#core/types/MessageBoxData";
+import type { DividerData } from "#core/types/DividerData";
+import type { ImageData } from "#core/types/ImageData";
+import type { ImageCarouselData } from "#core/types/ImageCarouselData";
+import type { ImageCompareData } from "#core/types/ImageCompareData";
+import type { ImageGridData } from "#core/types/ImageGridData";
+import type { AudioData } from "#core/types/AudioData";
+import type { YoutubeData } from "#core/types/YoutubeData";
+import type { CodeData, CodeSection } from "#core/types/CodeData";
+import type { MathData } from "#core/types/MathData";
+import type { ChartData } from "#core/types/ChartData";
+import { getResponsiveWidth } from "#core/utilities/dom/getResponsiveWidth";
+import { extractYouTubeId } from "#core/utilities/string/extractYouTubeId";
+import { validateScale } from "#core/utilities/validation/validateScale";
+import { isValidYouTubeId } from "#core/utilities/validation/isValidYouTubeId";
 import { sanitizeRichTextStatic, escapeHtml } from "../utilities/sanitize.js";
 import { renderToString as renderKatexToString } from "katex";
 import Prism from "prismjs";

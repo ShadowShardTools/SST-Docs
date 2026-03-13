@@ -1,4 +1,4 @@
-import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import type { ChartData } from "#core/types/ChartData";
 
 export type EditableChartDataset = {
   label: string;

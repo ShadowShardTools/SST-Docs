@@ -1,11 +1,8 @@
 import React, { useMemo } from "react";
 import { useKaTeX } from "../hooks";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import type { MathData } from "@shadow-shard-tools/docs-core/types/MathData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import type { MathData } from "#core/types/MathData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 
 interface Props {
   index: number;

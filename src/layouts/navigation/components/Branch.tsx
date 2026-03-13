@@ -1,11 +1,7 @@
 import React from "react";
 import CategoryRow from "./CategoryRow";
 import DocRow from "./DocRow";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 export interface Props {
   node: Category;

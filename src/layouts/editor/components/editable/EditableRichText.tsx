@@ -1,4 +1,4 @@
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import type { ClipboardEvent, CSSProperties, KeyboardEvent } from "react";
 import { Bold, Italic, Link2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";

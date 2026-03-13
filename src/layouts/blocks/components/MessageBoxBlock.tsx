@@ -6,7 +6,7 @@ import {
   CheckCircle,
   HelpCircle,
 } from "lucide-react";
-import type { MessageBoxData, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { MessageBoxData, StyleTheme } from "#core";
 import { sanitizeRichText } from "../../common/utils/richText";
 
 interface Props {

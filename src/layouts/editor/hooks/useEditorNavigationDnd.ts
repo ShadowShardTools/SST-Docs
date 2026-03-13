@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useReducer } from "react";
 import type { DragEvent } from "react";
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 export type DragItem =
   | { type: "category"; id: string; parentId: string | null }

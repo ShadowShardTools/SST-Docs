@@ -1,8 +1,4 @@
-import type {
-  Category,
-  CodeData,
-  DocItem,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, CodeData, DocItem } from "#core";
 
 const codeBlockMatches = (
   codeData: CodeData | null | undefined,
