@@ -4,11 +4,11 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import appRoot from "app-root-path";
 import fg from "fast-glob";
-import { createLogger, resolveDataPath } from "@shadow-shard-tools/docs-core";
+import { createLogger, resolveDataPath } from "#core";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
-} from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
+} from "#core/configs/codeLanguagesConfig";
 
 const logger = createLogger("generate-prism-languages");
 const projectRoot = appRoot.path;

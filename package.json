@@ -3,6 +3,28 @@
   "version": "0.1.2",
   "private": true,
   "type": "module",
+  "imports": {
+    "#core": {
+      "browser": "./src/core/index.browser.ts",
+      "default": "./src/core/index.ts"
+    },
+    "#core/configs": {
+      "browser": "./src/core/configs/index.browser.ts",
+      "default": "./src/core/configs/index.ts"
+    },
+    "#core/constants": "./src/core/constants/index.ts",
+    "#core/data": {
+      "browser": "./src/core/data/index.browser.ts",
+      "default": "./src/core/data/index.ts"
+    },
+    "#core/themes": "./src/core/themes/index.ts",
+    "#core/types": "./src/core/types/index.ts",
+    "#core/utilities": {
+      "browser": "./src/core/utilities/index.browser.ts",
+      "default": "./src/core/utilities/index.ts"
+    },
+    "#core/*": "./src/core/*.ts"
+  },
   "homepage": "https://shadowshardtools.github.io/SST-Docs/",
   "license": "MIT",
   "repository": "github:ShadowShardTools/SST-Docs",
@@ -31,7 +53,6 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "@shadow-shard-tools/docs-core": "^1.0.1",
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.19",
@@ -50,7 +71,8 @@
     "react-router-dom": "^7.11.0",
     "react-window": "^1.8.9",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",

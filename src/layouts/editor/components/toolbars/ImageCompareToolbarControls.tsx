@@ -1,5 +1,5 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
+import type { Content, StyleTheme } from "#core";
+import type { ImageCompareData } from "#core/types/ImageCompareData";
 import { Columns2, SlidersHorizontal, Percent } from "lucide-react";
 import { useEffect, useState } from "react";
 import AlignmentToggleButton from "./AlignmentToggleButton";

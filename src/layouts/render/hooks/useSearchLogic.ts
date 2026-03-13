@@ -1,4 +1,4 @@
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { itemMatchesSearchTerm } from "../../searchModal/utilities/itemMatchesSearchTerm";
 

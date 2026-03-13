@@ -1,10 +1,6 @@
 import React from "react";
 import Navigation from "./Navigation";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 export interface Props {
   styles: StyleTheme;

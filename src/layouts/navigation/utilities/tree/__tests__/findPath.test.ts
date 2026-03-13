@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { findPath } from "../findPath";
-import type { Category } from "@shadow-shard-tools/docs-core";
+import type { Category } from "#core";
 
 describe("findPath", () => {
   const mockTree: Category[] = [

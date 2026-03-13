@@ -1,4 +1,4 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "#core";
 import { useMemo, useState } from "react";
 import { DEFAULT_BLOCKS, type BlockType } from "../blocks";
 import { BlockInsertControl } from "./BlockInsertControl";

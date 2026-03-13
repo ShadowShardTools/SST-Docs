@@ -14,3 +14,5 @@ declare module "@splidejs/react-splide" {
   export const SplideSlide: React.FC<SplideSlideProps>;
   export const SplideTrack: React.FC<SplideTrackProps>;
 }
+
+declare module "@splidejs/react-splide/css";

@@ -1,9 +1,5 @@
 import type { Dispatch, DragEvent, SetStateAction } from "react";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem, StyleTheme } from "#core";
 import { ChevronDown, ChevronRight, Folder } from "lucide-react";
 import { rowClasses } from "../../navigation/utilities";
 import type { DragItem } from "../hooks/useEditorNavigationDnd";

@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { resolvePublicDataPath } from "@shadow-shard-tools/docs-core/configs/sstDocsConfigShared";
-import { loadVersionDataFromProvider } from "@shadow-shard-tools/docs-core/data";
+import { resolvePublicDataPath } from "#core/configs/sstDocsConfigShared";
+import { loadVersionDataFromProvider } from "#core/data";
 import * as client from "../../layouts/editor/api/client";
 
 // Mock dependencies
-vi.mock("@shadow-shard-tools/docs-core/configs/sstDocsConfigShared", () => ({
+vi.mock("#core/configs/sstDocsConfigShared", () => ({
   resolvePublicDataPath: vi.fn(),
 }));
 
@@ -19,7 +19,7 @@ vi.mock("../../layouts/editor/api/client", () => ({
 }));
 
 // Consolidated mock for Docs-Core modules
-vi.mock("@shadow-shard-tools/docs-core/data", () => {
+vi.mock("#core/data", () => {
   const mockStorage = {
     get: vi.fn(),
     set: vi.fn(),
@@ -38,7 +38,7 @@ vi.mock("@shadow-shard-tools/docs-core/data", () => {
   };
 });
 
-vi.mock("@shadow-shard-tools/docs-core/utilities", () => ({
+vi.mock("#core/utilities", () => ({
   WorkerHandler: vi.fn().mockImplementation(function () {
     return {
       buildTree: vi.fn(),

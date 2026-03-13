@@ -1,4 +1,4 @@
-import type { Category, DocItem } from "@shadow-shard-tools/docs-core";
+import type { Category, DocItem } from "#core";
 
 export const isCategory = (entry: DocItem | Category): entry is Category => {
   return "docs" in entry || "children" in entry;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { searchInDocItem } from "../searchInDocItem";
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { DocItem } from "#core";
 
 describe("searchInDocItem", () => {
   const baseDoc: DocItem = {

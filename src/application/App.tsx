@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import {
   DEFAULT_THEME_PRESET,
   getThemePreset,
-} from "@shadow-shard-tools/docs-core/themes/themeRegistry";
+} from "#core/themes/themeRegistry";
 import { useCurrentTheme } from "./hooks";
 import { EditorShell } from "../layouts/editor/EditorShell";
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import AudioBlock from "../../../blocks/components/AudioBlock";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { AudioData } from "#core/types/AudioData";
 import MediaPathInput from "./MediaPathInput";
 
 interface EditableAudioProps {

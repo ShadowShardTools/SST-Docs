@@ -1,5 +1,5 @@
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
-import { SPACING_CLASSES } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
+import { SPACING_CLASSES } from "#core";
 import EditableRichText from "./EditableRichText";
 
 interface EditableTextProps {

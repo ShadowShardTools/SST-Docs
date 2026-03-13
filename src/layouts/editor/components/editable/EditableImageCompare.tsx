@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useMemo, useRef } from "react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
-import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { ImageCompareData } from "#core/types/ImageCompareData";
+import type { BaseImage } from "#core/types/BaseImage";
 import MediaPathInput from "./MediaPathInput";
 import { LoadingSpinner } from "../../../dialog/components";
 

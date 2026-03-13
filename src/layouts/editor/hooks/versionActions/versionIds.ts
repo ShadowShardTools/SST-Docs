@@ -1,4 +1,4 @@
-import type { Product, Version } from "@shadow-shard-tools/docs-core";
+import type { Product, Version } from "#core";
 import { nextIncrementTitle } from "../../utilities/editorIds";
 
 const generateRandomSuffix = (fallbackLength: number) => {

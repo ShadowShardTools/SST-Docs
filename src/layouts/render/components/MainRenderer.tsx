@@ -1,4 +1,11 @@
-import { useCallback, useMemo, useState, Suspense, useEffect } from "react";
+import {
+  useCallback,
+  useMemo,
+  useState,
+  Suspense,
+  useEffect,
+  lazy,
+} from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useDocumentationData } from "../../../services";
 import {
@@ -16,17 +23,16 @@ import { Header } from "../../header/components";
 import ContentBlockRenderer from "./ContentBlockRenderer";
 import type { BreadcrumbSegment } from "../types/BreadcrumbSegment";
 import DocumentHeader from "./DocumentHeader";
-import type {
-  Category,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
-import { SearchModal } from "../../searchModal/components";
+import type { Category, DocItem, StyleTheme } from "#core";
 
 type DocBreadcrumbTrail = {
   categories: Category[];
   doc: DocItem;
 } | null;
+
+const SearchModal = lazy(
+  () => import("../../searchModal/components/SearchModal"),
+);
 
 const findCategoryTrail = (
   nodes: Category[],
@@ -328,16 +334,20 @@ export const MainRenderer: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
         </div>
       </main>
 
-      <SearchModal
-        styles={styles}
-        isOpen={isSearchOpen}
-        onClose={handleSearchClose}
-        searchTerm={searchTerm}
-        appliedSearchTerm={debouncedSearchTerm}
-        onSearchChange={setSearchTerm}
-        results={searchResults}
-        onSelect={handleSearchSelect}
-      />
+      {isSearchOpen ? (
+        <Suspense fallback={null}>
+          <SearchModal
+            styles={styles}
+            isOpen={isSearchOpen}
+            onClose={handleSearchClose}
+            searchTerm={searchTerm}
+            appliedSearchTerm={debouncedSearchTerm}
+            onSearchChange={setSearchTerm}
+            results={searchResults}
+            onSelect={handleSearchSelect}
+          />
+        </Suspense>
+      ) : null}
     </div>
   );
 };

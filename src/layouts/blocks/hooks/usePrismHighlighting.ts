@@ -1,6 +1,5 @@
-import type { CodeSection } from "@shadow-shard-tools/docs-core";
+import type { CodeSection } from "#core";
 import { useEffect, useRef, useState } from "react";
-import "prismjs/themes/prism-tomorrow.css";
 
 export const usePrismHighlighting = (
   sections: CodeSection[],
@@ -15,6 +14,7 @@ export const usePrismHighlighting = (
     let isMounted = true;
     const loadPrism = async () => {
       try {
+        await import("prismjs/themes/prism-tomorrow.css");
         const prismModule: any = await import("prismjs");
         const Prism = prismModule.default ?? prismModule;
         prismRef.current = Prism;

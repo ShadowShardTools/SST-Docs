@@ -1,8 +1,4 @@
-import type {
-  ChartData,
-  DocItem,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core";
+import type { ChartData, DocItem, StyleTheme } from "#core";
 import {
   renderDocument,
   renderConsolidatedDocument,

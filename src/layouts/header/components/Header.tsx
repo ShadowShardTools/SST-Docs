@@ -10,11 +10,7 @@ import {
   ThemeButton,
   GithubButtonLink,
 } from "../../cta/components";
-import type {
-  Product,
-  StyleTheme,
-  Version,
-} from "@shadow-shard-tools/docs-core";
+import type { Product, StyleTheme, Version } from "#core";
 
 interface HeaderProps {
   styles: StyleTheme;

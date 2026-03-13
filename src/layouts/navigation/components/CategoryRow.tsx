@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Folder, ChevronDown, ChevronRight } from "lucide-react";
 import { rowClasses } from "../utilities";
-import type { Category, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Category, StyleTheme } from "#core";
 
 export interface Props {
   styles: StyleTheme;

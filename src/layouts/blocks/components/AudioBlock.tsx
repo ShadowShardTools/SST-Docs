@@ -1,8 +1,8 @@
 import React from "react";
 import { Play, Pause, Volume2, Volume1, VolumeX } from "lucide-react";
-import { formatTime } from "@shadow-shard-tools/docs-core/utilities/system/formatTime";
-import type { AudioData } from "@shadow-shard-tools/docs-core/types/AudioData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { formatTime } from "#core/utilities/system/formatTime";
+import type { AudioData } from "#core/types/AudioData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import { useAudioPlayer } from "../hooks";
 import { resolveMediaPath } from "../../common/utils/mediaPath";
 import { useCurrentTheme } from "../../../application/hooks";

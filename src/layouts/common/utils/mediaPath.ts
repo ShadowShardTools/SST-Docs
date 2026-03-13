@@ -1,5 +1,5 @@
-import { resolvePublicDataPath } from "@shadow-shard-tools/docs-core/configs";
-import { withBasePath } from "@shadow-shard-tools/docs-core";
+import { resolvePublicDataPath } from "#core/configs";
+import { withBasePath } from "#core";
 import { clientConfig } from "../../../application/config/clientConfig";
 
 const isAbsoluteUrl = (value: string) => {

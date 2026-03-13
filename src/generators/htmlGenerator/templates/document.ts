@@ -1,4 +1,4 @@
-import type { DocItem, Content } from "@shadow-shard-tools/docs-core";
+import type { DocItem, Content } from "#core";
 import type { GenerateOptions } from "../index.js";
 import { escapeHtml } from "../utilities/sanitize.js";
 import {

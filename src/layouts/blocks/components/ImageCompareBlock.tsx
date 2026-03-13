@@ -1,13 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import { useMobileDevice } from "../hooks";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
-import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
-import type { ImageCompareData } from "@shadow-shard-tools/docs-core/types/ImageCompareData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import { getResponsiveWidth } from "#core/utilities/dom/getResponsiveWidth";
+import { validateScale } from "#core/utilities/validation/validateScale";
+import type { ImageCompareData } from "#core/types/ImageCompareData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import { resolveMediaPath } from "../../common/utils/mediaPath";
 import { ErrorBoundary } from "../../common/components/ErrorBoundary";
 

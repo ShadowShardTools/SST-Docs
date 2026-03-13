@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from "react";
 import ImageBlock from "../../../blocks/components/ImageBlock";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { ImageData } from "@shadow-shard-tools/docs-core/types/ImageData";
-import type { BaseImage } from "@shadow-shard-tools/docs-core/types/BaseImage";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { ImageData } from "#core/types/ImageData";
+import type { BaseImage } from "#core/types/BaseImage";
 import MediaPathInput from "./MediaPathInput";
 
 interface EditableImageProps {

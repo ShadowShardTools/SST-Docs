@@ -1,5 +1,5 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
+import type { Content, StyleTheme } from "#core";
+import type { ImageCarouselData } from "#core/types/ImageCarouselData";
 import { ArrowLeftRight, RectangleEllipsis } from "lucide-react";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 import Button from "../../../common/components/Button";

@@ -1,8 +1,8 @@
-import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
+import { ALIGNMENT_CLASSES } from "#core";
 import { useEffect, useMemo, useRef } from "react";
 import MathBlock from "../../../blocks/components/MathBlock";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { MathData } from "@shadow-shard-tools/docs-core/types/MathData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { MathData } from "#core/types/MathData";
 
 interface EditableMathProps {
   data?: MathData;

@@ -1,7 +1,7 @@
 import { Suspense, lazy, useMemo } from "react";
 import { Plus, Trash2 } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { ImageCarouselData } from "#core/types/ImageCarouselData";
 import Button from "../../../common/components/Button";
 import MediaPathInput from "./MediaPathInput";
 import { LoadingSpinner } from "../../../dialog/components";

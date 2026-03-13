@@ -23,11 +23,11 @@ import {
   Pie,
   Scatter,
 } from "react-chartjs-2";
-import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
-import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
-import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
-import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { ALIGNMENT_CLASSES } from "#core";
+import { getResponsiveWidth } from "#core/utilities/dom/getResponsiveWidth";
+import { validateScale } from "#core/utilities/validation/validateScale";
+import type { ChartData } from "#core/types/ChartData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import { useCurrentTheme } from "../../../application/hooks";
 
 ChartJS.register(

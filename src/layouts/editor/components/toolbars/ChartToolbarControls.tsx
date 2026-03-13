@@ -1,5 +1,5 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import type { ChartData } from "@shadow-shard-tools/docs-core/types/ChartData";
+import type { Content, StyleTheme } from "#core";
+import type { ChartData } from "#core/types/ChartData";
 import {
   BarChart2,
   Bubbles,

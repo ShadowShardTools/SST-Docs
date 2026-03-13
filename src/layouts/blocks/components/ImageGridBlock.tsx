@@ -1,12 +1,9 @@
 import React from "react";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
-import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
-import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
-import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
+import { getResponsiveWidth } from "#core/utilities/dom/getResponsiveWidth";
+import { validateScale } from "#core/utilities/validation/validateScale";
+import type { ImageGridData } from "#core/types/ImageGridData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import { useMobileDevice } from "../hooks";
 import { resolveMediaPath } from "../../common/utils/mediaPath";
 

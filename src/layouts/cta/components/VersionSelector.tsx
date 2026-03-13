@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { GitBranch } from "lucide-react";
 import LoadingSpinner from "../../dialog/components/LoadingSpinner";
-import type { StyleTheme, Version } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme, Version } from "#core";
 import Dropdown from "../../common/components/Dropdown";
 
 interface VersionSelectorProps {

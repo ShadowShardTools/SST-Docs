@@ -1,10 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import {
-  createSstDocsViteClientConfigPlugin,
-  loadSstDocsConfigSync,
-} from "@shadow-shard-tools/docs-core";
+import { loadSstDocsConfigSync } from "#core/configs/sstDocsConfig";
+import { createSstDocsViteClientConfigPlugin } from "#core/configs/viteClientConfig";
 import { createLocalEditorApi } from "./config/localEditorApi";
 
 // https://vite.dev/config/

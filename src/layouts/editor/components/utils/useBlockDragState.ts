@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import type { DragEvent } from "react";
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content } from "#core";
 
 export const useBlockDragState = (
   blocks: Content[],

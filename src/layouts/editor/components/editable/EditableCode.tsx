@@ -1,11 +1,11 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { CodeData } from "@shadow-shard-tools/docs-core/types/CodeData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { CodeData } from "#core/types/CodeData";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
-} from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
+} from "#core/configs/codeLanguagesConfig";
 import Dropdown from "../../../common/components/Dropdown";
 import Button from "../../../common/components/Button";
 import { LoadingSpinner } from "../../../dialog/components";

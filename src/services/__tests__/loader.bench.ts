@@ -1,14 +1,14 @@
 import { bench, describe, vi } from "vitest";
 import { documentationLoader } from "../documentationLoader";
-import { loadVersionDataFromHttp } from "@shadow-shard-tools/docs-core/data";
+import { loadVersionDataFromHttp } from "#core/data";
 
 // Mock deps
-vi.mock("@shadow-shard-tools/docs-core/data", () => ({
+vi.mock("#core/data", () => ({
   loadVersionDataFromHttp: vi.fn(),
   loadVersionDataFromProvider: vi.fn(),
 }));
 
-vi.mock("@shadow-shard-tools/docs-core/configs/sstDocsConfigShared", () => ({
+vi.mock("#core/configs/sstDocsConfigShared", () => ({
   resolvePublicDataPath: () => "/data",
 }));
 

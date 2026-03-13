@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import { ALIGNMENT_CLASSES } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "#core";
+import { ALIGNMENT_CLASSES } from "#core";
 import ContentBlockRenderer from "../../render/components/ContentBlockRenderer";
 import {
   EditableDivider,

@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import appRoot from "app-root-path";
 import fg from "fast-glob";
-import { createLogger, resolveDataPath } from "@shadow-shard-tools/docs-core";
+import { createLogger, resolveDataPath } from "#core";
 import {
   DEFAULT_BLOCKS,
   type BlockType,

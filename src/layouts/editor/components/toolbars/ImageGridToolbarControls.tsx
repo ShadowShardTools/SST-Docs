@@ -1,5 +1,5 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
+import type { Content, StyleTheme } from "#core";
+import type { ImageGridData } from "#core/types/ImageGridData";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 import NumericInput from "../../../common/components/NumericInput";
 

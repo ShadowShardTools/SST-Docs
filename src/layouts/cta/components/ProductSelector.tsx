@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Package } from "lucide-react";
 import LoadingSpinner from "../../dialog/components/LoadingSpinner";
-import type { StyleTheme, Product } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme, Product } from "#core";
 import Dropdown from "../../common/components/Dropdown";
 
 interface ProductSelectorProps {

@@ -1,4 +1,4 @@
-import type { DocItem } from "@shadow-shard-tools/docs-core";
+import type { DocItem } from "#core";
 import searchInDocItem from "./searchInDocItem";
 
 export const filterItemsBySearch = (

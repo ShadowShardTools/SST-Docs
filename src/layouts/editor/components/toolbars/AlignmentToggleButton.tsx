@@ -1,4 +1,4 @@
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 import Button from "../../../common/components/Button";
 

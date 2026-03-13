@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { FileText } from "lucide-react";
 import { rowClasses } from "../utilities";
-import type { DocItem, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { DocItem, StyleTheme } from "#core";
 
 export interface Props {
   styles: StyleTheme;

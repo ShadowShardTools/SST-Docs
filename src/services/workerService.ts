@@ -1,10 +1,5 @@
-import { WorkerHandler } from "@shadow-shard-tools/docs-core/utilities";
-import type {
-  Category,
-  DocItem,
-  RawCategory,
-  StyleTheme,
-} from "@shadow-shard-tools/docs-core/types";
+import { WorkerHandler } from "#core/utilities";
+import type { Category, DocItem, RawCategory, StyleTheme } from "#core/types";
 
 class WorkerService {
   private handler: WorkerHandler | null = null;

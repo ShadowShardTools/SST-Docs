@@ -1,4 +1,4 @@
-import type { Content } from "@shadow-shard-tools/docs-core";
+import type { Content } from "#core";
 import { DEFAULT_BLOCKS, type BlockType } from "../../blocks";
 
 export const cloneTemplate = (type: BlockType): Content =>

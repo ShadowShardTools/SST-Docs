@@ -5,7 +5,7 @@ import {
   Info,
   XCircle,
 } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import EditableRichText from "./EditableRichText";
 
 interface EditableMessageBoxProps {

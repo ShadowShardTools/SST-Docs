@@ -1,5 +1,5 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
-import type { YoutubeData } from "@shadow-shard-tools/docs-core/types/YoutubeData";
+import type { Content, StyleTheme } from "#core";
+import type { YoutubeData } from "#core/types/YoutubeData";
 import AlignmentToggleButton from "./AlignmentToggleButton";
 import NumericInput from "../../../common/components/NumericInput";
 

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import ImageGridBlock from "../../../blocks/components/ImageGridBlock";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
-import type { ImageGridData } from "@shadow-shard-tools/docs-core/types/ImageGridData";
+import type { StyleTheme } from "#core/types/StyleTheme";
+import type { ImageGridData } from "#core/types/ImageGridData";
 import Button from "../../../common/components/Button";
 import MediaPathInput from "./MediaPathInput";
 

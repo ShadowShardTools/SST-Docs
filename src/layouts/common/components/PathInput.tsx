@@ -9,7 +9,7 @@ import {
 } from "react";
 import { ChevronLeft, Folder, Image as ImageIcon, Trash2 } from "lucide-react";
 import SearchModalFooter from "../../searchModal/components/SearchModalFooter";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import Button from "./Button";
 
 export type FileBrowserEntry = {

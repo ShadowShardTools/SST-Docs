@@ -1,4 +1,4 @@
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import { Search } from "lucide-react";
 import { memo } from "react";
 import Button from "../../common/components/Button";

@@ -1,10 +1,7 @@
-import {
-  loadVersionDataFromProvider,
-  HttpDataProvider,
-} from "@shadow-shard-tools/docs-core/data";
-import type { LoadVersionDataFromProviderResult } from "@shadow-shard-tools/docs-core/data/loadVersionData";
-import { resolvePublicDataPath } from "@shadow-shard-tools/docs-core/configs/sstDocsConfigShared";
-import type { DataProvider } from "@shadow-shard-tools/docs-core/types/DataProvider";
+import { loadVersionDataFromProvider, HttpDataProvider } from "#core/data";
+import type { LoadVersionDataFromProviderResult } from "#core/data/loadVersionData";
+import { resolvePublicDataPath } from "#core/configs/sstDocsConfigShared";
+import type { DataProvider } from "#core/types/DataProvider";
 import { clientConfig } from "../application/config/clientConfig";
 import { read as editorRead } from "../layouts/editor/api/client";
 
@@ -58,7 +55,9 @@ export class documentationLoader {
             version: options?.version,
             productVersioning: clientConfig.PRODUCT_VERSIONING,
             tolerateMissing: true,
-            prefetch: true,
+            // Avoid warming other versions during startup; it adds work to the
+            // initial navigation path without helping first paint.
+            prefetch: false,
           },
           joinEditorPath,
         );
@@ -98,7 +97,9 @@ export class documentationLoader {
           product: options?.product,
           version: options?.version,
           productVersioning: clientConfig.PRODUCT_VERSIONING,
-          prefetch: true,
+          // Avoid warming other versions during startup; it adds work to the
+          // initial navigation path without helping first paint.
+          prefetch: false,
         });
       } finally {
         if (useNoCache) globalThis.fetch = originalFetch;

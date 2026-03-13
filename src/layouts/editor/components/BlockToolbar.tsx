@@ -1,4 +1,4 @@
-import type { Content, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Content, StyleTheme } from "#core";
 import type { ReactNode } from "react";
 import type { BlockType } from "../blocks";
 import { BLOCK_LABELS } from "../blocks";

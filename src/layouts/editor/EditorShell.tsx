@@ -30,7 +30,7 @@ import BlockListEditor from "./components/BlockListEditor";
 import EditorNavigation from "./components/EditorNavigation";
 import EditorHeader from "./components/EditorHeader";
 import EditorToolbar from "./components/EditorToolbar";
-import type { Category, StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { Category, StyleTheme } from "#core";
 
 export const EditorShell: React.FC<{ styles: StyleTheme }> = ({ styles }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");

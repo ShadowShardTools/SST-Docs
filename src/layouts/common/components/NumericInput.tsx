@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import type { ChangeEvent, FocusEvent, InputHTMLAttributes } from "react";
 
-type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "onChange">;
+type InputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type" | "value" | "onChange"
+>;
 
 interface NumericInputProps extends InputProps {
   value?: number;

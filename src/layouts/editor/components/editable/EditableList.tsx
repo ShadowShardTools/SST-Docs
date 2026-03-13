@@ -1,4 +1,4 @@
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 import { sanitizeRichText } from "../../../common/utils/richText";
 import EditableRichText from "./EditableRichText";
 

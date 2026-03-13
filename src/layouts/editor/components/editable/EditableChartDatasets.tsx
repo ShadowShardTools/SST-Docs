@@ -1,5 +1,5 @@
 import { Plus, Trash2 } from "lucide-react";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import Button from "../../../common/components/Button";
 import type {
   EditableChartData,
@@ -241,12 +241,7 @@ export function EditableChartDatasets({
                               className={`${styles.input} px-2 py-1 w-24`}
                               value={point?.r as number | undefined}
                               onChange={(nextValue) =>
-                                onPointChange(
-                                  dsIndex,
-                                  pointIdx,
-                                  "r",
-                                  nextValue,
-                                )
+                                onPointChange(dsIndex, pointIdx, "r", nextValue)
                               }
                             />
                           </label>

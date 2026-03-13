@@ -12,16 +12,13 @@ import { usePrismHighlighting } from "../hooks";
 import {
   CODE_LANGUAGE_CONFIG,
   type SupportedLanguage,
-} from "@shadow-shard-tools/docs-core/configs/codeLanguagesConfig";
-import { copyToClipboard } from "@shadow-shard-tools/docs-core/utilities/dom/copyToClipboard";
-import { createTimeout } from "@shadow-shard-tools/docs-core/utilities/system/createTimeout";
-import { downloadTextFile } from "@shadow-shard-tools/docs-core/utilities/dom/downloadTextFile";
-import { sanitizeFilename } from "@shadow-shard-tools/docs-core/utilities/string/sanitizeFilename";
-import type {
-  CodeData,
-  CodeSection,
-} from "@shadow-shard-tools/docs-core/types/CodeData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+} from "#core/configs/codeLanguagesConfig";
+import { copyToClipboard } from "#core/utilities/dom/copyToClipboard";
+import { createTimeout } from "#core/utilities/system/createTimeout";
+import { downloadTextFile } from "#core/utilities/dom/downloadTextFile";
+import { sanitizeFilename } from "#core/utilities/string/sanitizeFilename";
+import type { CodeData, CodeSection } from "#core/types/CodeData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import Button from "../../common/components/Button";
 
 interface Props {

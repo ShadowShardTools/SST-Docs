@@ -1,7 +1,7 @@
 import React from "react";
 import { FileText, Folder } from "lucide-react";
 import type { BreadcrumbSegment } from "../types/BreadcrumbSegment";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core";
+import type { StyleTheme } from "#core";
 
 interface Props {
   styles: StyleTheme;

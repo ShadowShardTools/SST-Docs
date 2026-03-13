@@ -1,14 +1,12 @@
 import React, { lazy, Suspense } from "react";
-import { getResponsiveWidth } from "@shadow-shard-tools/docs-core/utilities/dom/getResponsiveWidth";
-import { validateScale } from "@shadow-shard-tools/docs-core/utilities/validation/validateScale";
-import type { ImageCarouselData } from "@shadow-shard-tools/docs-core/types/ImageCarouselData";
-import type { StyleTheme } from "@shadow-shard-tools/docs-core/types/StyleTheme";
+import "@splidejs/react-splide/css";
+import { getResponsiveWidth } from "#core/utilities/dom/getResponsiveWidth";
+import { validateScale } from "#core/utilities/validation/validateScale";
+import type { ImageCarouselData } from "#core/types/ImageCarouselData";
+import type { StyleTheme } from "#core/types/StyleTheme";
 import { useMobileDevice } from "../hooks";
 import { DEFAULT_CAROUSEL_OPTIONS } from "../constants";
-import {
-  ALIGNMENT_CLASSES,
-  SPACING_CLASSES,
-} from "@shadow-shard-tools/docs-core";
+import { ALIGNMENT_CLASSES, SPACING_CLASSES } from "#core";
 import { resolveMediaPath } from "../../common/utils/mediaPath";
 
 const Splide = lazy(() =>
